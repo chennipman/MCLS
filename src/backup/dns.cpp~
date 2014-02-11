@@ -1,0 +1,52 @@
+/********************************************************************************/
+/********************************************************************************/
+/*  Main program for the Cartesian Mass Conserving Level Set Method         	*/
+/*  Programmer	: Duncan van der Heul       					*/
+/*  Date	: 03-01       							*/
+/*  Update	:        							*/
+/********************************************************************************/
+//
+//
+/********************************************************************************/
+#include "header_main.h" 
+/********************************************************************************/
+int main ()
+{
+//
+/********************************************************************************/
+/*  Functions called        							*/
+void initialize_computation(void);
+void time_stepping(void);
+void post_processing(void);
+/********************************************************************************/
+    std::cout << "bubble " << gnoef.label << "\n";
+
+
+/* intialization */
+   
+    initialize_computation();
+    
+    std::cout << "Initialization completed \n";
+
+/* time stepping sequence */
+
+    std::cout << "Time stepping completed \n";
+
+/* post processing */
+
+    std::cout << "Post processing completed \n";
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+

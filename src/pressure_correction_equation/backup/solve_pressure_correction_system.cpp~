@@ -1,0 +1,103 @@
+#include<cstdlib>
+#include<iostream>
+#include<algorithm>
+#include<math.h>
+
+/********************************************************************************/
+/********************************************************************************/
+/*  Function to solve the system of linear equations for the pressure equation  */
+/*  using preconditioned conjugate gradient method                              */
+/*  										*/
+/*  Programmer	: Duncan van der Heul       					*/
+/*  Date	: 10-03-2013       						*/
+/*  Update	:        							*/
+/********************************************************************************/
+/* Notes									*/
+/* For the pressure, an inhomogeneous neumann boundary condition hold on the    */
+/* boundaries where the velocity is zero. The normal derivative of the pressure */
+/* balances with the gravitational acceleration.				*/
+/********************************************************************************/
+ void solve_pressure_correction_system(
+      double ****pressure_matrix, 		  // pressure matrix
+      double  ***pressure_rhside,		  // pressure rhside
+      double  ***pressure,			  // pressure field
+      int number_primary_cells_i,	 	  // number of primary (pressure) cells in x1 direction
+      int number_primary_cells_j,	  	  // number of primary (pressure) cells in x2 direction
+      int number_primary_cells_k,		  // number of primary (pressure) cells in x3 direction
+      double   tolerance_pressure,	  	  // the tolerance with which the system is solved	
+      int maximum_iterations_allowed_pressure     // maximum number of iterations allowed for the
+						  //conjugate gradient method
+      )
+
+
+   {
+     void build_preconditioner(			// build incomplete choleski preconditioner
+	int i_dimension,    	
+	int j_dimension, 	
+	int k_dimension, 	
+	double **matrix_A,	
+	double *preconditioner_matrix_M 	
+	);
+     int conjugate_gradient_method(		// solve linear system with conjugate gradient
+        int i_dimension,   			// method (only SPD systems)
+        int j_dimension,   		
+        int k_dimension,   		
+        double  **matrix_A,   		
+        double  *preconditioner_matrix_M,  	
+        double   *rhside_vector_b,   		
+        double   *solution_vector_x, 		
+        double   tolerance,	  		
+        double   iteration_number,  	
+        double   relative_L2_norm_residual, 
+        double   relative_Linfinity_norm_residual,
+        int maximum_iterations_allowed	
+        );
+     double *double_Vector( 			// allocate memory for a one-dimensional array of doubles
+	int nh
+	);
+     void free_double_Vector(			// deallocate memory for a one-dimensional array of doubles
+	double *v, 
+	int nh
+	);
+
+      double   iteration_number;  		  // the number of iterations where the iterative
+						  // process was terminated
+      double   relative_L2_norm_residual; 	  // the L2 norm of the residual, scaled with
+						  // the L2 norm of the right hand side
+      double   relative_Linfinity_norm_residual;  // the L infinity norm of the residual
+						  // scaled with the maximum difference 
+						  // between two components of the residual
+      double  *preconditioner_matrix_M;		  // preconditioner matrix (only main diagonal)
+
+      
+      
+      /* allocate memory for the main diagonal of preconditioner matrix M */
+      
+      preconditioner_matrix_M=double_Vector(number_primary_cells_i*number_primary_cells_j*number_primary_cells_k);
+      
+      /* build the preconditioner matrix M */
+      
+      build_preconditioner( number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+			    **pressure_matrix, preconditioner_matrix_M);
+      
+      /* solve the linear system for the new pressure */
+      
+      if(conjugate_gradient_method( number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+				  **pressure_matrix, preconditioner_matrix_M, **pressure_rhside, **pressure,
+				    tolerance_pressure, iteration_number, relative_L2_norm_residual,
+				      relative_Linfinity_norm_residual, maximum_iterations_allowed_pressure))
+      {
+	std::cout << " No convergence in linear solver for pressure equation.\n";
+	exit(1);
+      }
+      else
+      {
+	std::cout << " The pressure equation converged in " << iteration_number <<" iterations,\n";
+	std::cout << " with relative L2 norm of residual " << relative_L2_norm_residual ;
+      }
+      
+      /* deallocate memory for the main diagonal of preconditioner matrix M */
+      
+      free_double_Vector(preconditioner_matrix_M, number_primary_cells_i*number_primary_cells_j*number_primary_cells_k);
+      
+   }    

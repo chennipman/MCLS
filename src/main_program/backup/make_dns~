@@ -1,0 +1,21 @@
+CC=gcc
+CXX=g++
+RM=rm -f
+CPPFLAGS=
+LDFLAGS=
+LDLIBS=$(shell root-config --libs)
+
+SRCS=dns.cpp
+OBJS=$(subst .cc,.o,$(SRCS))
+
+all:dns
+
+dns:$(OBJS)
+  g++ $(LDFLAGS) -o tool $(OBJS) $(LDLIBS) 
+
+tool.o: tool.cc support.hh
+
+support.o: support.hh support.cc
+
+clean:
+  $(RM) $(OBJS)

@@ -1,0 +1,78 @@
+
+/********************************************************************************/
+/********************************************************************************/
+/*  Function to  update the volume of fluid field due to fluxes in x2          	*/
+/*  direction									*/
+/*  										*/
+/*  Programmer	: Duncan van der Heul       					*/
+/*  Date	: 10-03-2013       						*/
+/*  Update	:        							*/
+/********************************************************************************/
+/* Notes									*/
+/********************************************************************************/
+//
+     void compute_vof_flux_x1(						
+	double ***level_set, 				// level set field 
+							// mass conserving
+        double ***u_1_velocity_new, 			// velocity field at new time level x1 direction
+	double ***d_level_set_d_x1,			// first partial derivative of
+							// the level-set field wrt x1
+							// second order central approximation
+	double ***d_level_set_d_x2,			// first partial derivative of 
+							// the level-set field wrt x2
+							// second order central approximation
+	double ***d_level_set_d_x3,			// first partial derivative of
+ 							// the level-set field wrt x3
+							// second order central approximation
+	double ***flux_x1;				// volume of fluid flux in x1 direction
+	int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
+	int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
+	int number_primary_cells_k			// number of primary (pressure) cells in x3 direction
+	)
+C-------------------------------------------------------------------------------
+C  Flux VOF function in x-dir
+C-------------------------------------------------------------------------------
+  
+      subroutine Flux_x(Phi, Dx, Dy, Dz, Fx)
+      implicit none
+      include 'param.txt'
+      include 'param_ls.txt'
+      include 'common.txt'
+      
+      real Phi(1-TWO:imax+TWO,1-TWO:jmax+TWO,1-TWO:kmax+TWO)
+      real Fx(0:imax,1:jmax,1:kmax)
+      
+      real Dx(0:i1,0:j1,0:k1)
+      real Dy(0:i1,0:j1,0:k1)
+      real Dz(0:i1,0:j1,0:k1)
+      
+      real vel, dum, Phi_dum
+
+C  Compute fluxes in x-dir
+
+      do k=1,kmax
+        do j=1,jmax
+	  do i=0,imax
+	    vel = Unew(i,j,k) * Dt * dxi
+	    if ( vel*vel.gt.1) then
+	      write(6,*) 'vel>1:', i,j,k, vel, Unew(i,j,k)
+	      stop
+	    end if
+	    if ( vel.ge.0.) then
+	      Phi_dum = Phi(i,j,k) + 0.5*(1-vel)*Dx(i,j,k)
+	      call f(Phi_dum, vel*Dx(i,j,k), Dy(i,j,k), Dz(i,j,k), dum)
+	      Fx(i,j,k) = vel * dum
+	    else
+	      Phi_dum = Phi(i+1,j,k) - 0.5*(1+vel)*Dx(i+1,j,k)
+	      call f(Phi_dum, -vel*Dx(i+1,j,k), 
+     +                              Dy(i+1,j,k), Dz(i+1,j,k), dum)
+	      Fx(i,j,k) = vel * dum
+	    end if
+	    
+	  end do 
+	end do
+      end do
+      
+      return
+      end
+

@@ -1,0 +1,15 @@
+Restart file:
+
+
+Schrijven.
+
+-parameter die aangeeft dat er een restart geschreven moet worden
+-naam van de restart file
+-functie die de variabelen wegschrijft
+-onderdeel van initialize_all_variables
+
+
+Lezen.
+-parameter die aangeeft dat er een restart gelezen moet worden
+-naam van de restart file
+-functie die de variabelen inleest

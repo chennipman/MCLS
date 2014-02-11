@@ -1,0 +1,242 @@
+#include<cstdlib>
+#include<iostream>
+#include<algorithm>
+#include<math.h>
+#include <string>
+#include <sstream>
+#include <fstream>
+using namespace std;
+enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
+enum boundary_conditions_type{dirichlet, neumann, periodic};
+enum boundary_conditions_rule{constant, function};
+enum cell_centerings{cell_centered, vertex_centered};
+
+
+class boundary_variable
+{
+public:
+  variable variable_name;
+  boundary_conditions_type boundary_condition_type;
+  boundary_conditions_rule boundary_condition_rule;
+  cell_centerings cell_centering;
+  double boundary_condition_value;
+  boundary_variable(variable varname, boundary_conditions_type bound_type,
+				     boundary_conditions_rule bound_rule,
+				     cell_centerings  cell_cent,
+					double bound_value );
+  boundary_variable(variable varname);
+};
+
+class boundary_face
+{
+public:
+    boundary_variable boundary_variables[5];
+    boundary_face(void);
+   
+};
+        
+class vector
+{
+public:
+  double u1,u2,u3;
+};
+class restart_parameters
+{
+public:
+      int start_from_restart_file;		
+      int write_solution_to_restart_file;
+      string name_restart_file_to_write;
+      string name_restart_file_to_read;
+      restart_parameters(void);
+};
+
+
+/********************************************************************************/
+/*  Function to initialize the flow field                                       */
+/*  										       */
+/*  Programmer	: Duncan van der Heul       					       */
+/*  Date	: 10-03-2013       						       */
+/*  Update	:        							       */
+/********************************************************************************/
+/* Notes									       */
+/* For the moment the whole solution is initially set to zero, this should be   */
+/* extended to more advanced cases, e.g. a parabolic profile etc.		       */
+/********************************************************************************/
+void initialize_flow_field(
+      double ***u_1_velocity_new, 			// velocity field at new time level x1 direction
+      double ***u_2_velocity_new, 			// velocity field at new time level x2 direction
+      double ***u_3_velocity_new,			// velocity field at new time level x3 direction
+      double ***u_1_velocity_old, 			// velocity field at old time level x1 direction
+      double ***u_2_velocity_old, 			// velocity field at old time level x2 direction
+      double ***u_3_velocity_old,			// velocity field at old time level x3 direction
+      double ***pressure,				// pressure
+      double ***level_set,                         // level-set field
+      double ***momentum_source_term_u_1,          // source term of the momentum equation in x1 direction
+                                                   // defined on all u1 points (including boundaries)
+      double ***momentum_source_term_u_2,          // source term of the momentum equation in x2 direction
+                                                   // defined on all u1 points (including boundaries)
+      double ***momentum_source_term_u_3,          // source term of the momentum equation in x3 direction
+                                                   // defined on all u1 points (including boundaries)
+      double ***surface_tension_body_force_x1,     // source term of the momentum equation in x1 direction
+                                                   // defined on all u1 points (including boundaries)
+      double ***surface_tension_body_force_x2,     // source term of the momentum equation in x2 direction
+                                                   // defined on all u1 points (including boundaries)
+      double ***surface_tension_body_force_x3,     // source term of the momentum equation in x3 direction
+                                                   // defined on all u1 points (including boundaries)
+      double ***scaled_density_u1,                 // scaled density for the controlvolumes
+                                                   // of the momentum equation in x1 direction
+      double ***scaled_density_u2,                 // scaled density for the controlvolumes
+                                                   // of the momentum equation in x2 direction
+      double ***scaled_density_u3,                 // scaled density for the controlvolumes
+                                                   // of the momentum equation in x3 direction
+      boundary_face boundary_faces[6],		// array with all the information
+							// for the boundary conditions 
+      double mesh_width_x1,				// grid spacing in x1 direction (uniform)
+      double mesh_width_x2,				// grid spacing in x2 direction (uniform)
+      double mesh_width_x3,				// grid spacing in x3 direction (uniform)
+      int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
+      int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
+      int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
+      vector initial_velocity	,			// initial velocity field at t=0
+      vector gravity,                              // gravitational acceleration vector       double tolerance,                            // the tolerance with which the system is solved
+      double tolerance,                            // the tolerance with which the system is solved
+      double actual_time_step_navier_stokes,       // actual time step for Navier-Stokes solution algorithm
+      double rho_plus_over_rho_minus,              // ratio of density where (level set >0) and
+                                                   // density where (level set < 0)
+      double sigma_over_rho_minus,                 // sigma / rho_minus (scaled sigma)
+      int continuous_surface_force_model,          // =1, the continuous surface force model is applied
+                                                   // =0, the exact interface boundary conditions are applied
+      int source_terms_in_momentum_predictor,      // =1, the source terms are applied in the momentum predictor
+                                                   // equation
+                                                   // =0, the source terms are applied in the momentum corrector
+                                                   // equation
+      int maximum_iterations_allowed               // maximum number of iterations allowed for the
+                                                   // conjugate gradient method
+	)
+   /* function definitions */
+    {
+
+       void set_constant_matrix2(            	// set triple array to constant value
+	  int first_dimension,			
+	  int second_dimension,			
+	  int third_dimension,			
+	  double ***matrix2_to_set,			
+	  double constant_value			
+     );
+     void apply_boundary_conditions_velocity(     // apply boundary conditions to velocity field
+	  boundary_face boundary_faces[6],		
+	  double ***u_1_velocity, 			
+	  double ***u_2_velocity, 			
+	  double ***u_3_velocity, 			
+	  double mesh_width_x1,				
+	  double mesh_width_x2,				
+	  double mesh_width_x3,				
+	  int number_primary_cells_i,			
+	  int number_primary_cells_j,			
+	  int number_primary_cells_k			
+     );
+     void initialize_pressure(                   // initialize the pressure field
+         double ***level_set,
+         double ***pressure,
+         double ***momentum_source_term_u_1,
+         double ***momentum_source_term_u_2,
+         double ***momentum_source_term_u_3,
+         double ***surface_tension_body_force_x1,
+         double ***surface_tension_body_force_x2,
+         double ***surface_tension_body_force_x3,
+         double ***scaled_density_u1,
+         double ***scaled_density_u2,
+         double ***scaled_density_u3,
+         double ***u_1_velocity,
+         double ***u_2_velocity,
+         double ***u_3_velocity,
+         double mesh_width_x1,
+         double mesh_width_x2,
+         double mesh_width_x3,
+         int number_primary_cells_i,
+         int number_primary_cells_j,
+         int number_primary_cells_k,
+         vector gravity,
+         double tolerance,
+         double actual_time_step_navier_stokes,
+         double rho_plus_over_rho_minus,
+         int continuous_surface_force_model,
+         int source_terms_in_momentum_predictor,
+         int maximum_iterations_allowed,
+         boundary_face boundary_faces[6]
+      );
+       
+
+    /* initialize the velocity field */
+    /* if no restart file is available, simply set solution to constant value */
+    /* as specified in the parameter listing */
+    
+      /* old time level */
+    
+      set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, 
+			    number_primary_cells_k+2, u_1_velocity_new, initial_velocity.u1);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+1, 
+			    number_primary_cells_k+2, u_2_velocity_new, initial_velocity.u2);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
+			    number_primary_cells_k+1, u_3_velocity_new, initial_velocity.u3);
+      
+
+      /* new time level */
+       
+      set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, 
+			    number_primary_cells_k+2, u_1_velocity_old, initial_velocity.u1);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+1, 
+			    number_primary_cells_k+2, u_2_velocity_old, initial_velocity.u2);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
+			    number_primary_cells_k+1, u_3_velocity_old, initial_velocity.u3);
+      
+
+    /* intialize the pressure with constant value 0 */
+    
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
+			    number_primary_cells_k+2, pressure, 0.0);
+
+
+     /* compute the pressure corresponding to the initial velocity field and the initial velocity field */
+     /* because the initial velocity field is chosen constant, it can be ignored in the computation     */
+     /* of the initial pressure. We do have to take into account the initial body force field distribution */
+
+
+     /* initialize the pressure */
+
+     initialize_pressure( level_set, pressure,
+                            momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
+                              surface_tension_body_force_x1, surface_tension_body_force_x2, surface_tension_body_force_x3,
+                                scaled_density_u1, scaled_density_u2, scaled_density_u3,
+                                   u_1_velocity_new, u_2_velocity_new, u_3_velocity_new,
+                                     mesh_width_x1, mesh_width_x2, mesh_width_x3,
+                                      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+                                        gravity, tolerance, actual_time_step_navier_stokes,
+                                         rho_plus_over_rho_minus, continuous_surface_force_model,
+                                           source_terms_in_momentum_predictor, maximum_iterations_allowed,
+                                            boundary_faces);
+
+
+
+     
+     
+    }
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

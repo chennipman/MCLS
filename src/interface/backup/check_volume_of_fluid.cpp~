@@ -1,0 +1,46 @@
+
+/********************************************************************************/
+/********************************************************************************/
+/*  Function to check if the volume of fluid field is completely within the     */
+/*  proper bounds								*/
+/*  method. 									*/
+/*  										*/
+/*  Programmer	: Duncan van der Heul       					*/
+/*  Date	: 10-03-2013       						*/
+/*  Update	:        							*/
+/********************************************************************************/
+/* Notes									*/
+/********************************************************************************/
+
+      int check_volume_of_fluid(
+		 double ***volume_of_fluid,		// volume of fluid field field
+		 int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
+		 int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction
+		 int number_primary_cells_k,		// number of primary (pressure) cells in x3 direction
+		 double volume_of_fluid_tolerance	// tolerance for volume of fluid value   
+	  
+	  )
+      
+      
+     int i_index, j_index, k_index;  // local variables for loop indexing
+     int number_of_error_cells=0;    // Number of cells where the volume of fluid fiels is outside the
+				     // allowed interval [0,1] (with proper tolerances)
+     
+     for(i_index=0;i_index<number_primary_cells_i+2;i_index++)
+      {
+	  for(j_index=0;j_index<number_primary_cells_j+2;j_index++)
+	  {
+	      for(k_index=0;k_index<number_primary_cells_k+2;k_index++)
+	      {
+		    if(volume_of_fluid[i_index][j_index][k_index]>
+			( 1.0+volume_of_fluid_tolerance )||
+			 volume_of_fluid[i_index][j_index][k_index]< 
+			 (-1.0*volume_of_fluid_tolerance))
+		    {
+			number_of_error_cells++;
+		    }
+	      }
+	  }
+      }
+      return number_of_error_cells;
+}      

@@ -1,0 +1,173 @@
+#include<cstdlib>
+#include<iostream>
+#include<algorithm>
+#include<math.h>
+enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
+enum boundary_conditions_type{dirichlet, neumann, periodic};
+enum boundary_conditions_rule{constant, function};
+enum cell_centerings{cell_centered, vertex_centered};
+enum geometry{bubbly_flow, wavy_flow};
+
+
+class boundary_variable
+{
+public:
+  variable variable_name;
+  boundary_conditions_type boundary_condition_type;
+  boundary_conditions_rule boundary_condition_rule;
+  cell_centerings cell_centering;
+  double boundary_condition_value;
+  boundary_variable(variable varname, boundary_conditions_type bound_type,
+				     boundary_conditions_rule bound_rule,
+				     cell_centerings  cell_cent,
+					double bound_value );
+  boundary_variable(variable varname);
+};
+
+class boundary_face
+{
+public:
+    boundary_variable boundary_variables[5];
+    boundary_face(void);
+   
+};
+class coordinate
+{
+public:
+  double x1,x2,x3;
+  coordinate(double xx1=0, double xx2=0, double xx3=0){x1=xx1;x2=xx2;x3=xx3;}
+};
+class bubble
+{
+public:
+  double principle_axis_x1;
+  double principle_axis_x2;
+  double principle_axis_x3;
+  int label;
+  coordinate center_location;
+  bubble(int number, coordinate bubble_center, double bubble_radius);
+};
+class surface
+{
+public:
+  int active;
+  int orientation;
+  double height;
+};
+
+class vector
+{
+public:
+  double u1,u2,u3;
+};
+
+/********************************************************************************/
+/********************************************************************************/
+/*  initialize_all_variables						     	*/
+/*  Description : perform initialization of all variables	      		*/
+/*  Programmer	: Duncan van der Heul       					*/
+/*  Date	: 03-01       							*/
+/*  Update	:        							*/
+/********************************************************************************/
+//
+//
+/********************************************************************************/
+/*  Functions called        							*/
+/*  void read_input_files							*/
+/*  void compute_parameters()							*/
+/*  void allocate_main_variables	     					*/
+/*  void initialize_all_variables					        */
+/********************************************************************************/
+void initialize_all_variables(
+      double ***u_1_velocity_new, 			// velocity field at new time level x1 direction
+      double ***u_2_velocity_new, 			// velocity field at new time level x2 direction
+      double ***u_3_velocity_new,			// velocity field at new time level x3 direction
+      double ***u_1_velocity_old, 			// velocity field at old time level x1 direction
+      double ***u_2_velocity_old, 			// velocity field at old time level x2 direction
+      double ***u_3_velocity_old,			// velocity field at old time level x3 direction
+      double ***pressure,				// pressure
+      double ***level_set_old,				// level-set field at old time level
+      double ***volume_of_fluid,			// volume of fluid field
+      boundary_face boundary_faces[6],			// array with all the information
+							// for the boundary conditions 
+      geometry flow_type,				// the kind of initial condition that has to be applied
+      bubble *the_bubbles,				// array with definitions of the bubbles
+      int number_of_bubbles,				// number of bubbles in the initial condition
+      surface *the_free_surfaces,			// array with definitions of the free surfaces
+      int number_of_free_surfaces, 			// number of bubbles in the domain (<10)
+      double lower_bound_derivatives,			// lower bound for the first partial derivatives
+							// to consider it a limiting case of vanishing
+							// partial derivatives
+      double mesh_width_x1,				// grid spacing in x1 direction (uniform)
+      double mesh_width_x2,				// grid spacing in x2 direction (uniform)
+      double mesh_width_x3,				// grid spacing in x3 direction (uniform)
+      int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
+      int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
+      int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
+      vector initial_velocity				// initial velocity field at t=0
+      )
+      {
+
+  
+  void initialize_flow_field(			// initialize the flow field: velocity and pressure
+      double ***u_1_velocity_new, 			
+      double ***u_2_velocity_new, 			
+      double ***u_3_velocity_new,			
+      double ***u_1_velocity_old, 			
+      double ***u_2_velocity_old, 			
+      double ***u_3_velocity_old,			
+      double ***pressure,				
+      boundary_face boundary_faces[6],			
+      double mesh_width_x1,				
+      double mesh_width_x2,				
+      double mesh_width_x3,				
+      int number_primary_cells_i,			
+      int number_primary_cells_j,			
+      int number_primary_cells_k,
+      vector initial_velocity
+     );
+
+ void initialize_interface(			// intialize the interface: level-set and volume of fluid
+	  geometry flow_type,			
+	  bubble *the_bubbles,			
+	  int number_of_bubbles,		
+	  surface *the_free_surfaces,		
+	  int number_of_free_surfaces, 		
+	  int number_primary_cells_i,		
+	  int number_primary_cells_j,		
+	  int number_primary_cells_k,		
+	  double mesh_width_x1,			
+	  double mesh_width_x2,			
+	  double mesh_width_x3,			
+	  double lower_bound_derivatives,	
+	  double ***level_set,			
+	  double ***volume_of_fluid		
+	  );
+  
+         std::cout<< "before initialize_flow_field in initialize_all_variables \n";
+
+      /* initialize the flow field */
+      
+      initialize_flow_field( u_1_velocity_new, u_2_velocity_new, u_3_velocity_new,			
+			      u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,			
+				pressure, boundary_faces,			
+				  mesh_width_x1, mesh_width_x2, mesh_width_x3,				
+				    number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+				  initial_velocity);
+
+         std::cout<< "after initialize_flow_field in initialize_all_variables \n";
+
+      /* initialize the interface */
+      
+         std::cout<< "before initialize_interface in initialize_all_variables \n";
+
+      
+      initialize_interface( flow_type, the_bubbles, number_of_bubbles, the_free_surfaces, number_of_free_surfaces, 		
+			      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		
+				mesh_width_x1, mesh_width_x2, mesh_width_x3, lower_bound_derivatives,	
+				  level_set_old, volume_of_fluid);
+      
+         std::cout<< "after initialize_interface in initialize_all_variables \n";
+
+
+}  

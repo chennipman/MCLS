@@ -1,0 +1,49 @@
+
+/********************************************************************************/
+/********************************************************************************/
+/*  Function to compute the volume of fluid field                               */
+/*  method. 									*/
+/*  										*/
+/*  Programmer	: Duncan van der Heul       					*/
+/*  Date	: 10-03-2013       						*/
+/*  Update	:        							*/
+/********************************************************************************/
+/* Notes									*/
+/********************************************************************************/
+     void    compute_volume_of_fluid(					
+		 double ***level_set, 			// level set field field
+		 double ***d_level_set_d_x1, 		// first partial derivative of level-set with 
+							// respect to x1, central approximation
+		 double ***d_level_set_d_x2, 		// first partial derivative of level-set with 
+							// respect to x2, central approximation 
+		 double ***d_level_set_d_x3, 		// first partial derivative of level-set with 
+							// respect to x3, central approximation
+		 double ***volume_of_fluid,		// volume of fluid field
+		 int number_primary_cells_i,	// number of primary (pressure) cells in x1 direction
+		 int number_primary_cells_j,	// number of primary (pressure) cells in x2 direction
+		 int number_primary_cells_k	// number of primary (pressure) cells in x3 direction
+		  )
+     {
+		int i_index, j_index, k_index;  // local variables for loop indexing
+
+		/*	function definitions */
+
+		double level_set_2_volume_of_fluid( 
+		  double local_level_set, double d_level_set_d_x1, double d_level_set_d_x2, 
+		      double d_level_set_d_x3);
+		
+		for(i_index=0;i_index<number_primary_cells_i+2;i_index++)
+		{
+		    for(j_index=0;j_index<number_primary_cells_j+2;j_index++)
+		    {
+			 for(k_index=0;k_index<number_primary_cells_k+2;k_index++)
+			 {
+			   volume_of_fluid[i_index][j_index][k_index]=
+			    level_set_2_volume_of_fluid(level_set[i_index][j_index][k_index],
+					d_level_set_d_x1[i_index][j_index][k_index],
+					  d_level_set_d_x2[i_index][j_index][k_index],
+					    d_level_set_d_x3[i_index][j_index][k_index])
+			 }
+		    }
+		}
+     }					    
