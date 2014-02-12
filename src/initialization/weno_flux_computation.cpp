@@ -2,6 +2,7 @@
     ! First order derivatives.
 
     /* define the first order ENO stencils */
+    /* check  */
     
 //     v_im2 = (f2 - f1) / dx1
 //     v_im1 = (f3 - f2) / dx2
