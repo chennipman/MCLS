@@ -1,8 +1,0 @@
- Notes:
-
-For all matrices, determine the indices of the
-unknown velocities, because known values are removed from the matrices.
-
-The boundary conditions are pre-analysed. The faces are numbered like this:
-Face 1: n=(1,0,0)
-Face 2: 
