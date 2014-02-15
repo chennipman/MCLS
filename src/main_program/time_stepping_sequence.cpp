@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -59,36 +60,36 @@ public:
 /* Notes										*/
 /********************************************************************************/
 void time_stepping_sequence(
-      double ***level_set_new, 				// level set field at new time level
+      Array3<double> level_set_new, 				// level set field at new time level
 								// mass conserving
-      double ***level_set_old, 				// level set field at old time level
+      Array3<double> level_set_old, 				// level set field at old time level
 								// mass conserving
-      double ***volume_of_fluid, 				// volume of fluid field
-      double ***curvature,					// interface curvature
-      double ***unsmoothed_curvature,			// interface curvature without smoothing
-      double ***u_1_velocity_old,				// velocity field at old time level x1 direction
-      double ***u_2_velocity_old,				// velocity field at old time level x2 direction
-      double ***u_3_velocity_old,				// velocity field at old time level x3 direction
-      double ***u_1_velocity_new, 				// velocity field at new time level x1 direction
-      double ***u_2_velocity_new, 				// velocity field at new time level x2 direction
-      double ***u_3_velocity_new,				// velocity field at new time level x3 direction
-      double ***pressure,					// pressure field
-      double ***surface_tension_body_force_x1,            // x1 component of the body force due to
+      Array3<double> volume_of_fluid, 				// volume of fluid field
+      Array3<double> curvature,					// interface curvature
+      Array3<double> unsmoothed_curvature,			// interface curvature without smoothing
+      Array3<double> u_1_velocity_old,				// velocity field at old time level x1 direction
+      Array3<double> u_2_velocity_old,				// velocity field at old time level x2 direction
+      Array3<double> u_3_velocity_old,				// velocity field at old time level x3 direction
+      Array3<double> u_1_velocity_new, 				// velocity field at new time level x1 direction
+      Array3<double> u_2_velocity_new, 				// velocity field at new time level x2 direction
+      Array3<double> u_3_velocity_new,				// velocity field at new time level x3 direction
+      Array3<double> pressure,					// pressure field
+      Array3<double> surface_tension_body_force_x1,            // x1 component of the body force due to
                                                           // CSF formulation of surface tension model
-      double ***surface_tension_body_force_x2,            // x2 component of the body force due to
+      Array3<double> surface_tension_body_force_x2,            // x2 component of the body force due to
                                                           // CSF formulation of surface tension model
-      double ***surface_tension_body_force_x3,            // x3 component of the body force due to
+      Array3<double> surface_tension_body_force_x3,            // x3 component of the body force due to
                                                           // CSF formulation of surface tension model
-      double ***momentum_source_term_u_1,                 // complete source term for the momentum equation
+      Array3<double> momentum_source_term_u_1,                 // complete source term for the momentum equation
                                                           // in x1 direction=(-p,1+ g_1 +F1), new time level
-      double ***momentum_source_term_u_2,                 // complete source term for the momentum equation
+      Array3<double> momentum_source_term_u_2,                 // complete source term for the momentum equation
                                                           // in x2 direction=(-p,2+ g_2 +F2), new time level
-      double ***momentum_source_term_u_3,                 // complete source term for the momentum equation
-      double ***scaled_density_u1,                        // scaled density value for the controlvolumes
+      Array3<double> momentum_source_term_u_3,                 // complete source term for the momentum equation
+      Array3<double> scaled_density_u1,                        // scaled density value for the controlvolumes
                                                           // of the momentum equation in x1 direction
-      double ***scaled_density_u2,                        // scaled density value for the controlvolumes
+      Array3<double> scaled_density_u2,                        // scaled density value for the controlvolumes
                                                           // of the momentum equation in x2 direction
-      double ***scaled_density_u3,                        // scaled density value for the controlvolumes
+      Array3<double> scaled_density_u3,                        // scaled density value for the controlvolumes
                                                           // of the momentum equation in x3 direction
       boundary_face boundary_faces[6],			// array with all the information
 								// for the boundary conditions 
@@ -194,9 +195,9 @@ void time_stepping_sequence(
 {
 	/* function definitions */
        void compute_time_step_size(				// compute time step size
-          double ***u_1_velocity_new, 		
-          double ***u_2_velocity_new, 		
-          double ***u_3_velocity_new,		
+          Array3<double> u_1_velocity_new, 		
+          Array3<double> u_2_velocity_new, 		
+          Array3<double> u_3_velocity_new,		
           double rho_plus_over_rho_minus,		
           double maximum_weighted_curvature,	
           double sigma_over_rho_minus,		
@@ -212,12 +213,12 @@ void time_stepping_sequence(
           double actual_time_step_navier_stokes	
 	   );
        void advance_interface(				// advance the interface to the new time level
-          double ***level_set_new, 			
-          double ***level_set_old, 			
-          double ***volume_of_fluid, 		
-          double ***u_1_velocity_new, 		
-          double ***u_2_velocity_new, 		
-          double ***u_3_velocity_new,		
+          Array3<double> level_set_new, 			
+          Array3<double> level_set_old, 			
+          Array3<double> volume_of_fluid, 		
+          Array3<double> u_1_velocity_new, 		
+          Array3<double> u_2_velocity_new, 		
+          Array3<double> u_3_velocity_new,		
           int number_primary_cells_i,		
           int number_primary_cells_j,		
           int number_primary_cells_k,		
@@ -243,19 +244,19 @@ void time_stepping_sequence(
 	   double actual_time
       );
       void advance_coupling_part1(		             // update the coupling between interface and flow
- 	   double ***level_set, 			      // density and surface tension
-	   double ***pressure,				
-	   double ***curvature, 				
-	   double ***smoothed_curvature,			
-	   double ***surface_tension_body_force_x1,	
-	   double ***surface_tension_body_force_x2,	
-	   double ***surface_tension_body_force_x3,	
-	   double ***momentum_source_term_u_1, 	
-	   double ***momentum_source_term_u_2, 	
-	   double ***momentum_source_term_u_3, 
-	   double ***scaled_density_u1,
-	   double ***scaled_density_u2,
-	   double ***scaled_density_u3,
+ 	   Array3<double> level_set, 			      // density and surface tension
+	   Array3<double> pressure,				
+	   Array3<double> curvature, 				
+	   Array3<double> smoothed_curvature,			
+	   Array3<double> surface_tension_body_force_x1,	
+	   Array3<double> surface_tension_body_force_x2,	
+	   Array3<double> surface_tension_body_force_x3,	
+	   Array3<double> momentum_source_term_u_1, 	
+	   Array3<double> momentum_source_term_u_2, 	
+	   Array3<double> momentum_source_term_u_3, 
+	   Array3<double> scaled_density_u1,
+	   Array3<double> scaled_density_u2,
+	   Array3<double> scaled_density_u3,
 	   int number_primary_cells_i,			
 	   int number_primary_cells_j,			
 	   int number_primary_cells_k,			
@@ -274,19 +275,19 @@ void time_stepping_sequence(
 	   double lower_bound_derivatives
       );
       void advance_coupling_part2(                     // update the coupling between interface and flow
-          double ***level_set,                         // full momentum source term
-          double ***pressure,
-          double ***curvature,
-          double ***smoothed_curvature,
-          double ***surface_tension_body_force_x1,
-          double ***surface_tension_body_force_x2,
-          double ***surface_tension_body_force_x3,
-          double ***momentum_source_term_u_1,
-          double ***momentum_source_term_u_2,
-          double ***momentum_source_term_u_3,
-          double ***scaled_density_u1,
-          double ***scaled_density_u2,
-          double ***scaled_density_u3,
+          Array3<double> level_set,                         // full momentum source term
+          Array3<double> pressure,
+          Array3<double> curvature,
+          Array3<double> smoothed_curvature,
+          Array3<double> surface_tension_body_force_x1,
+          Array3<double> surface_tension_body_force_x2,
+          Array3<double> surface_tension_body_force_x3,
+          Array3<double> momentum_source_term_u_1,
+          Array3<double> momentum_source_term_u_2,
+          Array3<double> momentum_source_term_u_3,
+          Array3<double> scaled_density_u1,
+          Array3<double> scaled_density_u2,
+          Array3<double> scaled_density_u3,
           int number_primary_cells_i,
           int number_primary_cells_j,
           int number_primary_cells_k,
@@ -305,23 +306,23 @@ void time_stepping_sequence(
           double lower_bound_derivatives
       );
       void advance_flow_field(				// advance the flow field to the new time level
-          double ***level_set,			
-          double ***pressure,			
-          double ***u_1_velocity_old,		
-          double ***u_2_velocity_old,		
-          double ***u_3_velocity_old,		
-          double ***u_1_velocity_new,		
-          double ***u_2_velocity_new,		
-          double ***u_3_velocity_new,		
-          double ***momentum_source_term_u_1,	
-          double ***momentum_source_term_u_2,	
-          double ***momentum_source_term_u_3,	
-          double ***surface_tension_body_force_x1,	
-          double ***surface_tension_body_force_x2,	
-          double ***surface_tension_body_force_x3,	
-	   double ***scaled_density_u1,
-	   double ***scaled_density_u2,
-	   double ***scaled_density_u3,
+          Array3<double> level_set,			
+          Array3<double> pressure,			
+          Array3<double> u_1_velocity_old,		
+          Array3<double> u_2_velocity_old,		
+          Array3<double> u_3_velocity_old,		
+          Array3<double> u_1_velocity_new,		
+          Array3<double> u_2_velocity_new,		
+          Array3<double> u_3_velocity_new,		
+          Array3<double> momentum_source_term_u_1,	
+          Array3<double> momentum_source_term_u_2,	
+          Array3<double> momentum_source_term_u_3,	
+          Array3<double> surface_tension_body_force_x1,	
+          Array3<double> surface_tension_body_force_x2,	
+          Array3<double> surface_tension_body_force_x3,	
+	   Array3<double> scaled_density_u1,
+	   Array3<double> scaled_density_u2,
+	   Array3<double> scaled_density_u3,
           boundary_face boundary_faces[6],		
           double mesh_width_x1,			
           double mesh_width_x2,			
@@ -344,14 +345,14 @@ void time_stepping_sequence(
           int source_terms_in_momentum_predictor    
 	   );
     void output_solution(					// output the solution to file
-	  double ***level_set_new, 		
-	  double ***volume_of_fluid, 	
-	  double ***curvature,
-	  double ***smoothed_curvature,
-	  double ***u_1_velocity_new, 		
-	  double ***u_2_velocity_new, 		
-	  double ***u_3_velocity_new,		
-	  double ***pressure,			
+	  Array3<double> level_set_new, 		
+	  Array3<double> volume_of_fluid, 	
+	  Array3<double> curvature,
+	  Array3<double> smoothed_curvature,
+	  Array3<double> u_1_velocity_new, 		
+	  Array3<double> u_2_velocity_new, 		
+	  Array3<double> u_3_velocity_new,		
+	  Array3<double> pressure,			
 	  int vtk_output,			
 	  int tecplot_output,			
 	  int number_primary_cells_i,		
@@ -362,20 +363,10 @@ void time_stepping_sequence(
 	  double mesh_width_x3,			
 	  int index_of_output_file
 	  );
-      double ***double_Matrix2(				// allocate memory for a three-dimensional array of doubles
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j, 		
-	  int number_primary_cells_k
-	  );
-      void   free_double_Matrix2( 				// deallocate memory for a three-dimensional array of doubles
-	  double ***doubleMatrix2, 
-	  int number_primary_cells_i,	
-	  int number_primary_cells_j
-	  );
       void match_level_set_to_volume_of_fluid(		// compute a new level-set field
-	  double ***level_set_not_mass_conserving, 		// that corresponds to given
-	  double ***volume_of_fluid,				// volume of fluid field
-	  double ***level_set_mass_conserving,		// using an existing level-set
+	  Array3<double> level_set_not_mass_conserving, 		// that corresponds to given
+	  Array3<double> volume_of_fluid,				// volume of fluid field
+	  Array3<double> level_set_mass_conserving,		// using an existing level-set
 	  int number_primary_cells_i, 			// field as a starting value
 	  int number_primary_cells_j, 
 	  int number_primary_cells_k,			
@@ -387,23 +378,23 @@ void time_stepping_sequence(
 	  );
       void write_restart_file(				// write solution to restart file
 	  double time_of_restart,
-	  double ***level_set_new, 			
-	  double ***volume_of_fluid, 			
-	  double ***u_1_velocity_new, 			
-	  double ***u_2_velocity_new, 			
-	  double ***u_3_velocity_new,			
-	  double ***pressure,				
+	  Array3<double> level_set_new, 			
+	  Array3<double> volume_of_fluid, 			
+	  Array3<double> u_1_velocity_new, 			
+	  Array3<double> u_2_velocity_new, 			
+	  Array3<double> u_3_velocity_new,			
+	  Array3<double> pressure,				
 	  int number_primary_cells_i,			
 	  int number_primary_cells_j,			
 	  int number_primary_cells_k,			
 	  restart_parameters my_restart_parameters	
 	  );
       void analyse_interface_properties(
-      	  double ***volume_of_fluid, 	
-	  double ***level_set_new,
-      	  double ***u_1_velocity_new,
-      	  double ***u_2_velocity_new,
-      	  double ***u_3_velocity_new,
+      	  Array3<double> volume_of_fluid, 	
+	  Array3<double> level_set_new,
+      	  Array3<double> u_1_velocity_new,
+      	  Array3<double> u_2_velocity_new,
+      	  Array3<double> u_3_velocity_new,
       	  int number_primary_cells_i,
       	  int number_primary_cells_j,
       	  int number_primary_cells_k,
@@ -597,31 +588,22 @@ void time_stepping_sequence(
     
     /* deallocate memory for the coupling terms between flow field and interface */
     
-    free_double_Matrix2(scaled_density_u1, number_primary_cells_i+1, 
-		   				    number_primary_cells_j+2);
-    free_double_Matrix2(scaled_density_u2, number_primary_cells_i+2, 
-						    number_primary_cells_j+1);
-    free_double_Matrix2(scaled_density_u3, number_primary_cells_i+2, 
-						    number_primary_cells_j+2);
+    scaled_density_u1.destroy();
+    scaled_density_u2.destroy();
+    scaled_density_u3.destroy();
     
 
-    free_double_Matrix2(surface_tension_body_force_x1, number_primary_cells_i+1, 
-		    number_primary_cells_j+2);
-    free_double_Matrix2(surface_tension_body_force_x2, number_primary_cells_i+2, 
-		    number_primary_cells_j+1);
-    free_double_Matrix2(surface_tension_body_force_x3, number_primary_cells_i+2, 
-		    number_primary_cells_j+2);
+    surface_tension_body_force_x1.destroy();
+    surface_tension_body_force_x2.destroy();
+    surface_tension_body_force_x3.destroy();
     
-    free_double_Matrix2(momentum_source_term_u_1, number_primary_cells_i+1,
-                         number_primary_cells_j+2);
-    free_double_Matrix2(momentum_source_term_u_2, number_primary_cells_i+2,
-                         number_primary_cells_j+1);
-    free_double_Matrix2(momentum_source_term_u_3, number_primary_cells_i+2,
-                         number_primary_cells_j+2);
+    momentum_source_term_u_1.destroy();
+    momentum_source_term_u_2.destroy();
+    momentum_source_term_u_3.destroy();
    
     /* deallocate storage for the interface curvature, both the directly computed and smoothed one */
 	  
-     free_double_Matrix2(curvature, number_primary_cells_i+2,number_primary_cells_j+2); 
-     free_double_Matrix2(unsmoothed_curvature, number_primary_cells_i+2,number_primary_cells_j+2);
+     curvature.destroy(); 
+     unsmoothed_curvature.destroy();
   
 }

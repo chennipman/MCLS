@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 #include <iostream>
 #include <stdlib.h> 
@@ -28,11 +29,11 @@ using namespace std;
 /* written to file for visual inspection.					*/
 /********************************************************************************/
    void dump_solution_for_debugging(
-	double ***level_set_star,			// level set field
-	double ***volume_of_fluid,		 	// volume of fluid field
-	double ***level_set_mass_conserving,		// corrected, mass conserving level-set field
-	double ***level_set_correction,		        // correction needed to make level-set mass conserving
-	double ***volume_of_fluid_deviation,		// difference between the converted, advected level
+	Array3<double> level_set_star,			// level set field
+	Array3<double> volume_of_fluid,		 	// volume of fluid field
+	Array3<double> level_set_mass_conserving,		// corrected, mass conserving level-set field
+	Array3<double> level_set_correction,		        // correction needed to make level-set mass conserving
+	Array3<double> volume_of_fluid_deviation,		// difference between the converted, advected level
 							// set field and the advected volume of fluid field
 	int number_primary_cells_i,			// number of primary (pressure) 
 							// cells in x1 direction
@@ -59,7 +60,7 @@ using namespace std;
 	  ofstream& output_stream, 			
 	  string scalar_name,				
 	  string look_up_table_name,				
-	  double ***cell_centered_field, 			
+	  Array3<double> cell_centered_field, 			
 	  int number_primary_cells_i,			
 	  int number_primary_cells_j,			
 	  int number_primary_cells_k			

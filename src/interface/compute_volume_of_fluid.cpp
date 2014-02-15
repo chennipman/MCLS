@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -15,14 +16,14 @@
 /* Notes									*/
 /********************************************************************************/
      int compute_volume_of_fluid(					
-	double ***level_set, 			// level set field field
-	double ***d_level_set_d_x1, 		// first partial derivative of level-set with 
+	Array3<double> level_set, 			// level set field field
+	Array3<double> d_level_set_d_x1, 		// first partial derivative of level-set with 
 						// respect to x1, central approximation
-	double ***d_level_set_d_x2, 		// first partial derivative of level-set with 
+	Array3<double> d_level_set_d_x2, 		// first partial derivative of level-set with 
 						// respect to x2, central approximation 
-	double ***d_level_set_d_x3, 		// first partial derivative of level-set with 
+	Array3<double> d_level_set_d_x3, 		// first partial derivative of level-set with 
 						// respect to x3, central approximation
-	double ***volume_of_fluid,		// volume of fluid field
+	Array3<double> volume_of_fluid,		// volume of fluid field
 	int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
 	int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction
 	int number_primary_cells_k,		// number of primary (pressure) cells in x3 direction
@@ -42,7 +43,7 @@
 	  double lower_bound_derivatives    
 				    );		
       void field_neumann_boundary(		// apply neumann boundary condition to
-	  double ***field, 			// cell centered field
+	  Array3<double> field, 			// cell centered field
 	  int number_primary_cells_i,	
 	  int number_primary_cells_j,	
 	  int number_primary_cells_k	

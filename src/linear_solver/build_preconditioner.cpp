@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to apply a precomputed incomplete choleski preconditioner          */
@@ -17,8 +18,8 @@
 	int i_dimension,    	// number of unknowns in the system in i-direction
 	int j_dimension, 	// number of unknowns in the system in i-direction
 	int k_dimension, 	// number of unknowns in the system in i-direction
-	double **matrix_A,			// matrix under consideration
-	double *preconditioner_matrix_M 	// preconditioner matrix
+	Array2<double> matrix_A,			// matrix under consideration
+	Array1<double> preconditioner_matrix_M 	// preconditioner matrix
 	)
       
      

@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -54,8 +55,8 @@ public:
   void fold_momentum_rhside_u3(
       boundary_face boundary_faces[6],			// array with all the information
 							// for the boundary conditions 
-      double *momentum_rhside_u3,			// momentum rhside velocity x1 direction
-      double **momentum_matrix_u3,			// momentum matrix velocity x1 direction
+      Array1<double> momentum_rhside_u3,			// momentum rhside velocity x1 direction
+      Array2<double> momentum_matrix_u3,			// momentum matrix velocity x1 direction
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction

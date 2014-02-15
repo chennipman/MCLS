@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 #include <iostream>
 #include <stdlib.h> 
@@ -24,9 +25,9 @@ using namespace std;
 /* When the maximum number of correction steps has been applied, and the        */
 /********************************************************************************/
    void dump_reinitialization_for_debugging(
-	double ***level_set_reinitialized,	        // level set field reinitialized
-	double ***level_set_0,		 	        // level set before reinitialization
-	double ***level_set_residual_reinit,		// residual of reinitialization equation
+	Array3<double> level_set_reinitialized,	        // level set field reinitialized
+	Array3<double> level_set_0,		 	        // level set before reinitialization
+	Array3<double> level_set_residual_reinit,		// residual of reinitialization equation
 	int number_primary_cells_i,			// number of primary (pressure) 
 							// cells in x1 direction
 	int number_primary_cells_j,			// number of primary (pressure) 
@@ -52,7 +53,7 @@ using namespace std;
 	  ofstream& output_stream, 			
 	  string scalar_name,				
 	  string look_up_table_name,				
-	  double ***cell_centered_field, 			
+	  Array3<double> cell_centered_field, 			
 	  int number_primary_cells_i,			
 	  int number_primary_cells_j,			
 	  int number_primary_cells_k			

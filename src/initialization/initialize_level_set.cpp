@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -55,7 +56,7 @@ enum geometry{bubbly_flow, wavy_flow};
 	  double mesh_width_x1,			// grid spacing in x1 direction (uniform)
 	  double mesh_width_x2,			// grid spacing in x2 direction (uniform)
 	  double mesh_width_x3,			// grid spacing in x3 direction (uniform)
-	  double ***level_set				// level-set field
+	  Array3<double> level_set				// level-set field
 	  )
     {
       /* function definitions */
@@ -68,7 +69,7 @@ enum geometry{bubbly_flow, wavy_flow};
 	  double mesh_width_x1,				
 	  double mesh_width_x2,				
 	  double mesh_width_x3,				
-	  double ***level_set				
+	  Array3<double> level_set				
 	   );    
 
       void initialize_free_surface(			//  initialize the level-set function for a 
@@ -80,16 +81,16 @@ enum geometry{bubbly_flow, wavy_flow};
 	  double mesh_width_x1,				 
 	  double mesh_width_x2,				 
 	  double mesh_width_x3,				 
-	  double ***level_set				 
+	  Array3<double> level_set				 
 	    );
       void field_neumann_boundary(			// apply neumann boundary condition to
-	  double ***field, 				// cell centered field
+	  Array3<double> field, 				// cell centered field
 	  int number_primary_cells_i,	
 	  int number_primary_cells_j,	
 	  int number_primary_cells_k	
 	  );
       void  field_extrapolate_boundary(      	// extrapolate field to virtual cells
-        double ***field, 			
+        Array3<double> field, 			
         int number_primary_cells_i,	
         int number_primary_cells_j,	
         int number_primary_cells_k	
@@ -98,7 +99,7 @@ enum geometry{bubbly_flow, wavy_flow};
 	  int first_dimension,		
 	  int second_dimension,		
 	  int third_dimension,		
-	  double ***matrix2_to_set,	
+	  Array3<double> matrix2_to_set,	
 	  double constant_value		
 	  );
 

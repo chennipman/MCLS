@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -17,7 +18,7 @@
 /********************************************************************************/
   int shift_pressure_solution(
       int total_number_pressure_points,		// total number of points with pressure
-      double  *compressed_pressure		 	// pressure rhside
+      Array1<double> compressed_pressure		 	// pressure rhside
       )
   {
     int one_dimensional_index;			// index of the point in the 1-d array

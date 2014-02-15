@@ -1,3 +1,4 @@
+#include "../headers/array.h"
  
  
  
@@ -26,10 +27,10 @@
 /********************************************************************************/
 //
  void compute_second_stage_RK(
-    double ***level_set,                        // level set at previous time level
-    double ***level_set_stage_1,                // stage 1 for RK time integration
-    double ***level_set_stage_2,                // stage 2 for RK time integration
-    double ***convection_operator,              // right hand side of the system of ode's
+    Array3<double> level_set,                        // level set at previous time level
+    Array3<double> level_set_stage_1,                // stage 1 for RK time integration
+    Array3<double> level_set_stage_2,                // stage 2 for RK time integration
+    Array3<double> convection_operator,              // right hand side of the system of ode's
     int number_primary_cells_i,                 // number of primary (pressure) cells in x1 direction
     int number_primary_cells_j,                 // number of primary (pressure) cells in x2 direction
     int number_primary_cells_k,                 // number of primary (pressure) cells in x3 direction

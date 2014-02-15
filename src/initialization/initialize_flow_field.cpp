@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -63,31 +64,31 @@ public:
 /* extended to more advanced cases, e.g. a parabolic profile etc.		       */
 /********************************************************************************/
 void initialize_flow_field(
-      double ***u_1_velocity_new, 			// velocity field at new time level x1 direction
-      double ***u_2_velocity_new, 			// velocity field at new time level x2 direction
-      double ***u_3_velocity_new,			// velocity field at new time level x3 direction
-      double ***u_1_velocity_old, 			// velocity field at old time level x1 direction
-      double ***u_2_velocity_old, 			// velocity field at old time level x2 direction
-      double ***u_3_velocity_old,			// velocity field at old time level x3 direction
-      double ***pressure,				// pressure
-      double ***level_set,                         // level-set field
-      double ***momentum_source_term_u_1,          // source term of the momentum equation in x1 direction
+      Array3<double> u_1_velocity_new, 			// velocity field at new time level x1 direction
+      Array3<double> u_2_velocity_new, 			// velocity field at new time level x2 direction
+      Array3<double> u_3_velocity_new,			// velocity field at new time level x3 direction
+      Array3<double> u_1_velocity_old, 			// velocity field at old time level x1 direction
+      Array3<double> u_2_velocity_old, 			// velocity field at old time level x2 direction
+      Array3<double> u_3_velocity_old,			// velocity field at old time level x3 direction
+      Array3<double> pressure,				// pressure
+      Array3<double> level_set,                         // level-set field
+      Array3<double> momentum_source_term_u_1,          // source term of the momentum equation in x1 direction
                                                    // defined on all u1 points (including boundaries)
-      double ***momentum_source_term_u_2,          // source term of the momentum equation in x2 direction
+      Array3<double> momentum_source_term_u_2,          // source term of the momentum equation in x2 direction
                                                    // defined on all u1 points (including boundaries)
-      double ***momentum_source_term_u_3,          // source term of the momentum equation in x3 direction
+      Array3<double> momentum_source_term_u_3,          // source term of the momentum equation in x3 direction
                                                    // defined on all u1 points (including boundaries)
-      double ***surface_tension_body_force_x1,     // source term of the momentum equation in x1 direction
+      Array3<double> surface_tension_body_force_x1,     // source term of the momentum equation in x1 direction
                                                    // defined on all u1 points (including boundaries)
-      double ***surface_tension_body_force_x2,     // source term of the momentum equation in x2 direction
+      Array3<double> surface_tension_body_force_x2,     // source term of the momentum equation in x2 direction
                                                    // defined on all u1 points (including boundaries)
-      double ***surface_tension_body_force_x3,     // source term of the momentum equation in x3 direction
+      Array3<double> surface_tension_body_force_x3,     // source term of the momentum equation in x3 direction
                                                    // defined on all u1 points (including boundaries)
-      double ***scaled_density_u1,                 // scaled density for the controlvolumes
+      Array3<double> scaled_density_u1,                 // scaled density for the controlvolumes
                                                    // of the momentum equation in x1 direction
-      double ***scaled_density_u2,                 // scaled density for the controlvolumes
+      Array3<double> scaled_density_u2,                 // scaled density for the controlvolumes
                                                    // of the momentum equation in x2 direction
-      double ***scaled_density_u3,                 // scaled density for the controlvolumes
+      Array3<double> scaled_density_u3,                 // scaled density for the controlvolumes
                                                    // of the momentum equation in x3 direction
       boundary_face boundary_faces[6],		// array with all the information
 							// for the boundary conditions 
@@ -120,14 +121,14 @@ void initialize_flow_field(
 	  int first_dimension,			
 	  int second_dimension,			
 	  int third_dimension,			
-	  double ***matrix2_to_set,			
+	  Array3<double> matrix2_to_set,			
 	  double constant_value			
      );
      void apply_boundary_conditions_velocity(     // apply boundary conditions to velocity field
 	  boundary_face boundary_faces[6],		
-	  double ***u_1_velocity, 			
-	  double ***u_2_velocity, 			
-	  double ***u_3_velocity, 			
+	  Array3<double> u_1_velocity, 			
+	  Array3<double> u_2_velocity, 			
+	  Array3<double> u_3_velocity, 			
 	  double mesh_width_x1,				
 	  double mesh_width_x2,				
 	  double mesh_width_x3,				
@@ -136,20 +137,20 @@ void initialize_flow_field(
 	  int number_primary_cells_k			
      );
      void initialize_pressure(                   // initialize the pressure field
-         double ***level_set,
-         double ***pressure,
-         double ***momentum_source_term_u_1,
-         double ***momentum_source_term_u_2,
-         double ***momentum_source_term_u_3,
-         double ***surface_tension_body_force_x1,
-         double ***surface_tension_body_force_x2,
-         double ***surface_tension_body_force_x3,
-         double ***scaled_density_u1,
-         double ***scaled_density_u2,
-         double ***scaled_density_u3,
-         double ***u_1_velocity,
-         double ***u_2_velocity,
-         double ***u_3_velocity,
+         Array3<double> level_set,
+         Array3<double> pressure,
+         Array3<double> momentum_source_term_u_1,
+         Array3<double> momentum_source_term_u_2,
+         Array3<double> momentum_source_term_u_3,
+         Array3<double> surface_tension_body_force_x1,
+         Array3<double> surface_tension_body_force_x2,
+         Array3<double> surface_tension_body_force_x3,
+         Array3<double> scaled_density_u1,
+         Array3<double> scaled_density_u2,
+         Array3<double> scaled_density_u3,
+         Array3<double> u_1_velocity,
+         Array3<double> u_2_velocity,
+         Array3<double> u_3_velocity,
          double mesh_width_x1,
          double mesh_width_x2,
          double mesh_width_x3,

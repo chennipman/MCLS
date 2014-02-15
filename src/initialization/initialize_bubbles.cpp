@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 class coordinate
 {
 public:
@@ -43,7 +44,7 @@ void initialize_bubbles(
       double mesh_width_x1,				// grid spacing in x1 direction (uniform)
       double mesh_width_x2,				// grid spacing in x2 direction (uniform)
       double mesh_width_x3,				// grid spacing in x3 direction (uniform)
-      double ***level_set				// level-set field
+      Array3<double> level_set				// level-set field
 	    
     )
     {

@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<math.h>
@@ -17,15 +18,15 @@
 /********************************************************************************/
 
 void compute_surface_tension_body_force(
- 	    double ***level_set, 				// level set field
-	    double ***surface_tension_body_force_x1,	// x1 component of the body force due to
+ 	    Array3<double> level_set, 				// level set field
+	    Array3<double> surface_tension_body_force_x1,	// x1 component of the body force due to
 								// CSF formulation of surface tension model
-	    double ***surface_tension_body_force_x2,	// x2 component of the body force due to
+	    Array3<double> surface_tension_body_force_x2,	// x2 component of the body force due to
 								// CSF formulation of surface tension model
-	    double ***surface_tension_body_force_x3,	// x3 component of the body force due to
+	    Array3<double> surface_tension_body_force_x3,	// x3 component of the body force due to
 								// CSF formulation of surface tension model
-	    double ***curvature,				// interface curvature
-	    double ***unsmoothed_curvature,			// interface curvature before smoothing
+	    Array3<double> curvature,				// interface curvature
+	    Array3<double> unsmoothed_curvature,			// interface curvature before smoothing
 	    int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	    int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
 	    int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
@@ -51,15 +52,9 @@ void compute_surface_tension_body_force(
 /* function definitions */
 /*--------------------------------------------------------------------------------------------------*/      
 
-      double ***double_Matrix2(int number_primary_cells_i,			// allocate memory for a three-
-				int number_primary_cells_j, 			// dimensional array of doubles
-				  int number_primary_cells_k);
-      void free_double_Matrix2( 						// deallocate memory for a three
-		double ***doubleMatrix2, int number_primary_cells_i,	// dimensional array of doubles
-		int number_primary_cells_j);
       void compute_curvature(							// compute the curvature
-	 double ***level_set, 				
-	 double ***curvature,				
+	 Array3<double> level_set, 				
+	 Array3<double> curvature,				
 	 int number_primary_cells_i,			
 	 int number_primary_cells_j,			
 	 int number_primary_cells_k,			
@@ -68,9 +63,9 @@ void compute_surface_tension_body_force(
         double mesh_width_x3				
 	);
       void smooth_curvature(                              			// smooth the curvature
-  	 double ***level_set, 			
-	 double ***curvature_new,			
-	 double ***unsmoothed_curvature,			
+  	 Array3<double> level_set, 			
+	 Array3<double> curvature_new,			
+	 Array3<double> unsmoothed_curvature,			
 	 int number_primary_cells_i,			
 	 int number_primary_cells_j,			
 	 int number_primary_cells_k,			
@@ -81,9 +76,9 @@ void compute_surface_tension_body_force(
 	 int number_curvature_smoothing_steps
        );
       void compute_body_force_x1( 						// compute body force in x1
-      	   double ***curvature,			     			// direction
-      	   double ***level_set, 			
-      	   double ***surface_tension_body_force,	
+      	   Array3<double> curvature,			     			// direction
+      	   Array3<double> level_set, 			
+      	   Array3<double> surface_tension_body_force,	
       	   double mesh_width_x1,			
       	   double mesh_width_x2,			
       	   double mesh_width_x3,			
@@ -98,9 +93,9 @@ void compute_surface_tension_body_force(
 	   double smoothing_distance_factor
        );						
       void compute_body_force_x2(                                 	// compute body force in x1
-      	   double ***curvature,			             		// direction
-      	   double ***level_set, 			
-      	   double ***surface_tension_body_force,	
+      	   Array3<double> curvature,			             		// direction
+      	   Array3<double> level_set, 			
+      	   Array3<double> surface_tension_body_force,	
       	   double mesh_width_x1,			
       	   double mesh_width_x2,			
       	   double mesh_width_x3,			
@@ -115,9 +110,9 @@ void compute_surface_tension_body_force(
 	   double smoothing_distance_factor		
        );						
       void compute_body_force_x3(                                       // compute body force in x1
-	   double ***curvature,			 			// direction
-	   double ***level_set, 			    	
-      	   double ***surface_tension_body_force_x3,	
+	   Array3<double> curvature,			 			// direction
+	   Array3<double> level_set, 			    	
+      	   Array3<double> surface_tension_body_force_x3,	
 	   double mesh_width_x1,			    	
           double mesh_width_x2,			    	
           double mesh_width_x3,			    	
@@ -132,8 +127,8 @@ void compute_surface_tension_body_force(
 	   double smoothing_distance_factor		
        );						
       void copy_cell_centered_field( 					// copy cell centered field
-	    double ***source_field, 		   			
-	    double ***target_field,		
+	    Array3<double> source_field, 		   			
+	    Array3<double> target_field,		
 	    int number_primary_cells_i,		
 	    int number_primary_cells_j,		
 	    int number_primary_cells_k		

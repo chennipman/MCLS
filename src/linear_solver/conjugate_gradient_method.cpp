@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -20,10 +21,10 @@
       int i_dimension,   			// number of unknowns in the system in i-direction
       int j_dimension,   			// number of unknowns in the system in i-direction
       int k_dimension,   			// number of unknowns in the system in i-direction
-      double  **matrix_A,   			// matrix of the linear system 
-      double  *preconditioner_matrix_M,  	// preconditioner matrix
-      double   *rhside_vector_b,   		// right hand side vector
-      double   *solution_vector_x, 		// solution vector
+      Array2<double> matrix_A,   			// matrix of the linear system 
+      Array1<double> preconditioner_matrix_M,  	// preconditioner matrix
+      Array1<double> rhside_vector_b,   		// right hand side vector
+      Array1<double> solution_vector_x, 		// solution vector
       double   tolerance,	  		// the tolerance with which the system is solved	
       int   &iteration_number,  		// the number of iterations where the iterative
 						// process was terminated
@@ -40,45 +41,37 @@
 /***************************************************************************************/	
       /* function definitions */	  
  /***************************************************************************************/	
-     double *double_Vector(
-	      int length_vector				//length of vector to allocate
-			  ); 			
-							// with length_vector components
-     void free_double_Vector(
-	      double *vector				// vector to deallocate
-			    );	
-							// with length_vector components
       void copy_vector( int length_vector, 		// length of both vectors
-	      double *original_vector, 			// first input vector
-	      double *image_vector			// second input vector
+	      Array1<double> original_vector, 			// first input vector
+	      Array1<double> image_vector			// second input vector
 		      );	  
       double compute_vector_norm(int vector_length, 	//length of the vector
-		     double *input_vector  		//input vector 
+		     Array1<double> input_vector  		//input vector 
 	 );   
       double dot_product( 
 	      int vector_length, 			// length of both input vectors
-	      double *x, 				// first input vector
-	      double *y					// second input vector
+	      Array1<double> x, 				// first input vector
+	      Array1<double> y					// second input vector
 	  );
       double maximum_element(int vector_length, 	//length of the vector
-		     double *input_vector  		//input vector 
+		     Array1<double> input_vector  		//input vector 
 	  );
       double minimum_element(int vector_length, 	//length of the vector
-		     double *input_vector  		//input vector 
+		     Array1<double> input_vector  		//input vector 
 	  );
       void matrix_vector_product(
 	    int i_dimension,   // number of unknowns in the system in i-direction
 	    int j_dimension,   // number of unknowns in the system in i-direction
 	    int k_dimension,   // number of unknowns in the system in i-direction
-	    double  **A,    // matrix under consideration
-	    double  *x,     // INPUT vector x
-	    double  *y      // OUTPUT vector y such that y=Ax
+	    Array2<double> A,    // matrix under consideration
+	    Array1<double> x,     // INPUT vector x
+	    Array1<double> y      // OUTPUT vector y such that y=Ax
 	  );
       void linear_combination(
 	int vector_length, 		//length of all vectors 
-	double *input_vector_x, 	//input vector 1, named x
-	double *input_vector_y,		//input vector 2, named y
-	double *output_vector_z,	//output vector, named z
+	Array1<double> input_vector_x, 	//input vector 1, named x
+	Array1<double> input_vector_y,		//input vector 2, named y
+	Array1<double> output_vector_z,	//output vector, named z
 					// such that z=x+alpha*y
 	double weight_of_y		//weight alpha in the linear combination above
 	);
@@ -86,10 +79,10 @@
 	int i_dimension,    	// number of unknowns in the system in i-direction
 	int j_dimension, 	// number of unknowns in the system in i-direction
 	int k_dimension, 	// number of unknowns in the system in i-direction
-	double **matrix_A,			// matrix under consideration
-	double *preconditioner_matrix_M, 	// preconditioner matrix
-	double *residual_vector, 		// residual vector b-Ax
-	double *vector_z			// vector to store the preconditioned residual	
+	Array2<double> matrix_A,			// matrix under consideration
+	Array1<double> preconditioner_matrix_M, 	// preconditioner matrix
+	Array1<double> residual_vector, 		// residual vector b-Ax
+	Array1<double> vector_z			// vector to store the preconditioned residual	
 	);			
 /***************************************************************************************/	
 
@@ -101,10 +94,10 @@
       double minimum_element_solution_vector;		// min element of solution vector x
       double maximum_element_residual_vector;		// max element of residual vector r
       double dot_product_residual_vector_vector_z_old;	// r_(n-1)*z_(n-1)
-      double *residual_vector;				// residual vector b-Ax
-      double *direction_vector_p;			// direction vector for the update p	
-      double *store_matrix_vector_product;  		// help vector to store product of A times 
-      double *vector_z;			   		// vector to store the preconditioned residual					      
+      Array1<double> residual_vector;				// residual vector b-Ax
+      Array1<double> direction_vector_p;			// direction vector for the update p	
+      Array1<double> store_matrix_vector_product;  		// help vector to store product of A times 
+      Array1<double> vector_z;			   		// vector to store the preconditioned residual					      
       double alpha;					// weight for the update of the solution 
       int dimension_system=				// dimension of the linear system 				
 	  i_dimension*j_dimension*k_dimension;
@@ -114,10 +107,10 @@
       int i;
       /* allocate memory for the local vectors needed in the algorithm */
       
-      residual_vector			=double_Vector(dimension_system);			
-      direction_vector_p		=double_Vector(dimension_system);			
-      store_matrix_vector_product	=double_Vector(dimension_system);  	
-      vector_z				=double_Vector(dimension_system);   	
+      residual_vector.create(dimension_system);			
+      direction_vector_p.create(dimension_system);			
+      store_matrix_vector_product.create(dimension_system);  	
+      vector_z.create(dimension_system);   	
       
       for(i=0;i<dimension_system;i++){
 	solution_vector_x[i]=0.0;
@@ -250,10 +243,10 @@
       }
 	      /* deallocate memory for the local vectors needed in the algorithm */
       
-      free_double_Vector(residual_vector);			
-      free_double_Vector(direction_vector_p);		
-      free_double_Vector(store_matrix_vector_product);	
-      free_double_Vector(vector_z);					      
+      residual_vector.destroy();
+      direction_vector_p.destroy();
+      store_matrix_vector_product.destroy();
+      vector_z.destroy();
 
       return convergence;
       

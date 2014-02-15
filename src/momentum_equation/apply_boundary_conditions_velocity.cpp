@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -49,9 +50,9 @@ public:
   void apply_boundary_conditions_velocity(
 	  boundary_face boundary_faces[6],		// array with all the information
 							// for the boundary conditions 
-	  double ***u_1_velocity, 			// velocity field x1 direction
-	  double ***u_2_velocity, 			// velocity field x2 direction
-	  double ***u_3_velocity, 			// velocity field x3 direction
+	  Array3<double> u_1_velocity, 			// velocity field x1 direction
+	  Array3<double> u_2_velocity, 			// velocity field x2 direction
+	  Array3<double> u_3_velocity, 			// velocity field x3 direction
 	  double mesh_width_x1,				// grid spacing in x1 direction (uniform)
 	  double mesh_width_x2,				// grid spacing in x2 direction (uniform)
 	  double mesh_width_x3,				// grid spacing in x3 direction (uniform)
@@ -63,7 +64,7 @@ public:
 	/* function definitions */
      void apply_boundary_conditions_velocity_u1(        // apply boundary conditions to 
 	  boundary_face boundary_faces[6],		// velocity in u1 direction
-	  double ***u_1_velocity, 			
+	  Array3<double> u_1_velocity, 			
 	  double mesh_width_x1,				
 	  double mesh_width_x2,				
 	  double mesh_width_x3,				
@@ -73,7 +74,7 @@ public:
      );
       void apply_boundary_conditions_velocity_u2(	// apply boundary conditions to
 	  boundary_face boundary_faces[6],		// velocity in u2 direction
-	  double ***u_2_velocity, 			
+	  Array3<double> u_2_velocity, 			
 	  double mesh_width_x1,				
 	  double mesh_width_x2,				
 	  double mesh_width_x3,				
@@ -83,7 +84,7 @@ public:
      );
       void apply_boundary_conditions_velocity_u3(	// apply boundary conditions to
 	  boundary_face boundary_faces[6],		// velocity in u3 direction
-	  double ***u_3_velocity, 			
+	  Array3<double> u_3_velocity, 			
 	  double mesh_width_x1,				
 	  double mesh_width_x2,				
 	  double mesh_width_x3,				

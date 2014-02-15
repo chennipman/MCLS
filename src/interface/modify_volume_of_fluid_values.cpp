@@ -1,3 +1,4 @@
+#include "../headers/array.h"
  
 #include<cstdlib>
 #include<iostream>
@@ -23,11 +24,11 @@
 /* value.										*/
 /********************************************************************************/
   int modify_volume_of_fluid_values(
-      double ***level_set, 				    		// level-set field
-      double ***volume_of_fluid,					// volume of fluid field, uncorrected
+      Array3<double> level_set, 				    		// level-set field
+      Array3<double> volume_of_fluid,					// volume of fluid field, uncorrected
 									// so with possible vapour cells and 
 									// under/overfilled cells
-      double ***volume_of_fluid_correction,		    		// correction to the volume of fluid field
+      Array3<double> volume_of_fluid_correction,		    		// correction to the volume of fluid field
 									// to make it valid
       int number_primary_cells_i,			    		// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			    	    	// number of primary (pressure) cells in x2 direction
@@ -36,7 +37,7 @@
       )
       {
       int check_volume_of_fluid(
-               double ***volume_of_fluid,
+               Array3<double> volume_of_fluid,
                int number_primary_cells_i,
                int number_primary_cells_j,
                int number_primary_cells_k,

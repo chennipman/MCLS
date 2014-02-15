@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -15,8 +16,8 @@
 /* Notes									       */
 /********************************************************************************/
  void compress_solution_pressure(
-      double ***pressure,		     // pressure field
-      double   *compressed_pressure,	     // 1-D array with pressure correction field
+      Array3<double> pressure,		     // pressure field
+      Array1<double> compressed_pressure,	     // 1-D array with pressure correction field
       int number_primary_cells_i,	     // number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,	     // number of primary (pressure) cells in x2 direction
       int number_primary_cells_k 	     // number of primary (pressure) cells in x3 direction

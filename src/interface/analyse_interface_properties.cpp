@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 #include <iostream>
 #include <stdlib.h> 
@@ -31,11 +32,11 @@ public:
 /*  interface are computed and collected and written to file			*/
 /********************************************************************************/
 void analyse_interface_properties(
-      	double ***volume_of_fluid, 			// volume of fluid field
-	double ***level_set,				// level set field
-      	double ***u_1_velocity_new, 			// velocity field at new time level x1 direction
-      	double ***u_2_velocity_new, 			// velocity field at new time level x2 direction
-      	double ***u_3_velocity_new,			// velocity field at new time level x3 direction
+      	Array3<double> volume_of_fluid, 			// volume of fluid field
+	Array3<double> level_set,				// level set field
+      	Array3<double> u_1_velocity_new, 			// velocity field at new time level x1 direction
+      	Array3<double> u_2_velocity_new, 			// velocity field at new time level x2 direction
+      	Array3<double> u_3_velocity_new,			// velocity field at new time level x3 direction
       	int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       	int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
       	int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
@@ -49,53 +50,43 @@ void analyse_interface_properties(
      )
 {
 	void compute_vof_at_u1_points(	// compute volume of fluid for u1 control volumes
-		double ***level_set, 				
-		double ***d_level_set_d_x1,			
-		double ***d_level_set_d_x2,			
-		double ***d_level_set_d_x3,			
-		double ***volume_of_fluid_u1,		
+		Array3<double> level_set, 				
+		Array3<double> d_level_set_d_x1,			
+		Array3<double> d_level_set_d_x2,			
+		Array3<double> d_level_set_d_x3,			
+		Array3<double> volume_of_fluid_u1,		
 		int number_primary_cells_i,			
 		int number_primary_cells_j,			
 		int number_primary_cells_k,			
 		double lower_bound_derivatives    		
      		);
  	void compute_vof_at_u2_points(	// compute volume of fluid for u2 control volumes
-		double ***level_set, 				
-		double ***d_level_set_d_x1,			
-		double ***d_level_set_d_x2,			
-		double ***d_level_set_d_x3,			
-		double ***volume_of_fluid_u2,		
+		Array3<double> level_set, 				
+		Array3<double> d_level_set_d_x1,			
+		Array3<double> d_level_set_d_x2,			
+		Array3<double> d_level_set_d_x3,			
+		Array3<double> volume_of_fluid_u2,		
 		int number_primary_cells_i,			
 		int number_primary_cells_j,			
 		int number_primary_cells_k,			
 		double lower_bound_derivatives    		
      		);
 	void compute_vof_at_u3_points(	// compute volume of fluid for u3 control volumes
-		double ***level_set, 				
-		double ***d_level_set_d_x1,			
-		double ***d_level_set_d_x2,			
-		double ***d_level_set_d_x3,			
-		double ***volume_of_fluid_u3,		
+		Array3<double> level_set, 				
+		Array3<double> d_level_set_d_x1,			
+		Array3<double> d_level_set_d_x2,			
+		Array3<double> d_level_set_d_x3,			
+		Array3<double> volume_of_fluid_u3,		
 		int number_primary_cells_i,			
 		int number_primary_cells_j,			
 		int number_primary_cells_k,			
 		double lower_bound_derivatives    		
      		);
-     double ***double_Matrix2(                         			// allocate memory for a three-
-	       int number_primary_cells_i,		                   	// dimensional array of doubles
-		int number_primary_cells_j, 	
-		int number_primary_cells_k
-		);
-      void   free_double_Matrix2( 						// deallocate memory for a three
-		double ***doubleMatrix2, 					// dimensional array of doubles
-		int number_primary_cells_i,	
-		int number_primary_cells_j
-		);
       void 	compute_level_set_gradient(					// compute gradient of level-set field
-		double ***level_set_star, 
-		double ***d_level_set_d_x1, 
-		double ***d_level_set_d_x2, 
-		double ***d_level_set_d_x3,
+		Array3<double> level_set_star, 
+		Array3<double> d_level_set_d_x1, 
+		Array3<double> d_level_set_d_x2, 
+		Array3<double> d_level_set_d_x3,
 		int number_primary_cells_i, 
 		int number_primary_cells_j, 
 		int number_primary_cells_k
@@ -109,20 +100,20 @@ void analyse_interface_properties(
 	double x1_coordinate_cell_center;		// x1 coordinate of primary cell center
 	double x2_coordinate_cell_center;		// x2 coordinate of primary cell center
 	double x3_coordinate_cell_center;		// x3 coordinate of primary cell center
-	double ***d_level_set_d_x1;			// first partial derivative of
+	Array3<double> d_level_set_d_x1;			// first partial derivative of
 							// the level-set field wrt x1
 							// second order central approximation
-	double ***d_level_set_d_x2;			// first partial derivative of 
+	Array3<double> d_level_set_d_x2;			// first partial derivative of 
 							// the level-set field wrt x2
 							// second order central approximation
-	double ***d_level_set_d_x3;			// first partial derivative of
+	Array3<double> d_level_set_d_x3;			// first partial derivative of
  							// the level-set field wrt x3
 							// second order central approximation
-	double ***volume_of_fluid_u1;			// volume of fluid value for the controlvolumes
+	Array3<double> volume_of_fluid_u1;			// volume of fluid value for the controlvolumes
 							// of the momentum equation in x1 direction
-	double ***volume_of_fluid_u2;			// volume of fluid value for the controlvolumes
+	Array3<double> volume_of_fluid_u2;			// volume of fluid value for the controlvolumes
 							// of the momentum equation in x1 direction
-	double ***volume_of_fluid_u3;			// volume of fluid value for the controlvolumes
+	Array3<double> volume_of_fluid_u3;			// volume of fluid value for the controlvolumes
 							// of the momentum equation in x1 direction
 	
        static ofstream interface_details; 	/* output stream for details of the interface */
@@ -184,11 +175,11 @@ void analyse_interface_properties(
 	
 	/* allocate memory for the volume of fluid fields at the velocity points */
 	
-	volume_of_fluid_u1=double_Matrix2(number_primary_cells_i+1, number_primary_cells_j+2,
+	volume_of_fluid_u1.create(number_primary_cells_i+1, number_primary_cells_j+2,
 					      number_primary_cells_k+2);
-	volume_of_fluid_u2=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+1,
+	volume_of_fluid_u2.create(number_primary_cells_i+2, number_primary_cells_j+1,
 					      number_primary_cells_k+2);
-	volume_of_fluid_u3=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	volume_of_fluid_u3.create(number_primary_cells_i+2, number_primary_cells_j+2,
 					      number_primary_cells_k+1);
 	
 	
@@ -196,11 +187,11 @@ void analyse_interface_properties(
 	/* allocate memory for the derivatives of the level-set field */
 	
 	
-	d_level_set_d_x1=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x1.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_level_set_d_x2=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x2.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_level_set_d_x3=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x3.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
 	
 	/* compute the gradient of the old level-set field, necessary for the level-set/vof conversion */
@@ -351,11 +342,11 @@ void analyse_interface_properties(
 	
 	/* deallocate memory for the derivatives of the level-set field and auxiliary vof fields*/
 
-	free_double_Matrix2(volume_of_fluid_u1, number_primary_cells_i+1, number_primary_cells_j+2);
-	free_double_Matrix2(volume_of_fluid_u2, number_primary_cells_i+2, number_primary_cells_j+1);
-	free_double_Matrix2(volume_of_fluid_u3, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_level_set_d_x1, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_level_set_d_x2, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_level_set_d_x3, number_primary_cells_i+2, number_primary_cells_j+2);
+	volume_of_fluid_u1.destroy();
+	volume_of_fluid_u2.destroy();
+	volume_of_fluid_u3.destroy();
+	d_level_set_d_x1.destroy();
+	d_level_set_d_x2.destroy();
+	d_level_set_d_x3.destroy();
 	
 }

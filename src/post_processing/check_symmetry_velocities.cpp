@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -17,9 +18,9 @@
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
-      double ***field_x1,				// field of which symmetry must be checked
-      double ***field_x2,				// field of which symmetry must be checked
-      double ***field_x3				// field of which symmetry must be checked
+      Array3<double> field_x1,				// field of which symmetry must be checked
+      Array3<double> field_x2,				// field of which symmetry must be checked
+      Array3<double> field_x3				// field of which symmetry must be checked
 	  )
     {
     

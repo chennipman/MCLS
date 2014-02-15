@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -24,11 +25,11 @@ public:
 /********************************************************************************/
   void set_pressure_boundary_condition(
        vector gravity,				       		// gravitational acceleration vector 
-       double ***pressure_boundary_condition_x1,          	// inhomogeneous boundary condition for
+       Array3<double> pressure_boundary_condition_x1,          	// inhomogeneous boundary condition for
 						              	// the pressure planes with normal in x1 direction
-       double ***pressure_boundary_condition_x2,          	// inhomogeneous boundary condition for the pressure
+       Array3<double> pressure_boundary_condition_x2,          	// inhomogeneous boundary condition for the pressure
 						              	// the pressure planes with normal in x1 direction
-       double ***pressure_boundary_condition_x3,          	// inhomogeneous boundary condition for the pressure
+       Array3<double> pressure_boundary_condition_x3,          	// inhomogeneous boundary condition for the pressure
 						              	// the pressure planes with normal in x1 direction
        int number_primary_cells_i,	                     	// number of primary (pressure) cells in x1 direction
        int number_primary_cells_j,	                     	// number of primary (pressure) cells in x2 direction
@@ -38,7 +39,7 @@ public:
       void set_constant_matrix(			       		// set 2 dimensional array to constant
 	    int first_dimension,		              	// value
 	    int second_dimension,	
-	    double **matrix_to_set,	
+	    Array2<double> matrix_to_set,	
 	    double constant_value	
        );
 

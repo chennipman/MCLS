@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -44,13 +45,13 @@ public:
 /* extended to more advanced cases, e.g. a parabolic profile etc.		*/
 /********************************************************************************/
 void initialize_flow_field(
-      double ***u_1_velocity_new, 			// velocity field at new time level x1 direction
-      double ***u_2_velocity_new, 			// velocity field at new time level x2 direction
-      double ***u_3_velocity_new,			// velocity field at new time level x3 direction
-      double ***u_1_velocity_old, 			// velocity field at old time level x1 direction
-      double ***u_2_velocity_old, 			// velocity field at old time level x2 direction
-      double ***u_3_velocity_old,			// velocity field at old time level x3 direction
-      double ***pressure,				// pressure
+      Array3<double> u_1_velocity_new, 			// velocity field at new time level x1 direction
+      Array3<double> u_2_velocity_new, 			// velocity field at new time level x2 direction
+      Array3<double> u_3_velocity_new,			// velocity field at new time level x3 direction
+      Array3<double> u_1_velocity_old, 			// velocity field at old time level x1 direction
+      Array3<double> u_2_velocity_old, 			// velocity field at old time level x2 direction
+      Array3<double> u_3_velocity_old,			// velocity field at old time level x3 direction
+      Array3<double> pressure,				// pressure
       boundary_face boundary_faces[6],			// array with all the information
 							// for the boundary conditions 
       double mesh_width_x1,				// grid spacing in x1 direction (uniform)
@@ -65,14 +66,14 @@ void initialize_flow_field(
 
       void set_constant_vector(				// set vector to constant value 
 	int vector_length,	
-	double *vector_to_set,	
+	Array1<double> vector_to_set,	
 	double constant_value	
      );
       void apply_boundary_conditions_velocity(         // apply boundary conditions to velocity field
 	  boundary_face boundary_faces[6],		
-	  double ***u_1_velocity, 			
-	  double ***u_2_velocity, 			
-	  double ***u_3_velocity, 			
+	  Array3<double> u_1_velocity, 			
+	  Array3<double> u_2_velocity, 			
+	  Array3<double> u_3_velocity, 			
 	  double mesh_width_x1,				
 	  double mesh_width_x2,				
 	  double mesh_width_x3,				

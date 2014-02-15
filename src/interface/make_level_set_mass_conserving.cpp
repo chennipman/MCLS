@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 #include<cstdlib>
 #include<iostream>
@@ -25,17 +26,17 @@
 /********************************************************************************/
     void make_level_set_mass_conserving
     (
-      	double ***level_set_star, 				// level set field at new time level
+      	Array3<double> level_set_star, 				// level set field at new time level
 								// after convection and reinitialization
 								// not mass conserving
-      	double ***level_set_new, 				// level set field at new time level
+      	Array3<double> level_set_new, 				// level set field at new time level
 								// mass conserving
-      	double ***level_set_old, 				// level set field at old time level
+      	Array3<double> level_set_old, 				// level set field at old time level
 								// mass conserving
-      	double ***volume_of_fluid, 				// volume of fluid field
-      	double ***u_1_velocity_new, 				// velocity field at new time level x1 direction
-      	double ***u_2_velocity_new, 				// velocity field at new time level x2 direction
-      	double ***u_3_velocity_new,				// velocity field at new time level x3 direction
+      	Array3<double> volume_of_fluid, 				// volume of fluid field
+      	Array3<double> u_1_velocity_new, 				// velocity field at new time level x1 direction
+      	Array3<double> u_2_velocity_new, 				// velocity field at new time level x2 direction
+      	Array3<double> u_3_velocity_new,				// velocity field at new time level x3 direction
       	int number_primary_cells_i,				// number of primary (pressure) cells in x1 direction
       	int number_primary_cells_j,				// number of primary (pressure) cells in x2 direction
       	int number_primary_cells_k,				// number of primary (pressure) cells in x3 direction
@@ -75,51 +76,41 @@
 /*******************************************************************************************/      
 /* 				function definitions 					   */
 /*******************************************************************************************/      
-      double ***double_Matrix2(                         			// allocate memory for a three-
-	       int number_primary_cells_i,		                   	// dimensional array of doubles
-		int number_primary_cells_j, 	
-		int number_primary_cells_k
-		);
-      void   free_double_Matrix2( 						// deallocate memory for a three
-		double ***doubleMatrix2, 					// dimensional array of doubles
-		int number_primary_cells_i,	
-		int number_primary_cells_j
-		);
       void 	compute_level_set_gradient(					// compute gradient of level-set field
-		double ***level_set_star, 
-		double ***d_level_set_d_x1, 
-		double ***d_level_set_d_x2, 
-		double ***d_level_set_d_x3,
+		Array3<double> level_set_star, 
+		Array3<double> d_level_set_d_x1, 
+		Array3<double> d_level_set_d_x2, 
+		Array3<double> d_level_set_d_x3,
 		int number_primary_cells_i, 
 		int number_primary_cells_j, 
 		int number_primary_cells_k
 		 );
       int    compute_volume_of_fluid(					// compute volume of fluid field
-		 double ***level_set_star, 					// corresponding to a given 
-		 double ***d_level_set_d_x1, 					// level-set field
-		 double ***d_level_set_d_x2, 
-		 double ***d_level_set_d_x3,
-		 double ***volume_of_fluid,
+		 Array3<double> level_set_star, 					// corresponding to a given 
+		 Array3<double> d_level_set_d_x1, 					// level-set field
+		 Array3<double> d_level_set_d_x2, 
+		 Array3<double> d_level_set_d_x3,
+		 Array3<double> volume_of_fluid,
 		 int number_primary_cells_i, 
 		 int number_primary_cells_j, 
 		 int number_primary_cells_k,		
 		 double lower_bound_derivatives 
 		 );
       int    apply_volume_of_fluid_clipping(				// apply simple clipping
-		 double ***volume_of_fluid, 					// to keep the volume of fluid
+		 Array3<double> volume_of_fluid, 					// to keep the volume of fluid
 		 int number_primary_cells_i, 					// field in the interval [0,1] 
 		 int number_primary_cells_j,
 		 int number_primary_cells_k,
 		 double volume_of_fluid_tolerance
 		  );                           
       void update_volume_of_fluid_x1_flux(					// compute intermediate 
-		 double ***level_set, 					// volume of fluid field 
-		 double ***d_level_set_d_x1,					// updated by the flux in x1
-		 double ***d_level_set_d_x2, 					// direction
-		 double ***d_level_set_d_x3,
-	         double ***volume_of_fluid, 
-		 double ***vof_after_x1_update,
-		 double ***u_1_velocity_new, 		
+		 Array3<double> level_set, 					// volume of fluid field 
+		 Array3<double> d_level_set_d_x1,					// updated by the flux in x1
+		 Array3<double> d_level_set_d_x2, 					// direction
+		 Array3<double> d_level_set_d_x3,
+	         Array3<double> volume_of_fluid, 
+		 Array3<double> vof_after_x1_update,
+		 Array3<double> u_1_velocity_new, 		
 		 int number_primary_cells_i, 
 		 int number_primary_cells_j, 
 		 int number_primary_cells_k,		
@@ -127,13 +118,13 @@
 		 double mesh_width_x1,	
 		 double lower_bound_derivatives);
       void update_volume_of_fluid_x2_flux(					// compute intermediate
-		 double ***level_set, 					// volume of fluid field 
-		 double ***d_level_set_d_x1,					// updated by the flux in x2
-		 double ***d_level_set_d_x2, 					// direction
-		 double ***d_level_set_d_x3,
-	         double ***volume_of_fluid, 
-		 double ***vof_after_x2_update,
-		 double ***u_1_velocity_new, 		
+		 Array3<double> level_set, 					// volume of fluid field 
+		 Array3<double> d_level_set_d_x1,					// updated by the flux in x2
+		 Array3<double> d_level_set_d_x2, 					// direction
+		 Array3<double> d_level_set_d_x3,
+	         Array3<double> volume_of_fluid, 
+		 Array3<double> vof_after_x2_update,
+		 Array3<double> u_1_velocity_new, 		
 		 int number_primary_cells_i, 
 		 int number_primary_cells_j, 
 		 int number_primary_cells_k,	
@@ -141,13 +132,13 @@
 		 double mesh_width_x2,	
 		 double lower_bound_derivatives);
       void update_volume_of_fluid_x3_flux(					// compute intermediate
-		 double ***level_set, 					// volume of fluid field 
-		 double ***d_level_set_d_x1,					// updated by the flux in x3
-		 double ***d_level_set_d_x2,  				// direction
-		 double ***d_level_set_d_x3,
-	         double ***volume_of_fluid, 
-		 double ***vof_after_x3_update,
-		 double ***u_1_velocity_new, 		
+		 Array3<double> level_set, 					// volume of fluid field 
+		 Array3<double> d_level_set_d_x1,					// updated by the flux in x3
+		 Array3<double> d_level_set_d_x2,  				// direction
+		 Array3<double> d_level_set_d_x3,
+	         Array3<double> volume_of_fluid, 
+		 Array3<double> vof_after_x3_update,
+		 Array3<double> u_1_velocity_new, 		
 		 int number_primary_cells_i, 
 		 int number_primary_cells_j, 
 		 int number_primary_cells_k,	
@@ -155,9 +146,9 @@
 		 double mesh_width_x3,	
 		 double lower_bound_derivatives);
       void match_level_set_to_volume_of_fluid(				// compute a new level-set field
-		 double ***level_set_not_mass_conserving, 			// that corresponds to given
-		 double ***volume_of_fluid,					// volume of fluid field
-		 double ***level_set_mass_conserving,			// using an existing level-set
+		 Array3<double> level_set_not_mass_conserving, 			// that corresponds to given
+		 Array3<double> volume_of_fluid,					// volume of fluid field
+		 Array3<double> level_set_mass_conserving,			// using an existing level-set
 		 int number_primary_cells_i, 					// field as a starting value
 		 int number_primary_cells_j, 
 		 int number_primary_cells_k,			
@@ -171,9 +162,9 @@
 		 double mesh_width_x3
 		 );
       void apply_volume_of_fluid_redistribution(                        // apply mass distribution
-		double ***volume_of_fluid, 					// algorithm to find an 
-		double ***level_set_star, 					// updated level-set and 
-		double ***level_set_new, 					// volume of fluid field	
+		Array3<double> volume_of_fluid, 					// algorithm to find an 
+		Array3<double> level_set_star, 					// updated level-set and 
+		Array3<double> level_set_new, 					// volume of fluid field	
 		int number_primary_cells_i,				
 		int number_primary_cells_j,				
 		int number_primary_cells_k,				
@@ -190,31 +181,31 @@
 	    	int maximum_number_mass_redistribution_iterations  		
 		);
       void copy_cell_centered_field(					// copy the star level_set
-		double ***level_set_star, 				// field (not mass conserving)
-		double ***level_set_new, 				// to the new level set field
+		Array3<double> level_set_star, 				// field (not mass conserving)
+		Array3<double> level_set_new, 				// to the new level set field
 		int number_primary_cells_i, 
 		int number_primary_cells_j,
 		int number_primary_cells_k);
       void field_neumann_boundary(					// apply homogeneous neumann boundary condition to
-		double ***field, 					// cell centered field
+		Array3<double> field, 					// cell centered field
 		int number_primary_cells_i,	
 		int number_primary_cells_j,	
 		int number_primary_cells_k	
 	  	);
       void field_extrapolate_boundary(				// apply extrapolation boundary condition to
-		double ***field, 					// cell centered field
+		Array3<double> field, 					// cell centered field
 		int number_primary_cells_i,	
 		int number_primary_cells_j,	
 		int number_primary_cells_k	
 	  	);
       void dump_adapted_vof_for_debugging(
-		double ***volume_of_fluid,			
-		double ***vof_after_x1_update,
-		double ***vof_after_x2_update,
-		double ***vof_after_x3_update,
-		double ***level_set_old,
-		double ***level_set_after_x1_update,
-		double ***level_set_after_x2_update,
+		Array3<double> volume_of_fluid,			
+		Array3<double> vof_after_x1_update,
+		Array3<double> vof_after_x2_update,
+		Array3<double> vof_after_x3_update,
+		Array3<double> level_set_old,
+		Array3<double> level_set_after_x1_update,
+		Array3<double> level_set_after_x2_update,
 		int number_primary_cells_i,			
 		int number_primary_cells_j,			
 		int number_primary_cells_k,			
@@ -223,7 +214,7 @@
 		double mesh_width_x3			
 		);
      double compute_mass_in_domain(
-    	   	double ***volume_of_fluid,			
+    	   	Array3<double> volume_of_fluid,			
 	  	int number_primary_cells_i,			
 	  	int number_primary_cells_j,			
 	  	int number_primary_cells_k,			
@@ -232,7 +223,7 @@
 	  	double mesh_width_x3			
 		);
       int check_volume_of_fluid(
-               double ***volume_of_fluid,
+               Array3<double> volume_of_fluid,
                int number_primary_cells_i,
                int number_primary_cells_j,
                int number_primary_cells_k,       
@@ -245,28 +236,28 @@
 /*******************************************************************************************/      
      
      
-      double ***vof_after_x1_update;			// intermediate volume of fluid field, 
+      Array3<double> vof_after_x1_update;			// intermediate volume of fluid field, 
 							// after update in x1 direction
-      double ***vof_after_x2_update;			// intermediate volume of fluid field, 
+      Array3<double> vof_after_x2_update;			// intermediate volume of fluid field, 
 							// after update in x2 direction
-      double ***vof_after_x3_update;			// intermediate volume of fluid field, 
+      Array3<double> vof_after_x3_update;			// intermediate volume of fluid field, 
 							// after update in x3 direction
-      double ***d_level_set_d_x1;			// first partial derivative of
+      Array3<double> d_level_set_d_x1;			// first partial derivative of
 							// the level-set field wrt x1
 							// second order central approximation
-      double ***d_level_set_d_x2;			// first partial derivative of 
+      Array3<double> d_level_set_d_x2;			// first partial derivative of 
 							// the level-set field wrt x2
 							// second order central approximation
-      double ***d_level_set_d_x3;			// first partial derivative of
+      Array3<double> d_level_set_d_x3;			// first partial derivative of
  							// the level-set field wrt x3
 							// second order central approximation
-      double ***level_set_after_x1_update;		// level-set field, converted from 
+      Array3<double> level_set_after_x1_update;		// level-set field, converted from 
 							// intermediate	volume of fluid field, 
 							// after update in x1 direction
-      double ***level_set_after_x2_update;		// level-set field, converted from 
+      Array3<double> level_set_after_x2_update;		// level-set field, converted from 
 							// intermediate	volume of fluid field, 
 							// after update in x2 direction
-      double ***level_set_after_x3_update;		// level-set field, converted from 
+      Array3<double> level_set_after_x3_update;		// level-set field, converted from 
  							// intermediate	volume of fluid field, 
 							// after update in x3 direction
      
@@ -297,25 +288,25 @@
       
 /* allocate memory for the temporary storage of the intermediate fields */
 
-	vof_after_x1_update=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	vof_after_x1_update.create(number_primary_cells_i+2, number_primary_cells_j+2,
 					   number_primary_cells_k+2);
-	vof_after_x2_update=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	vof_after_x2_update.create(number_primary_cells_i+2, number_primary_cells_j+2,
 					   number_primary_cells_k+2);
-	vof_after_x3_update=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	vof_after_x3_update.create(number_primary_cells_i+2, number_primary_cells_j+2,
 					   number_primary_cells_k+2);
 	
-	level_set_after_x1_update=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	level_set_after_x1_update.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	level_set_after_x2_update=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	level_set_after_x2_update.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	level_set_after_x3_update=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	level_set_after_x3_update.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
 	
-	d_level_set_d_x1=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x1.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_level_set_d_x2=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x2.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_level_set_d_x3=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x3.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
 				    
     /* keep order_of_updates in its allowable range */
@@ -825,15 +816,15 @@
 	
 /* deallocate memory for the temporary storage of the intermediate fields */
 
-	free_double_Matrix2(vof_after_x1_update, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(vof_after_x2_update, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(vof_after_x3_update, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(level_set_after_x1_update, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(level_set_after_x2_update, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(level_set_after_x3_update, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_level_set_d_x1, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_level_set_d_x2, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_level_set_d_x3, number_primary_cells_i+2, number_primary_cells_j+2);
+	vof_after_x1_update.destroy();
+	vof_after_x2_update.destroy();
+	vof_after_x3_update.destroy();
+	level_set_after_x1_update.destroy();
+	level_set_after_x2_update.destroy();
+	level_set_after_x3_update.destroy();
+	d_level_set_d_x1.destroy();
+	d_level_set_d_x2.destroy();
+	d_level_set_d_x3.destroy();
     }
 
  

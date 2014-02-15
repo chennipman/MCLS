@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 
 #include<cstdlib>
@@ -14,9 +15,9 @@
 /* Notes										*/
 /********************************************************************************/
 	void compute_scaled_density_u3(
-	double ***scaled_density_u3,			// scaled density for the controlvolumes
+	Array3<double> scaled_density_u3,			// scaled density for the controlvolumes
 							// of the momentum equation in x1 direction
-	double ***volume_of_fluid_u3,			// volume of fluid value for the controlvolumes
+	Array3<double> volume_of_fluid_u3,			// volume of fluid value for the controlvolumes
 							// of the momentum equation in x1 direction
        double rho_plus_over_rho_minus,		// ratio of the densities of the two phases
 	int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction

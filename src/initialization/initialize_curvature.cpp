@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 /********************************************************************************/
 /*  Function to initialize the curvature                                        */
 /*  											*/
@@ -11,9 +12,9 @@
 /* to be added to the initial condition.                                        */
 /********************************************************************************/
 void initialize_curvature(						
-      double ***level_set, 				// level-set field
-      double ***curvature,				// interface curvature
-      double ***unsmoothed_curvature,		// interface curvature without smoothing
+      Array3<double> level_set, 				// level-set field
+      Array3<double> curvature,				// interface curvature
+      Array3<double> unsmoothed_curvature,		// interface curvature without smoothing
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
@@ -30,8 +31,8 @@ void initialize_curvature(
 {
 
       void compute_curvature(				// compute the curvature
-	 double ***level_set, 				
-	 double ***curvature,				
+	 Array3<double> level_set, 				
+	 Array3<double> curvature,				
 	 int number_primary_cells_i,			
 	 int number_primary_cells_j,			
 	 int number_primary_cells_k,			
@@ -40,9 +41,9 @@ void initialize_curvature(
         double mesh_width_x3				
 	);
       void smooth_curvature(                       // smooth the curvature
-  	 double ***level_set, 			
-	 double ***curvature_new,			
-	 double ***unsmoothed_curvature,			
+  	 Array3<double> level_set, 			
+	 Array3<double> curvature_new,			
+	 Array3<double> unsmoothed_curvature,			
 	 int number_primary_cells_i,			
 	 int number_primary_cells_j,			
 	 int number_primary_cells_k,			
@@ -53,8 +54,8 @@ void initialize_curvature(
 	 int number_curvature_smoothing_steps
        );
       void copy_cell_centered_field( 		// copy cell centered field
-	    double ***source_field, 		   			
-	    double ***target_field,		
+	    Array3<double> source_field, 		   			
+	    Array3<double> target_field,		
 	    int number_primary_cells_i,		
 	    int number_primary_cells_j,		
 	    int number_primary_cells_k		

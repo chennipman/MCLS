@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to copy a cell centered field including virtual cells              */
@@ -11,8 +12,8 @@
 /* this function can be simplified of even discarded				*/
 /********************************************************************************/
       void copy_cell_centered_field( 
-	    double ***source_field, 		// original field
-	    double ***target_field,		// copy of the original field
+	    Array3<double> source_field, 		// original field
+	    Array3<double> target_field,		// copy of the original field
 	    int number_primary_cells_i,		// number of primary (pressure) 
 						// cells in x1 direction
 	    int number_primary_cells_j,		// number of primary (pressure) 

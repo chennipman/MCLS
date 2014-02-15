@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -56,10 +57,10 @@ enum geometry{bubbly_flow, wavy_flow};
 	  double lower_bound_derivatives,		// lower bound for the first partial derivatives
 							// to consider it a limiting case of vanishing
 							// partial derivatives
-	  double ***level_set,			// level-set field
-	  double ***volume_of_fluid,			// volume of fluid field
-	  double ***curvature,			// interface curvature
-	  double ***unsmoothed_curvature,		// interface curvature without smoothing
+	  Array3<double> level_set,			// level-set field
+	  Array3<double> volume_of_fluid,			// volume of fluid field
+	  Array3<double> curvature,			// interface curvature
+	  Array3<double> unsmoothed_curvature,		// interface curvature without smoothing
       	  int apply_curvature_smoothing,		// =1, apply curvature smoothing
 							// =0, use unsmoothed curvature
          int number_curvature_smoothing_steps,	// number of iterations applied in the
@@ -89,20 +90,20 @@ enum geometry{bubbly_flow, wavy_flow};
 	  double mesh_width_x1,			
 	  double mesh_width_x2,			
 	  double mesh_width_x3,			
-	  double ***level_set			
+	  Array3<double> level_set			
 	  );
       void initialize_volume_of_fluid(			// intialize the volume of fluid field
-	  double ***level_set, 			
-	  double ***volume_of_fluid, 		
+	  Array3<double> level_set, 			
+	  Array3<double> volume_of_fluid, 		
 	  int number_primary_cells_i,		
 	  int number_primary_cells_j,		
 	  int number_primary_cells_k,
 	  double lower_bound_derivatives
 	   );
       void initialize_curvature(				// initialize the interface curvature				
-         double ***level_set, 			
-         double ***curvature,	
-	  double ***smoothed_curvature,
+         Array3<double> level_set, 			
+         Array3<double> curvature,	
+	  Array3<double> smoothed_curvature,
          int number_primary_cells_i,		
          int number_primary_cells_j,		
          int number_primary_cells_k,		
@@ -117,11 +118,11 @@ enum geometry{bubbly_flow, wavy_flow};
          int number_primary_cells_i,			
          int number_primary_cells_j,			
          int number_primary_cells_k,			
-         double ***field				
+         Array3<double> field				
 	  );
       void compute_weighted_curvature(
-	  double ***level_set,				
-	  double ***curvature,				
+	  Array3<double> level_set,				
+	  Array3<double> curvature,				
          double mesh_width_x1,			
          double mesh_width_x2,			
          double mesh_width_x3,			
@@ -137,10 +138,10 @@ enum geometry{bubbly_flow, wavy_flow};
 	  double mesh_width_x1,			
 	  double mesh_width_x2,			
 	  double mesh_width_x3,			
-	  double ***level_set,			
-	  double ***volume_of_fluid,		
-	  double ***curvature,			
-	  double ***unsmoothed_curvature		
+	  Array3<double> level_set,			
+	  Array3<double> volume_of_fluid,		
+	  Array3<double> curvature,			
+	  Array3<double> unsmoothed_curvature		
       );
 
      /* intialize the level-set field */

@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -19,14 +20,14 @@
 /* actual derivative is computed, so a divided difference.          h           */
 /********************************************************************************/
    void   compute_normal_derivative_at_faces(				
-	double ***scalar_field, 			// scalar field defined at cell centers
-	double ***d_field_d_x1_face,			// first normal derivative of
+	Array3<double> scalar_field, 			// scalar field defined at cell centers
+	Array3<double> d_field_d_x1_face,			// first normal derivative of
 							// scalar field at cell face orthogonal
 							// to x1 direction                       
-	double ***d_field_d_x2_face,			// first normal derivative of
+	Array3<double> d_field_d_x2_face,			// first normal derivative of
 							// scalar field at cell face orthogonal
 							// to x2 direction
-	double ***d_field_d_x3_face,			// first normal derivative of
+	Array3<double> d_field_d_x3_face,			// first normal derivative of
 							// scalar field at cell face orthogonal
 							// to x3 direction
         int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
@@ -44,7 +45,7 @@
 	    int first_dimension,			// number of elements in first dimension
 	    int second_dimension,			// number of elements in second dimension
 	    int third_dimension,			// number of elements in third dimension
-	    double ***matrix2_to_set,			// the name of the array that has to be set
+	    Array3<double> matrix2_to_set,			// the name of the array that has to be set
 	    double constant_value			// the constant value the vector has to be set to
 	    );
 	

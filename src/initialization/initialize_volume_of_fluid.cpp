@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -12,8 +13,8 @@
 /* Notes										*/
 /********************************************************************************/
       void initialize_volume_of_fluid(
-	  double ***level_set, 			// level set field 
-	  double ***volume_of_fluid, 			// volume of fluid field
+	  Array3<double> level_set, 			// level set field 
+	  Array3<double> volume_of_fluid, 			// volume of fluid field
 	  int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	  int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
 	  int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
@@ -25,55 +26,45 @@
       /* function definitions */
       
       int    compute_volume_of_fluid(		// compute volume of fluid field
-		double ***level_set, 		// corresponding to a given 
-		double ***d_level_set_d_x1, 		// level-set field
-		double ***d_level_set_d_x2, 
-		double ***d_level_set_d_x3,
-		double ***volume_of_fluid,
+		Array3<double> level_set, 		// corresponding to a given 
+		Array3<double> d_level_set_d_x1, 		// level-set field
+		Array3<double> d_level_set_d_x2, 
+		Array3<double> d_level_set_d_x3,
+		Array3<double> volume_of_fluid,
 		int number_primary_cells_i, 
 		int number_primary_cells_j, 
 		int number_primary_cells_k,
 		double lower_bound_derivatives
 		);
       void 	compute_level_set_gradient(		// compute gradient of level-set field
-		double ***level_set_star, 
-		double ***d_level_set_d_x1, 
-		double ***d_level_set_d_x2, 
-		double ***d_level_set_d_x3,
+		Array3<double> level_set_star, 
+		Array3<double> d_level_set_d_x1, 
+		Array3<double> d_level_set_d_x2, 
+		Array3<double> d_level_set_d_x3,
 		int number_primary_cells_i, 
 		int number_primary_cells_j, 
 		int number_primary_cells_k
 		);
-      double ***double_Matrix2(			// allocate memory for a three-dimensional array of doubles
-		int number_primary_cells_i,				
-		int number_primary_cells_j, 		
-		int number_primary_cells_k
-		);
-      void   free_double_Matrix2( 			// deallocate memory for a three
-		double ***doubleMatrix2, 		// dimensional array of doubles
-		int number_primary_cells_i,	
-		int number_primary_cells_j
-		);
       void field_neumann_boundary(			// apply neumann boundary condition to
-	  	double ***field, 			// cell centered field
+	  	Array3<double> field, 			// cell centered field
 	  	int number_primary_cells_i,	
 	  	int number_primary_cells_j,	
 	  	int number_primary_cells_k	
 	  	);
       	void  field_extrapolate_boundary(      	// extrapolate field to virtual cells
-            double ***field, 			
+            Array3<double> field, 			
             int number_primary_cells_i,	
             int number_primary_cells_j,	
             int number_primary_cells_k	
 	    );
 
-      double ***d_level_set_d_x1;			// first partial derivative of
+      Array3<double> d_level_set_d_x1;			// first partial derivative of
 							// the level-set field wrt x1
 							// second order central approximation
-      double ***d_level_set_d_x2;			// first partial derivative of 
+      Array3<double> d_level_set_d_x2;			// first partial derivative of 
 							// the level-set field wrt x2
 							// second order central approximation
-      double ***d_level_set_d_x3;			// first partial derivative of
+      Array3<double> d_level_set_d_x3;			// first partial derivative of
  							// the level-set field wrt x3
 							// second order central approximation
 
@@ -81,11 +72,11 @@
 
 	/* allocate  memory for the gradient of the level-set field */
 	
-	d_level_set_d_x1=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x1.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_level_set_d_x2=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x2.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_level_set_d_x3=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x3.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
 	 
 	
@@ -122,7 +113,7 @@
 	
 	/* de-allocate  memory for the gradient of the level-set field */
 	
-	free_double_Matrix2(d_level_set_d_x1, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_level_set_d_x2, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_level_set_d_x3, number_primary_cells_i+2, number_primary_cells_j+2);
+	d_level_set_d_x1.destroy();
+	d_level_set_d_x2.destroy();
+	d_level_set_d_x3.destroy();
       }

@@ -1,3 +1,4 @@
+#include "../headers/array.h"
       
 /********************************************************************************/
 /*  Function to build momentum matrix for the u3 velocity, without boundary     */
@@ -17,9 +18,9 @@
 /********************************************************************************/
 
   void build_momentum_matrix_u3(
-      double **momentum_matrix_u3,			// momentum matrix velocity x1 direction
-      double ***level_set, 				// level-set field
-      double ***scaled_density_u3,                 // scaled density for the controlvolumes
+      Array2<double> momentum_matrix_u3,			// momentum matrix velocity x1 direction
+      Array3<double> level_set, 				// level-set field
+      Array3<double> scaled_density_u3,                 // scaled density for the controlvolumes
                                                    // of the momentum equation in x3 direction
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction

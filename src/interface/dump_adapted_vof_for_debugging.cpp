@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 #include <iostream>
 #include <stdlib.h> 
@@ -28,13 +29,13 @@ using namespace std;
 /* written to file for visual inspection.						*/
 /********************************************************************************/
    void dump_adapted_vof_for_debugging(
-	double ***volume_of_fluid,			// volume of fluid field
-	double ***vof_after_x1_update,		// volume of fluid field after update
-	double ***vof_after_x2_update,		// volume of fluid field after update
-	double ***vof_after_x3_update,		// volume of fluid field after update
-	double ***level_set_old,
-	double ***level_set_after_x1_update,
-	double ***level_set_after_x2_update,
+	Array3<double> volume_of_fluid,			// volume of fluid field
+	Array3<double> vof_after_x1_update,		// volume of fluid field after update
+	Array3<double> vof_after_x2_update,		// volume of fluid field after update
+	Array3<double> vof_after_x3_update,		// volume of fluid field after update
+	Array3<double> level_set_old,
+	Array3<double> level_set_after_x1_update,
+	Array3<double> level_set_after_x2_update,
 	int number_primary_cells_i,			// number of primary (pressure) 
 							// cells in x1 direction
 	int number_primary_cells_j,			// number of primary (pressure) 
@@ -60,7 +61,7 @@ using namespace std;
 	  ofstream& output_stream, 			
 	  string scalar_name,				
 	  string look_up_table_name,				
-	  double ***cell_centered_field, 			
+	  Array3<double> cell_centered_field, 			
 	  int number_primary_cells_i,			
 	  int number_primary_cells_j,			
 	  int number_primary_cells_k			

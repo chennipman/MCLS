@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 /*********************************************/
 /* include the necessary standard functions  */
 /*********************************************/
@@ -20,37 +21,37 @@ using namespace std;
 /* Primary variables for Navier-Stokes*/
 /*++++++++++++++++++++++++++++++++++++*/ 
 
-double ***u_1_velocity_old; 		// 3-array with x1-velocity at old time level at u1 points, old time level
-double ***u_2_velocity_old; 		// 3-array with x2-velocity at old time level at u2 points, new time level
-double ***u_3_velocity_old; 		// 3-array with x3-velocity at old time level at u3 points, old time level
-double ***u_1_velocity_new; 		// 3-array with x1-velocity at new time level at u1 points, new time level
-double ***u_2_velocity_new; 		// 3-array with x2-velocity at new time level at u2 points, old time level
-double ***u_3_velocity_new; 		// 3-array with x3-velocity at new time level at u3 points, new time level
-double ***pressure;	    		// 3-array with pressure field at cell centers, old time level 
+Array3<double> u_1_velocity_old; 		// 3-array with x1-velocity at old time level at u1 points, old time level
+Array3<double> u_2_velocity_old; 		// 3-array with x2-velocity at old time level at u2 points, new time level
+Array3<double> u_3_velocity_old; 		// 3-array with x3-velocity at old time level at u3 points, old time level
+Array3<double> u_1_velocity_new; 		// 3-array with x1-velocity at new time level at u1 points, new time level
+Array3<double> u_2_velocity_new; 		// 3-array with x2-velocity at new time level at u2 points, old time level
+Array3<double> u_3_velocity_new; 		// 3-array with x3-velocity at new time level at u3 points, new time level
+Array3<double> pressure;	    		// 3-array with pressure field at cell centers, old time level 
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++*/  
 /* Primary variables for interface capturing  */
 /*++++++++++++++++++++++++++++++++++++++++++++*/  
-double ***volume_of_fluid;		// 3-array with volume_of_fluid at cell centers
-double ***level_set_old;        	// 3-array with level set field at cell centers, old time level
-double ***level_set_new;        	// 3-array with level set field at cell centers, new time level
-double ***curvature; 			// 3-array with interface curvature
-double ***unsmoothed_curvature;	// 3-array with interface curvature without smoothing
+Array3<double> volume_of_fluid;		// 3-array with volume_of_fluid at cell centers
+Array3<double> level_set_old;        	// 3-array with level set field at cell centers, old time level
+Array3<double> level_set_new;        	// 3-array with level set field at cell centers, new time level
+Array3<double> curvature; 			// 3-array with interface curvature
+Array3<double> unsmoothed_curvature;	// 3-array with interface curvature without smoothing
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Primary variables for interface to flow coupling */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-double ***momentum_source_term_u_1;       // 3-array with momentum equation source term x1 component
-double ***momentum_source_term_u_2;       // 3-array with momentum equation source term x2 component
-double ***momentum_source_term_u_3;       // 3-array with momentum equation source term x3 component
-double ***surface_tension_body_force_x1;  // 3-array with momentum equation body force x1 component
-double ***surface_tension_body_force_x2;  // 3-array with momentum equation body force x2 component
-double ***surface_tension_body_force_x3;  // 3-array with momentum equation body force x3 component
-double ***scaled_density_u1;              // 3-array with scaled density for u1 control volume
-double ***scaled_density_u2;              // 3-array with scaled density for u2 control volume
-double ***scaled_density_u3;              // 3-array with scaled density for u3 control volume
+Array3<double> momentum_source_term_u_1;       // 3-array with momentum equation source term x1 component
+Array3<double> momentum_source_term_u_2;       // 3-array with momentum equation source term x2 component
+Array3<double> momentum_source_term_u_3;       // 3-array with momentum equation source term x3 component
+Array3<double> surface_tension_body_force_x1;  // 3-array with momentum equation body force x1 component
+Array3<double> surface_tension_body_force_x2;  // 3-array with momentum equation body force x2 component
+Array3<double> surface_tension_body_force_x3;  // 3-array with momentum equation body force x3 component
+Array3<double> scaled_density_u1;              // 3-array with scaled density for u1 control volume
+Array3<double> scaled_density_u2;              // 3-array with scaled density for u2 control volume
+Array3<double> scaled_density_u3;              // 3-array with scaled density for u3 control volume
 
 
 

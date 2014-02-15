@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 /********************************************************************************/
 /********************************************************************************/
@@ -16,23 +17,14 @@
 	int i_dimension,    	// number of unknowns in the system in i-direction
 	int j_dimension, 	// number of unknowns in the system in i-direction
 	int k_dimension, 	// number of unknowns in the system in i-direction
-	double **matrix_A,			// matrix under consideration
-	double *preconditioner_matrix_M, 	// preconditioner matrix
-	double *rhside_vector, 			// right hand side of preconditioner system
-	double *solution_vector_x		// solution of the preconditioner system	
+	Array2<double> matrix_A,			// matrix under consideration
+	Array1<double> preconditioner_matrix_M, 	// preconditioner matrix
+	Array1<double> rhside_vector, 			// right hand side of preconditioner system
+	Array1<double> solution_vector_x		// solution of the preconditioner system	
 	)
 
 	/* function definitions */
 	{
-	double *double_Vector( 			// allocate a vector of doubles with length
-	      int length_vector			// length_vector
-	      ); 	
-							
-	void free_double_Vector(		// deallocate vector of doubles
-	      double *vector				
-	      );	
- 	
-	
 	
 	int number_dof_in_slice= 		// number of degrees of freedom in one slice of the domain
 		i_dimension*j_dimension; 	// as considered in the matrix
@@ -40,11 +32,11 @@
 	int dimension_system=			// dimension of the linear system 				
 	  i_dimension*j_dimension*k_dimension;
 	int row_index;	   			// index to indicate the row of the matrix 
-	double *temporary_storage_vector;  	// vector to store intermediate results
+	Array1<double> temporary_storage_vector;  	// vector to store intermediate results
 	
 	
 	
-	temporary_storage_vector=double_Vector(dimension_system);
+	temporary_storage_vector.create(dimension_system);
 	
 	/* first part */
 	
@@ -112,7 +104,7 @@
 // 		    solution_vector_x[row_index]=rhside_vector[row_index];
 // 		}
 
-	free_double_Vector(temporary_storage_vector);
+	temporary_storage_vector.destroy();
 	
 }
 

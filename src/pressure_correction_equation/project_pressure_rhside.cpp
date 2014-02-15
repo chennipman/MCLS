@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 /********************************************************************************/
 /*  Function to project the right hand side vector on the column space of the   */
 /*    pressure correction matrix  						*/
@@ -13,7 +14,7 @@
 /********************************************************************************/
   int project_pressure_rhside(
       int total_number_pressure_points,		// total number of points with pressure
-      double  *pressure_rhside		 	// pressure rhside
+      Array1<double> pressure_rhside		 	// pressure rhside
       )
   {
     int one_dimensional_index;			// index of the point in the 1-d array

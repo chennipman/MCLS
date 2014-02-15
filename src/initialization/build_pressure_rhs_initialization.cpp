@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -16,24 +17,24 @@
 /* Notes									*/
 /********************************************************************************/
 void build_pressure_rhs_initialization(
-      double ***initial_pressure_rhs,	     		// right hand side of pressure correction equation
+      Array3<double> initial_pressure_rhs,	     		// right hand side of pressure correction equation
 					     		// excluding contributions 
 					     		// inhomogeneous boundary conditions
-      double ***momentum_source_term_u_1,          	// complete source term for the momentum equation
+      Array3<double> momentum_source_term_u_1,          	// complete source term for the momentum equation
                                                    	// in x1 direction=(-p,1+ g_1 +F1)
-      double ***momentum_source_term_u_2,          	// complete source term for the momentum equation
+      Array3<double> momentum_source_term_u_2,          	// complete source term for the momentum equation
                                                    	// in x2 direction=(-p,2+ g_2 +F2)
-      double ***momentum_source_term_u_3,          	// complete source term for the momentum equation
+      Array3<double> momentum_source_term_u_3,          	// complete source term for the momentum equation
                                                    	// in x3 direction=(-p,3+ g_3 +F3)
-      double ***csf_force_x1,	 	     		// source term of the momentum equation in x1 direction
+      Array3<double> csf_force_x1,	 	     		// source term of the momentum equation in x1 direction
 					     		// defined on all u1 points (including boundaries)
-      double ***csf_force_x2,	             		// source term of the momentum equation in x2 direction
+      Array3<double> csf_force_x2,	             		// source term of the momentum equation in x2 direction
 					     		// defined on all u1 points (including boundaries)
-      double ***csf_force_x3,		     		// source term of the momentum equation in x3 direction
+      Array3<double> csf_force_x3,		     		// source term of the momentum equation in x3 direction
 					    		// defined on all u1 points (including boundaries)
-      double ***u_1_velocity_star, 	     		// velocity field at star time level x1 direction
-      double ***u_2_velocity_star, 	     		// velocity field at star time level x2 direction
-      double ***u_3_velocity_star,	     		// velocity field at star time level x3 direction
+      Array3<double> u_1_velocity_star, 	     		// velocity field at star time level x1 direction
+      Array3<double> u_2_velocity_star, 	     		// velocity field at star time level x2 direction
+      Array3<double> u_3_velocity_star,	     		// velocity field at star time level x3 direction
 			      
       double mesh_width_x1,		     		// grid spacing in x1 direction (uniform)
       double mesh_width_x2,		     		// grid spacing in x2 direction (uniform)

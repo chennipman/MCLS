@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -18,8 +19,8 @@ using namespace std;
 /* Notes										*/
 /********************************************************************************/
    void compute_weighted_curvature(
-	double ***level_set,				// level set field
-	double ***curvature,				// interface curvature
+	Array3<double> level_set,				// level set field
+	Array3<double> curvature,				// interface curvature
        double mesh_width_x1,				// grid spacing in x1 direction (uniform)
        double mesh_width_x2,				// grid spacing in x2 direction (uniform)
        double mesh_width_x3,				// grid spacing in x3 direction (uniform)
@@ -53,59 +54,49 @@ using namespace std;
 	ofstream& output_stream, 			
 	string vector_name,				
 	string look_up_table_name,			
-	double ***cell_centered_vector_field_1, 	
-	double ***cell_centered_vector_field_2, 	
-	double ***cell_centered_vector_field_3, 	
+	Array3<double> cell_centered_vector_field_1, 	
+	Array3<double> cell_centered_vector_field_2, 	
+	Array3<double> cell_centered_vector_field_3, 	
 	int number_primary_cells_i,			
 	int number_primary_cells_j,			
 	int number_primary_cells_k			
 	    );
 		 
-      double ***double_Matrix2(			// allocate memory for a three-dimensional array of doubles
-		int number_primary_cells_i,				
-		int number_primary_cells_j, 		
-		int number_primary_cells_k
-		);
-      void   free_double_Matrix2( 			// deallocate memory for a three
-		double ***doubleMatrix2, 		// dimensional array of doubles
-		int number_primary_cells_i,	
-		int number_primary_cells_j
-		);
       void check_symmetry_velocities(		// check symmetry of vector field
       		int number_primary_cells_i,			
       		int number_primary_cells_j,			
       		int number_primary_cells_k,			
-      		double ***field_x1,				
-      		double ***field_x2,				
-      		double ***field_x3				
+      		Array3<double> field_x1,				
+      		Array3<double> field_x2,				
+      		Array3<double> field_x3				
 	  );
       void interpolate_velocity_u1_vertex(		// interpolate velocity u1 to cell vertices
-	  double ***u_1_velocity_new, 			
-	  double ***u_1_velocity_center,		
+	  Array3<double> u_1_velocity_new, 			
+	  Array3<double> u_1_velocity_center,		
 	  int number_primary_cells_i,			
 	  int number_primary_cells_j,			
 	  int number_primary_cells_k			
 			    );
       void interpolate_velocity_u2_vertex(		// interpolate velocity u2 to cell vertices
-	  double ***u_2_velocity_new, 			
-	  double ***u_2_velocity_center,		
+	  Array3<double> u_2_velocity_new, 			
+	  Array3<double> u_2_velocity_center,		
 	  int number_primary_cells_i,			
 	  int number_primary_cells_j,			
 	  int number_primary_cells_k			
 			    );
       void interpolate_velocity_u3_vertex(		// interpolate velocity u3 to cell vertices
-	  double ***u_3_velocity_new, 			
-	  double ***u_3_velocity_center,		
+	  Array3<double> u_3_velocity_new, 			
+	  Array3<double> u_3_velocity_center,		
 	  int number_primary_cells_i,			
 	  int number_primary_cells_j,			
 	  int number_primary_cells_k			
 			    );
-	double ***weighted_curvature_x1;		// weighted curvature at u1 points
-	double ***weighted_curvature_x2;		// weighted curvature at u2 points
-	double ***weighted_curvature_x3;		// weighted curvature at u3 points
-	double ***weighted_curvature_x1_vertex;    // weighted curvature x1 interpolated to vertices
-	double ***weighted_curvature_x2_vertex;    // weighted curvature x2 interpolated to vertices
-	double ***weighted_curvature_x3_vertex;    // weighted curvature x3 interpolated to vertices
+	Array3<double> weighted_curvature_x1;		// weighted curvature at u1 points
+	Array3<double> weighted_curvature_x2;		// weighted curvature at u2 points
+	Array3<double> weighted_curvature_x3;		// weighted curvature at u3 points
+	Array3<double> weighted_curvature_x1_vertex;    // weighted curvature x1 interpolated to vertices
+	Array3<double> weighted_curvature_x2_vertex;    // weighted curvature x2 interpolated to vertices
+	Array3<double> weighted_curvature_x3_vertex;    // weighted curvature x3 interpolated to vertices
 	
 	int i_index, j_index, k_index;  		// local variables for loop indexing
        int total_number_primary_cells=		// total number of primary cells
@@ -122,17 +113,17 @@ using namespace std;
 	
 	/* allocate memory for the weighted curvature fields */
 	
-	weighted_curvature_x1=double_Matrix2(number_primary_cells_i+1,number_primary_cells_j+2, number_primary_cells_k+2);
-	weighted_curvature_x2=double_Matrix2(number_primary_cells_i+2,number_primary_cells_j+1, number_primary_cells_k+2);
-	weighted_curvature_x3=double_Matrix2(number_primary_cells_i+2,number_primary_cells_j+2, number_primary_cells_k+1);
+	weighted_curvature_x1.create(number_primary_cells_i+1,number_primary_cells_j+2, number_primary_cells_k+2);
+	weighted_curvature_x2.create(number_primary_cells_i+2,number_primary_cells_j+1, number_primary_cells_k+2);
+	weighted_curvature_x3.create(number_primary_cells_i+2,number_primary_cells_j+2, number_primary_cells_k+1);
       
  	    /* allocate memory for the velocity at the cell vertices */
       
-	weighted_curvature_x1_vertex=double_Matrix2(number_primary_cells_i+1, number_primary_cells_j+1, 
+	weighted_curvature_x1_vertex.create(number_primary_cells_i+1, number_primary_cells_j+1, 
 						  number_primary_cells_k+1);
-	weighted_curvature_x2_vertex=double_Matrix2(number_primary_cells_i+1, number_primary_cells_j+1, 
+	weighted_curvature_x2_vertex.create(number_primary_cells_i+1, number_primary_cells_j+1, 
 						  number_primary_cells_k+1);
-	weighted_curvature_x3_vertex=double_Matrix2(number_primary_cells_i+1, number_primary_cells_j+1, 
+	weighted_curvature_x3_vertex.create(number_primary_cells_i+1, number_primary_cells_j+1, 
 						  number_primary_cells_k+1);
      
 	
@@ -297,12 +288,12 @@ using namespace std;
 						    number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
 	
 	
-	free_double_Matrix2(weighted_curvature_x1, number_primary_cells_i+1, number_primary_cells_j+2);
-	free_double_Matrix2(weighted_curvature_x2, number_primary_cells_i+2, number_primary_cells_j+1);
-	free_double_Matrix2(weighted_curvature_x3, number_primary_cells_i+2, number_primary_cells_j+2);
-       free_double_Matrix2(weighted_curvature_x1_vertex, number_primary_cells_i+1, number_primary_cells_j+1);
-       free_double_Matrix2(weighted_curvature_x2_vertex, number_primary_cells_i+1, number_primary_cells_j+1);
-       free_double_Matrix2(weighted_curvature_x3_vertex, number_primary_cells_i+1, number_primary_cells_j+1);
+	weighted_curvature_x1.destroy();
+	weighted_curvature_x2.destroy();
+	weighted_curvature_x3.destroy();
+       weighted_curvature_x1_vertex.destroy();
+       weighted_curvature_x2_vertex.destroy();
+       weighted_curvature_x3_vertex.destroy();
 }			      
 			      
 			      

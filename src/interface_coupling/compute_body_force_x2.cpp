@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<math.h>
@@ -15,9 +16,9 @@
 /********************************************************************************/
 	
       void compute_body_force_x2( 
-      double ***curvature,				// interface curvature 
-      double ***level_set, 				// level set field
-      double ***surface_tension_body_force_x2,	// x2 component of the body force due to
+      Array3<double> curvature,				// interface curvature 
+      Array3<double> level_set, 				// level set field
+      Array3<double> surface_tension_body_force_x2,	// x2 component of the body force due to
 							// CSF formulation of surface tension model
       double mesh_width_x1,				// grid spacing in x1 direction (uniform)
       double mesh_width_x2,				// grid spacing in x2 direction (uniform)
@@ -41,7 +42,7 @@
 	    int first_dimension,	
 	    int second_dimension,	
 	    int third_dimension,	
-	    double ***matrix2_to_set,	
+	    Array3<double> matrix2_to_set,	
 	    double constant_value	
 	  );
       double computed_derivative_heaviside_function(	// use numerical approximation to the 	 

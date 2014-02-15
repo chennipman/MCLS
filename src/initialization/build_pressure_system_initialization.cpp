@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 class vector
 {
 public:
@@ -21,32 +22,32 @@ public:
 /********************************************************************************/
 
   void build_pressure_system_initialization(
-      double **pressure_correction_matrix,    	// pressure correction matrix
-      double *final_pressure_rhs,	     		// right hand side of pressure correction equation
+      Array2<double> pressure_correction_matrix,    	// pressure correction matrix
+      Array1<double> final_pressure_rhs,	     		// right hand side of pressure correction equation
 							// including contributions 
 							// inhomogeneous boundary conditions
-      double ***level_set_new,			// level-set field
-      double ***sources_x1,		        	// source term of the momentum equation in x1 direction
+      Array3<double> level_set_new,			// level-set field
+      Array3<double> sources_x1,		        	// source term of the momentum equation in x1 direction
 					        	// defined on all u1 points (including boundaries)
-      double ***sources_x2,  		        	// source term of the momentum equation in x2 direction
+      Array3<double> sources_x2,  		        	// source term of the momentum equation in x2 direction
 					        	// defined on all u1 points (including boundaries)
-      double ***sources_x3,  		        	// source term of the momentum equation in x3 direction
+      Array3<double> sources_x3,  		        	// source term of the momentum equation in x3 direction
 					        	// defined on all u1 points (including boundaries)
-      double ***surface_tension_body_force_x1,	// source term of the momentum equation in x1 direction
+      Array3<double> surface_tension_body_force_x1,	// source term of the momentum equation in x1 direction
 					        	// defined on all u1 points (including boundaries)
-      double ***surface_tension_body_force_x2,	// source term of the momentum equation in x2 direction
+      Array3<double> surface_tension_body_force_x2,	// source term of the momentum equation in x2 direction
 					        	// defined on all u1 points (including boundaries)
-      double ***surface_tension_body_force_x3,	// source term of the momentum equation in x3 direction
+      Array3<double> surface_tension_body_force_x3,	// source term of the momentum equation in x3 direction
 					        	// defined on all u1 points (including boundaries)
-      double ***scaled_density_u1,			// scaled density for the controlvolumes
+      Array3<double> scaled_density_u1,			// scaled density for the controlvolumes
 							// of the momentum equation in x1 direction
-      double ***scaled_density_u2,			// scaled density for the controlvolumes
+      Array3<double> scaled_density_u2,			// scaled density for the controlvolumes
 							// of the momentum equation in x2 direction
-      double ***scaled_density_u3,			// scaled density for the controlvolumes
+      Array3<double> scaled_density_u3,			// scaled density for the controlvolumes
 							// of the momentum equation in x3 direction
-      double ***u_1_velocity_star, 	        	// velocity field at star time level x1 direction
-      double ***u_2_velocity_star, 	        	// velocity field at star time level x2 direction
-      double ***u_3_velocity_star,	        	// velocity field at star time level x3 direction
+      Array3<double> u_1_velocity_star, 	        	// velocity field at star time level x1 direction
+      Array3<double> u_2_velocity_star, 	        	// velocity field at star time level x2 direction
+      Array3<double> u_3_velocity_star,	        	// velocity field at star time level x3 direction
       double mesh_width_x1,		        	// grid spacing in x1 direction (uniform)
       double mesh_width_x2,		        	// grid spacing in x2 direction (uniform)
       double mesh_width_x3,		        	// grid spacing in x3 direction (uniform)
@@ -67,38 +68,32 @@ public:
        )
 
   {
-    double ***double_Matrix2(int number_primary_cells_i,			// allocate memory for a three-
-				int number_primary_cells_j, 			// dimensional array of doubles
-				  int number_primary_cells_k);
-    void   free_double_Matrix2( 						// deallocate memory for a three
-		double ***doubleMatrix2, int number_primary_cells_i,	// dimensional array of doubles
-		int number_primary_cells_j);
 
 
     void build_pressure_matrix (						// build pressure correction matrix
-        double **pressure_correction_matrix, 
+        Array2<double> pressure_correction_matrix, 
         double mesh_width_x1,		     
         double mesh_width_x2,		     
         double mesh_width_x3,		     
-        double ***level_set_new, 	
-	double ***scaled_density_u1,
-	double ***scaled_density_u2,
-	double ***scaled_density_u3,
+        Array3<double> level_set_new, 	
+	Array3<double> scaled_density_u1,
+	Array3<double> scaled_density_u2,
+	Array3<double> scaled_density_u3,
         int number_primary_cells_i,	     
         int number_primary_cells_j,	     
         int number_primary_cells_k,	     
         double rho_plus_over_rho_minus);
     void build_pressure_rhs_initialization( 				// build pressure equation right hand side
-        double ***initial_pressure_rhs,	       				// with the source terms only
-        double ***sources_x1,		       					               
-        double ***sources_x2,  		  
-        double ***sources_x3,  		  
-        double ***surface_tension_body_force_x1,	 	  
-        double ***surface_tension_body_force_x2,	          
-        double ***surface_tension_body_force_x3,		  
-        double ***u_1_velocity_star, 	  
-        double ***u_2_velocity_star, 	  
-        double ***u_3_velocity_star,	  
+        Array3<double> initial_pressure_rhs,	       				// with the source terms only
+        Array3<double> sources_x1,		       					               
+        Array3<double> sources_x2,  		  
+        Array3<double> sources_x3,  		  
+        Array3<double> surface_tension_body_force_x1,	 	  
+        Array3<double> surface_tension_body_force_x2,	          
+        Array3<double> surface_tension_body_force_x3,		  
+        Array3<double> u_1_velocity_star, 	  
+        Array3<double> u_2_velocity_star, 	  
+        Array3<double> u_3_velocity_star,	  
         double mesh_width_x1,		  
         double mesh_width_x2,		  
         double mesh_width_x3,		  
@@ -109,49 +104,49 @@ public:
         int continuous_surface_force_model,    
         int source_terms_in_momentum_predictor);
     void build_pressure_rhs_boundary(					// apply boundary conditions to the pressure
-	double ***initial_pressure_rhs,	     				// correction equation right hand side
-	double *final_pressure_rhs,	     
+	Array3<double> initial_pressure_rhs,	     				// correction equation right hand side
+	Array1<double> final_pressure_rhs,	     
 	double mesh_width_x1,		     
 	double mesh_width_x2,		     
 	double mesh_width_x3,		     
 	int number_primary_cells_i,	     
 	int number_primary_cells_j,	     
 	int number_primary_cells_k,	     
-	double ***pressure_boundary_condition_x1, 
-	double ***pressure_boundary_condition_x2,	
-	double ***pressure_boundary_condition_x3);
+	Array3<double> pressure_boundary_condition_x1, 
+	Array3<double> pressure_boundary_condition_x2,	
+	Array3<double> pressure_boundary_condition_x3);
    void set_pressure_boundary_condition(					// set inhomogeneous boundary
         vector gravity,				    			// conditions for the pressure
-	double ***pressure_boundary_condition_x1,	
-	double ***pressure_boundary_condition_x2,
-	double ***pressure_boundary_condition_x3,
+	Array3<double> pressure_boundary_condition_x1,	
+	Array3<double> pressure_boundary_condition_x2,
+	Array3<double> pressure_boundary_condition_x3,
 	int number_primary_cells_i,
 	int number_primary_cells_j,
 	int number_primary_cells_k);
      
-       double ***initial_pressure_rhs;	     	    			// right hand side of pressure correction equation
+       Array3<double> initial_pressure_rhs;	     	    			// right hand side of pressure correction equation
 						    				// excluding contributions 
 						    				// inhomogeneous boundary conditions
-       double ***pressure_boundary_condition_x1;    			//inhomogeneous boundary condition for 
+       Array3<double> pressure_boundary_condition_x1;    			//inhomogeneous boundary condition for 
 						    				// the pressure planes with normal in x1 direction
-       double ***pressure_boundary_condition_x2;    			//inhomogeneous boundary condition for the pressure
+       Array3<double> pressure_boundary_condition_x2;    			//inhomogeneous boundary condition for the pressure
 						    				// the pressure planes with normal in x1 direction
-       double ***pressure_boundary_condition_x3;    			//inhomogeneous boundary condition for the pressure
+       Array3<double> pressure_boundary_condition_x3;    			//inhomogeneous boundary condition for the pressure
 						    				// the pressure planes with normal in x1 direction
 	
       /* allocate memory for the initial boundary condition and the */
       /* pressure boundary conditions				    */
        
-      initial_pressure_rhs=double_Matrix2(number_primary_cells_i+2, 
+      initial_pressure_rhs.create(number_primary_cells_i+2, 
 					    number_primary_cells_j+2,
 					      number_primary_cells_k+2);
-      pressure_boundary_condition_x1=double_Matrix2(2, 
+      pressure_boundary_condition_x1.create(2, 
 					    number_primary_cells_j+2,
 					      number_primary_cells_k+2);
-      pressure_boundary_condition_x2=double_Matrix2(2, 
+      pressure_boundary_condition_x2.create(2, 
 					    number_primary_cells_i+2,
 					      number_primary_cells_k+2);
-      pressure_boundary_condition_x3=double_Matrix2(2, 
+      pressure_boundary_condition_x3.create(2, 
 					    number_primary_cells_i+2,
 					      number_primary_cells_j+2);
       
@@ -200,10 +195,10 @@ public:
       /* de deallocate the memory for the pressure boundary conditions and the */
       /* initial pressure right hand side 				       */
       
-      free_double_Matrix2(initial_pressure_rhs,number_primary_cells_i+2, number_primary_cells_j+2);
-      free_double_Matrix2(pressure_boundary_condition_x1,2, number_primary_cells_j+2);
-      free_double_Matrix2(pressure_boundary_condition_x2,2, number_primary_cells_i+2);
-      free_double_Matrix2(pressure_boundary_condition_x3,2, number_primary_cells_i+2);
+      initial_pressure_rhs.destroy();
+      pressure_boundary_condition_x1.destroy();
+      pressure_boundary_condition_x2.destroy();
+      pressure_boundary_condition_x3.destroy();
 
   }
       

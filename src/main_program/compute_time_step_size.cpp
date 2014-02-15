@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -21,9 +22,9 @@
 //
 
       void compute_time_step_size(
-      double ***u_1_velocity_new, 		// velocity field at new time level x1 direction
-      double ***u_2_velocity_new, 		// velocity field at new time level x2 direction
-      double ***u_3_velocity_new,		// velocity field at new time level x3 direction
+      Array3<double> u_1_velocity_new, 		// velocity field at new time level x1 direction
+      Array3<double> u_2_velocity_new, 		// velocity field at new time level x2 direction
+      Array3<double> u_3_velocity_new,		// velocity field at new time level x3 direction
       double rho_plus_over_rho_minus,		// ratio of the densities of the two phases
       double maximum_weighted_curvature,	// maximum 'active' value of the curvature 
 						// used to evaluate the capillary time step

@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include <iostream>
 #include <stdlib.h> 
 #include <stdio.h> 
@@ -26,9 +27,9 @@ using namespace std;
 	ofstream& output_stream, 			// stream connected to output file
 	string vector_name,				// name of the scalar field to write to file 
 	string look_up_table_name,			// name of the look-up table
-	double ***cell_centered_vector_field_1, 	// cell centered vector field, x1 component
-	double ***cell_centered_vector_field_2, 	// cell centered vector field, x2 component
-	double ***cell_centered_vector_field_3, 	// cell centered vector field, x3 component
+	Array3<double> cell_centered_vector_field_1, 	// cell centered vector field, x1 component
+	Array3<double> cell_centered_vector_field_2, 	// cell centered vector field, x2 component
+	Array3<double> cell_centered_vector_field_3, 	// cell centered vector field, x3 component
 	int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
 	int number_primary_cells_k			// number of primary (pressure) cells in x3 direction

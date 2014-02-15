@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -20,16 +21,16 @@
 /* and NOT the real gradient 							*/
 /********************************************************************************/
    void   compute_level_set_gradient(				
-	double ***level_set, 			// level set field at new time level
+	Array3<double> level_set, 			// level set field at new time level
 						// after convection and reinitialization
 						// not mass conserving
-	double ***d_level_set_d_x1,			// first partial derivative of
+	Array3<double> d_level_set_d_x1,			// first partial derivative of
 							// the level-set field wrt x1
 							// second order central approximation
-	double ***d_level_set_d_x2,			// first partial derivative of 
+	Array3<double> d_level_set_d_x2,			// first partial derivative of 
 							// the level-set field wrt x2
 							// second order central approximation
-	double ***d_level_set_d_x3,			// first partial derivative of
+	Array3<double> d_level_set_d_x3,			// first partial derivative of
  							// the level-set field wrt x3
 							// second order central approximation
         int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
@@ -44,7 +45,7 @@
 	    int first_dimension,				// number of elements in first dimension
 	    int second_dimension,				// number of elements in second dimension
 	    int third_dimension,				// number of elements in third dimension
-	    double ***matrix2_to_set,				// the name of the array that has to be set
+	    Array3<double> matrix2_to_set,				// the name of the array that has to be set
 	    double constant_value				// the constant value the vector has to be set to
 	    );
 	

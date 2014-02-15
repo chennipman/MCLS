@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<algorithm>
 #include<iostream>
 /********************************************************************************/
@@ -18,9 +19,9 @@
 /********************************************************************************/
 
 void apply_redistribution_volume_of_fluid_correction(
-         double ***level_set,                                  // level-set field
-         double ***volume_of_fluid,                            // volume of fluid field
-         double ***volume_of_fluid_correction,                 // correction to volume of fluid field
+         Array3<double> level_set,                                  // level-set field
+         Array3<double> volume_of_fluid,                            // volume of fluid field
+         Array3<double> volume_of_fluid_correction,                 // correction to volume of fluid field
          double mesh_width_x1,                                 // grid spacing in x1 direction (uniform)
          double mesh_width_x2,                                 // grid spacing in x2 direction (uniform)
          double mesh_width_x3,                                 // grid spacing in x3 direction (uniform)
@@ -38,19 +39,9 @@ void apply_redistribution_volume_of_fluid_correction(
                                                                // algorithm
          )
  {
-     double ***double_Matrix2(
-        int number_primary_cells_i,                            // allocate memory for a three-
-        int number_primary_cells_j,                            // dimensional array of doubles
-        int number_primary_cells_k
-     );
-     void   free_double_Matrix2(                               // deallocate memory for a three
-        double ***doubleMatrix2,                               // dimensional array of doubles
-        int number_primary_cells_i,
-        int number_primary_cells_j
-     );
      void set_constant_vector(
         int vector_length,                                     // length of the vector
-        double *vector_to_set,                                 // the name of the vector that has to be set
+        Array1<double> vector_to_set,                                 // the name of the vector that has to be set
         double constant_value                                  // the constant value the vector has to be set to
      );
      double compute_redistribution_velocity(                   // compute convection velocity
@@ -64,15 +55,15 @@ void apply_redistribution_volume_of_fluid_correction(
         double right_hand_value_correction
      );
 
-      double ***time_derivative_volume_of_fluid_correction; // time-derivative of the volume of fluid
+      Array3<double> time_derivative_volume_of_fluid_correction; // time-derivative of the volume of fluid
 							    // correction
-      double ***velocity_mass_redistribution_x1;	    // convection velocity in mass
+      Array3<double> velocity_mass_redistribution_x1;	    // convection velocity in mass
 							    // redistribution algorithm x1 
 							    // component
-      double ***velocity_mass_redistribution_x2;	    // convection velocity in mass
+      Array3<double> velocity_mass_redistribution_x2;	    // convection velocity in mass
 							    // redistribution algorithm x1 
 							    // component
-      double ***velocity_mass_redistribution_x3;	    // convection velocity in mass
+      Array3<double> velocity_mass_redistribution_x3;	    // convection velocity in mass
 							    // redistribution algorithm x1 
 							    // component
       double max_time_derivative_vof_correction;
@@ -110,17 +101,17 @@ void apply_redistribution_volume_of_fluid_correction(
 	
       /* allocate memory for the redistribution_velocity */
       
-      velocity_mass_redistribution_x1=double_Matrix2(number_primary_cells_i+1, number_primary_cells_j+2,
+      velocity_mass_redistribution_x1.create(number_primary_cells_i+1, number_primary_cells_j+2,
 						   number_primary_cells_k+2);
-      velocity_mass_redistribution_x2=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+1,
+      velocity_mass_redistribution_x2.create(number_primary_cells_i+2, number_primary_cells_j+1,
 						   number_primary_cells_k+2);
-      velocity_mass_redistribution_x3=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+      velocity_mass_redistribution_x3.create(number_primary_cells_i+2, number_primary_cells_j+2,
 						   number_primary_cells_k+1);
       
       /* allocate memory for the time derivative of the volume of fluid correction*/
       
       
-      time_derivative_volume_of_fluid_correction=double_Matrix2(number_primary_cells_i+2,
+      time_derivative_volume_of_fluid_correction.create(number_primary_cells_i+2,
                                                                       number_primary_cells_j+2,
 						                                 number_primary_cells_k+2);
 
@@ -376,14 +367,13 @@ void apply_redistribution_volume_of_fluid_correction(
       
       /* deallocate memory for the redistribution_velocity */
       
-      free_double_Matrix2(velocity_mass_redistribution_x1, number_primary_cells_i+1, number_primary_cells_j+2);
-      free_double_Matrix2(velocity_mass_redistribution_x2, number_primary_cells_i+2, number_primary_cells_j+1);
-      free_double_Matrix2(velocity_mass_redistribution_x3, number_primary_cells_i+2, number_primary_cells_j+2);
+      velocity_mass_redistribution_x1.destroy();
+      velocity_mass_redistribution_x2.destroy();
+      velocity_mass_redistribution_x3.destroy();
       
       /* deallocate memory for the time derivative of the volume of fluid correction*/
       
       
-      free_double_Matrix2(time_derivative_volume_of_fluid_correction,
-				  number_primary_cells_i+2, number_primary_cells_j+2);
+      time_derivative_volume_of_fluid_correction.destroy();
   }     
   

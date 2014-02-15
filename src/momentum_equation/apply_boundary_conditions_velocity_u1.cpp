@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -48,7 +49,7 @@ public:
       void apply_boundary_conditions_velocity_u1(
 	  boundary_face boundary_faces[6],		// array with all the information
 							// for the boundary conditions 
-	  double ***u_1_velocity, 			// velocity field x1 direction
+	  Array3<double> u_1_velocity, 			// velocity field x1 direction
 	  double mesh_width_x1,				// grid spacing in x1 direction (uniform)
 	  double mesh_width_x2,				// grid spacing in x2 direction (uniform)
 	  double mesh_width_x3,				// grid spacing in x3 direction (uniform)

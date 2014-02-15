@@ -1,3 +1,4 @@
+#include "../headers/array.h"
        #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -51,7 +52,7 @@ using namespace std;
 /********************************************************************************/
 
       void initialize_pressure(
-      double ***pressure,                        // pressure
+      Array3<double> pressure,                        // pressure
       double mesh_width_x1,                      // grid spacing in x1 direction (uniform)
       double mesh_width_x2,                      // grid spacing in x2 direction (uniform)
       double mesh_width_x3,                      // grid spacing in x3 direction (uniform)

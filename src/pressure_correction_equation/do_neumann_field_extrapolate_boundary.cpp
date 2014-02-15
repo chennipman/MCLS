@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -21,7 +22,7 @@
 /********************************************************************************/
 //
 void  field_extrapolate_boundary(
-      double ***field, 			// cell centered field
+      Array3<double> field, 			// cell centered field
       int number_primary_cells_i,	// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,	// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k	// number of primary (pressure) cells in x3 direction
@@ -29,7 +30,7 @@ void  field_extrapolate_boundary(
 )
 {
 void  field_neumann_boundary(
-      double ***field, 		
+      Array3<double> field, 		
       int number_primary_cells_i,	
       int number_primary_cells_j,	
       int number_primary_cells_k	

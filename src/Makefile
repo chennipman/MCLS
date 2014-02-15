@@ -7,7 +7,6 @@ EXEC_DIR:=../executable/
 HEADER_DIR:=./headers/
 MAIN_DIR:=./main_program/
 INITIAL_DIR:=./initialization/
-MEMORY_DIR:=./memory/
 UTILS_DIR:=./utils/
 MOMENTUM_DIR:=./momentum_equation/
 INTERFACE_DIR:=./interface/
@@ -22,7 +21,7 @@ OBJS=$(addprefix $(OBJS_DIR),dns.o time_stepping_sequence.o advance_flow_field.o
 				compute_time_step_size.o \
 				initialize_computation.o set_parameters.o \
 				set_boundary_conditions.o allocate_main_variables.o \
-				allocation_functions.o initialize_all_variables.o \
+				initialize_all_variables.o \
 				initialize_flow_field.o utilities.o apply_boundary_conditions_velocity.o  \
 				apply_boundary_conditions_velocity_u1.o apply_boundary_conditions_velocity_u2.o \
 				apply_boundary_conditions_velocity_u3.o initialize_interface.o \
@@ -132,8 +131,7 @@ $(OBJS_DIR)set_parameters.o:$(INITIAL_DIR)set_parameters.cpp
 	$(CXX) $(CFLAGS) $(INITIAL_DIR)set_parameters.cpp -o $(OBJS_DIR)set_parameters.o
 $(OBJS_DIR)set_boundary_conditions.o:$(INITIAL_DIR)set_boundary_conditions.cpp 
 	$(CXX) $(CFLAGS) $(INITIAL_DIR)set_boundary_conditions.cpp -o $(OBJS_DIR)set_boundary_conditions.o
-$(OBJS_DIR)allocate_main_variables.o:$(INITIAL_DIR)allocate_main_variables.cpp \
- 					$(MEMORY_DIR)allocation_functions.cpp
+$(OBJS_DIR)allocate_main_variables.o:$(INITIAL_DIR)allocate_main_variables.cpp
 	$(CXX) $(CFLAGS) $(INITIAL_DIR)allocate_main_variables.cpp -o $(OBJS_DIR)allocate_main_variables.o
 $(OBJS_DIR)initialize_all_variables.o:$(INITIAL_DIR)initialize_all_variables.cpp \
  				$(INITIAL_DIR)initialize_flow_field.cpp \
@@ -210,13 +208,6 @@ $(OBJS_DIR)compute_scaled_density_u3.o:$(COUPL_DIR)compute_scaled_density_u3.cpp
 	$(CXX) $(CFLAGS) $(COUPL_DIR)compute_scaled_density_u3.cpp -o $(OBJS_DIR)compute_scaled_density_u3.o
 $(OBJS_DIR)compute_density_u_controlvolumes.o:$(COUPL_DIR)compute_density_u_controlvolumes.cpp 
 	$(CXX) $(CFLAGS) $(COUPL_DIR)compute_density_u_controlvolumes.cpp -o $(OBJS_DIR)compute_density_u_controlvolumes.o
-
-#---------------------#
-#  memory functions   #
-#---------------------#
-
-$(OBJS_DIR)allocation_functions.o:$(MEMORY_DIR)allocation_functions.cpp 
-	$(CXX) $(CFLAGS) $(MEMORY_DIR)allocation_functions.cpp -o $(OBJS_DIR)allocation_functions.o
 
 #----------------------#
 #  utility functions   #
@@ -512,7 +503,6 @@ clean:
 # interface_coupling :
 # linear_solver :
 # main_program
-# memory
 # momentum_equation
 # navier_stokes
 # post_processing

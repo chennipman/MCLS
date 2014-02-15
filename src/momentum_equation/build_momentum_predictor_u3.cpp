@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -50,16 +51,16 @@ public:
 /* - Apply boundary conditions to the matrix (matrix folding)                   */ 
 /********************************************************************************/
     void build_momentum_predictor_u3(
-      double **momentum_matrix_u3,			// momentum matrix velocity x3 direction
-      double *momentum_rhside_u3,			// momentum rhside velocity x3 direction
-      double ***level_set, 				// level-set field
-      double ***momentum_source_term_u_3, 		// complete source term for the momentum equation
+      Array2<double> momentum_matrix_u3,			// momentum matrix velocity x3 direction
+      Array1<double> momentum_rhside_u3,			// momentum rhside velocity x3 direction
+      Array3<double> level_set, 				// level-set field
+      Array3<double> momentum_source_term_u_3, 		// complete source term for the momentum equation
 							// in x3 direction=(-p,3+ g_3 +F3)
-      double ***scaled_density_u3,                 // scaled density for the controlvolumes
+      Array3<double> scaled_density_u3,                 // scaled density for the controlvolumes
                                                    // of the momentum equation in x3 direction
-      double ***u_1_velocity_old, 			// velocity field at old time level x1 direction
-      double ***u_2_velocity_old, 			// velocity field at old time level x2 direction
-      double ***u_3_velocity_old,			// velocity field at old time level x3 direction
+      Array3<double> u_1_velocity_old, 			// velocity field at old time level x1 direction
+      Array3<double> u_2_velocity_old, 			// velocity field at old time level x2 direction
+      Array3<double> u_3_velocity_old,			// velocity field at old time level x3 direction
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
@@ -83,9 +84,9 @@ public:
 
       {
     void build_momentum_matrix_u3(
-      double **momentum_matrix_u3,			// build matrix for the momentum equation
-      double ***level_set, 				// for the velocity in x3 direction
-      double ***scaled_density_u3,
+      Array2<double> momentum_matrix_u3,			// build matrix for the momentum equation
+      Array3<double> level_set, 				// for the velocity in x3 direction
+      Array3<double> scaled_density_u3,
       int number_primary_cells_i,			
       int number_primary_cells_j,			
       int number_primary_cells_k,			
@@ -99,13 +100,13 @@ public:
       double smoothing_distance_factor			
        );
     void build_momentum_rhs_u3(
-      double *momentum_rhside_u3,			// build rhside for the momentum equation
-      double ***level_set, 				// for the velocity in x3 direction
-      double ***scaled_density_u3,
-      double ***momentum_source_term_u_3, 		 
-      double ***u_1_velocity_old, 			 
-      double ***u_2_velocity_old, 			 
-      double ***u_3_velocity_old,			 
+      Array1<double> momentum_rhside_u3,			// build rhside for the momentum equation
+      Array3<double> level_set, 				// for the velocity in x3 direction
+      Array3<double> scaled_density_u3,
+      Array3<double> momentum_source_term_u_3, 		 
+      Array3<double> u_1_velocity_old, 			 
+      Array3<double> u_2_velocity_old, 			 
+      Array3<double> u_3_velocity_old,			 
       int number_primary_cells_i,			 
       int number_primary_cells_j,			 
       int number_primary_cells_k,			 
@@ -120,8 +121,8 @@ public:
        );
   void fold_momentum_rhside_u3(
       boundary_face boundary_faces[6],			// apply boundary conditions for the 
-      double *momentum_rhside_u3,			// rhside of the momentum equation 
-      double **momentum_matrix_u3,			// velocity in x3 direction
+      Array1<double> momentum_rhside_u3,			// rhside of the momentum equation 
+      Array2<double> momentum_matrix_u3,			// velocity in x3 direction
       int number_primary_cells_i,			 
       int number_primary_cells_j,			 
       int number_primary_cells_k,			 
@@ -131,7 +132,7 @@ public:
 	   );
   void fold_momentum_matrix_u3(
       boundary_face boundary_faces[6],			// apply boundary conditions for the
-      double **momentum_matrix_u3,			// matrix of the momentum equation
+      Array2<double> momentum_matrix_u3,			// matrix of the momentum equation
       int number_primary_cells_i,			// velocity in x3 direction
       int number_primary_cells_j,			 
       int number_primary_cells_k,
