@@ -7,15 +7,7 @@
 #include <sstream>
 #include <fstream>
 using namespace std;
-class restart_parameters
-{
-public:
-      int start_from_restart_file;		
-      int write_solution_to_restart_file;
-      string name_restart_file_to_write;
-      string name_restart_file_to_read;
-      restart_parameters(void);
-};
+
 /********************************************************************************/
 /*  Function to read a restart file containing the main unknowns                */
 /*  										*/
@@ -34,7 +26,7 @@ public:
 /*	  u_3_velocity								*/		
 /*	  pressure								*/		
 /********************************************************************************/
-     void read_restart_file(
+EXPORT void read_restart_file(
 	  double &time_of_restart,			// time for which restart file is available
 	  Array3<double> level_set, 				// level set field at new time level
 							// mass conserving

@@ -18,7 +18,7 @@
 /*	    \ 0,						|phi| > alpha	*/
 /* where a is the smoothing distance						*/
 /********************************************************************************/
-      double delta_function(		 
+EXPORT double delta_function(		 
 	      double level_set,				// level-set value 
 	      double mesh_width_x1,			// grid spacing in x1 direction (uniform)
 	      double mesh_width_x2,			// grid spacing in x2 direction (uniform)

@@ -12,7 +12,7 @@
 /* of the pressure correction matrix is removed from the right hand side.       */
 /* This function should be in-lined.                                            */
 /********************************************************************************/
-  int project_pressure_rhside(
+EXPORT int project_pressure_rhside(
       int total_number_pressure_points,		// total number of points with pressure
       Array1<double> pressure_rhside		 	// pressure rhside
       )

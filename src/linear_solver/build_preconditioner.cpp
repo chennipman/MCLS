@@ -14,7 +14,7 @@
 /* It is sufficient to store only a diagonal matrix. The formulation of the     */
 /* preconditioner is described in the Lecture Notes of CFD II Burgers course.   */
 /********************************************************************************/
-     void build_preconditioner(
+EXPORT void build_preconditioner(
 	int i_dimension,    	// number of unknowns in the system in i-direction
 	int j_dimension, 	// number of unknowns in the system in i-direction
 	int k_dimension, 	// number of unknowns in the system in i-direction

@@ -1,11 +1,4 @@
 #include "../headers/array.h"
-class surface
-{
-public:
-  int active;
-  int orientation;
-  double height;
-};
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -24,7 +17,7 @@ public:
 /* level-set function are influenced by the presence of the free surfaces.      */
 /********************************************************************************/
 
-void initialize_free_surface(
+EXPORT void initialize_free_surface(
       surface *free_surfaces, 				// array with the definition of the free surfaces
       int number_of_free_surfaces, 			// number of bubbles in the domain (<10)
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
@@ -37,10 +30,6 @@ void initialize_free_surface(
 	    
     )
     {
-    double sign(					// compute sign of input value
-	  double value, 
-	  double set_sign
-		);		
     double x1_coordinate_cell_center;			// x1 coordinate cell center
     double x2_coordinate_cell_center;			// x2 coordinate cell center
     double x3_coordinate_cell_center;			// x3 coordinate cell center

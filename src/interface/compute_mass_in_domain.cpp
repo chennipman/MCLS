@@ -1,5 +1,5 @@
 #include "../headers/array.h"
-     double compute_mass_in_domain(
+EXPORT double compute_mass_in_domain(
     	   Array3<double> volume_of_fluid,			// volume of fluid field
 	  int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	  int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction

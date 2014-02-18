@@ -14,7 +14,7 @@
 /********************************************************************************/
 /* Notes									*/
 /********************************************************************************/
-double compute_curvature_error_laplace(
+EXPORT double compute_curvature_error_laplace(
       Array3<double> curvature,				// interface curvature 
       Array3<double> volume_of_fluid,			// volume of fluid field
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction

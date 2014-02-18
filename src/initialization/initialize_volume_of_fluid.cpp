@@ -12,7 +12,7 @@
 /********************************************************************************/
 /* Notes										*/
 /********************************************************************************/
-      void initialize_volume_of_fluid(
+EXPORT void initialize_volume_of_fluid(
 	  Array3<double> level_set, 			// level set field 
 	  Array3<double> volume_of_fluid, 			// volume of fluid field
 	  int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
@@ -23,41 +23,6 @@
 							// partial derivatives
 	    )
       {
-      /* function definitions */
-      
-      int    compute_volume_of_fluid(		// compute volume of fluid field
-		Array3<double> level_set, 		// corresponding to a given 
-		Array3<double> d_level_set_d_x1, 		// level-set field
-		Array3<double> d_level_set_d_x2, 
-		Array3<double> d_level_set_d_x3,
-		Array3<double> volume_of_fluid,
-		int number_primary_cells_i, 
-		int number_primary_cells_j, 
-		int number_primary_cells_k,
-		double lower_bound_derivatives
-		);
-      void 	compute_level_set_gradient(		// compute gradient of level-set field
-		Array3<double> level_set_star, 
-		Array3<double> d_level_set_d_x1, 
-		Array3<double> d_level_set_d_x2, 
-		Array3<double> d_level_set_d_x3,
-		int number_primary_cells_i, 
-		int number_primary_cells_j, 
-		int number_primary_cells_k
-		);
-      void field_neumann_boundary(			// apply neumann boundary condition to
-	  	Array3<double> field, 			// cell centered field
-	  	int number_primary_cells_i,	
-	  	int number_primary_cells_j,	
-	  	int number_primary_cells_k	
-	  	);
-      	void  field_extrapolate_boundary(      	// extrapolate field to virtual cells
-            Array3<double> field, 			
-            int number_primary_cells_i,	
-            int number_primary_cells_j,	
-            int number_primary_cells_k	
-	    );
-
       Array3<double> d_level_set_d_x1;			// first partial derivative of
 							// the level-set field wrt x1
 							// second order central approximation

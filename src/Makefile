@@ -1,6 +1,6 @@
 CXX=g++
 RM=rm -f
-CFLAGS= -c -O3
+CFLAGS= -c -O3 -include ../objects/funcdefs.h
 #############################################
 OBJS_DIR:=../objects/
 EXEC_DIR:=../executable/
@@ -100,8 +100,11 @@ OBJS=$(addprefix $(OBJS_DIR),dns.o time_stepping_sequence.o advance_flow_field.o
 #                               apply_redistribution_volume_of_fluid_correction.o 
 all:$(EXEC_DIR)MCLS
 
-$(EXEC_DIR)MCLS:$(OBJS)
+$(EXEC_DIR)MCLS:../objects/funcdefs.h $(OBJS)
 	$(CXX) $(OBJS) -O3 -o $(EXEC_DIR)MCLS
+
+../objects/funcdefs.h:
+	./gen_funcdefs.h
 
 #---------------------------#
 #  main program functions   #
@@ -494,7 +497,7 @@ $(OBJS_DIR)read_restart_file.o:$(RESTART_DIR)read_restart_file.cpp
 
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) ../objects/funcdefs.h
 # backup
 # classes
 # headers

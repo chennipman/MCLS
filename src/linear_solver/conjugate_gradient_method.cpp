@@ -17,7 +17,7 @@
 /* definite systems. In this solver an incomplete choleski preconditioner is    */
 /* used.                                       	                         	*/
 /********************************************************************************/
-      int conjugate_gradient_method(
+EXPORT int conjugate_gradient_method(
       int i_dimension,   			// number of unknowns in the system in i-direction
       int j_dimension,   			// number of unknowns in the system in i-direction
       int k_dimension,   			// number of unknowns in the system in i-direction
@@ -37,55 +37,6 @@
 						// conjugate gradient method
      )
       {    
-	  
-/***************************************************************************************/	
-      /* function definitions */	  
- /***************************************************************************************/	
-      void copy_vector( int length_vector, 		// length of both vectors
-	      Array1<double> original_vector, 			// first input vector
-	      Array1<double> image_vector			// second input vector
-		      );	  
-      double compute_vector_norm(int vector_length, 	//length of the vector
-		     Array1<double> input_vector  		//input vector 
-	 );   
-      double dot_product( 
-	      int vector_length, 			// length of both input vectors
-	      Array1<double> x, 				// first input vector
-	      Array1<double> y					// second input vector
-	  );
-      double maximum_element(int vector_length, 	//length of the vector
-		     Array1<double> input_vector  		//input vector 
-	  );
-      double minimum_element(int vector_length, 	//length of the vector
-		     Array1<double> input_vector  		//input vector 
-	  );
-      void matrix_vector_product(
-	    int i_dimension,   // number of unknowns in the system in i-direction
-	    int j_dimension,   // number of unknowns in the system in i-direction
-	    int k_dimension,   // number of unknowns in the system in i-direction
-	    Array2<double> A,    // matrix under consideration
-	    Array1<double> x,     // INPUT vector x
-	    Array1<double> y      // OUTPUT vector y such that y=Ax
-	  );
-      void linear_combination(
-	int vector_length, 		//length of all vectors 
-	Array1<double> input_vector_x, 	//input vector 1, named x
-	Array1<double> input_vector_y,		//input vector 2, named y
-	Array1<double> output_vector_z,	//output vector, named z
-					// such that z=x+alpha*y
-	double weight_of_y		//weight alpha in the linear combination above
-	);
-      void apply_preconditioner(
-	int i_dimension,    	// number of unknowns in the system in i-direction
-	int j_dimension, 	// number of unknowns in the system in i-direction
-	int k_dimension, 	// number of unknowns in the system in i-direction
-	Array2<double> matrix_A,			// matrix under consideration
-	Array1<double> preconditioner_matrix_M, 	// preconditioner matrix
-	Array1<double> residual_vector, 		// residual vector b-Ax
-	Array1<double> vector_z			// vector to store the preconditioned residual	
-	);			
-/***************************************************************************************/	
-
       double norm_rhside_vector;			// L2 norm of the right hand side vector
       double dot_product_residual_vector_vector_z;	// r_n*z_n
       double dot_product_p_A_p;				// p'*A*p

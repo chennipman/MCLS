@@ -28,7 +28,7 @@ using namespace std;
 /* For debugging purposes all variables involved in the corrective process are  */
 /* written to file for visual inspection.						*/
 /********************************************************************************/
-   void dump_adapted_vof_for_debugging(
+EXPORT void dump_adapted_vof_for_debugging(
 	Array3<double> volume_of_fluid,			// volume of fluid field
 	Array3<double> vof_after_x1_update,		// volume of fluid field after update
 	Array3<double> vof_after_x2_update,		// volume of fluid field after update
@@ -48,24 +48,6 @@ using namespace std;
 	
 	)
 	{
-      void  write_coordinates_vtk( 			// write coordinates in vtk format 
-	  ofstream& output_stream, 		
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k,		
-	  double mesh_width_x1,			
-	  double mesh_width_x2,			
-	  double mesh_width_x3			
-       );
-      void  write_cell_centered_field_vtk(     	// write cell centered field in vtk format
-	  ofstream& output_stream, 			
-	  string scalar_name,				
-	  string look_up_table_name,				
-	  Array3<double> cell_centered_field, 			
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-	    );
       int total_number_primary_cells=		// total number of primary cells
 	  number_primary_cells_i*
 	    number_primary_cells_j*

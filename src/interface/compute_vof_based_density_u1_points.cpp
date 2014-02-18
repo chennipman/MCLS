@@ -20,7 +20,7 @@
 /* of cells that need correcting.                                               */
 /********************************************************************************/
 
-void compute_vof_at_u1_points(
+EXPORT void compute_vof_at_u1_points(
 	Array3<double> level_set, 				// level set field 
 							// mass conserving
 	Array3<double> u_1_velocity_new, 			// velocity field at new time level x1 direction
@@ -47,15 +47,6 @@ void compute_vof_at_u1_points(
      )
 	double scaled_level_set;
 	double scaled_volume_donating_region;
-	
-	int level_set_2_vof( 
-	      double level_set, 			// compute the volume of fluid field value from 
-	      double d_level_set_d_x1, 		// a given level-set field value
-	      double d_level_set_d_x2, 		
-	      double d_level_set_d_x3, 		
-	      double &volume_of_fluid,		
-	      double lower_bound_derivatives    
-      );
        int i_index, j_index, k_index;  		// local variables for loop indexing
 	
 

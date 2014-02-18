@@ -15,7 +15,7 @@
 /********************************************************************************/
 /* Notes									       */
 /********************************************************************************/
- void decompress_solution_pressure(
+EXPORT void decompress_solution_pressure(
       Array3<double> pressure,		              // pressure field
       Array1<double> compressed_pressure,	              // 1-D array with pressure correction field
       int number_primary_cells_i,	              // number of primary (pressure) cells in x1 direction
@@ -23,14 +23,6 @@
       int number_primary_cells_k 	              // number of primary (pressure) cells in x3 direction
      )
  {
-      int map_index_pressure(                      // map 3-D array index to 1-D array
-	  int i_index,			              // index
-	  int j_index, 				
-	  int k_index,  			
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k	  	
-      );
       int one_dimensional_index;	     	       // index of point in 1-D array
       int i_index, j_index, k_index;  	       // local variables for loop indexing
    

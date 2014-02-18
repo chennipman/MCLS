@@ -11,7 +11,7 @@
 /* postprocessing, the curvature and smoothed curvature need to be computed     */
 /* to be added to the initial condition.                                        */
 /********************************************************************************/
-void initialize_curvature(						
+EXPORT void initialize_curvature(						
       Array3<double> level_set, 				// level-set field
       Array3<double> curvature,				// interface curvature
       Array3<double> unsmoothed_curvature,		// interface curvature without smoothing
@@ -29,39 +29,6 @@ void initialize_curvature(
 	    						// =0, do not apply curvature smoothing filter		
 	)
 {
-
-      void compute_curvature(				// compute the curvature
-	 Array3<double> level_set, 				
-	 Array3<double> curvature,				
-	 int number_primary_cells_i,			
-	 int number_primary_cells_j,			
-	 int number_primary_cells_k,			
-        double mesh_width_x1,				
-        double mesh_width_x2,				
-        double mesh_width_x3				
-	);
-      void smooth_curvature(                       // smooth the curvature
-  	 Array3<double> level_set, 			
-	 Array3<double> curvature_new,			
-	 Array3<double> unsmoothed_curvature,			
-	 int number_primary_cells_i,			
-	 int number_primary_cells_j,			
-	 int number_primary_cells_k,			
-	 double mesh_width_x1,			
-	 double mesh_width_x2,			
-	 double mesh_width_x3,			
-	 int apply_curvature_smoothing_filter,
-	 int number_curvature_smoothing_steps
-       );
-      void copy_cell_centered_field( 		// copy cell centered field
-	    Array3<double> source_field, 		   			
-	    Array3<double> target_field,		
-	    int number_primary_cells_i,		
-	    int number_primary_cells_j,		
-	    int number_primary_cells_k		
-	    );
-      
-      
 	/* compute the curvature */
 	
 	compute_curvature( level_set, unsmoothed_curvature, 

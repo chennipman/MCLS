@@ -1,11 +1,4 @@
 #include "../headers/array.h"
-class vector
-{
-public:
-  double u1,u2,u3;
-  vector(double u1, double u2, double u3);
-  vector( void);
-};
 
 /********************************************************************************/
 /********************************************************************************/
@@ -21,7 +14,7 @@ public:
 /* function to build the right hand side of the equation.                       */
 /********************************************************************************/
 
-  void build_pressure_system_initialization(
+EXPORT void build_pressure_system_initialization(
       Array2<double> pressure_correction_matrix,    	// pressure correction matrix
       Array1<double> final_pressure_rhs,	     		// right hand side of pressure correction equation
 							// including contributions 
@@ -68,62 +61,6 @@ public:
        )
 
   {
-
-
-    void build_pressure_matrix (						// build pressure correction matrix
-        Array2<double> pressure_correction_matrix, 
-        double mesh_width_x1,		     
-        double mesh_width_x2,		     
-        double mesh_width_x3,		     
-        Array3<double> level_set_new, 	
-	Array3<double> scaled_density_u1,
-	Array3<double> scaled_density_u2,
-	Array3<double> scaled_density_u3,
-        int number_primary_cells_i,	     
-        int number_primary_cells_j,	     
-        int number_primary_cells_k,	     
-        double rho_plus_over_rho_minus);
-    void build_pressure_rhs_initialization( 				// build pressure equation right hand side
-        Array3<double> initial_pressure_rhs,	       				// with the source terms only
-        Array3<double> sources_x1,		       					               
-        Array3<double> sources_x2,  		  
-        Array3<double> sources_x3,  		  
-        Array3<double> surface_tension_body_force_x1,	 	  
-        Array3<double> surface_tension_body_force_x2,	          
-        Array3<double> surface_tension_body_force_x3,		  
-        Array3<double> u_1_velocity_star, 	  
-        Array3<double> u_2_velocity_star, 	  
-        Array3<double> u_3_velocity_star,	  
-        double mesh_width_x1,		  
-        double mesh_width_x2,		  
-        double mesh_width_x3,		  
-        int number_primary_cells_i,	  
-        int number_primary_cells_j,	  
-        int number_primary_cells_k,	    
-        double actual_time_step_navier_stokes, 
-        int continuous_surface_force_model,    
-        int source_terms_in_momentum_predictor);
-    void build_pressure_rhs_boundary(					// apply boundary conditions to the pressure
-	Array3<double> initial_pressure_rhs,	     				// correction equation right hand side
-	Array1<double> final_pressure_rhs,	     
-	double mesh_width_x1,		     
-	double mesh_width_x2,		     
-	double mesh_width_x3,		     
-	int number_primary_cells_i,	     
-	int number_primary_cells_j,	     
-	int number_primary_cells_k,	     
-	Array3<double> pressure_boundary_condition_x1, 
-	Array3<double> pressure_boundary_condition_x2,	
-	Array3<double> pressure_boundary_condition_x3);
-   void set_pressure_boundary_condition(					// set inhomogeneous boundary
-        vector gravity,				    			// conditions for the pressure
-	Array3<double> pressure_boundary_condition_x1,	
-	Array3<double> pressure_boundary_condition_x2,
-	Array3<double> pressure_boundary_condition_x3,
-	int number_primary_cells_i,
-	int number_primary_cells_j,
-	int number_primary_cells_k);
-     
        Array3<double> initial_pressure_rhs;	     	    			// right hand side of pressure correction equation
 						    				// excluding contributions 
 						    				// inhomogeneous boundary conditions

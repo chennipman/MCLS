@@ -54,7 +54,7 @@
 /* div u    = div u  + div(1/rho * grad (p  - p )				*/
 /* this means the old pressure is included in the momentum predictor equation   */ 
 /********************************************************************************/
-void build_pressure_rhs_momentum_part_CSF(
+EXPORT void build_pressure_rhs_momentum_part_CSF(
       Array3<double> initial_pressure_rhs,	     		// right hand side of pressure correction equation
 					     		// excluding contributions 
 					     		// inhomogeneous boundary conditions

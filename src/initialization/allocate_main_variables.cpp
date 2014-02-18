@@ -8,7 +8,7 @@
 /********************************************************************************/
 /* Notes									       */
 /********************************************************************************/
-    void allocate_main_variables(
+EXPORT void allocate_main_variables(
       Array3<double> & u_1_velocity_new, 			// velocity field at new time level x1 direction
       Array3<double> & u_2_velocity_new, 			// velocity field at new time level x2 direction
       Array3<double> & u_3_velocity_new,				// velocity field at new time level x3 direction

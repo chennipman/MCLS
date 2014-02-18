@@ -3,35 +3,6 @@
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
-enum boundary_conditions_type{dirichlet, neumann, periodic};
-enum boundary_conditions_rule{constant, function};
-enum cell_centerings{cell_centered, vertex_centered};
-
-
-class boundary_variable
-{
-public:
-  variable variable_name;
-  boundary_conditions_type boundary_condition_type;
-  boundary_conditions_rule boundary_condition_rule;
-  cell_centerings cell_centering;
-  double boundary_condition_value;
-  boundary_variable(variable varname, boundary_conditions_type bound_type,
-				     boundary_conditions_rule bound_rule,
-				     cell_centerings  cell_cent,
-					double bound_value );
-  boundary_variable(variable varname);
-};
-
-class boundary_face
-{
-public:
-    boundary_variable boundary_variables[5];
-    boundary_face(void);
-   
-};
-
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -51,7 +22,7 @@ using namespace std;
 /*  										*/
 /********************************************************************************/
   
-      void solve_momentum_predictor_u1(
+EXPORT void solve_momentum_predictor_u1(
       Array3<double> level_set, 				// level-set field
       Array3<double> momentum_source_term_u_1, 		// complete source term for the momentum equation
 							// in x3 direction=(-p,3+ g_3 +F3)
@@ -85,79 +56,6 @@ using namespace std;
 							
 	   )
       {
-
-
-                                         
-    void build_momentum_predictor_u1(				// build system of linear
-      Array2<double> momentum_matrix_u1,				// equations for momentum equation velocity
-      Array1<double> momentum_rhside_u1,				// in x1 direction
-      Array3<double> level_set, 				
-      Array3<double> momentum_source_term_u_1,
-      Array3<double> scaled_density_u1,
-      Array3<double> u_1_velocity_old, 			
-      Array3<double> u_2_velocity_old, 			
-      Array3<double> u_3_velocity_old,			
-      int number_primary_cells_i,			
-      int number_primary_cells_j,			
-      int number_primary_cells_k,			
-      double actual_time_step_navier_stokes,		
-      double mesh_width_x1,				
-      double mesh_width_x2,				
-      double mesh_width_x3,				
-      double rho_plus_over_rho_minus,			
-      double smoothing_distance_factor,			
-      double rho_minus_over_mu_minus,			
-      double mu_plus_over_mu_minus,			
-      boundary_face boundary_faces[6],
-      int number_matrix_connections
-	 );
-   void compress_solution_velocity_u1(				// compress solution vector
-      Array3<double> full_solution,		     			
-      Array1<double> compressed_solution_vector,  
-      int number_primary_cells_i,	     
-      int number_primary_cells_j,	     
-      int number_primary_cells_k	     
-     );
-   void decompress_solution_velocity_u1(			// decompress solution vector
-      Array3<double> full_solution,		     
-      Array1<double> compressed_solution_vector,  
-      int number_primary_cells_i,	     
-      int number_primary_cells_j,	     
-      int number_primary_cells_k	     
-     );
-   int export_matrix_matlab(           				// export the matrix to matlab file
-      int i_dimension,    		
-      int j_dimension, 		
-      int k_dimension, 		
-      int number_matrix_connections,  
-      Array2<double> matrix_A,		
-      Array1<double> rhside_vector,		
-      Array1<double> solution_vector,	
-      string variable_name
-      );
-   void build_preconditioner(			// build incomplete choleski preconditioner
-      int i_dimension,    	
-      int j_dimension, 	
-      int k_dimension, 	
-      Array2<double> matrix_A,	
-      Array1<double> preconditioner_matrix_M 	
-	);
-   int conjugate_gradient_method(		// solve linear system with conjugate gradient
-      int i_dimension,   			// method (only SPD systems)	
-      int j_dimension,   		
-      int k_dimension,   		
-      Array2<double> matrix_A,   		
-      Array1<double> preconditioner_matrix_M,  	
-      Array1<double> rhside_vector_b,   		
-      Array1<double> solution_vector_x, 		
-      double   tolerance,	  		
-      int     &iteration_number,  	
-      double  &relative_L2_norm_residual, 
-      double  &relative_Linfinity_norm_residual,
-      int maximum_iterations_allowed	
-        );
-
-
       Array2<double> momentum_matrix_u1;			// momentum matrix velocity x1 direction
       Array1<double> momentum_rhside_u1;			// momentum rhside velocity x1 direction
       Array1<double> preconditioner_matrix_M;			// preconditioner matrix (diagonal)

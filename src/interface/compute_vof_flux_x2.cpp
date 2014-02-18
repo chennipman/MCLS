@@ -14,7 +14,7 @@
 /* Notes										*/
 /********************************************************************************/
 //
-     void compute_vof_flux_x2(						
+EXPORT void compute_vof_flux_x2(						
 	Array3<double> level_set, 				// level set field 
 							// mass conserving
         Array3<double> u_2_velocity_new, 			// velocity field at new time level x1 direction
@@ -44,15 +44,6 @@
 	double cfl_number;
 	double scaled_level_set;
 	double scaled_volume_donating_region;
-	
-	int level_set_2_vof( 
-	      double level_set, 			// compute the volume of fluid field value from 
-	      double d_level_set_d_x1, 			// a given level-set field value
-	      double d_level_set_d_x2, 		
-	      double d_level_set_d_x3, 		
-	      double &volume_of_fluid,		
-	      double lower_bound_derivatives    
-      );
 
 	int i_index, j_index, k_index;  			// local variables for loop indexing
 	double one_over_dx2	=    			// 1/(grid spacing in x1 direction)

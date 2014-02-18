@@ -24,7 +24,7 @@
 /* For debugging purposes all variables involved in the corrective process are  */
 /* written to file for visual inspection.						*/
 /********************************************************************************/
-      void match_level_set_to_volume_of_fluid(				
+EXPORT void match_level_set_to_volume_of_fluid(				
 		 Array3<double> level_set_star,			// non mass conserving level-set field
 		 Array3<double> volume_of_fluid,			// volume of fluid field
 		 Array3<double> level_set_mass_conserving,	// corrected, mass conserving level-set field
@@ -51,77 +51,6 @@
 	  	 double mesh_width_x3				// grid spacing in x3 direction (uniform)
 		 )
 		{
-	/* function definitions */
-	void  field_neumann_boundary(                      // apply homogeneous neumann boundary condition to 
-	      Array3<double> field, 			       // given field
-	      int number_primary_cells_i,	
-	      int number_primary_cells_j,	
-	      int number_primary_cells_k	
-		);
-	void   compute_level_set_gradient(			// compute gradient of level-set field
-		Array3<double> level_set_star, 
-		Array3<double> d_level_set_d_x1, 
-		Array3<double> d_level_set_d_x2, 
-		Array3<double> d_level_set_d_x3,
-		int number_primary_cells_i, 
-		int number_primary_cells_j, 
-		int number_primary_cells_k);
-	
-	int    compute_volume_of_fluid(			// compute volume of fluid field
-		 Array3<double> level_set_star, 			// corresponding to a given 
-		 Array3<double> d_level_set_d_x1, 			// level-set field
-		 Array3<double> d_level_set_d_x2, 
-		 Array3<double> d_level_set_d_x3,
-		 Array3<double> volume_of_fluid,
-		 int number_primary_cells_i, 
-		 int number_primary_cells_j, 
-		 int number_primary_cells_k, 
-		 double lower_bound_derivatives
-	);
-	int check_volume_of_fluid(             		// check if the volume of fluid field
-		 Array3<double> volume_of_fluid,			// is completely within the proper
-		 int number_primary_cells_i,			// range [0,1]
-		 int number_primary_cells_j,		
-		 int number_primary_cells_k,		
-		 double volume_of_fluid_tolerance	
-	);
-	void copy_cell_centered_field( 
-	    Array3<double> source_field, 				// copy a cell-centered source field
-	    Array3<double> target_field,				// to the target field including
-	    int number_primary_cells_i,			// the virtual cells
-	    int number_primary_cells_j,		
-	    int number_primary_cells_k		
-	   );
-	int vof_2_level_set( 					// compute level-set from the volume of fluid
-	    double &local_level_set, 				// field
-	    double d_level_set_d_x1, 		
-	    double d_level_set_d_x2, 		
-	    double d_level_set_d_x3, 		
-	    double volume_of_fluid,		
-	    double lower_bound_derivatives,    		
-	    double vof_2_level_set_tolerance,		
-	    int number_iterations_ridder	
-	    );
-      	void  field_extrapolate_boundary(      		// extrapolate field to virtual cells
-            Array3<double> field, 			
-            int number_primary_cells_i,	
-            int number_primary_cells_j,	
-            int number_primary_cells_k	
-	    );
-   	void dump_solution_for_debugging(			// dump solution to file on error
-	     Array3<double> level_set_star,			
-	     Array3<double> volume_of_fluid,			
-	     Array3<double> level_set_mass_conserving,		
-	     Array3<double> level_set_correction,	
-	     Array3<double> volume_of_fluid_deviation,
-	     int number_primary_cells_i,		
-	     int number_primary_cells_j,		
-	     int number_primary_cells_k,		
-	     double mesh_width_x1,		
-	     double mesh_width_x2,		
-	     double mesh_width_x3			
-	);
-
 	Array3<double> d_level_set_d_x1; 			// first partial derivative of level-set with 
 							// respect to x1, central approximation
 	Array3<double> d_level_set_d_x2; 			// first partial derivative of level-set with 

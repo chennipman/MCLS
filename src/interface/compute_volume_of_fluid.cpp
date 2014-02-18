@@ -15,7 +15,7 @@
 /********************************************************************************/
 /* Notes									*/
 /********************************************************************************/
-     int compute_volume_of_fluid(					
+EXPORT int compute_volume_of_fluid(					
 	Array3<double> level_set, 			// level set field field
 	Array3<double> d_level_set_d_x1, 		// first partial derivative of level-set with 
 						// respect to x1, central approximation
@@ -32,22 +32,6 @@
 						// partial derivatives
 	  )
      {
-    /*	function definitions */
-
-      int level_set_2_vof( 			// compute volume of fluid from level-set
-	  double local_level_set, 		// field
-	  double d_level_set_d_x1, 		
-	  double d_level_set_d_x2, 		
-	  double d_level_set_d_x3, 		
-	  double &volume_of_fluid,		
-	  double lower_bound_derivatives    
-				    );		
-      void field_neumann_boundary(		// apply neumann boundary condition to
-	  Array3<double> field, 			// cell centered field
-	  int number_primary_cells_i,	
-	  int number_primary_cells_j,	
-	  int number_primary_cells_k	
-	  );
       int i_index, j_index, k_index;  		// local variables for loop indexing
       int no_conversion=0;			// =0, successful conversion of level-set field
 						// to volume of fluid field. Otherwise, the 

@@ -1,41 +1,9 @@
 #include "../headers/array.h"
-class vector
-{
-public:
-  double u1,u2,u3;
-};
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
-enum boundary_conditions_type{dirichlet, neumann, periodic};
-enum boundary_conditions_rule{constant, function};
-enum cell_centerings{cell_centered, vertex_centered};
 
-
-class boundary_variable
-{
-public:
-  variable variable_name;
-  boundary_conditions_type boundary_condition_type;
-  boundary_conditions_rule boundary_condition_rule;
-  cell_centerings cell_centering;
-  double boundary_condition_value;
-  boundary_variable(variable varname, boundary_conditions_type bound_type,
-				     boundary_conditions_rule bound_rule,
-				     cell_centerings  cell_cent,
-					double bound_value );
-  boundary_variable(variable varname);
-};
-
-class boundary_face
-{
-public:
-    boundary_variable boundary_variables[5];
-    boundary_face(void);
-   
-};
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to solve for the correction to the velocity field to project it    */
@@ -51,7 +19,7 @@ public:
 /* Currently we assume a Dirichlet boundary condition for all normal velocities.*/
 /********************************************************************************/
 
- void solve_momentum_corrector(
+EXPORT void solve_momentum_corrector(
       Array3<double> level_set,					// level-set field
       Array3<double> pressure,					// pressure field
       Array3<double> momentum_source_term_u_1,			// source term of the momentum equation in x1 direction
@@ -101,104 +69,6 @@ public:
    
    
    {
-  void build_pressure_system(					// build system of equations for the
-      Array2<double> pressure_matrix,    				// pressure equation
-      Array1<double> pressure_rhs,	     	
-      Array3<double> level_set_new,			
-      Array3<double> momentum_source_term_u_1,		        
-      Array3<double> momentum_source_term_u_2,  		        
-      Array3<double> momentum_source_term_u_3,  		        
-      Array3<double> surface_tension_body_force_x1,	 	        
-      Array3<double> surface_tension_body_force_x2,	                
-      Array3<double> surface_tension_body_force_x3,		        
-      Array3<double> scaled_density_u1,
-      Array3<double> scaled_density_u2,
-      Array3<double> scaled_density_u3,
-      Array3<double> u_1_velocity_star, 	        
-      Array3<double> u_2_velocity_star, 	        
-      Array3<double> u_3_velocity_star,	        
-      Array3<double> pressure_boundary_condition_x1,
-      Array3<double> pressure_boundary_condition_x2,
-      Array3<double> pressure_boundary_condition_x3,
-      double mesh_width_x1,		        
-      double mesh_width_x2,		        
-      double mesh_width_x3,		        
-      int number_primary_cells_i,	        
-      int number_primary_cells_j,	        
-      int number_primary_cells_k,	        
-      double actual_time_step_navier_stokes,    
-      double rho_plus_over_rho_minus,	        
-      int continuous_surface_force_model,       
-      int source_terms_in_momentum_predictor,   
-      vector gravity				
-       );
-  void solve_pressure_correction_system(       // solve pressure equation
-      Array2<double> pressure_matrix, 		  
-      Array1<double> pressure_rhside,		  
-      Array3<double> pressure,			  
-      int number_primary_cells_i,	 	  
-      int number_primary_cells_j,	  	  
-      int number_primary_cells_k,		  
-      double   tolerance_pressure,	  		  
-      int maximum_iterations_allowed_pressure	 	  
-      );
-   
-  void apply_pressure_correction(		// apply pressure correction to velocity field
-      Array3<double> level_set,
-      Array3<double> pressure,
-      Array3<double> u_1_velocity_star,
-      Array3<double> u_2_velocity_star,
-      Array3<double> u_3_velocity_star,
-      Array3<double> surface_tension_body_force_x1,
-      Array3<double> surface_tension_body_force_x2,
-      Array3<double> surface_tension_body_force_x3,
-      Array3<double> momentum_source_term_u_1,
-      Array3<double> momentum_source_term_u_2,
-      Array3<double> momentum_source_term_u_3,
-      Array3<double> scaled_density_u1,
-      Array3<double> scaled_density_u2,
-      Array3<double> scaled_density_u3,
-      int number_primary_cells_i,
-      int number_primary_cells_j,
-      int number_primary_cells_k,
-      double mesh_width_x1,
-      double mesh_width_x2,
-      double mesh_width_x3,
-      double rho_plus_over_rho_minus,
-      double actual_time_step_navier_stokes,
-      vector gravity
-      );
-    
-  void apply_boundary_conditions_velocity(            // apply boundary conditions to velocity field
-      boundary_face boundary_faces[6],
-      Array3<double> u_1_velocity,
-      Array3<double> u_2_velocity,
-      Array3<double> u_3_velocity,
-      double mesh_width_x1,
-      double mesh_width_x2,
-      double mesh_width_x3,
-      int number_primary_cells_i,
-      int number_primary_cells_j,
-      int number_primary_cells_k
-      );
-  
-
-  void apply_boundary_conditions_pressure(
-      Array3<double> pressure,
-      Array3<double> pressure_boundary_condition_x1,
-      Array3<double> pressure_boundary_condition_x2,
-      Array3<double> pressure_boundary_condition_x3,
-      Array3<double> scaled_density_u1,
-      Array3<double> scaled_density_u2,
-      Array3<double> scaled_density_u3,
-      double mesh_width_x1,
-      double mesh_width_x2,
-      double mesh_width_x3,
-      int number_primary_cells_i,
-      int number_primary_cells_j,
-      int number_primary_cells_k
-      );
-      
       Array2<double> pressure_matrix; 					// pressure matrix
       Array1<double> pressure_rhside;					// pressure right hand side
       Array3<double> pressure_boundary_condition_x1;

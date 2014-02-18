@@ -23,7 +23,7 @@
 /* the necessary coefficients are set to zero so this simplification is possible*/
 /********************************************************************************/
 
-void matrix_vector_product(
+EXPORT void matrix_vector_product(
 int i_dimension,   // number of unknowns in the system in i-direction
 int j_dimension,   // number of unknowns in the system in i-direction
 int k_dimension,   // number of unknowns in the system in i-direction
@@ -88,7 +88,7 @@ Array1<double> y      // OUTPUT vector y such that y=Ax
 /* This function computes the inner product of two vectors of length            */
 /* vector_length and returns that value		                                */
 /********************************************************************************/
-    double dot_product( 
+EXPORT double dot_product( 
     int vector_length, 			// length of both input vectors
     Array1<double> x, 				// first input vector
     Array1<double> y				// second input vector
@@ -117,7 +117,7 @@ Array1<double> y      // OUTPUT vector y such that y=Ax
 /* This function copies a vector to another vector elementwise                  */
 /*                                     		                                */
 /********************************************************************************/
-void copy_vector( 
+EXPORT void copy_vector( 
   int vector_length, 	// length of both vectors
   Array1<double> original_vector, 	// first input vector
   Array1<double> image_vector	// second input vector
@@ -143,7 +143,7 @@ void copy_vector(
 /* This function sets a vector to a constant value elementwise                  */
 /*                                     		                                */
 /********************************************************************************/
-void set_constant_vector(
+EXPORT void set_constant_vector(
     int vector_length,		// length of the vector
     Array1<double> vector_to_set,	// the name of the vector that has to be set
     double constant_value	// the constant value the vector has to be set to
@@ -169,7 +169,7 @@ void set_constant_vector(
 /* This function sets a vector to a constant value elementwise                  */
 /*                                     		                                */
 /********************************************************************************/
-void set_constant_matrix2(
+EXPORT void set_constant_matrix2(
     int first_dimension,	// number of elements in first dimension
     int second_dimension,	// number of elements in second dimension
     int third_dimension,	// number of elements in third dimension
@@ -205,7 +205,7 @@ void set_constant_matrix2(
 /* This function sets a vector to a constant value elementwise                  */
 /*                                     		                                */
 /********************************************************************************/
-void set_constant_matrix(
+EXPORT void set_constant_matrix(
     int first_dimension,	// number of elements in first dimension
     int second_dimension,	// number of elements in second dimension
     Array2<double> matrix_to_set,	// the name of the vector that has to be set
@@ -241,7 +241,7 @@ void set_constant_matrix(
 /* two vectors with given weights						*/
 /*                                     		                                */
 /********************************************************************************/
-      void linear_combination(
+EXPORT void linear_combination(
 	int vector_length, 		//length of all vectors 
 	Array1<double> input_vector_x, 	//input vector 1, named x
 	Array1<double> input_vector_y,		//input vector 2, named y
@@ -271,7 +271,7 @@ void set_constant_matrix(
 /* Notes									*/
 /* This function computes a the L2 norm of a vector             		*/
 /********************************************************************************/
-  double compute_vector_norm(int vector_length, //length of the vector
+EXPORT double compute_vector_norm(int vector_length, //length of the vector
 		     Array1<double> input_vector  //input vector 
 	 )
 {  
@@ -299,7 +299,7 @@ void set_constant_matrix(
 /* two vectors with given weights						*/
 /*                                     		                                */
 /********************************************************************************/
-  double minimum_element(int vector_length, //length of the vector
+EXPORT double minimum_element(int vector_length, //length of the vector
 		     Array1<double> input_vector  //input vector 
 	 )
 {  
@@ -325,7 +325,7 @@ void set_constant_matrix(
 /* two vectors with given weights						*/
 /*                                     		                                */
 /********************************************************************************/
-  double maximum_element(int vector_length, //length of the vector
+EXPORT double maximum_element(int vector_length, //length of the vector
 		     Array1<double> input_vector  //input vector 
 	 )
 {  
@@ -353,7 +353,7 @@ void set_constant_matrix(
 /* argument is positive, -1 * the absolute value of the first argument is the   */
 /* second argument is negative and zero in all other cases                      */
 /********************************************************************************/
-  double sign(double value, double set_sign)
+EXPORT double sign(double value, double set_sign)
 {
 	    if(set_sign>0) return fabs(value);
 	    if(set_sign<0) return -1.0*fabs(value);

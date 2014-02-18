@@ -8,18 +8,7 @@
 #include <sstream>
 #include <fstream>
 using namespace std;
-class coordinate
-{
-public:
-  double x1,x2,x3;
-  coordinate(double xx1=0, double xx2=0, double xx3=0){x1=xx1;x2=xx2;x3=xx3;}
-};
-class vector
-{
-public:
-  double u1,u2,u3;
-  vector(double uu1=0, double uu2=0, double uu3=0){u1=uu1;u2=uu2;u3=uu3;}
-};
+
 /********************************************************************************/
 /*  Function to do the time-stepping sequence from start to end                 */
 /*  											*/
@@ -31,7 +20,7 @@ public:
 /*  The magnitude, centroid and velocity of the volume enclosed by the 		*/
 /*  interface are computed and collected and written to file			*/
 /********************************************************************************/
-void analyse_interface_properties(
+EXPORT void analyse_interface_properties(
       	Array3<double> volume_of_fluid, 			// volume of fluid field
 	Array3<double> level_set,				// level set field
       	Array3<double> u_1_velocity_new, 			// velocity field at new time level x1 direction
@@ -49,49 +38,6 @@ void analyse_interface_properties(
 							// partial derivatives
      )
 {
-	void compute_vof_at_u1_points(	// compute volume of fluid for u1 control volumes
-		Array3<double> level_set, 				
-		Array3<double> d_level_set_d_x1,			
-		Array3<double> d_level_set_d_x2,			
-		Array3<double> d_level_set_d_x3,			
-		Array3<double> volume_of_fluid_u1,		
-		int number_primary_cells_i,			
-		int number_primary_cells_j,			
-		int number_primary_cells_k,			
-		double lower_bound_derivatives    		
-     		);
- 	void compute_vof_at_u2_points(	// compute volume of fluid for u2 control volumes
-		Array3<double> level_set, 				
-		Array3<double> d_level_set_d_x1,			
-		Array3<double> d_level_set_d_x2,			
-		Array3<double> d_level_set_d_x3,			
-		Array3<double> volume_of_fluid_u2,		
-		int number_primary_cells_i,			
-		int number_primary_cells_j,			
-		int number_primary_cells_k,			
-		double lower_bound_derivatives    		
-     		);
-	void compute_vof_at_u3_points(	// compute volume of fluid for u3 control volumes
-		Array3<double> level_set, 				
-		Array3<double> d_level_set_d_x1,			
-		Array3<double> d_level_set_d_x2,			
-		Array3<double> d_level_set_d_x3,			
-		Array3<double> volume_of_fluid_u3,		
-		int number_primary_cells_i,			
-		int number_primary_cells_j,			
-		int number_primary_cells_k,			
-		double lower_bound_derivatives    		
-     		);
-      void 	compute_level_set_gradient(					// compute gradient of level-set field
-		Array3<double> level_set_star, 
-		Array3<double> d_level_set_d_x1, 
-		Array3<double> d_level_set_d_x2, 
-		Array3<double> d_level_set_d_x3,
-		int number_primary_cells_i, 
-		int number_primary_cells_j, 
-		int number_primary_cells_k
-		 );
-	
 	coordinate volume_centroid;  			// centroid of the volum enclosed by the interface 
 	vector velocity_centroid;			// velocity of the volume enclosed by the interface 
 	vector velocity_centroid_vof;			// velocity of the volume enclosed by the interface 

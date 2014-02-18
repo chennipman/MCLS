@@ -20,7 +20,7 @@
 /* So it is an UNDIVIDED difference approximation                               */
 /* and NOT the real gradient 							*/
 /********************************************************************************/
-   void   compute_level_set_gradient(				
+EXPORT void   compute_level_set_gradient(				
 	Array3<double> level_set, 			// level set field at new time level
 						// after convection and reinitialization
 						// not mass conserving
@@ -38,18 +38,6 @@
 	int number_primary_cells_k		// number of primary (pressure) cells in x3 direction
 	  )
    {
-     
-	/* function definitions */ 
-	
-       void set_constant_matrix2(
-	    int first_dimension,				// number of elements in first dimension
-	    int second_dimension,				// number of elements in second dimension
-	    int third_dimension,				// number of elements in third dimension
-	    Array3<double> matrix2_to_set,				// the name of the array that has to be set
-	    double constant_value				// the constant value the vector has to be set to
-	    );
-	
-	
 	int i_index, j_index, k_index;  			// local variables for loop indexing
 	int vector_length= 					// length of the one dimensional array
 	    (number_primary_cells_i+2)*				// that results from reshaping the 3D

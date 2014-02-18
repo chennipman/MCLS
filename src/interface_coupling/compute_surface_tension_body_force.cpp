@@ -17,7 +17,7 @@
 /* that evaluates all different restrictions.                                   */
 /********************************************************************************/
 
-void compute_surface_tension_body_force(
+EXPORT void compute_surface_tension_body_force(
  	    Array3<double> level_set, 				// level set field
 	    Array3<double> surface_tension_body_force_x1,	// x1 component of the body force due to
 								// CSF formulation of surface tension model
@@ -47,95 +47,6 @@ void compute_surface_tension_body_force(
 	    double smoothing_distance_factor
 	      )								
 {
-
-/*--------------------------------------------------------------------------------------------------*/      
-/* function definitions */
-/*--------------------------------------------------------------------------------------------------*/      
-
-      void compute_curvature(							// compute the curvature
-	 Array3<double> level_set, 				
-	 Array3<double> curvature,				
-	 int number_primary_cells_i,			
-	 int number_primary_cells_j,			
-	 int number_primary_cells_k,			
-        double mesh_width_x1,				
-        double mesh_width_x2,				
-        double mesh_width_x3				
-	);
-      void smooth_curvature(                              			// smooth the curvature
-  	 Array3<double> level_set, 			
-	 Array3<double> curvature_new,			
-	 Array3<double> unsmoothed_curvature,			
-	 int number_primary_cells_i,			
-	 int number_primary_cells_j,			
-	 int number_primary_cells_k,			
-	 double mesh_width_x1,			
-	 double mesh_width_x2,			
-	 double mesh_width_x3,			
-	 int apply_curvature_smoothing_filter,
-	 int number_curvature_smoothing_steps
-       );
-      void compute_body_force_x1( 						// compute body force in x1
-      	   Array3<double> curvature,			     			// direction
-      	   Array3<double> level_set, 			
-      	   Array3<double> surface_tension_body_force,	
-      	   double mesh_width_x1,			
-      	   double mesh_width_x2,			
-      	   double mesh_width_x3,			
-      	   int number_primary_cells_i,		
-      	   int number_primary_cells_j,		
-      	   int number_primary_cells_k,		
-      	   double rho_plus_over_rho_minus, 		
-      	   double sigma_over_rho_minus,		
-	   double maximum_body_force,		
-	   double total_body_force,			
-      	   double maximum_weighted_curvature,
-	   double smoothing_distance_factor
-       );						
-      void compute_body_force_x2(                                 	// compute body force in x1
-      	   Array3<double> curvature,			             		// direction
-      	   Array3<double> level_set, 			
-      	   Array3<double> surface_tension_body_force,	
-      	   double mesh_width_x1,			
-      	   double mesh_width_x2,			
-      	   double mesh_width_x3,			
-      	   int number_primary_cells_i,		
-      	   int number_primary_cells_j,		
-      	   int number_primary_cells_k,		
-      	   double rho_plus_over_rho_minus, 		
-      	   double sigma_over_rho_minus,		
-	   double maximum_body_force,		
-	   double total_body_force,			
-      	   double maximum_weighted_curvature,
-	   double smoothing_distance_factor		
-       );						
-      void compute_body_force_x3(                                       // compute body force in x1
-	   Array3<double> curvature,			 			// direction
-	   Array3<double> level_set, 			    	
-      	   Array3<double> surface_tension_body_force_x3,	
-	   double mesh_width_x1,			    	
-          double mesh_width_x2,			    	
-          double mesh_width_x3,			    	
-          int number_primary_cells_i,		    	
-          int number_primary_cells_j,		    	
-          int number_primary_cells_k,		    	
-      	   double rho_plus_over_rho_minus, 		
-          double sigma_over_rho_minus,		    	
-  	   double maximum_body_force,		    	
-          double total_body_force,			
-      	   double maximum_weighted_curvature,
-	   double smoothing_distance_factor		
-       );						
-      void copy_cell_centered_field( 					// copy cell centered field
-	    Array3<double> source_field, 		   			
-	    Array3<double> target_field,		
-	    int number_primary_cells_i,		
-	    int number_primary_cells_j,		
-	    int number_primary_cells_k		
-	    );
-/*--------------------------------------------------------------------------------------------------*/      
-
-
       double maximum_body_force_x1;					// maximum body force, x1 component
       double maximum_body_force_x2;					// maximum body force, x2 component
       double maximum_body_force_x3;					// maximum body force, x3 component

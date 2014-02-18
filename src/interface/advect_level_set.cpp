@@ -18,7 +18,7 @@
 /* we can use the velocity field at the new time level to define the advection	*/
 /********************************************************************************/
 //
-void advect_level_set(
+EXPORT void advect_level_set(
       Array3<double> level_set_old, 		        // level set field at old time level
       Array3<double> level_set_star, 		// level set field at star time level
       Array3<double> u_1_velocity_new, 	        // velocity field at new time level x1 direction
@@ -36,30 +36,6 @@ void advect_level_set(
       
 )
 {
-/*******************************************************************************************/      
-/* 				function definitions 					   */
-/*******************************************************************************************/      
-   void field_neumann_boundary(			// apply neumann boundary condition to
-    	Array3<double> field, 			// cell centered field
-    	int number_primary_cells_i,	
-    	int number_primary_cells_j,	
-    	int number_primary_cells_k	
-	  );
-   void  field_extrapolate_boundary(      	// extrapolate field to virtual cells
-        Array3<double> field, 			
-        int number_primary_cells_i,	
-        int number_primary_cells_j,	
-        int number_primary_cells_k	
-	);
-  double compute_level_set_flux( 		// function to interpolate the 
-    	double cell_face_velocity,		// level-set to the cell faces
-    	double left_phi, 			// and evaluate the level-set flux
-    	double right_phi
-	  );
-/*******************************************************************************************/      
-/* 				                     					   */
-/*******************************************************************************************/      
-
     double one_over_dx1	=    		        // 1/(grid spacing in x1 direction)
 	1.0/(mesh_width_x1);
     double one_over_dx2	=    		        // 1/(grid spacing in x2 direction)

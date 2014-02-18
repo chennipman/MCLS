@@ -19,7 +19,7 @@
 /* and update the interface position accordingly.                                  */
 /***********************************************************************************/
 
-     void redistribute_volume_of_fluid_error(						
+EXPORT void redistribute_volume_of_fluid_error(						
 	Array3<double> level_set, 					// level set field 
 								// mass conserving
 	Array3<double> volume_of_fluid, 				// volume of fluid field
@@ -42,17 +42,6 @@
  
  	)
      {
-	double compute_redistribution_velocity(		// compute convection velocity in 
-	      double left_hand_value_level_set, 		// vof error redistribution equation
-	      double right_hand_value_level_set,	
-	      double meshwidth				
-	      );
-	double upwind_flux_mass_redistribution( 		// compute artificial convective flux
-	      double mass_redistribution_velocity,		// for vof error redistribution
-	      double left_hand_value_correction, 	
-	      double right_hand_value_correction
-	      );	
-
 	Array3<double> redistribution_velocity_x1;			// artificial redistribution velocity x1 direction
 	Array3<double> redistribution_velocity_x2;			// artificial redistribution velocity x2 direction
 	Array3<double> redistribution_velocity_x3;			// artificial redistribution velocity x3 direction

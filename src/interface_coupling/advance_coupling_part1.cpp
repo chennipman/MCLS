@@ -1,12 +1,5 @@
 #include "../headers/array.h"
-class vector
-{
-public:
-  double u1,u2,u3;
-  vector(double u1, double u2, double u3);
-  vector( void);
-};
-      
+
 /********************************************************************************/
 /*  Function to advance the coupling between the interface and the flow field.  */
 /*            									       */
@@ -24,7 +17,7 @@ public:
 /*                                                                              */
 /*                                                                              */
 /********************************************************************************/
- void advance_coupling_part1(
+EXPORT void advance_coupling_part1(
  	    Array3<double> level_set, 				// level-set field
 	    Array3<double> pressure,				// pressure field
 	    Array3<double> curvature, 				// interface curvature
@@ -72,43 +65,6 @@ public:
 								// partial derivatives
       )
 	{
-
-      void compute_surface_tension_body_force(		// compute surface tension body force in CSF model
- 	    	Array3<double> level_set, 				
-	    	Array3<double> surface_tension_body_force_x1,		
-	    	Array3<double> surface_tension_body_force_x2,		
-	    	Array3<double> surface_tension_body_force_x3,	
-	    	Array3<double> curvature,
-	    	Array3<double> unsmoothed_curvature,
-	    	int number_primary_cells_i,				
-	    	int number_primary_cells_j,				
-	    	int number_primary_cells_k,				
-	    	double mesh_width_x1,				
-	    	double mesh_width_x2,				
-	    	double mesh_width_x3,				
-	   	double rho_plus_over_rho_minus, 			
-	   	double sigma_over_rho_minus,			
-	    	double maximum_weighted_curvature,			
-	    	int apply_curvature_smoothing,			
-	    	int number_curvature_smoothing_steps,		
-	    	int apply_curvature_smoothing_filter,
-	    	double smoothing_distance_factor
-	      	);								
-
-	void compute_density_u_controlvolumes	// compute the density for the velocity controlvolumes
-		(
-		Array3<double> level_set, 			
-		Array3<double> scaled_density_u1,		
-		Array3<double> scaled_density_u2,		
-		Array3<double> scaled_density_u3,		
-		int number_primary_cells_i,			
-		int number_primary_cells_j,			
-		int number_primary_cells_k,			
-       		double rho_plus_over_rho_minus,		
-		double lower_bound_derivatives    		
-		);
-    
-
 	/* compute the density field at the velocity points */
 
 	compute_density_u_controlvolumes( level_set, scaled_density_u1, scaled_density_u2, scaled_density_u3,		

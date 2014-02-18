@@ -23,7 +23,7 @@ using namespace std;
 /*  										*/
 /********************************************************************************/
 
-      void  write_cell_centered_vector_field_vtk( 
+EXPORT void  write_cell_centered_vector_field_vtk( 
 	ofstream& output_stream, 			// stream connected to output file
 	string vector_name,				// name of the scalar field to write to file 
 	string look_up_table_name,			// name of the look-up table

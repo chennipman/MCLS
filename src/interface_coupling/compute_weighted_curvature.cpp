@@ -18,7 +18,7 @@ using namespace std;
 /********************************************************************************/
 /* Notes										*/
 /********************************************************************************/
-   void compute_weighted_curvature(
+EXPORT void compute_weighted_curvature(
 	Array3<double> level_set,				// level set field
 	Array3<double> curvature,				// interface curvature
        double mesh_width_x1,				// grid spacing in x1 direction (uniform)
@@ -32,65 +32,6 @@ using namespace std;
 	   
 )
 {		 
-		 
-      double computed_derivative_heaviside_function(// evaluate approximated derivative of heavi-side		 
-	      double level_set_left,		
-	      double level_set_right,	  	
-	      double mesh_width_x1,			
-	      double mesh_width_x2,			
-	      double mesh_width_x3,			
-	      double smoothing_distance_factor		
-	  );
-      void  write_coordinates_vtk( 			// write coordinates in vtk format 
-	  ofstream& output_stream, 		
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k,		
-	  double mesh_width_x1,			
-	  double mesh_width_x2,			
-	  double mesh_width_x3			
-       );
-      void  write_vertex_centered_vector_field_vtk(      // write vertex centered vector field in vtk format
-	ofstream& output_stream, 			
-	string vector_name,				
-	string look_up_table_name,			
-	Array3<double> cell_centered_vector_field_1, 	
-	Array3<double> cell_centered_vector_field_2, 	
-	Array3<double> cell_centered_vector_field_3, 	
-	int number_primary_cells_i,			
-	int number_primary_cells_j,			
-	int number_primary_cells_k			
-	    );
-		 
-      void check_symmetry_velocities(		// check symmetry of vector field
-      		int number_primary_cells_i,			
-      		int number_primary_cells_j,			
-      		int number_primary_cells_k,			
-      		Array3<double> field_x1,				
-      		Array3<double> field_x2,				
-      		Array3<double> field_x3				
-	  );
-      void interpolate_velocity_u1_vertex(		// interpolate velocity u1 to cell vertices
-	  Array3<double> u_1_velocity_new, 			
-	  Array3<double> u_1_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u2_vertex(		// interpolate velocity u2 to cell vertices
-	  Array3<double> u_2_velocity_new, 			
-	  Array3<double> u_2_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u3_vertex(		// interpolate velocity u3 to cell vertices
-	  Array3<double> u_3_velocity_new, 			
-	  Array3<double> u_3_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
 	Array3<double> weighted_curvature_x1;		// weighted curvature at u1 points
 	Array3<double> weighted_curvature_x2;		// weighted curvature at u2 points
 	Array3<double> weighted_curvature_x3;		// weighted curvature at u3 points

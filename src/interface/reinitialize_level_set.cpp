@@ -22,7 +22,7 @@
 /*    --------------  * q(Phi^0)						*/
 /*        Delta t'								*/
 /********************************************************************************/
-    void reinitialize_level_set(
+EXPORT void reinitialize_level_set(
       Array3<double> level_set_star, 		// level set field at star time level
       int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction
@@ -41,48 +41,6 @@
   
 
  {
-      /* function definitions */
-      
-      void copy_cell_centered_field(     				// copy general cell centered field
-	    Array3<double> source_field, 		                	// including virtual cells
-	    Array3<double> target_field,		
-	    int number_primary_cells_i,		
-						
-	    int number_primary_cells_j,		
-						
-	    int number_primary_cells_k
-	      );		
-      
-      void compute_normal_derivative_at_faces(			        // compute normal derivative at cell faces			
-	    Array3<double> scalar_field, 			
-	    Array3<double> d_field_d_x1_face,			
-	    Array3<double> d_field_d_x2_face,
-	    Array3<double> d_field_d_x3_face,			
-	    int number_primary_cells_i,			
-	    int number_primary_cells_j,			
-	    int number_primary_cells_k,			
-	    double mesh_width_x1,				
-	    double mesh_width_x2,				
-	    double mesh_width_x3				
-	    );
-      void dump_reinitialization_for_debugging(                         // dump details of reinitialization
-            Array3<double> level_set_reinitialized,                          // for inspection
-            Array3<double> level_set_0,                  
-            Array3<double> level_set_residual_reinit,    
-            int number_primary_cells_i,             
-            int number_primary_cells_j,                 
-            int number_primary_cells_k,                 
-            double mesh_width_x1,                     
-            double mesh_width_x2,                     
-            double mesh_width_x3                      
-            );
-      void field_extrapolate_boundary(                                 // extrapolate field to virtual cells
-            Array3<double> field,                        
-            int number_primary_cells_i,     
-            int number_primary_cells_j,     
-            int number_primary_cells_k      
-            );
-						
       Array3<double> level_set_0;					// level-set field, after advection
 								// but not reinitialized
       Array3<double> level_set_residual_reinit;                      // residual of the reinitialization

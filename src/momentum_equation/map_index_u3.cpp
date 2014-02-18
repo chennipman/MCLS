@@ -11,7 +11,7 @@
 /* the pressure, because of the staggering of the unknowns.              .      */
 /* This function should be in-lined.                                            */
 /********************************************************************************/
-  int map_index_u3(
+EXPORT int map_index_u3(
       int i_index,				// i_index of the point in the 3-d array
       int j_index, 				// j_index of the point in the 3-d array
       int k_index,  				// k_index of the point in the 3-d array

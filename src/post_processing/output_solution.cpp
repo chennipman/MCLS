@@ -14,7 +14,7 @@ string convertInt(int number)
    return ss.str();//return a string with the contents of the stream
 }
 
-    void output_solution(
+EXPORT void output_solution(
 	  Array3<double> level_set_new, 		// level set field at new time level
 						// mass conserving
 	  Array3<double> volume_of_fluid, 		// volume of fluid field
@@ -37,104 +37,6 @@ string convertInt(int number)
 	  int index_of_output_file		// index of the output file
 		    )
 	      {  
-      void  write_coordinates_tecplot(         // write coordinates of the cell vertices to file in
-	  ofstream& output_stream, 	       // tecplot format 			
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k,		
-	  double mesh_width_x1,			
-	  double mesh_width_x2,			
-	  double mesh_width_x3			
-			    );
-      void interpolate_velocity_u1_center(	// interpolate velocity u1 to cell centers
-	  Array3<double> u_1_velocity_new, 			
-	  Array3<double> u_1_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u2_center(	// interpolate velocity u2 to cell centers
-	  Array3<double> u_2_velocity_new, 			
-	  Array3<double> u_2_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u3_center(	// interpolate velocity u3 to cell centers
-	  Array3<double> u_3_velocity_new, 			
-	  Array3<double> u_3_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u1_vertex(	// interpolate velocity u1 to cell vertices
-	  Array3<double> u_1_velocity_new, 			
-	  Array3<double> u_1_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u2_vertex(	// interpolate velocity u2 to cell vertices
-	  Array3<double> u_2_velocity_new, 			
-	  Array3<double> u_2_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u3_vertex(	// interpolate velocity u3 to cell vertices
-	  Array3<double> u_3_velocity_new, 			
-	  Array3<double> u_3_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void  write_cell_centered_field_tecplot( 		// write cell centered field to file
-	ofstream& output_tecplot, 			// in tecplot format
-	Array3<double> pressure, 
-	int number_primary_cells_i,
-	int number_primary_cells_j, 
-	int number_primary_cells_k
-			    );
-      void  write_coordinates_vtk( 		// write coordinates in vtk format 
-	  ofstream& output_stream, 		
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k,		
-	  double mesh_width_x1,			
-	  double mesh_width_x2,			
-	  double mesh_width_x3			
-       );
-      void  write_cell_centered_field_vtk(     // write cell centered field in vtk format
-	ofstream& output_stream, 			
-	string scalar_name,				
-	string look_up_table_name,				
-	Array3<double> cell_centered_field, 			
-	int number_primary_cells_i,			
-	int number_primary_cells_j,			
-	int number_primary_cells_k			
-	    );
-      void  write_vertex_centered_field_vtk(       // write vertex centered field in vtk format
-	ofstream& output_stream, 			
-	string scalar_name,				
-	string look_up_table_name,			
-	Array3<double> cell_centered_field, 			
-	int number_primary_cells_i,			
-	int number_primary_cells_j,			
-	int number_primary_cells_k			
-	    );
-      void  write_vertex_centered_vector_field_vtk(      // write vertex centered vector field in vtk format
-	ofstream& output_stream, 			
-	string vector_name,				
-	string look_up_table_name,			
-	Array3<double> cell_centered_vector_field_1, 	
-	Array3<double> cell_centered_vector_field_2, 	
-	Array3<double> cell_centered_vector_field_3, 	
-	int number_primary_cells_i,			
-	int number_primary_cells_j,			
-	int number_primary_cells_k			
-	    );
-  
-      
       Array3<double> u_1_velocity_center;		// velocity in cell center, x1 component
       Array3<double> u_2_velocity_center;		// velocity in cell center, x2 component
       Array3<double> u_3_velocity_center;		// velocity in cell center, x3 component

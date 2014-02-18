@@ -23,7 +23,7 @@
 /* occur. The volume of fluid in the erroneous cells is set to the correct      */
 /* value.										*/
 /********************************************************************************/
-  int modify_volume_of_fluid_values(
+EXPORT int modify_volume_of_fluid_values(
       Array3<double> level_set, 				    		// level-set field
       Array3<double> volume_of_fluid,					// volume of fluid field, uncorrected
 									// so with possible vapour cells and 
@@ -36,15 +36,6 @@
       double volume_of_fluid_tolerance			    	// tolerance for volume of fluid value
       )
       {
-      int check_volume_of_fluid(
-               Array3<double> volume_of_fluid,
-               int number_primary_cells_i,
-               int number_primary_cells_j,
-               int number_primary_cells_k,
-               double volume_of_fluid_tolerance
-
-              );
-      double sign(double value, double set_sign);    		// return the sign of 'value'
       double mean_value_level_set;					// average of left and right hand side value
 									// of the level-set field
       double current_level_set_value;				// current level-set field value in the control volume

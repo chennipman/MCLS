@@ -1,9 +1,4 @@
 #include "../headers/array.h"
-class vector
-{
-public:
-  double u1,u2,u3;
-};
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -21,7 +16,7 @@ public:
 /* equation were computed in the function that applied the pressure correction  */
 /* to the velocity field. Now it is contained in this separate function.        */
 /********************************************************************************/
-    void compute_momentum_source_terms(
+EXPORT void compute_momentum_source_terms(
 	    Array3<double> level_set, 				// level-set field
 	    Array3<double> pressure,					// pressure field
 	    Array3<double> surface_tension_body_force_x1,		// x1 component of the body force due to
@@ -52,19 +47,7 @@ public:
 	    double actual_time_step_navier_stokes, 		// actual time step for Navier-Stokes solution algorithm 
 	    vector gravity					// gravitational acceleration vector 
 		 )
-	/* function definitions */
 	{
-	    double compute_scaled_density(			// compute the density at a cell face
-		double level_set_left, 				// based on the level-set values at the cell
-		double level_set_right,				// centers of the two cells that share that face
-		double rho_plus_over_rho_minus);
-	    void set_constant_matrix2(                     	// set three-dimensional array to constant value
-		int first_dimension,	
-		int second_dimension,	
-		int third_dimension,	
-		Array3<double> matrix2_to_set,	
-		double constant_value	
-	    );
 	    double density_cell_face_x1;			// density at cell face, normal in x1 direction
 								// (location of u1 velocity)
 	    double density_cell_face_x2;			// density at cell face, normal in x2 direction

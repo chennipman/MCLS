@@ -16,7 +16,7 @@
 /* smoothness in the curvature that leads to undesirable effects in the         */
 /* solution.										*/
 /********************************************************************************/
-void smooth_curvature(
+EXPORT void smooth_curvature(
   	    Array3<double> level_set, 				// level set field
 	    Array3<double> curvature_new,				// interface curvature
 	    Array3<double> unsmoothed_curvature,			// interface curvature after smoothing
@@ -32,20 +32,6 @@ void smooth_curvature(
   
        )
 	{
-    
-      void copy_cell_centered_field( 		// copy cell centered field
-	    Array3<double> source_field, 		   			
-	    Array3<double> target_field,		
-	    int number_primary_cells_i,		
-	    int number_primary_cells_j,		
-	    int number_primary_cells_k		
-	    );
-      double curvature_filter(			// the curvature filter modifies
-	    double level_set_value,			// the diffusion coefficient of
-	    double mesh_width_x1,			// the filtering equation, so only
-	    double mesh_width_x2,			// a small band is affected
-	    double mesh_width_x3			
-		   );
       Array3<double> curvature_old;			// curvature at the previous time step in the 
 							// curvature smoothing algorithm
       double time_step_curvature_smoothing;		// time-step in the curvature smoothing algorithm

@@ -18,7 +18,7 @@
 /* volume of fluid value outside the allowed interval [0.1].                    */
 /********************************************************************************/
 
-void apply_redistribution_volume_of_fluid_correction(
+EXPORT void apply_redistribution_volume_of_fluid_correction(
          Array3<double> level_set,                                  // level-set field
          Array3<double> volume_of_fluid,                            // volume of fluid field
          Array3<double> volume_of_fluid_correction,                 // correction to volume of fluid field
@@ -39,22 +39,6 @@ void apply_redistribution_volume_of_fluid_correction(
                                                                // algorithm
          )
  {
-     void set_constant_vector(
-        int vector_length,                                     // length of the vector
-        Array1<double> vector_to_set,                                 // the name of the vector that has to be set
-        double constant_value                                  // the constant value the vector has to be set to
-     );
-     double compute_redistribution_velocity(                   // compute convection velocity
-        double left_hand_value_level_set,                      // for mass redistribution
-        double right_hand_value_level_set,                     // algorithm
-        double meshwidth
-     );
-     double upwind_flux_mass_redistribution(                   // compute flux for mass redistribution
-        double mass_redistribution_velocity,                   // algorithm
-        double left_hand_value_correction,
-        double right_hand_value_correction
-     );
-
       Array3<double> time_derivative_volume_of_fluid_correction; // time-derivative of the volume of fluid
 							    // correction
       Array3<double> velocity_mass_redistribution_x1;	    // convection velocity in mass

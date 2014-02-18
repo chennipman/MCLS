@@ -26,7 +26,7 @@
 /*   phi_new    = 1/3 phi_old + 2/3 phi_stage_2 + 2/3 dt Operator(phi_stage_2)  */
 /********************************************************************************/
 //
- void compute_first_stage_RK(
+EXPORT void compute_first_stage_RK(
     Array3<double> level_set,                        // level set at previous time level
     Array3<double> level_set_stage_1,                // stage 1 for RK time integration
     Array3<double> convection_operator,              // right hand side of the system of ode's

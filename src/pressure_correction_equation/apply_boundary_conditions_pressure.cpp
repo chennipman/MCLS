@@ -21,7 +21,7 @@
 /* even those that are prescribed.                                              */
 /********************************************************************************/
 //
-void apply_boundary_conditions_pressure(
+EXPORT void apply_boundary_conditions_pressure(
       Array3<double> pressure,                                 // pressure field
       Array3<double> pressure_boundary_condition_x1,           // inhomogeneous boundary condition for
                                                           // the pressure planes with normal in x1 direction

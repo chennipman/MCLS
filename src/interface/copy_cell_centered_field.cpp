@@ -11,7 +11,7 @@
 /* when we switch to more efficient definition for the multi-dimensional arrays */
 /* this function can be simplified of even discarded				*/
 /********************************************************************************/
-      void copy_cell_centered_field( 
+EXPORT void copy_cell_centered_field( 
 	    Array3<double> source_field, 		// original field
 	    Array3<double> target_field,		// copy of the original field
 	    int number_primary_cells_i,		// number of primary (pressure) 

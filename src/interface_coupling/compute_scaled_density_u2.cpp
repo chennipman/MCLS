@@ -14,7 +14,7 @@
 /********************************************************************************/
 /* Notes										*/
 /********************************************************************************/
-	void compute_scaled_density_u2(
+EXPORT void compute_scaled_density_u2(
 	Array3<double> scaled_density_u2,			// scaled density for the controlvolumes
 							// of the momentum equation in x1 direction
 	Array3<double> volume_of_fluid_u2,			// volume of fluid value for the controlvolumes

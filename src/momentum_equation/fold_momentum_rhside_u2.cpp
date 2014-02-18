@@ -3,35 +3,7 @@
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
-enum boundary_conditions_type{dirichlet, neumann, periodic};
-enum boundary_conditions_rule{constant, function};
-enum cell_centerings{cell_centered, vertex_centered};
 
-
-class boundary_variable
-{
-public:
-  variable variable_name;
-  boundary_conditions_type boundary_condition_type;
-  boundary_conditions_rule boundary_condition_rule;
-  cell_centerings cell_centering;
-  double boundary_condition_value;
-  boundary_variable(variable varname, boundary_conditions_type bound_type,
-				     boundary_conditions_rule bound_rule,
-				     cell_centerings  cell_cent,
-					double bound_value );
-  boundary_variable(variable varname);
-};
-
-class boundary_face
-{
-public:
-    boundary_variable boundary_variables[5];
-    boundary_face(void);
-   
-};
-         
 /********************************************************************************/
 /*  Function to include the boundary conditions into the momentum equation      */
 /*  conditions									*/
@@ -52,7 +24,7 @@ public:
 /* 2) remove any connections outside the domain	using the boundary conditions	*/
 /* 
 /********************************************************************************/
-  void fold_momentum_rhside_u2(
+EXPORT void fold_momentum_rhside_u2(
       boundary_face boundary_faces[6],			// array with all the information
 							// for the boundary conditions 
       Array1<double> momentum_rhside_u2,			// momentum rhside velocity x1 direction
@@ -66,15 +38,6 @@ public:
 	   )
       
 {
-    int map_index_u2(                    		// map 3-D array index to 1-D array
-      int i_index,					// index
-      int j_index, 				
-      int k_index,  			
-      int number_primary_cells_i,		
-      int number_primary_cells_j,		
-      int number_primary_cells_k		
-      );
-	
     double boundary_value;		// value of the boundary condition prescibed:
 					// dirichlet-> function value
 					// neumann -> normal derivative

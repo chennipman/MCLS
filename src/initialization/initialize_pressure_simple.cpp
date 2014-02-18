@@ -3,39 +3,11 @@
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
-enum boundary_conditions_type{dirichlet, neumann, periodic};
-enum boundary_conditions_rule{constant, function};
-enum cell_centerings{cell_centered, vertex_centered};
-
-
-class boundary_variable
-{
-public:
-  variable variable_name;
-  boundary_conditions_type boundary_condition_type;
-  boundary_conditions_rule boundary_condition_rule;
-  cell_centerings cell_centering;
-  double boundary_condition_value;
-  boundary_variable(variable varname, boundary_conditions_type bound_type,
-                                 boundary_conditions_rule bound_rule,
-                                 cell_centerings  cell_cent,
-                                   double bound_value );
-  boundary_variable(variable varname);
-};
-
-class boundary_face
-{
-public:
-    boundary_variable boundary_variables[5];
-    boundary_face(void);
-
-};
-
 #include <string>
 #include <sstream>
 #include <fstream>
 using namespace std;
+
 /********************************************************************************/
 /*  Function to solve the tentative velocity field u star, x2 components        */
 /*                                                                              */
@@ -51,7 +23,7 @@ using namespace std;
 /*                                                                              */
 /********************************************************************************/
 
-      void initialize_pressure(
+EXPORT void initialize_pressure(
       Array3<double> pressure,                        // pressure
       double mesh_width_x1,                      // grid spacing in x1 direction (uniform)
       double mesh_width_x2,                      // grid spacing in x2 direction (uniform)

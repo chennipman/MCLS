@@ -22,7 +22,7 @@
 /* moved to a separate part that concerns the coupling between the interface    */
 /* dynamics and the Navier-Stokes solution algorithm. 				*/
 /********************************************************************************/
-      void advance_interface
+EXPORT void advance_interface
       (
       	Array3<double> level_set_new, 				// level set field at new time level
 								// mass conserving
@@ -78,100 +78,6 @@
 	double actual_time					// actual time in the simulation for which the solution
       )
       {
-
-/*******************************************************************************************/      
-/* 				function definitions 					   */
-/*******************************************************************************************/      
-      void advect_level_set(                            // advect the level-set field
-             Array3<double> level_set_old,           
-             Array3<double> level_set_new,           
-             Array3<double> u_1_velocity_new,        
-             Array3<double> u_2_velocity_new,        
-             Array3<double> u_3_velocity_new,        
-             int number_primary_cells_i,        
-             int number_primary_cells_j,        
-             int number_primary_cells_k,        
-             double actual_time_step_level_set,
-             double mesh_width_x1,              
-             double mesh_width_x2,              
-             double mesh_width_x3               
-      );
-      void advect_level_set_higher_order(                // advect the level-set field
-             Array3<double> level_set_old,           
-             Array3<double> level_set_new,           
-             Array3<double> u_1_velocity_new,        
-             Array3<double> u_2_velocity_new,        
-             Array3<double> u_3_velocity_new,        
-             int number_primary_cells_i,        
-             int number_primary_cells_j,        
-             int number_primary_cells_k,        
-             double actual_time_step_level_set,
-             double mesh_width_x1,              
-             double mesh_width_x2,              
-             double mesh_width_x3               
-      );
-      void reinitialize_level_set(		// reinitialize the level-set field
-              Array3<double> level_set_star, 		
-              int number_primary_cells_i,		
-              int number_primary_cells_j,		
-              int number_primary_cells_k,		
-              double mesh_width_x1,			
-              double mesh_width_x2,			
-              double mesh_width_x3,			
-              double cfl_number_reinitialization,	
-              int maximum_reinitialization_steps,	
-              double tolerance_reinitialization		
-      );
-    void make_level_set_mass_conserving			// make level-set field mass-conserving
-    (
-      		Array3<double> level_set_star, 				
-      		Array3<double> level_set_new, 												
-      		Array3<double> level_set_old, 				
-      		Array3<double> volume_of_fluid, 				
-      		Array3<double> u_1_velocity_new, 			
-      		Array3<double> u_2_velocity_new, 			
-      		Array3<double> u_3_velocity_new,				
-      		int number_primary_cells_i,				
-      		int number_primary_cells_j,				
-      		int number_primary_cells_k,				
-      		double actual_time_step_level_set,			
-      		double mesh_width_x1,				
-      		double mesh_width_x2,				
-      		double mesh_width_x3,				
-      		int apply_mass_distribution_algorithm,    	
-      		int apply_mass_conservation_correction,    	
-      		double volume_of_fluid_tolerance,			
-      		double lower_bound_derivatives,			
-      		int number_vof_2_level_set_iterations,		
-     		int number_iterations_ridder,			
-      		double vof_2_level_set_tolerance,			
-     		int maximum_number_mass_redistribution_iterations,
-      		double time_step_mass_redistribution,		
-		double redistribution_vof_tolerance 		
-    );
-      void copy_cell_centered_field(         	// copy cell centered field from source to target
-	    Array3<double> source_field, 		
-	    Array3<double> target_field,		
-	    int number_primary_cells_i,		
-						
-	    int number_primary_cells_j,		
-						
-	    int number_primary_cells_k		
-						
-	   );
-      void shift_interface(
-	    Array3<double> level_set_new, 		// function to shift the level-set field
-						// from the new to the old time-level
-	    Array3<double> level_set_old, 		
-						
-	    int number_primary_cells_i,		
-	    int number_primary_cells_j,		
-	    int number_primary_cells_k		
-	   );		      
-/*******************************************************************************************/      
-/* 				                     					   */
-/*******************************************************************************************/      
-
        Array3<double> level_set_star; 		// level set field at new time level
 						// after convection and reinitialization
 						// not mass conserving

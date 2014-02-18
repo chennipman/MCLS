@@ -16,7 +16,7 @@
 /*  											*/
 /********************************************************************************/
 
-    void shift_interface(
+EXPORT void shift_interface(
       Array3<double> level_set_new, 		// level set field at new time level
 						// mass conserving
       Array3<double> level_set_old, 		// level set field at old time level
@@ -26,15 +26,6 @@
       int number_primary_cells_k		// number of primary (pressure) cells in x3 direction
 	 )		      
       {
-	/* function definitions */
-      void copy_cell_centered_field(         // copy cell centered field from source to target
-	    Array3<double> source_field, 		
-	    Array3<double> target_field,		
-	    int number_primary_cells_i,		
-	    int number_primary_cells_j,		
-	    int number_primary_cells_k		
-	   );
- 
       /* shift the level-set field from the new to old time level*/
       
 

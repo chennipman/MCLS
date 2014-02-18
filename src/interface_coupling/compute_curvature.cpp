@@ -16,7 +16,7 @@
 /*  The curvature is computed in all real cells and extrapolated to the         */
 /*  virtual cells.									*/
 /********************************************************************************/
-      void compute_curvature(						
+EXPORT void compute_curvature(						
       Array3<double> level_set, 				// level-set field
       Array3<double> curvature,				// interface curvature
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
@@ -27,40 +27,6 @@
       double mesh_width_x3				// grid spacing in x3 direction (uniform)
 	)
       {
-      void  field_neumann_boundary(			// apply neumann boundary condition to cell-centered field
-	  Array3<double> field, 		
-	  int number_primary_cells_i,	
-	  int number_primary_cells_j,	
-	  int number_primary_cells_k	
-      );
-      void dump_curvature_for_debugging(		// write all quantities that are involved in the
-       		Array3<double> d_level_set_d_x1,		// computation of the curvature to a vtk file	
-       		Array3<double> d_level_set_d_x2,		
-       		Array3<double> d_level_set_d_x3,		
-       		Array3<double> d_2_level_set_d_x1_2,	
-       		Array3<double> d_2_level_set_d_x2_2,	
-       		Array3<double> d_2_level_set_d_x3_2,	
-       		Array3<double> d_2_level_set_d_x1_d_x2,	
-       		Array3<double> d_2_level_set_d_x1_d_x3,	
-       		Array3<double> d_2_level_set_d_x2_d_x3,	
- 		Array3<double> length_gradient,	
-		Array3<double> curvature,
-		Array3<double> curvature_error,
-		int number_primary_cells_i,			
-		int number_primary_cells_j,		
-		int number_primary_cells_k,		
-	  	double mesh_width_x1,		
-	  	double mesh_width_x2,		
-	  	double mesh_width_x3			
-	);
-       void set_constant_matrix2(			// set triple array to constant value
-	  int first_dimension,			
-	  int second_dimension,			
-	  int third_dimension,			
-	  Array3<double> matrix2_to_set,			
-	  double constant_value			
-     );
-     
       Array3<double> d_level_set_d_x1;			// first partial derivative wrt x1 of level-set
       Array3<double> d_level_set_d_x2;			// first partial derivative wrt x2 of level-set
       Array3<double> d_level_set_d_x3;			// first partial derivative wrt x3 of level-set

@@ -3,35 +3,7 @@
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
-enum boundary_conditions_type{dirichlet, neumann, periodic};
-enum boundary_conditions_rule{constant, function};
-enum cell_centerings{cell_centered, vertex_centered};
 
-
-class boundary_variable
-{
-public:
-  variable variable_name;
-  boundary_conditions_type boundary_condition_type;
-  boundary_conditions_rule boundary_condition_rule;
-  cell_centerings cell_centering;
-  double boundary_condition_value;
-  boundary_variable(variable varname, boundary_conditions_type bound_type,
-				     boundary_conditions_rule bound_rule,
-				     cell_centerings  cell_cent,
-					double bound_value );
-  boundary_variable(variable varname);
-};
-
-class boundary_face
-{
-public:
-    boundary_variable boundary_variables[5];
-    boundary_face(void);
-   
-};
-         
 /********************************************************************************/
 /*  Function to include the boundary conditions into the momentum equation      */
 /*  conditions									*/
@@ -52,7 +24,7 @@ public:
 /* 2) remove any connections outside the domain	using the boundary conditions	*/
 /* 
 /********************************************************************************/
-  void fold_momentum_matrix_u3(
+EXPORT void fold_momentum_matrix_u3(
       boundary_face boundary_faces[6],			// array with all the information
 							// for the boundary conditions 
       Array2<double> momentum_matrix_u3,			// momentum matrix velocity x2 direction
@@ -63,15 +35,6 @@ public:
 	   )
       
 {
-      int map_index_u3(                    		// map 3-D array index to 1-D array
-	  int i_index,					// index
-	  int j_index, 				
-	  int k_index,  			
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k		
-      );
-	
     int start_index_i;			// lowest index i_index in active part of matrix
     int start_index_j;			// lowest index j_index in active part of matrix
     int start_index_k;			// lowest index k_index in active part of matrix

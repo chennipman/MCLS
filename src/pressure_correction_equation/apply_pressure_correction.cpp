@@ -3,11 +3,7 @@
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-class vector
-{
-public:
-  double u1,u2,u3;
-};
+
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to apply the pressure correction to the tentative velocity field   */
@@ -25,7 +21,7 @@ public:
 /* equation, not the pressure correction.                                       */
 /* Currently we assume a Dirichlet boundary condition for all normal velocities.*/
 /********************************************************************************/
-  void apply_pressure_correction(
+EXPORT void apply_pressure_correction(
 	    Array3<double> level_set, 				// level-set field
 	    Array3<double> pressure,					// pressure field
 	    Array3<double> u_1_velocity_star, 	     		// velocity field at star time level x1 direction
@@ -60,23 +56,6 @@ public:
 	    vector gravity					// gravitational acceleration vector 
        )
   {
-	/* function definitions */
-	
-	    double compute_scaled_density(			// compute the density at a cell face
-		double level_set_left, 				// based on the level-set values at the cell
-		double level_set_right,				// centers of the two cells that share that face
-		double rho_plus_over_rho_minus
-           );
-           void dump_divergence_for_debugging(            	// visualize local discrete divergence 
-               Array3<double> local_divergence,
-               int number_primary_cells_i,
-               int number_primary_cells_j,
-               int number_primary_cells_k,
-               double mesh_width_x1,
-               double mesh_width_x2,
-               double mesh_width_x3                      
-           );
-
 	    double density_cell_face_x1;			// density at cell face, normal in x1 direction
 								// (location of u1 velocity)
 	    double density_cell_face_x2;			// density at cell face, normal in x2 direction

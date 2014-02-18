@@ -14,7 +14,7 @@
 /*  Use is made of a smoothed heaviside function to interpolate between         */
 /*  the viscosity of the two phases.                                            */
 /********************************************************************************/
-      double compute_scaled_viscosity(			
+EXPORT double compute_scaled_viscosity(			
 	  double level_set,
 	  double mesh_width_x1,				// grid spacing in x1 direction (uniform)
 	  double mesh_width_x2,				// grid spacing in x2 direction (uniform)

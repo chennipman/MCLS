@@ -10,7 +10,7 @@
 /* Notes										*/
 /********************************************************************************/
 
-	void compute_density_u_controlvolumes
+EXPORT void compute_density_u_controlvolumes
 	(
 	Array3<double> level_set, 				// level set field 
 							// mass conserving
@@ -30,74 +30,6 @@
 		
 	)
 	{
-	void compute_vof_at_u1_points(		// compute volume of fluid for u1 control volumes
-		Array3<double> level_set, 				
-		Array3<double> d_level_set_d_x1,			
-		Array3<double> d_level_set_d_x2,			
-		Array3<double> d_level_set_d_x3,			
-		Array3<double> volume_of_fluid_u1,		
-		int number_primary_cells_i,			
-		int number_primary_cells_j,			
-		int number_primary_cells_k,			
-		double lower_bound_derivatives    		
-     		);
- 	void compute_vof_at_u2_points(		// compute volume of fluid for u2 control volumes
-		Array3<double> level_set, 				
-		Array3<double> d_level_set_d_x1,			
-		Array3<double> d_level_set_d_x2,			
-		Array3<double> d_level_set_d_x3,			
-		Array3<double> volume_of_fluid_u2,		
-		int number_primary_cells_i,			
-		int number_primary_cells_j,			
-		int number_primary_cells_k,			
-		double lower_bound_derivatives    		
-     		);
-	void compute_vof_at_u3_points(		// compute volume of fluid for u3 control volumes
-		Array3<double> level_set, 				
-		Array3<double> d_level_set_d_x1,			
-		Array3<double> d_level_set_d_x2,			
-		Array3<double> d_level_set_d_x3,			
-		Array3<double> volume_of_fluid_u3,		
-		int number_primary_cells_i,			
-		int number_primary_cells_j,			
-		int number_primary_cells_k,			
-		double lower_bound_derivatives    		
-     		);
-      void 	compute_level_set_gradient(					// compute gradient of level-set field
-		Array3<double> level_set_star, 
-		Array3<double> d_level_set_d_x1, 
-		Array3<double> d_level_set_d_x2, 
-		Array3<double> d_level_set_d_x3,
-		int number_primary_cells_i, 
-		int number_primary_cells_j, 
-		int number_primary_cells_k
-		 );
-	void compute_scaled_density_u1(					// compute scaled density at u1 control volumes
-		Array3<double> scaled_density_u1,			
-		Array3<double> volume_of_fluid_u1,		
-      		double rho_plus_over_rho_minus,		
-		int number_primary_cells_i,			
-		int number_primary_cells_j,			
-		int number_primary_cells_k			
-		);
-	void compute_scaled_density_u2(					// compute scaled density at u2 control volumes
-		Array3<double> scaled_density_u2,			
-		Array3<double> volume_of_fluid_u2,		
-      		double rho_plus_over_rho_minus,		
-		int number_primary_cells_i,			
-		int number_primary_cells_j,			
-		int number_primary_cells_k			
-		);
- 	void compute_scaled_density_u3(					// compute scaled density at u3 control volumes
-		Array3<double> scaled_density_u3,			
-		Array3<double> volume_of_fluid_u3,		
-      		double rho_plus_over_rho_minus,		
-		int number_primary_cells_i,			
-		int number_primary_cells_j,			
-		int number_primary_cells_k			
-		);
-     
-      
 	Array3<double> d_level_set_d_x1;			// first partial derivative of
 							// the level-set field wrt x1
 							// second order central approximation

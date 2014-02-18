@@ -12,7 +12,7 @@
 /* Notes										*/
 /********************************************************************************/
 //
-      void update_volume_of_fluid_x2_flux(				
+EXPORT void update_volume_of_fluid_x2_flux(				
 	 Array3<double> level_set, 		//level-set field			
 	 Array3<double> d_level_set_d_x1,		// first partial derivative of
 						// the level-set field wrt x1
@@ -40,29 +40,6 @@
       
   )
      {
-      /* function definitions */
-      
-     void compute_vof_flux_x2(		// compute volume of fluid	
-	Array3<double> level_set, 			// fluxes in x2 direction
-        Array3<double> u_2_velocity_new, 			
-	Array3<double> d_level_set_d_x1,			
-	Array3<double> d_level_set_d_x2,			
-	Array3<double> d_level_set_d_x3,			
-	Array3<double> flux_x2,				
-	int number_primary_cells_i,			
-	int number_primary_cells_j,			
-	int number_primary_cells_k,			
-	double actual_time_step_level_set,		
-	double mesh_width_x2,				
-	double lower_bound_derivatives    		
-	);
-      void field_neumann_boundary(		// apply neumann boundary
-	  Array3<double> field,			// condition to cel centered field	
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-      );
-      
       Array3<double> flux_x2;			// volume of fluid flux in x1 direction
       int i_index, j_index, k_index;  	// local variables for loop indexing
       double one_over_dx2	=    		// 1/(grid spacing in x2 direction)

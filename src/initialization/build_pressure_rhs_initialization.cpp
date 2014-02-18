@@ -16,7 +16,7 @@
 /********************************************************************************/
 /* Notes									*/
 /********************************************************************************/
-void build_pressure_rhs_initialization(
+EXPORT void build_pressure_rhs_initialization(
       Array3<double> initial_pressure_rhs,	     		// right hand side of pressure correction equation
 					     		// excluding contributions 
 					     		// inhomogeneous boundary conditions

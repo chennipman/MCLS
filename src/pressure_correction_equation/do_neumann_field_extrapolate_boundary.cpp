@@ -21,7 +21,7 @@
 /* different faces, edges and corners						*/
 /********************************************************************************/
 //
-void  field_extrapolate_boundary(
+EXPORT void  field_extrapolate_boundary(
       Array3<double> field, 			// cell centered field
       int number_primary_cells_i,	// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,	// number of primary (pressure) cells in x2 direction
@@ -29,14 +29,6 @@ void  field_extrapolate_boundary(
       
 )
 {
-void  field_neumann_boundary(
-      Array3<double> field, 		
-      int number_primary_cells_i,	
-      int number_primary_cells_j,	
-      int number_primary_cells_k	
-      
-);
-
 	field_neumann_boundary(field, number_primary_cells_i, number_primary_cells_j, 
 				  	number_primary_cells_k);
 

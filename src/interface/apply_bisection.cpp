@@ -8,7 +8,7 @@
 #include <fstream>
 using namespace std;
 
-      int bisection_method(			
+EXPORT int bisection_method(			
 	    double level_set_left, 			// left hand initial value for root finding
 	    double level_set_right, 			// right hand initial value for root finding
 	    double function_g_left, 			// left hand initial function value for root finding
@@ -33,22 +33,6 @@ using namespace std;
 			)
 
 {
-      /* function definitions */
-      int level_set_2_vof( 
-	      double level_set, 			// compute the volume of fluid field value from 
-	      double d_level_set_d_x1, 		// a given level-set field value
-						
-	      double d_level_set_d_x2, 		
-						
-	      double d_level_set_d_x3, 		
-						
-	      double &volume_of_fluid,		
-	      double lower_bound_derivatives    
-      );
-      double sign(					// return value times sign(set_sign)
-	    double value, 
-	    double set_sign
-		 );
       double new_mid_point;				// new estimate of the root location based on
 							// midpoint search interval
       double function_g_value_midpoint=100.0;	// function value in the new estimate of the

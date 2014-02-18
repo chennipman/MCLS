@@ -23,7 +23,7 @@ using namespace std;
 /* the matrix from the internal sparse format.                                  */
 /********************************************************************************/
 
-  int export_matrix_matlab(
+EXPORT int export_matrix_matlab(
 	int i_dimension,    		// number of unknowns in the system in i-direction
 	int j_dimension, 		// number of unknowns in the system in i-direction
 	int k_dimension, 		// number of unknowns in the system in i-direction

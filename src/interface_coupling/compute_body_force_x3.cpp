@@ -15,7 +15,7 @@
 /* Notes									*/
 /********************************************************************************/
 	
-      void compute_body_force_x3( 
+EXPORT void compute_body_force_x3( 
       Array3<double> curvature,				// interface curvature 
       Array3<double> level_set, 				// level set field
       Array3<double> surface_tension_body_force_x3,	// x3 component of the body force due to
@@ -35,23 +35,7 @@
 							// restriction 
       double smoothing_distance_factor		// the smoothing distance is smoothing_distance_factor
              )
-      /* function definitions */
  {
-     void set_constant_matrix2(                           // set three-dimensional array to constant value
-	    int first_dimension,	
-	    int second_dimension,	
-	    int third_dimension,	
-	    Array3<double> matrix2_to_set,	
-	    double constant_value	
-	  );
-      double computed_derivative_heaviside_function(	// use numerical approximation to the 	 
-	      double level_set_left,				// derivative of the smoothed heaviside function
-	      double level_set_right,	  			// (H(phi_left)-H(phi_right))/(phi_left-phi_right)
-	      double mesh_width_x1,			
-	      double mesh_width_x2,			
-	      double mesh_width_x3,			
-	      double smoothing_distance_factor		
-	  );
       double rho_minus_over_rho_mean=			//  rho_minus/( 0.5* (rho_plus + rho_minus))
 		2.0/(1.0+rho_plus_over_rho_minus); 
       double weighted_curvature=0;				// curvature weighted by the derivative of

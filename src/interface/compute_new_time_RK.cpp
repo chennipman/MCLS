@@ -26,7 +26,7 @@
 /*   phi_new    = 1/3 phi_old + 2/3 phi_stage_2 + 2/3 dt Operator(phi_stage_2)  */
 /********************************************************************************/
 //
- void compute_new_time_RK(
+EXPORT void compute_new_time_RK(
     Array3<double> level_set_star,                   // level set at new time level, not mass conserving
     Array3<double> level_set_old,                    // level set at previous time level, mass conserving
     Array3<double> level_set_stage_1,                // stage 1 for RK time integration

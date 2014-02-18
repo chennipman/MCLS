@@ -21,7 +21,7 @@
 /*  										*/
 /*  										*/
 /********************************************************************************/
- void interpolate_velocity_u1_center(
+EXPORT void interpolate_velocity_u1_center(
 	  Array3<double> u_1_velocity_new, 			// velocity field at new time level x1 direction
 	  Array3<double> u_1_velocity_center,		// velocity in cell center, x1 component
 	  int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction

@@ -18,7 +18,7 @@
 /* If the level-set value is negative:						*/
 /*				 the scaled density is = 1                      */
 /********************************************************************************/
-  double compute_weighted_average(
+EXPORT double compute_weighted_average(
 	    double level_set_left, 		// level-set value in left hand adjacent cell
 	    double level_set_right,		// level-set value in right hand adjacent cell
 	    double density_left,		// density in left hand adjacent cell

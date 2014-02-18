@@ -16,7 +16,7 @@
 /* formulation is used. Otherwise a number of limiting cases are considered     */
 /* The algorithm is discussed in paragraph 5.4 of Sander's thesis   		*/
 /********************************************************************************/
-      int level_set_2_vof( 
+EXPORT int level_set_2_vof( 
 	      double level_set, 		// level-set field value in this cell
 	      double d_level_set_d_x1, 		// first partial derivative in x1 
 						// direction of level-set
@@ -34,18 +34,6 @@
        double complement_volume_of_fluid;	// (volume of fluid)-1 for -1* level set
 	    /* function definitions */
      
-      int level_set_2_vof_phi_negative( 	// compute volume of fluid from level-set
-	      double level_set, 		// field, when level-set field is less than zero.
-	      double d_level_set_d_x1, 		
-						
-	      double d_level_set_d_x2, 		
-						
-	      double d_level_set_d_x3, 		
-						
-	      double &volume_of_fluid,		
-	      double lower_bound_derivatives    
-	      );
- 
       if(level_set<=0.0)
       {
 	  if(level_set_2_vof_phi_negative(level_set, 

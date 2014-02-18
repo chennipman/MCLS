@@ -13,7 +13,7 @@
 /* The incomplete choleski preconditioner is applied. It is based on a          */
 /* splitting of the original matrix and is therefore not explicitly computed    */
 /********************************************************************************/
-     void apply_preconditioner(
+EXPORT void apply_preconditioner(
 	int i_dimension,    	// number of unknowns in the system in i-direction
 	int j_dimension, 	// number of unknowns in the system in i-direction
 	int k_dimension, 	// number of unknowns in the system in i-direction
@@ -23,7 +23,6 @@
 	Array1<double> solution_vector_x		// solution of the preconditioner system	
 	)
 
-	/* function definitions */
 	{
 	
 	int number_dof_in_slice= 		// number of degrees of freedom in one slice of the domain

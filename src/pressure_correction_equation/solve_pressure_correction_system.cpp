@@ -22,7 +22,7 @@ using namespace std;
 /* boundaries where the velocity is zero. The normal derivative of the pressure */
 /* balances with the gravitational acceleration.				       */
 /********************************************************************************/
- void solve_pressure_correction_system(
+EXPORT void solve_pressure_correction_system(
       Array2<double> pressure_matrix, 		          // pressure matrix
       Array1<double> pressure_rhside,		 	   // pressure rhside
       Array3<double> pressure,			          // pressure field
@@ -34,79 +34,6 @@ using namespace std;
 						          //conjugate gradient method
       )
    {
-     void build_preconditioner(			   // build incomplete choleski preconditioner
-	int i_dimension,    	
-	int j_dimension, 	
-	int k_dimension, 	
-	Array2<double> matrix_A,	
-	Array1<double> preconditioner_matrix_M 	
-	);
-     int conjugate_gradient_method(		          // solve linear system with conjugate gradient
-        int i_dimension,   			          // method (only SPD systems)
-        int j_dimension,   		
-        int k_dimension,   		
-        Array2<double> matrix_A,   		
-        Array1<double> preconditioner_matrix_M,  	
-        Array1<double> rhside_vector_b,   		
-        Array1<double> solution_vector_x, 		
-        double   tolerance,	  		
-        int     &iteration_number,  	
-        double  &relative_L2_norm_residual, 
-        double  &relative_Linfinity_norm_residual,
-        int maximum_iterations_allowed	
-        );
-     void decompress_solution_pressure(                   //  remap one dimensional pressure array
-	 Array3<double> pressure,		                  // to multidimensional pressure array
-	 Array1<double> pressure_correction,  
-	 int number_primary_cells_i,	     
-	 int number_primary_cells_j,	     
-	 int number_primary_cells_k	     
-	 );
-     void compress_solution_pressure(                     // map multidimensional pressure array
-         Array3<double> pressure,                              // to one dimensional array
-         Array1<double> compressed_pressure,         
-         int number_primary_cells_i,            
-         int number_primary_cells_j,            
-         int number_primary_cells_k             
-         );
-     int export_matrix_matlab(           		   // export the matrix to matlab file
-	 int i_dimension,    		
-	 int j_dimension, 		
-	 int k_dimension, 		
-	 int number_matrix_connections,  
-	 Array2<double> matrix_A,		
-	 Array1<double> rhside_vector,		
-	 Array1<double> solution_vector,	
-	 string variable_name
-	 );
-     void  field_extrapolate_boundary(      	   // extrapolate field to virtual cells
-        Array3<double> field, 			
-        int number_primary_cells_i,	
-        int number_primary_cells_j,	
-        int number_primary_cells_k	
-	);
-     void field_neumann_boundary(                     // apply neumann boundary condition to
-        Array3<double> field,                               // cell centered field
-        int number_primary_cells_i,
-        int number_primary_cells_j,
-        int number_primary_cells_k
-        );
-     void set_constant_vector(      	                 // set 1-dimensional array to constant value
-	 int vector_length,	
-	 Array1<double> vector_to_set,	
-	 double constant_value	
-     );
-     int project_pressure_rhside(			  // project rhside vector on column space
-	 int total_number_pressure_points,		
-	 Array1<double> pressure_rhside		 	
-     );
-     int shift_pressure_solution(                   // shift pressure solution
-        int total_number_pressure_points,
-        Array1<double> compressed_pressure               
-     );
-    
-    
-
       int  iteration_number;  		  	   // the number of iterations where the iterative
 						          // process was terminated
       double   relative_L2_norm_residual; 	          // the L2 norm of the residual, scaled with

@@ -3,30 +3,6 @@
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-class coordinate
-{
-public:
-  double x1,x2,x3;
-  coordinate(double xx1=0, double xx2=0, double xx3=0){x1=xx1;x2=xx2;x3=xx3;}
-};
-class bubble
-{
-public:
-  double principle_axis_x1;
-  double principle_axis_x2;
-  double principle_axis_x3;
-  int label;
-  coordinate center_location;
-  bubble(int number, coordinate bubble_center, double bubble_radius);
-};
-class surface
-{
-public:
-  int active;
-  int orientation;
-  double height;
-};
-enum geometry{bubbly_flow, wavy_flow};
 
 /********************************************************************************/
 /*  Function to initialize the level-set field                                  */
@@ -44,7 +20,7 @@ enum geometry{bubbly_flow, wavy_flow};
 /*  in the initialization, a spherical bubble is recognized as one that has 3   */
 /* identical principal axes								*/
 /********************************************************************************/
-    void initialize_level_set(
+EXPORT void initialize_level_set(
 	  geometry flow_type,				// the kind of initial condition that has to be applied
 	  bubble *the_bubbles,			// array with definitions of the bubbles
 	  int number_of_bubbles,			// number of bubbles in the initial condition
@@ -59,50 +35,6 @@ enum geometry{bubbly_flow, wavy_flow};
 	  Array3<double> level_set				// level-set field
 	  )
     {
-      /* function definitions */
-      void initialize_bubbles(
-	  bubble *bubbles, 				// initialize the level-set function for a 
-	  int number_of_bubbles, 			// set of bubbles                       
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k,			
-	  double mesh_width_x1,				
-	  double mesh_width_x2,				
-	  double mesh_width_x3,				
-	  Array3<double> level_set				
-	   );    
-
-      void initialize_free_surface(			//  initialize the level-set function for a 
-	  surface *free_surfaces, 			//  set of free surfaces
-	  int number_of_free_surfaces, 			 
-	  int number_primary_cells_i,			 
-	  int number_primary_cells_j,			 
-	  int number_primary_cells_k,			 
-	  double mesh_width_x1,				 
-	  double mesh_width_x2,				 
-	  double mesh_width_x3,				 
-	  Array3<double> level_set				 
-	    );
-      void field_neumann_boundary(			// apply neumann boundary condition to
-	  Array3<double> field, 				// cell centered field
-	  int number_primary_cells_i,	
-	  int number_primary_cells_j,	
-	  int number_primary_cells_k	
-	  );
-      void  field_extrapolate_boundary(      	// extrapolate field to virtual cells
-        Array3<double> field, 			
-        int number_primary_cells_i,	
-        int number_primary_cells_j,	
-        int number_primary_cells_k	
-	);
-      void set_constant_matrix2(			// set array to constant value
-	  int first_dimension,		
-	  int second_dimension,		
-	  int third_dimension,		
-	  Array3<double> matrix2_to_set,	
-	  double constant_value		
-	  );
-
    /* First set the level-set field to a large constant value, so we can minimize */
    /* with respect to this value						  */
    
