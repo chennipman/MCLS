@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<math.h>
@@ -18,11 +19,11 @@
 /* and update the interface position accordingly.                                  */
 /***********************************************************************************/
 
-     void redistribute_volume_of_fluid_error(						
-	double ***level_set, 					// level set field 
+EXPORT void redistribute_volume_of_fluid_error(						
+	Array3<double> level_set, 					// level set field 
 								// mass conserving
-	double ***volume_of_fluid, 				// volume of fluid field
-	double ***volume_of_fluid_correction,		// correction to the volume of fluid field
+	Array3<double> volume_of_fluid, 				// volume of fluid field
+	Array3<double> volume_of_fluid_correction,		// correction to the volume of fluid field
 								// to make it valid
 	int number_primary_cells_i,				// number of primary (pressure) cells in x1 direction
 	int number_primary_cells_j,				// number of primary (pressure) cells in x2 direction
@@ -41,31 +42,10 @@
  
  	)
      {
-	double compute_redistribution_velocity(		// compute convection velocity in 
-	      double left_hand_value_level_set, 		// vof error redistribution equation
-	      double right_hand_value_level_set,	
-	      double meshwidth				
-	      );
-	double upwind_flux_mass_redistribution( 		// compute artificial convective flux
-	      double mass_redistribution_velocity,		// for vof error redistribution
-	      double left_hand_value_correction, 	
-	      double right_hand_value_correction
-	      );	
-	double ***double_Matrix2(				// allocate memory for a three-
-		int number_primary_cells_i,			// dimensional array of doubles
-		int number_primary_cells_j, 		
-		int number_primary_cells_k
-	      );
-	void   free_double_Matrix2( 				// deallocate memory for a three
-		double ***doubleMatrix2, 			// dimensional array of doubles
-		int number_primary_cells_i,	
-		int number_primary_cells_j
-	      );
-
-	double ***redistribution_velocity_x1;			// artificial redistribution velocity x1 direction
-	double ***redistribution_velocity_x2;			// artificial redistribution velocity x2 direction
-	double ***redistribution_velocity_x3;			// artificial redistribution velocity x3 direction
-	double ***time_derivative_volume_of_fluid_correction;	// time derivative in the discretised
+	Array3<double> redistribution_velocity_x1;			// artificial redistribution velocity x1 direction
+	Array3<double> redistribution_velocity_x2;			// artificial redistribution velocity x2 direction
+	Array3<double> redistribution_velocity_x3;			// artificial redistribution velocity x3 direction
+	Array3<double> time_derivative_volume_of_fluid_correction;	// time derivative in the discretised
 									// volume of fluid redistribution equation
 	double one_over_dx1	=    					// 1/(grid spacing in x1 direction)
 	    1.0/(mesh_width_x1);
@@ -129,17 +109,16 @@
         /* allocate memory for the 'artificial' advection velocities in the update equation */
 	
       
-	redistribution_velocity_x1=double_Matrix2(number_primary_cells_i+1, number_primary_cells_j+2,
+	redistribution_velocity_x1.create(number_primary_cells_i+1, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	redistribution_velocity_x2=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+1,
+	redistribution_velocity_x2.create(number_primary_cells_i+2, number_primary_cells_j+1,
 				    number_primary_cells_k+2);
-	redistribution_velocity_x3=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	redistribution_velocity_x3.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+1);
 	
 	/* allocate memory for the time-derivative of the volume of fluid error */
 	
-	time_derivative_volume_of_fluid_correction=
-				    double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	time_derivative_volume_of_fluid_correction.create(number_primary_cells_i+2, number_primary_cells_j+2,
 					  number_primary_cells_k+2);
 
 	/* compute advection velocity in 1-direction */
@@ -328,7 +307,7 @@
 	
 	/* deallocate the memory for the 'artificial' advection velocities in the update equation */
 
-	free_double_Matrix2(redistribution_velocity_x1, number_primary_cells_i+1, number_primary_cells_j+2);
-	free_double_Matrix2(redistribution_velocity_x2, number_primary_cells_i+2, number_primary_cells_j+1);
-	free_double_Matrix2(redistribution_velocity_x3, number_primary_cells_i+2, number_primary_cells_j+2);
+	redistribution_velocity_x1.destroy();
+	redistribution_velocity_x2.destroy();
+	redistribution_velocity_x3.destroy();
      }

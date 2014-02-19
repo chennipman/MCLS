@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 /********************************************************************************/
@@ -21,16 +22,16 @@
 /* moved to a separate part that concerns the coupling between the interface    */
 /* dynamics and the Navier-Stokes solution algorithm. 				*/
 /********************************************************************************/
-      void advance_interface
+EXPORT void advance_interface
       (
-      	double ***level_set_new, 				// level set field at new time level
+      	Array3<double> level_set_new, 				// level set field at new time level
 								// mass conserving
-      	double ***level_set_old, 				// level set field at old time level
+      	Array3<double> level_set_old, 				// level set field at old time level
 								// mass conserving
-      	double ***volume_of_fluid, 				// volume of fluid field
-      	double ***u_1_velocity_new, 				// velocity field at new time level x1 direction
-      	double ***u_2_velocity_new, 				// velocity field at new time level x2 direction
-      	double ***u_3_velocity_new,				// velocity field at new time level x3 direction
+      	Array3<double> volume_of_fluid, 				// volume of fluid field
+      	Array3<double> u_1_velocity_new, 				// velocity field at new time level x1 direction
+      	Array3<double> u_2_velocity_new, 				// velocity field at new time level x2 direction
+      	Array3<double> u_3_velocity_new,				// velocity field at new time level x3 direction
       	int number_primary_cells_i,				// number of primary (pressure) cells in x1 direction
       	int number_primary_cells_j,				// number of primary (pressure) cells in x2 direction
       	int number_primary_cells_k,				// number of primary (pressure) cells in x3 direction
@@ -77,117 +78,13 @@
 	double actual_time					// actual time in the simulation for which the solution
       )
       {
-
-/*******************************************************************************************/      
-/* 				function definitions 					   */
-/*******************************************************************************************/      
-      void advect_level_set(                            // advect the level-set field
-             double ***level_set_old,           
-             double ***level_set_new,           
-             double ***u_1_velocity_new,        
-             double ***u_2_velocity_new,        
-             double ***u_3_velocity_new,        
-             int number_primary_cells_i,        
-             int number_primary_cells_j,        
-             int number_primary_cells_k,        
-             double actual_time_step_level_set,
-             double mesh_width_x1,              
-             double mesh_width_x2,              
-             double mesh_width_x3               
-      );
-      void advect_level_set_higher_order(                // advect the level-set field
-             double ***level_set_old,           
-             double ***level_set_new,           
-             double ***u_1_velocity_new,        
-             double ***u_2_velocity_new,        
-             double ***u_3_velocity_new,        
-             int number_primary_cells_i,        
-             int number_primary_cells_j,        
-             int number_primary_cells_k,        
-             double actual_time_step_level_set,
-             double mesh_width_x1,              
-             double mesh_width_x2,              
-             double mesh_width_x3               
-      );
-      void reinitialize_level_set(		// reinitialize the level-set field
-              double ***level_set_star, 		
-              int number_primary_cells_i,		
-              int number_primary_cells_j,		
-              int number_primary_cells_k,		
-              double mesh_width_x1,			
-              double mesh_width_x2,			
-              double mesh_width_x3,			
-              double cfl_number_reinitialization,	
-              int maximum_reinitialization_steps,	
-              double tolerance_reinitialization		
-      );
-    void make_level_set_mass_conserving			// make level-set field mass-conserving
-    (
-      		double ***level_set_star, 				
-      		double ***level_set_new, 												
-      		double ***level_set_old, 				
-      		double ***volume_of_fluid, 				
-      		double ***u_1_velocity_new, 			
-      		double ***u_2_velocity_new, 			
-      		double ***u_3_velocity_new,				
-      		int number_primary_cells_i,				
-      		int number_primary_cells_j,				
-      		int number_primary_cells_k,				
-      		double actual_time_step_level_set,			
-      		double mesh_width_x1,				
-      		double mesh_width_x2,				
-      		double mesh_width_x3,				
-      		int apply_mass_distribution_algorithm,    	
-      		int apply_mass_conservation_correction,    	
-      		double volume_of_fluid_tolerance,			
-      		double lower_bound_derivatives,			
-      		int number_vof_2_level_set_iterations,		
-     		int number_iterations_ridder,			
-      		double vof_2_level_set_tolerance,			
-     		int maximum_number_mass_redistribution_iterations,
-      		double time_step_mass_redistribution,		
-		double redistribution_vof_tolerance 		
-    );
-      double ***double_Matrix2(			// allocate memory for a three-dimensional array of doubles
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j, 		
-	  int number_primary_cells_k
-	    );
-      void   free_double_Matrix2( 		// deallocate memory for a three-dimensional array of doubles
-		double ***doubleMatrix2, 
-		int number_primary_cells_i,	
-		int number_primary_cells_j
-	    );
-      void copy_cell_centered_field(         	// copy cell centered field from source to target
-	    double ***source_field, 		
-	    double ***target_field,		
-	    int number_primary_cells_i,		
-						
-	    int number_primary_cells_j,		
-						
-	    int number_primary_cells_k		
-						
-	   );
-      void shift_interface(
-	    double ***level_set_new, 		// function to shift the level-set field
-						// from the new to the old time-level
-	    double ***level_set_old, 		
-						
-	    int number_primary_cells_i,		
-	    int number_primary_cells_j,		
-	    int number_primary_cells_k		
-	   );		      
-/*******************************************************************************************/      
-/* 				                     					   */
-/*******************************************************************************************/      
-
-       double ***level_set_star; 		// level set field at new time level
+       Array3<double> level_set_star; 		// level set field at new time level
 						// after convection and reinitialization
 						// not mass conserving
       
       /* allocate memory for the level-set field */
       
-      level_set_star=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+      level_set_star.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				      number_primary_cells_k+2);
       
       /* copy old solution to the tentative 'star' solution */
@@ -252,7 +149,7 @@
        
       /* deallocate memory for level-set field */
       
-      free_double_Matrix2(level_set_star, number_primary_cells_i+2, number_primary_cells_j+2);
+      level_set_star.destroy();
 
      
       }

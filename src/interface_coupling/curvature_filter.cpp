@@ -18,7 +18,7 @@
 /*                                                                              */
 /*                                                                              */
 /********************************************************************************/
-    double curvature_filter(
+EXPORT double curvature_filter(
 	      double level_set_value,			// level-set value 
 	      double mesh_width_x1,			// grid spacing in x1 direction (uniform)
 	      double mesh_width_x2,			// grid spacing in x2 direction (uniform)

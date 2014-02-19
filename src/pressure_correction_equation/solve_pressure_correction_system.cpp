@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -21,10 +22,10 @@ using namespace std;
 /* boundaries where the velocity is zero. The normal derivative of the pressure */
 /* balances with the gravitational acceleration.				       */
 /********************************************************************************/
- void solve_pressure_correction_system(
-      double **pressure_matrix, 		          // pressure matrix
-      double  *pressure_rhside,		 	   // pressure rhside
-      double  ***pressure,			          // pressure field
+EXPORT void solve_pressure_correction_system(
+      Array2<double> pressure_matrix, 		          // pressure matrix
+      Array1<double> pressure_rhside,		 	   // pressure rhside
+      Array3<double> pressure,			          // pressure field
       int number_primary_cells_i,	 	          // number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,	  	          // number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,		          // number of primary (pressure) cells in x3 direction
@@ -33,85 +34,6 @@ using namespace std;
 						          //conjugate gradient method
       )
    {
-     void build_preconditioner(			   // build incomplete choleski preconditioner
-	int i_dimension,    	
-	int j_dimension, 	
-	int k_dimension, 	
-	double **matrix_A,	
-	double *preconditioner_matrix_M 	
-	);
-     int conjugate_gradient_method(		          // solve linear system with conjugate gradient
-        int i_dimension,   			          // method (only SPD systems)
-        int j_dimension,   		
-        int k_dimension,   		
-        double  **matrix_A,   		
-        double  *preconditioner_matrix_M,  	
-        double   *rhside_vector_b,   		
-        double   *solution_vector_x, 		
-        double   tolerance,	  		
-        int     &iteration_number,  	
-        double  &relative_L2_norm_residual, 
-        double  &relative_Linfinity_norm_residual,
-        int maximum_iterations_allowed	
-        );
-     double *double_Vector( 			          // allocate memory for a one-dimensional array of doubles
-	 int nh
-	 );
-     void free_double_Vector(			          // deallocate memory for a one-dimensional array of doubles
-	 double *v
-	 );
-     void decompress_solution_pressure(                   //  remap one dimensional pressure array
-	 double ***pressure,		                  // to multidimensional pressure array
-	 double   *pressure_correction,  
-	 int number_primary_cells_i,	     
-	 int number_primary_cells_j,	     
-	 int number_primary_cells_k	     
-	 );
-     void compress_solution_pressure(                     // map multidimensional pressure array
-         double ***pressure,                              // to one dimensional array
-         double   *compressed_pressure,         
-         int number_primary_cells_i,            
-         int number_primary_cells_j,            
-         int number_primary_cells_k             
-         );
-     int export_matrix_matlab(           		   // export the matrix to matlab file
-	 int i_dimension,    		
-	 int j_dimension, 		
-	 int k_dimension, 		
-	 int number_matrix_connections,  
-	 double **matrix_A,		
-	 double *rhside_vector,		
-	 double *solution_vector,	
-	 string variable_name
-	 );
-     void  field_extrapolate_boundary(      	   // extrapolate field to virtual cells
-        double ***field, 			
-        int number_primary_cells_i,	
-        int number_primary_cells_j,	
-        int number_primary_cells_k	
-	);
-     void field_neumann_boundary(                     // apply neumann boundary condition to
-        double ***field,                               // cell centered field
-        int number_primary_cells_i,
-        int number_primary_cells_j,
-        int number_primary_cells_k
-        );
-     void set_constant_vector(      	                 // set 1-dimensional array to constant value
-	 int vector_length,	
-	 double *vector_to_set,	
-	 double constant_value	
-     );
-     int project_pressure_rhside(			  // project rhside vector on column space
-	 int total_number_pressure_points,		
-	 double  *pressure_rhside		 	
-     );
-     int shift_pressure_solution(                   // shift pressure solution
-        int total_number_pressure_points,
-        double  *compressed_pressure               
-     );
-    
-    
-
       int  iteration_number;  		  	   // the number of iterations where the iterative
 						          // process was terminated
       double   relative_L2_norm_residual; 	          // the L2 norm of the residual, scaled with
@@ -119,8 +41,8 @@ using namespace std;
       double   relative_Linfinity_norm_residual;      // the L infinity norm of the residual
 						          // scaled with the maximum difference 
 						          // between two components of the residual
-      double  *preconditioner_matrix_M;		   // preconditioner matrix (only main diagonal)
-      double  *compressed_pressure;		          // 1-D array with pressure , with virtual points excluded
+      Array1<double> preconditioner_matrix_M;		   // preconditioner matrix (only main diagonal)
+      Array1<double> compressed_pressure;		          // 1-D array with pressure , with virtual points excluded
       int total_number_pressure_points;		   // total number of points with pressure
       int i;
       
@@ -129,8 +51,8 @@ using namespace std;
       
       total_number_pressure_points=number_primary_cells_i*number_primary_cells_j*number_primary_cells_k;
      
-      preconditioner_matrix_M=double_Vector(total_number_pressure_points);
-      compressed_pressure=double_Vector(total_number_pressure_points);
+      preconditioner_matrix_M.create(total_number_pressure_points);
+      compressed_pressure.create(total_number_pressure_points);
       
       /* build the preconditioner matrix M */
       
@@ -187,7 +109,7 @@ using namespace std;
       /* deallocate memory for the main diagonal of preconditioner matrix M */
       
       
-      free_double_Vector(preconditioner_matrix_M);
-      free_double_Vector(compressed_pressure);
+      preconditioner_matrix_M.destroy();
+      compressed_pressure.destroy();
       
    }    

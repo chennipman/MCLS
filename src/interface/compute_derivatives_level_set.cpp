@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<math.h>
@@ -24,19 +25,19 @@
 /* this function provides the first derivatives of the level-set field at the   */
 /* cell faces for the diffusive fluxes.						*/
 /********************************************************************************/
-     void  compute_derivatives_level_set(				
-		double ***level_set, 			// level set field at new time level
+EXPORT void  compute_derivatives_level_set(				
+		Array3<double> level_set, 			// level set field at new time level
 							// after convection and reinitialization
 							// not mass conserving
-		double ***d_level_set_d_x1,		// first partial derivative of
+		Array3<double> d_level_set_d_x1,		// first partial derivative of
 							// the level-set field wrt x1
 							// second order central approximation
 							// at cell faces 
-		double ***d_level_set_d_x2,		// first partial derivative of 
+		Array3<double> d_level_set_d_x2,		// first partial derivative of 
 							// the level-set field wrt x2
 							// second order central approximation
 							// at cell faces 
-		double ***d_level_set_d_x3,		// first partial derivative of
+		Array3<double> d_level_set_d_x3,		// first partial derivative of
  							// the level-set field wrt x3
 							// second order central approximation
 							// at cell faces 

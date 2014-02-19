@@ -1,3 +1,4 @@
+#include "../headers/array.h"
       
 /********************************************************************************/
 /*  Function to build momentum matrix for the u3 velocity, without boundary     */
@@ -16,10 +17,10 @@
 /* discards any reference to virtual values.                                    */
 /********************************************************************************/
 
-  void build_momentum_matrix_u3(
-      double **momentum_matrix_u3,			// momentum matrix velocity x1 direction
-      double ***level_set, 				// level-set field
-      double ***scaled_density_u3,                 // scaled density for the controlvolumes
+EXPORT void build_momentum_matrix_u3(
+      Array2<double> momentum_matrix_u3,			// momentum matrix velocity x1 direction
+      Array3<double> level_set, 				// level-set field
+      Array3<double> scaled_density_u3,                 // scaled density for the controlvolumes
                                                    // of the momentum equation in x3 direction
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
@@ -38,30 +39,6 @@
 							// times the smallest mesh width
        )
   {
-      int map_index_u3(                    		// map 3-D array index to 1-D array
-	  int i_index,					// index
-	  int j_index, 				
-	  int k_index,  			
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k		
-      );
-      double compute_scaled_density(			// compute the density at a cell face
-	  double level_set_left, 			// based on the level-set values at the cell
-	  double level_set_right,			// centers of the two cells that share that face
-	  double rho_plus_over_rho_minus);
-      double compute_scaled_viscosity(			// compute the local value of the viscosity
-	  double level_set,                     	// from the level-set value
-	  double mesh_width_x1,				
-	  double mesh_width_x2,				
-	  double mesh_width_x3,				
-	  double smoothing_distance_factor,		
-							
-	  double rho_minus_over_mu_minus,		
-							
-	  double mu_plus_over_mu_minus			
-	  );  				
-		  
       int i_index, j_index, k_index;  			// local variables for loop indexing
       double one_over_dx1_squared=    			// 1/(grid spacing in x1 direction)
 	    1.0/(mesh_width_x1*mesh_width_x1);

@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include <iostream>
 #include <stdlib.h> 
 #include <stdio.h> 
@@ -22,11 +23,11 @@ using namespace std;
 /*  										*/
 /********************************************************************************/
 
-      void  write_vertex_centered_field_vtk( 
+EXPORT void  write_vertex_centered_field_vtk( 
 	ofstream& output_stream, 			// stream connected to output file
 	string scalar_name,				// name of the scalar field to write to file 
 	string look_up_table_name,			// name of the look-up table
-	double ***cell_centered_field, 			// cell centered scalar field
+	Array3<double> cell_centered_field, 			// cell centered scalar field
 	int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
 	int number_primary_cells_k			// number of primary (pressure) cells in x3 direction

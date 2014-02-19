@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 /*********************************************/
 /* include the necessary standard functions  */
 /*********************************************/
@@ -23,15 +24,15 @@
 /* Primary variables for Navier-Stokes*/
 /*++++++++++++++++++++++++++++++++++++*/ 
 
-double ***u_1_velocity_old; /* 3-array with x1-velocity at old time level at u1 points, old time level*/
-double ***u_2_velocity_old; /* 3-array with x2-velocity at old time level at u2 points, new time level*/
-double ***u_3_velocity_old; /* 3-array with x3-velocity at old time level at u3 points, old time level*/
-double ***u_1_velocity_new; /* 3-array with x1-velocity at new time level at u1 points, new time level*/
-double ***u_2_velocity_new; /* 3-array with x2-velocity at new time level at u2 points, old time level */
-double ***u_3_velocity_new; /* 3-array with x3-velocity at new time level at u3 points, new time level*/
-double ***pressure_old;	    /* 3-array with pressure field at cell centers, old time level */
-double ***pressure_new;	    /* 3-array with pressure field at cell centers, new time level */
-double ***viscosity;	    /* 3-array with viscosity at cell centers */
+Array3<double> u_1_velocity_old; /* 3-array with x1-velocity at old time level at u1 points, old time level*/
+Array3<double> u_2_velocity_old; /* 3-array with x2-velocity at old time level at u2 points, new time level*/
+Array3<double> u_3_velocity_old; /* 3-array with x3-velocity at old time level at u3 points, old time level*/
+Array3<double> u_1_velocity_new; /* 3-array with x1-velocity at new time level at u1 points, new time level*/
+Array3<double> u_2_velocity_new; /* 3-array with x2-velocity at new time level at u2 points, old time level */
+Array3<double> u_3_velocity_new; /* 3-array with x3-velocity at new time level at u3 points, new time level*/
+Array3<double> pressure_old;	    /* 3-array with pressure field at cell centers, old time level */
+Array3<double> pressure_new;	    /* 3-array with pressure field at cell centers, new time level */
+Array3<double> viscosity;	    /* 3-array with viscosity at cell centers */
 
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
@@ -41,10 +42,10 @@ double ***viscosity;	    /* 3-array with viscosity at cell centers */
 /*++++++++++++++++++++++++++++++++++++++++++++*/  
 /* Primary variables for interface capturing  */
 /*++++++++++++++++++++++++++++++++++++++++++++*/  
-double ***volume_of_fluid_old;  /* 3-array with volume_of_fluid at cell centers, old time level*/
-double ***volume_of_fluid_new;  /* 3-array with volume_of_fluid at cell centers, new time level*/
-double ***level_set_old;        /* 3-array with level set field at cell centers, old time level*/
-double ***level_set_new;        /* 3-array with level set field at cell centers, new time level*/
+Array3<double> volume_of_fluid_old;  /* 3-array with volume_of_fluid at cell centers, old time level*/
+Array3<double> volume_of_fluid_new;  /* 3-array with volume_of_fluid at cell centers, new time level*/
+Array3<double> level_set_old;        /* 3-array with level set field at cell centers, old time level*/
+Array3<double> level_set_new;        /* 3-array with level set field at cell centers, new time level*/
 
 /* parameters of level-set to  vof conversion function */
 

@@ -1,19 +1,4 @@
-class coordinate
-{
-public:
-  double x1,x2,x3;
-  coordinate(double xx1=0, double xx2=0, double xx3=0){x1=xx1;x2=xx2;x3=xx3;}
-};
-class bubble
-{
-public:
-  double principle_axis_x1;
-  double principle_axis_x2;
-  double principle_axis_x3;
-  int label;
-  coordinate center_location;
-  bubble(int number, coordinate bubble_center, double bubble_radius);
-};
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -34,7 +19,7 @@ public:
 /* Note that this function handles both elliptical and spherical bubbles.       */
 /********************************************************************************/
 
-void initialize_bubbles(
+EXPORT void initialize_bubbles(
       bubble *bubbles, 					// array with the definition of the bubbles
       int number_of_bubbles, 				// number of bubbles in the domain (<10)
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
@@ -43,7 +28,7 @@ void initialize_bubbles(
       double mesh_width_x1,				// grid spacing in x1 direction (uniform)
       double mesh_width_x2,				// grid spacing in x2 direction (uniform)
       double mesh_width_x3,				// grid spacing in x3 direction (uniform)
-      double ***level_set				// level-set field
+      Array3<double> level_set				// level-set field
 	    
     )
     {

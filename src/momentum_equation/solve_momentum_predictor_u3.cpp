@@ -1,36 +1,8 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
-enum boundary_conditions_type{dirichlet, neumann, periodic};
-enum boundary_conditions_rule{constant, function};
-enum cell_centerings{cell_centered, vertex_centered};
-
-
-class boundary_variable
-{
-public:
-  variable variable_name;
-  boundary_conditions_type boundary_condition_type;
-  boundary_conditions_rule boundary_condition_rule;
-  cell_centerings cell_centering;
-  double boundary_condition_value;
-  boundary_variable(variable varname, boundary_conditions_type bound_type,
-				     boundary_conditions_rule bound_rule,
-				     cell_centerings  cell_cent,
-					double bound_value );
-  boundary_variable(variable varname);
-};
-
-class boundary_face
-{
-public:
-    boundary_variable boundary_variables[5];
-    boundary_face(void);
-   
-};
-
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -50,16 +22,16 @@ using namespace std;
 /*  											*/
 /********************************************************************************/
   
-      void solve_momentum_predictor_u3(
-      double ***level_set, 				// level-set field
-      double ***momentum_source_term_u_3, 		// complete source term for the momentum equation
+EXPORT void solve_momentum_predictor_u3(
+      Array3<double> level_set, 				// level-set field
+      Array3<double> momentum_source_term_u_3, 		// complete source term for the momentum equation
 							// in x3 direction=(-p,3+ g_3 +F3)
-      double ***scaled_density_u3,			// scaled density for the controlvolumes
+      Array3<double> scaled_density_u3,			// scaled density for the controlvolumes
 							// of the momentum equation in x3 direction
-      double ***u_1_velocity_old, 			// velocity field at old time level x1 direction
-      double ***u_2_velocity_old, 			// velocity field at old time level x2 direction
-      double ***u_3_velocity_old,			// velocity field at old time level x3 direction
-      double ***u_3_velocity_star,			// velocity field at star time level x1 direction
+      Array3<double> u_1_velocity_old, 			// velocity field at old time level x1 direction
+      Array3<double> u_2_velocity_old, 			// velocity field at old time level x2 direction
+      Array3<double> u_3_velocity_old,			// velocity field at old time level x3 direction
+      Array3<double> u_3_velocity_star,			// velocity field at star time level x1 direction
 
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
@@ -85,98 +57,10 @@ using namespace std;
 							// for the boundary conditions 
 	   )
       {
-
-
-      double **double_Matrix(				// allocate memory for a two
-		int number_primary_cells_i,		// dimensional array
-		int number_primary_cells_j
-	      );
-      void   free_double_Matrix( 			// deallocate memory for a two
-		double **doubleMatrix, 		// dimensional array
-		int number_primary_cells_i
-	      );
-      double *double_Vector(				// allocate memory for a one
-	      int number_primary_cells_i		// dimensional array
-	      );
-      void free_double_Vector(			// deallocate memory for a one
-	      double *double_Vector			// dimensional array
-	      );
-				    
-                                         
-    void build_momentum_predictor_u3(		// build system of linear
-      double **momentum_matrix_u3,			// equations for momentum equation velocity
-      double *momentum_rhside_u3,			// in x3 direction
-      double ***level_set, 				
-      double ***momentum_source_term_u_3,
-      double ***scaled_density_u3,
-      double ***u_1_velocity_old, 			
-      double ***u_2_velocity_old, 			
-      double ***u_3_velocity_old,			
-      int number_primary_cells_i,			
-      int number_primary_cells_j,			
-      int number_primary_cells_k,			
-      double actual_time_step_navier_stokes,		
-      double mesh_width_x1,				
-      double mesh_width_x2,				
-      double mesh_width_x3,				
-      double rho_plus_over_rho_minus,			
-      double smoothing_distance_factor,			
-      double rho_minus_over_mu_minus,			
-      double mu_plus_over_mu_minus,			
-      boundary_face boundary_faces[6],
-      int number_matrix_connections
-	 );
-   void compress_solution_velocity_u3(		// compress solution vector
-      double ***full_solution,		     
-      double   *compressed_solution_vector,  
-      int number_primary_cells_i,	     
-      int number_primary_cells_j,	     
-      int number_primary_cells_k	     
-     );
-   void decompress_solution_velocity_u3(		// decompress solution vector
-      double ***full_solution,		     
-      double   *compressed_solution_vector,  
-      int number_primary_cells_i,	     
-      int number_primary_cells_j,	     
-      int number_primary_cells_k	     
-     );
-   int export_matrix_matlab(           		// export the matrix to matlab file
-      int i_dimension,    		
-      int j_dimension, 		
-      int k_dimension, 		
-      int number_matrix_connections,  
-      double **matrix_A,		
-      double *rhside_vector,		
-      double *solution_vector,	
-      string variable_name
-	);
-   void build_preconditioner(				// build incomplete choleski preconditioner
-      int i_dimension,    	
-      int j_dimension, 	
-      int k_dimension, 	
-      double **matrix_A,	
-      double *preconditioner_matrix_M 	
-	);
-   int conjugate_gradient_method(			// solve linear system with conjugate gradient
-      int i_dimension,   				// method (only SPD systems)
-      int j_dimension,   		
-      int k_dimension,   		
-      double  **matrix_A,   		
-      double  *preconditioner_matrix_M,  	
-      double   *rhside_vector_b,   		
-      double   *solution_vector_x, 		
-      double   tolerance,	  		
-      int     &iteration_number,  	
-      double  &relative_L2_norm_residual, 
-      double  &relative_Linfinity_norm_residual,
-      int maximum_iterations_allowed	
-        );
-
-
-      double **momentum_matrix_u3;			// momentum matrix velocity x3 direction
-      double *momentum_rhside_u3;			// momentum rhside velocity x3 direction
-      double  *preconditioner_matrix_M;		// preconditioner matrix (diagonal)
-      double *compressed_velocity_u3;		// compressed solution vector
+      Array2<double> momentum_matrix_u3;			// momentum matrix velocity x3 direction
+      Array1<double> momentum_rhside_u3;			// momentum rhside velocity x3 direction
+      Array1<double> preconditioner_matrix_M;		// preconditioner matrix (diagonal)
+      Array1<double> compressed_velocity_u3;		// compressed solution vector
       double relative_L2_norm_residual; 	  	// the L2 norm of the residual, scaled with
 							// the L2 norm of the right hand side
       double relative_Linfinity_norm_residual;  	// the L infinity norm of the residual
@@ -195,10 +79,10 @@ using namespace std;
       total_number_u_3_points=number_primary_cells_i
 				    *number_primary_cells_j*(number_primary_cells_k+1);
 
-      momentum_rhside_u3=double_Vector(total_number_u_3_points);
-      momentum_matrix_u3=double_Matrix(number_matrix_connections,total_number_u_3_points); 
-      preconditioner_matrix_M=double_Vector(total_number_u_3_points); 
-      compressed_velocity_u3=double_Vector(total_number_u_3_points);
+      momentum_rhside_u3.create(total_number_u_3_points);
+      momentum_matrix_u3.create(number_matrix_connections,total_number_u_3_points); 
+      preconditioner_matrix_M.create(total_number_u_3_points); 
+      compressed_velocity_u3.create(total_number_u_3_points);
       
     /* build the system of linear equations */
 
@@ -255,9 +139,9 @@ using namespace std;
     
     /* deallocate memory for momentum matrix and rhside */
     
-      free_double_Vector(momentum_rhside_u3);
-      free_double_Matrix(momentum_matrix_u3, number_matrix_connections);
-      free_double_Vector(preconditioner_matrix_M);
-      free_double_Vector(compressed_velocity_u3);
+      momentum_rhside_u3.destroy();
+      momentum_matrix_u3.destroy();
+      preconditioner_matrix_M.destroy();
+      compressed_velocity_u3.destroy();
       
       }

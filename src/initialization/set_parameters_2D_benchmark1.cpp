@@ -6,46 +6,7 @@
 #include <sstream>
 #include <fstream>
 using namespace std;
-class coordinate
-{
-public:
-  double x1,x2,x3;
-  coordinate(double xx1=0, double xx2=0, double xx3=0){x1=xx1;x2=xx2;x3=xx3;}
-};
-class bubble
-{
-public:
-  double principle_axis_x1;
-  double principle_axis_x2;
-  double principle_axis_x3;
-  int label;
-  coordinate center_location;
-  bubble(int number, coordinate bubble_center, double bubble_radius);
-};
-class surface
-{
-public:
-  int active;
-  int orientation;
-  double height;
-};
-enum geometry{bubbly_flow, wavy_flow};
 
-class vector
-{
-public:
-  double u1,u2,u3;
-  vector(double uu1=0, double uu2=0, double uu3=0){u1=uu1;u2=uu2;u3=uu3;}
-};
-class restart_parameters
-{
-public:
-      int start_from_restart_file;		
-      int write_solution_to_restart_file;
-      string name_restart_file_to_write;
-      string name_restart_file_to_read;
-      restart_parameters(void);
-};
 /********************************************************************************/
 /*  Function to set the computation parameters                                  */
 /*  										*/
@@ -57,7 +18,7 @@ public:
 /* This function should be replaced by a function that reads all parameters     */
 /* from an input file.                                                           */
 /********************************************************************************/
-      void set_parameters(
+EXPORT void set_parameters(
       int &number_primary_cells_i,				// number of primary (pressure) cells in x1 direction
       int &number_primary_cells_j,				// number of primary (pressure) cells in x2 direction
       int &number_primary_cells_k,				// number of primary (pressure) cells in x3 direction

@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -13,11 +14,11 @@
 /********************************************************************************/
 /* Notes										*/
 /********************************************************************************/
-    void check_symmetry_scalars(
+EXPORT void check_symmetry_scalars(
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
-      double ***field					// field of which symmetry must be checked
+      Array3<double> field					// field of which symmetry must be checked
 	  )
     {
     

@@ -16,19 +16,12 @@
 /* If the level-set value is negative:						*/
 /*				 the scaled density is = 1                      */
 /********************************************************************************/
-       double compute_scaled_density(			
+EXPORT double compute_scaled_density(			
 	  double level_set_left, 			// level-set value in left hand neighbouring cell
 	  double level_set_right,			// level-set value in right hand neighbouring cell
 	  double rho_plus_over_rho_minus		// ratio of density in the two fases
 		)
        {
-      double sign(double value, double set_sign);    	// return the sign of 'value'=+/- 1.0
-      double compute_weighted_average(			// use linear interpolation/weighted averaging
-		  double level_set_left, 		// based on the level-set values
-		  double level_set_right,
-		  double density_left,
-		  double density_right
-	    );	
       double density_left;
       double density_right;
       double scaled_density;

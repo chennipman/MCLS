@@ -27,7 +27,7 @@
 /* Brent type algorithm which gives second order convergence.                   */
 /********************************************************************************/
 
-      int vof_2_level_set( 
+EXPORT int vof_2_level_set( 
 	      double &level_set, 			// level-set field value in this cell
 	      double d_level_set_d_x1, 			// first partial derivative in x1 
 							// direction of level-set
@@ -46,46 +46,6 @@
 	
       )
       {
-	/* functions definitions */
-	int level_set_2_vof( 
-	      double level_set, 		// compute the volume of fluid field value from 
-	      double d_level_set_d_x1, 		// a given level-set field value
-						
-	      double d_level_set_d_x2, 		
-						
-	      double d_level_set_d_x3, 		
-						
-	      double &volume_of_fluid,		
-	      double lower_bound_derivatives    
-	);
-      int ridders_method(			
-	    double level_set_left, 			// nonlinear solver to find level-set 
-	    double level_set_right, 			// for given volume of fluid value
-	    double function_g_left, 			
-	    double function_g_right,			
-	    double volume_of_fluid, 			
-	    double &level_set,				
-	    double d_level_set_d_x1, 			
-	    double d_level_set_d_x2, 			
-	    double d_level_set_d_x3, 			
-	    double vof_2_level_set_tolerance,		
-	    int maximum_number_iterations_ridder,	
-	    int lower_bound_derivatives			
-			);
-      int bisection_method(			
-	    double level_set_left, 			// nonlinear solver to find level-set 
-	    double level_set_right, 			// for given volume of fluid value
-	    double function_g_left, 			
-	    double function_g_right,			
-	    double volume_of_fluid, 			
-	    double &level_set,				
-	    double d_level_set_d_x1, 			
-	    double d_level_set_d_x2, 			
-	    double d_level_set_d_x3, 			
-	    double vof_2_level_set_tolerance,		
-	    int maximum_number_iterations_ridder,	
-	    double lower_bound_derivatives
-			);
       double level_set_left;			// left hand level_set value for nonlinear root finding
       double level_set_right;			// right hand level_set value for nonlinear root finding
       double volume_of_fluid_left;		// left hand volume of fluid value for nonlinear root finding

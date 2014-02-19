@@ -10,7 +10,7 @@
 /********************************************************************************/
 /* Notes									*/
 /********************************************************************************/
-      double upwind_flux_mass_redistribution( 
+EXPORT double upwind_flux_mass_redistribution( 
 	      double mass_redistribution_velocity,	// (nonphysical) velocity for the 
 							// mass redistribution equation at 
 							// the cell face
@@ -19,7 +19,6 @@
 	      double right_hand_value_correction)	// right hand value of the correction
 							// used to define the upwind flux
 	{
-	 double sign(double value, double set_sign);    // return the sign of 'value'
 	 double upwind_flux_mass_redistribution;  // flux for the mass redistribution equation
 						  // based on first order upwind discretisation
 	 double upwind_selector;		  // switch to take the upwind value depending

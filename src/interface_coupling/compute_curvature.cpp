@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<math.h>
@@ -15,9 +16,9 @@
 /*  The curvature is computed in all real cells and extrapolated to the         */
 /*  virtual cells.									*/
 /********************************************************************************/
-      void compute_curvature(						
-      double ***level_set, 				// level-set field
-      double ***curvature,				// interface curvature
+EXPORT void compute_curvature(						
+      Array3<double> level_set, 				// level-set field
+      Array3<double> curvature,				// interface curvature
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
@@ -26,62 +27,18 @@
       double mesh_width_x3				// grid spacing in x3 direction (uniform)
 	)
       {
-      void  field_neumann_boundary(			// apply neumann boundary condition to cell-centered field
-	  double ***field, 		
-	  int number_primary_cells_i,	
-	  int number_primary_cells_j,	
-	  int number_primary_cells_k	
-      );
-      double ***double_Matrix2(			// allocate memory for a three-dimensional array of doubles
-		int number_primary_cells_i,				
-		int number_primary_cells_j, 		
-		int number_primary_cells_k
-		);
-      void   free_double_Matrix2( 			// deallocate memory for a three
-		double ***doubleMatrix2, 		// dimensional array of doubles
-		int number_primary_cells_i,	
-		int number_primary_cells_j
-		);
-      void dump_curvature_for_debugging(		// write all quantities that are involved in the
-       		double ***d_level_set_d_x1,		// computation of the curvature to a vtk file	
-       		double ***d_level_set_d_x2,		
-       		double ***d_level_set_d_x3,		
-       		double ***d_2_level_set_d_x1_2,	
-       		double ***d_2_level_set_d_x2_2,	
-       		double ***d_2_level_set_d_x3_2,	
-       		double ***d_2_level_set_d_x1_d_x2,	
-       		double ***d_2_level_set_d_x1_d_x3,	
-       		double ***d_2_level_set_d_x2_d_x3,	
- 		double ***length_gradient,	
-		double ***curvature,
-		double ***curvature_error,
-		int number_primary_cells_i,			
-		int number_primary_cells_j,		
-		int number_primary_cells_k,		
-	  	double mesh_width_x1,		
-	  	double mesh_width_x2,		
-	  	double mesh_width_x3			
-	);
-       void set_constant_matrix2(			// set triple array to constant value
-	  int first_dimension,			
-	  int second_dimension,			
-	  int third_dimension,			
-	  double ***matrix2_to_set,			
-	  double constant_value			
-     );
-     
-      double ***d_level_set_d_x1;			// first partial derivative wrt x1 of level-set
-      double ***d_level_set_d_x2;			// first partial derivative wrt x2 of level-set
-      double ***d_level_set_d_x3;			// first partial derivative wrt x3 of level-set
-      double ***d_2_level_set_d_x1_2;		// pure second partial derivative wrt x1 of level-set
-      double ***d_2_level_set_d_x2_2;		// pure second partial derivative wrt x2 of level-set
-      double ***d_2_level_set_d_x3_2;		// pure second partial derivative wrt x3 of level-set
+      Array3<double> d_level_set_d_x1;			// first partial derivative wrt x1 of level-set
+      Array3<double> d_level_set_d_x2;			// first partial derivative wrt x2 of level-set
+      Array3<double> d_level_set_d_x3;			// first partial derivative wrt x3 of level-set
+      Array3<double> d_2_level_set_d_x1_2;		// pure second partial derivative wrt x1 of level-set
+      Array3<double> d_2_level_set_d_x2_2;		// pure second partial derivative wrt x2 of level-set
+      Array3<double> d_2_level_set_d_x3_2;		// pure second partial derivative wrt x3 of level-set
     
-      double ***d_2_level_set_d_x1_d_x2;		// mixed second partial derivative wrt x1 and x2 of level-set
-      double ***d_2_level_set_d_x1_d_x3;		// mixed second partial derivative wrt x1 and x3 of level-set
-      double ***d_2_level_set_d_x2_d_x3;		// mixed second partial derivative wrt x2 and x3 of level-set
-      double ***length_gradient;			// length of the level-set gradient vector
-      double ***curvature_error;			// error in the curvature for laplace case
+      Array3<double> d_2_level_set_d_x1_d_x2;		// mixed second partial derivative wrt x1 and x2 of level-set
+      Array3<double> d_2_level_set_d_x1_d_x3;		// mixed second partial derivative wrt x1 and x3 of level-set
+      Array3<double> d_2_level_set_d_x2_d_x3;		// mixed second partial derivative wrt x2 and x3 of level-set
+      Array3<double> length_gradient;			// length of the level-set gradient vector
+      Array3<double> curvature_error;			// error in the curvature for laplace case
 
       double one_over_dx1	=    			// 1/(grid spacing in x1 direction)
 	    1.0/(mesh_width_x1);
@@ -111,27 +68,27 @@
 	/* allocate  memory for the derivatives of the level-set field */
 	/* and for the weighting function that is applied in the CSF model */
 	
-	d_level_set_d_x1=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x1.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_level_set_d_x2=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x2.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_level_set_d_x3=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_level_set_d_x3.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_2_level_set_d_x1_2=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_2_level_set_d_x1_2.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_2_level_set_d_x2_2=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_2_level_set_d_x2_2.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_2_level_set_d_x3_2=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_2_level_set_d_x3_2.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_2_level_set_d_x1_d_x2=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_2_level_set_d_x1_d_x2.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_2_level_set_d_x1_d_x3=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_2_level_set_d_x1_d_x3.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	d_2_level_set_d_x2_d_x3=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	d_2_level_set_d_x2_d_x3.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	length_gradient=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	length_gradient.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
-	curvature_error=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2,
+	curvature_error.create(number_primary_cells_i+2, number_primary_cells_j+2,
 				    number_primary_cells_k+2);
 	
 	
@@ -300,15 +257,15 @@
 							number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		
 	  						mesh_width_x1,	mesh_width_x2, mesh_width_x3	);*/
 	  
-	free_double_Matrix2(d_level_set_d_x1, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_level_set_d_x2, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_level_set_d_x3, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_2_level_set_d_x1_2, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_2_level_set_d_x2_2, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_2_level_set_d_x3_2, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_2_level_set_d_x1_d_x2, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(d_2_level_set_d_x1_d_x3, number_primary_cells_i+2, number_primary_cells_j+2);
-       free_double_Matrix2(d_2_level_set_d_x2_d_x3, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(length_gradient, number_primary_cells_i+2, number_primary_cells_j+2);
-	free_double_Matrix2(curvature_error, number_primary_cells_i+2, number_primary_cells_j+2);
+	d_level_set_d_x1.destroy();
+	d_level_set_d_x2.destroy();
+	d_level_set_d_x3.destroy();
+	d_2_level_set_d_x1_2.destroy();
+	d_2_level_set_d_x2_2.destroy();
+	d_2_level_set_d_x3_2.destroy();
+	d_2_level_set_d_x1_d_x2.destroy();
+	d_2_level_set_d_x1_d_x3.destroy();
+       d_2_level_set_d_x2_d_x3.destroy();
+	length_gradient.destroy();
+	curvature_error.destroy();
 }

@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 #include<cstdlib>
 #include<iostream>
@@ -13,19 +14,19 @@
 /********************************************************************************/
 /* Notes										*/
 /********************************************************************************/
-void compute_vof_at_u2_points(
-	double ***level_set, 				// level set field 
+EXPORT void compute_vof_at_u2_points(
+	Array3<double> level_set, 				// level set field 
 							// mass conserving
-	double ***d_level_set_d_x1,			// first partial derivative of
+	Array3<double> d_level_set_d_x1,			// first partial derivative of
 							// the level-set field wrt x1
 							// second order central approximation
-	double ***d_level_set_d_x2,			// first partial derivative of 
+	Array3<double> d_level_set_d_x2,			// first partial derivative of 
 							// the level-set field wrt x2
 							// second order central approximation
-	double ***d_level_set_d_x3,			// first partial derivative of
+	Array3<double> d_level_set_d_x3,			// first partial derivative of
  							// the level-set field wrt x3
 							// second order central approximation
-	double ***volume_of_fluid_u2,			// volume of fluid value for the controlvolumes
+	Array3<double> volume_of_fluid_u2,			// volume of fluid value for the controlvolumes
 							// of the momentum equation in x1 direction
 	int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
@@ -38,14 +39,6 @@ void compute_vof_at_u2_points(
 	double scaled_level_set;
 	double scaled_volume_donating_region;
 	
-	int level_set_2_vof( 
-	      double level_set, 			// compute the volume of fluid field value from 
-	      double d_level_set_d_x1, 		// a given level-set field value
-	      double d_level_set_d_x2, 		
-	      double d_level_set_d_x3, 		
-	      double &volume_of_fluid,		
-	      double lower_bound_derivatives    
-      );
        int i_index, j_index, k_index;  		// local variables for loop indexing
 	
 

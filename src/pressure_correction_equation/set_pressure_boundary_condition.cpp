@@ -1,14 +1,9 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-class vector
-{
-public:
-  double u1,u2,u3;
-  vector(double u1, double u2, double u3);
-  vector( void);
-};
+
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to set the inhomogeneous boundary condition for the pressure       */
@@ -22,26 +17,19 @@ public:
 /* At the moment only an inhomogeneous boundary condition can be specified      */
 /* but later this will be extended to more advanced boundary conditions.        */
 /********************************************************************************/
-  void set_pressure_boundary_condition(
+EXPORT void set_pressure_boundary_condition(
        vector gravity,				       		// gravitational acceleration vector 
-       double ***pressure_boundary_condition_x1,          	// inhomogeneous boundary condition for
+       Array3<double> pressure_boundary_condition_x1,          	// inhomogeneous boundary condition for
 						              	// the pressure planes with normal in x1 direction
-       double ***pressure_boundary_condition_x2,          	// inhomogeneous boundary condition for the pressure
+       Array3<double> pressure_boundary_condition_x2,          	// inhomogeneous boundary condition for the pressure
 						              	// the pressure planes with normal in x1 direction
-       double ***pressure_boundary_condition_x3,          	// inhomogeneous boundary condition for the pressure
+       Array3<double> pressure_boundary_condition_x3,          	// inhomogeneous boundary condition for the pressure
 						              	// the pressure planes with normal in x1 direction
        int number_primary_cells_i,	                     	// number of primary (pressure) cells in x1 direction
        int number_primary_cells_j,	                     	// number of primary (pressure) cells in x2 direction
        int number_primary_cells_k	                     	// number of primary (pressure) cells in x3 direction
  	)
     {
-      void set_constant_matrix(			       		// set 2 dimensional array to constant
-	    int first_dimension,		              	// value
-	    int second_dimension,	
-	    double **matrix_to_set,	
-	    double constant_value	
-       );
-
        int i_index, j_index, k_index;  				// local variables for loop indexing
        
        /* set the inhomogeneous neumann boundary condition for the pressure to the x1 */

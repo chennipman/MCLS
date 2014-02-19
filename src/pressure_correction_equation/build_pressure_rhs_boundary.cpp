@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -19,11 +20,11 @@
 /* velocity field u* etc., but it is here extended with the contributions           */
 /* from the inhomogeneous boundary conditions that are applied                      */
 /************************************************************************************/
-void build_pressure_rhs_boundary(
-      double ***initial_pressure_rhs,                   // right hand side of pressure correction equation
+EXPORT void build_pressure_rhs_boundary(
+      Array3<double> initial_pressure_rhs,                   // right hand side of pressure correction equation
                                                         // excluding contributions
                                                         // inhomogeneous boundary conditions
-      double *final_pressure_rhs,                       // right hand side of pressure correction equation
+      Array1<double> final_pressure_rhs,                       // right hand side of pressure correction equation
                                                         // including contributions
                                                         // inhomogeneous boundary conditions
       double mesh_width_x1,                             // grid spacing in x1 direction (uniform)
@@ -32,11 +33,11 @@ void build_pressure_rhs_boundary(
       int number_primary_cells_i,                       // number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,                       // number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,                       // number of primary (pressure) cells in x3 direction
-      double ***pressure_boundary_condition_x1,         // contribution to inhomogeneous boundary condition
+      Array3<double> pressure_boundary_condition_x1,         // contribution to inhomogeneous boundary condition
                                                         // pressure correction matrix for back/forward face
-      double ***pressure_boundary_condition_x2,         // contribution to inhomogeneous boundary condition
+      Array3<double> pressure_boundary_condition_x2,         // contribution to inhomogeneous boundary condition
                                                         // pressure correction matrix for left/right face
-      double ***pressure_boundary_condition_x3          // contribution to inhomogeneous boundary condition
+      Array3<double> pressure_boundary_condition_x3          // contribution to inhomogeneous boundary condition
                                                         // pressure correction matrix for top/bottom face
      )
 

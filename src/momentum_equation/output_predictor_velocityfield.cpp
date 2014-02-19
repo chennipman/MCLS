@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include <iostream>
 #include <stdlib.h> 
 #include <stdio.h> 
@@ -18,10 +19,10 @@ using namespace std;
 /* Notes									*/
 /********************************************************************************/
 
-    void output_predictor_velocityfields(
-	  double ***u_1_velocity_new, 		// velocity field at new time level x1 direction
-	  double ***u_2_velocity_new, 		// velocity field at new time level x2 direction
-	  double ***u_3_velocity_new,		// velocity field at new time level x3 direction
+EXPORT void output_predictor_velocityfields(
+	  Array3<double> u_1_velocity_new, 		// velocity field at new time level x1 direction
+	  Array3<double> u_2_velocity_new, 		// velocity field at new time level x2 direction
+	  Array3<double> u_3_velocity_new,		// velocity field at new time level x3 direction
 	  int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
 	  int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction
 	  int number_primary_cells_k,		// number of primary (pressure) cells in x3 direction
@@ -30,120 +31,12 @@ using namespace std;
 	  double mesh_width_x3			// grid spacing in x3 direction (uniform)
 		    )
 	      {  
-      void  write_coordinates_tecplot(         	// write coordinates of the cell vertices to file in
-	  ofstream& output_stream, 	       	// tecplot format 			
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k,		
-	  double mesh_width_x1,			
-	  double mesh_width_x2,			
-	  double mesh_width_x3			
-			    );
-      void interpolate_velocity_u1_center(	// interpolate velocity u1 to cell centers
-	  double ***u_1_velocity_new, 			
-	  double ***u_1_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u2_center(	// interpolate velocity u2 to cell centers
-	  double ***u_2_velocity_new, 			
-	  double ***u_2_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u3_center(	// interpolate velocity u3 to cell centers
-	  double ***u_3_velocity_new, 			
-	  double ***u_3_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u1_vertex(	// interpolate velocity u1 to cell vertices
-	  double ***u_1_velocity_new, 			
-	  double ***u_1_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u2_vertex(	// interpolate velocity u2 to cell vertices
-	  double ***u_2_velocity_new, 			
-	  double ***u_2_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void interpolate_velocity_u3_vertex(	// interpolate velocity u3 to cell vertices
-	  double ***u_3_velocity_new, 			
-	  double ***u_3_velocity_center,		
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-			    );
-      void  write_cell_centered_field_tecplot( 		// write cell centered field to file
-	ofstream& output_tecplot, 			// in tecplot format
-	double ***pressure, 
-	int number_primary_cells_i,
-	int number_primary_cells_j, 
-	int number_primary_cells_k
-			    );
-      void  write_coordinates_vtk( 		// write coordinates in vtk format 
-	  ofstream& output_stream, 		
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k,		
-	  double mesh_width_x1,			
-	  double mesh_width_x2,			
-	  double mesh_width_x3			
-       );
-      void  write_cell_centered_field_vtk(     // write cell centered field in vtk format
-	ofstream& output_stream, 			
-	string scalar_name,				
-	string look_up_table_name,				
-	double ***cell_centered_field, 			
-	int number_primary_cells_i,			
-	int number_primary_cells_j,			
-	int number_primary_cells_k			
-	    );
-      void  write_vertex_centered_field_vtk(       // write vertex centered field in vtk format
-	ofstream& output_stream, 			
-	string scalar_name,				
-	string look_up_table_name,			
-	double ***cell_centered_field, 			
-	int number_primary_cells_i,			
-	int number_primary_cells_j,			
-	int number_primary_cells_k			
-	    );
-      void  write_vertex_centered_vector_field_vtk(      // write vertex centered vector field in vtk format
-	ofstream& output_stream, 			
-	string vector_name,				
-	string look_up_table_name,			
-	double ***cell_centered_vector_field_1, 	
-	double ***cell_centered_vector_field_2, 	
-	double ***cell_centered_vector_field_3, 	
-	int number_primary_cells_i,			
-	int number_primary_cells_j,			
-	int number_primary_cells_k			
-	    );
-  
-      double ***double_Matrix2(			// allocate memory for a three-dimensional array of doubles
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j, 		
-	  int number_primary_cells_k
-	    );
-      void   free_double_Matrix2( 		// deallocate memory for a three-dimensional array of doubles
-		double ***doubleMatrix2, 
-		int number_primary_cells_i,	
-		int number_primary_cells_j
-	    );
-      
-      double ***u_1_velocity_center;		// velocity in cell center, x1 component
-      double ***u_2_velocity_center;		// velocity in cell center, x2 component
-      double ***u_3_velocity_center;		// velocity in cell center, x3 component
-      double ***u_1_velocity_vertex;		// velocity in cell vertex, x1 component
-      double ***u_2_velocity_vertex;		// velocity in cell vertex, x2 component
-      double ***u_3_velocity_vertex;		// velocity in cell vertex, x3 component
+      Array3<double> u_1_velocity_center;		// velocity in cell center, x1 component
+      Array3<double> u_2_velocity_center;		// velocity in cell center, x2 component
+      Array3<double> u_3_velocity_center;		// velocity in cell center, x3 component
+      Array3<double> u_1_velocity_vertex;		// velocity in cell vertex, x1 component
+      Array3<double> u_2_velocity_vertex;		// velocity in cell vertex, x2 component
+      Array3<double> u_3_velocity_vertex;		// velocity in cell vertex, x3 component
       int i_index, j_index, k_index; 		// local variables for loop indexing
       int full_row;				// a full row of 8 numbers has been written to file
       int total_number_primary_cells=		// total number of primary cells
@@ -169,20 +62,20 @@ using namespace std;
       
 	    /* allocate memory for the velocity at the cell centers */
       
-	    u_1_velocity_center=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
+	    u_1_velocity_center.create(number_primary_cells_i+2, number_primary_cells_j+2, 
 						  number_primary_cells_k+2);
-	    u_2_velocity_center=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
+	    u_2_velocity_center.create(number_primary_cells_i+2, number_primary_cells_j+2, 
 						  number_primary_cells_k+2);
-	    u_3_velocity_center=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
+	    u_3_velocity_center.create(number_primary_cells_i+2, number_primary_cells_j+2, 
 						  number_primary_cells_k+2);
       
  	    /* allocate memory for the velocity at the cell vertices */
       
-	    u_1_velocity_vertex=double_Matrix2(number_primary_cells_i+1, number_primary_cells_j+1, 
+	    u_1_velocity_vertex.create(number_primary_cells_i+1, number_primary_cells_j+1, 
 						  number_primary_cells_k+1);
-	    u_2_velocity_vertex=double_Matrix2(number_primary_cells_i+1, number_primary_cells_j+1, 
+	    u_2_velocity_vertex.create(number_primary_cells_i+1, number_primary_cells_j+1, 
 						  number_primary_cells_k+1);
-	    u_3_velocity_vertex=double_Matrix2(number_primary_cells_i+1, number_primary_cells_j+1, 
+	    u_3_velocity_vertex.create(number_primary_cells_i+1, number_primary_cells_j+1, 
 						  number_primary_cells_k+1);
      
 	    /* interpolate the velocity to the cell centers of the primary cells */
@@ -301,12 +194,12 @@ using namespace std;
 		  
       
       
-	    free_double_Matrix2(u_1_velocity_center, number_primary_cells_i+2, number_primary_cells_j+2);
-	    free_double_Matrix2(u_2_velocity_center, number_primary_cells_i+2, number_primary_cells_j+2);
-	    free_double_Matrix2(u_3_velocity_center, number_primary_cells_i+2, number_primary_cells_j+2);
-	    free_double_Matrix2(u_1_velocity_vertex, number_primary_cells_i+1, number_primary_cells_j+1);
-	    free_double_Matrix2(u_2_velocity_vertex, number_primary_cells_i+1, number_primary_cells_j+1);
-	    free_double_Matrix2(u_3_velocity_vertex, number_primary_cells_i+1, number_primary_cells_j+1);
+	    u_1_velocity_center.destroy();
+	    u_2_velocity_center.destroy();
+	    u_3_velocity_center.destroy();
+	    u_1_velocity_vertex.destroy();
+	    u_2_velocity_vertex.destroy();
+	    u_3_velocity_vertex.destroy();
 	    
 	    
      // }

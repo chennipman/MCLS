@@ -21,7 +21,7 @@ using namespace std;
 /*  										*/
 /*  										*/
 /********************************************************************************/
-      void  write_coordinates_tecplot( 
+EXPORT void  write_coordinates_tecplot( 
 	  ofstream& output_stream, 		// stream connected to output file
 	  int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
 	  int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction

@@ -10,7 +10,7 @@
 /* Notes:                                                                       */
 /* The notation of Shu is adopted for all the terms that comprise the flux.     */
 /********************************************************************************/
-  double weno_flux_computation(
+EXPORT double weno_flux_computation(
         double field_value_minus_3,             // field at i-3
         double field_value_minus_2,             // field at i-2
         double field_value_minus_1,             // field at i-1

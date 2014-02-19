@@ -17,7 +17,7 @@
 /* formulation is used. Otherwise a number of limiting cases are considered     */
 /* The algorithm is discussed in paragraph 5.4 of Sander's thesis   		*/
 /********************************************************************************/
-      int level_set_2_vof_phi_negative( 
+EXPORT int level_set_2_vof_phi_negative( 
 	      double level_set, 		// level-set field value in this cell
 	      double d_level_set_d_x1, 		// first partial derivative in x1 
 						// direction of level-set

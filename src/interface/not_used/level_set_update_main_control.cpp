@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 /********************************************************************************/
@@ -23,14 +24,14 @@
 /********************************************************************************/
       void level_set_update_main_control
       (
-      double ***level_set_new, 			// level set field at new time level
+      Array3<double> level_set_new, 			// level set field at new time level
 						// mass conserving
-      double ***level_set_old, 			// level set field at old time level
+      Array3<double> level_set_old, 			// level set field at old time level
 						// mass conserving
-      double ***volume_of_fluid, 		// volume of fluid field
-      double ***u_1_velocity_new, 		// velocity field at new time level x1 direction
-      double ***u_2_velocity_new, 		// velocity field at new time level x2 direction
-      double ***u_3_velocity_new,		// velocity field at new time level x3 direction
+      Array3<double> volume_of_fluid, 		// volume of fluid field
+      Array3<double> u_1_velocity_new, 		// velocity field at new time level x1 direction
+      Array3<double> u_2_velocity_new, 		// velocity field at new time level x2 direction
+      Array3<double> u_3_velocity_new,		// velocity field at new time level x3 direction
       int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,		// number of primary (pressure) cells in x3 direction
@@ -69,11 +70,11 @@
       {
 	/* function definitions */
       void advect_level_set(				// advect the level-set field
-             double ***level_set_old, 		
-             double ***level_set_new, 		
-             double ***u_1_velocity_new, 	
-             double ***u_2_velocity_new, 	
-             double ***u_3_velocity_new,	
+             Array3<double> level_set_old, 		
+             Array3<double> level_set_new, 		
+             Array3<double> u_1_velocity_new, 	
+             Array3<double> u_2_velocity_new, 	
+             Array3<double> u_3_velocity_new,	
              int number_primary_cells_i,	
              int number_primary_cells_j,	
              int number_primary_cells_k,	
@@ -83,7 +84,7 @@
              double mesh_width_x3		
       );
       void reinitialize_level_set(		// reinitialize the level-set field
-              double ***level_set_star, 		
+              Array3<double> level_set_star, 		
               int number_primary_cells_i,		
               int number_primary_cells_j,		
               int number_primary_cells_k,		
@@ -96,13 +97,13 @@
       );
       void make_level_set_mass_conserving		// make level-set field mass-conserving
       (
-            double ***level_set_star, 		
-            double ***level_set_new, 			
-            double ***level_set_old, 			
-            double ***volume_of_fluid, 		
-            double ***u_1_velocity_new, 		
-            double ***u_2_velocity_new, 		
-            double ***u_3_velocity_new,		
+            Array3<double> level_set_star, 		
+            Array3<double> level_set_new, 			
+            Array3<double> level_set_old, 			
+            Array3<double> volume_of_fluid, 		
+            Array3<double> u_1_velocity_new, 		
+            Array3<double> u_2_velocity_new, 		
+            Array3<double> u_3_velocity_new,		
             int number_primary_cells_i,		
             int number_primary_cells_j,		
             int number_primary_cells_k,		
@@ -118,7 +119,7 @@
             int number_iterations_ridder,		
             double vof_2_level_set_tolerance		
       );
-       double ***level_set_star; 		// level set field at new time level
+       Array3<double> level_set_star; 		// level set field at new time level
 						// after convection and reinitialization
 						// not mass conserving
       

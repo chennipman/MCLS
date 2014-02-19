@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 #include <iostream>
 #include <stdlib.h> 
@@ -22,14 +23,14 @@ using namespace std;
 /* the matrix from the internal sparse format.                                  */
 /********************************************************************************/
 
-  int export_matrix_matlab(
+EXPORT int export_matrix_matlab(
 	int i_dimension,    		// number of unknowns in the system in i-direction
 	int j_dimension, 		// number of unknowns in the system in i-direction
 	int k_dimension, 		// number of unknowns in the system in i-direction
 	int number_matrix_connections,  // number of connections in the matrix
-	double **matrix_A,		// matrix under consideration
-	double *rhside_vector,		// rhside vector under consideration	
-	double *solution_vector,	// solution vector under consbgideration
+	Array2<double> matrix_A,		// matrix under consideration
+	Array1<double> rhside_vector,		// rhside vector under consideration	
+	Array1<double> solution_vector,	// solution vector under consbgideration
 	string variable_name		// variable name to which matrix corresponds
     
     

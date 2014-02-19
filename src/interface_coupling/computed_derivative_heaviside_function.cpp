@@ -22,7 +22,7 @@
 /*  		     \ Delta_a(Phi0),			         if Phi0 = Phi1 */
 /* where a is the smoothing distance						*/
 /********************************************************************************/
-      double computed_derivative_heaviside_function(		 
+EXPORT double computed_derivative_heaviside_function(		 
 	      double level_set_left,			// level-set value in left hand neighbouring cell
 	      double level_set_right,	  		// level-set value in right hand neighbouring cell
 	      double mesh_width_x1,			// grid spacing in x1 direction (uniform)
@@ -31,13 +31,6 @@
 	      double smoothing_distance_factor		// the smoothing distance is smoothing_distance_factor
 	  )
  {
-      double delta_function(		 		// Dirac delta function
-	      double level_set,				
-	      double mesh_width_x1,			
-	      double mesh_width_x2,			
-	      double mesh_width_x3,			
-	      double smoothing_distance_factor		
-	  );
       double smoothing_distance;			// the heaviside function is smoothed over
 							// an interval of width 2*smoothing_distance
       double largest_meshwidth;			// the larger of the three meshwidths

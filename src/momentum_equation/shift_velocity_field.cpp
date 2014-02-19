@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -16,32 +17,21 @@
 /*  										*/
 /********************************************************************************/
 
-    void shift_velocity_field(
-      double ***u_1_velocity_old, 	     	// velocity field at old time level x1 direction
-      double ***u_2_velocity_old, 	     	// velocity field at old time level x2 direction
-      double ***u_3_velocity_old,	     	// velocity field at old time level x3 direction
-      double ***u_1_velocity_new, 	     	// velocity field at new time level x1 direction
-      double ***u_2_velocity_new, 	     	// velocity field at new time level x2 direction
-      double ***u_3_velocity_new,	     	// velocity field at new time level x3 direction
-      double ***u_1_velocity_star,	     	// velocity field at star time level x1 direction
-      double ***u_2_velocity_star,	     	// velocity field at star time level x2 direction
-      double ***u_3_velocity_star,	     	// velocity field at star time level x3 direction
+EXPORT void shift_velocity_field(
+      Array3<double> u_1_velocity_old, 	     	// velocity field at old time level x1 direction
+      Array3<double> u_2_velocity_old, 	     	// velocity field at old time level x2 direction
+      Array3<double> u_3_velocity_old,	     	// velocity field at old time level x3 direction
+      Array3<double> u_1_velocity_new, 	     	// velocity field at new time level x1 direction
+      Array3<double> u_2_velocity_new, 	     	// velocity field at new time level x2 direction
+      Array3<double> u_3_velocity_new,	     	// velocity field at new time level x3 direction
+      Array3<double> u_1_velocity_star,	     	// velocity field at star time level x1 direction
+      Array3<double> u_2_velocity_star,	     	// velocity field at star time level x2 direction
+      Array3<double> u_3_velocity_star,	     	// velocity field at star time level x3 direction
       int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k		// number of primary (pressure) cells in x3 direction
 	 )		      
       {
-	/* function definitions */
-      void copy_general_field( 			// copy 'general' field from source to target
-	    double ***source_field, 		
-	    double ***target_field,		
-	    int start_index_i,			
-	    int final_index_i,			
-	    int start_index_j,			
-	    int final_index_j,			
-	    int start_index_k,			
-	    int final_index_k			
-	   );
       int i,j,k;
  
       /* shift the velocity fields */

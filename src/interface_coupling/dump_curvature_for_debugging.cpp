@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 #include <iostream>
 #include <stdlib.h> 
@@ -27,19 +28,19 @@ using namespace std;
 /* For debugging purposes all variables involved in the corrective process are  */
 /* written to file for visual inspection.						*/
 /********************************************************************************/
-   void dump_curvature_for_debugging(
-       	double ***d_level_set_d_x1,			// first partial derivative wrt x1 of level-set
-       	double ***d_level_set_d_x2,			// first partial derivative wrt x2 of level-set
-       	double ***d_level_set_d_x3,			// first partial derivative wrt x3 of level-set
-       	double ***d_2_level_set_d_x1_2,		// pure second partial derivative wrt x1 of level-set
-       	double ***d_2_level_set_d_x2_2,		// pure second partial derivative wrt x2 of level-set
-       	double ***d_2_level_set_d_x3_2,		// pure second partial derivative wrt x3 of level-set
-       	double ***d_2_level_set_d_x1_d_x2,		// mixed second partial derivative wrt x1 and x2 of level-set
-       	double ***d_2_level_set_d_x1_d_x3,		// mixed second partial derivative wrt x1 and x3 of level-set
-       	double ***d_2_level_set_d_x2_d_x3,		// mixed second partial derivative wrt x2 and x3 of level-set
- 	double ***length_gradient,			// length of gradient vector at center of cell
-	double ***curvature,				// interface curvature
-	double ***curvature_error,			// error in the curvature for laplace testcase
+EXPORT void dump_curvature_for_debugging(
+       	Array3<double> d_level_set_d_x1,			// first partial derivative wrt x1 of level-set
+       	Array3<double> d_level_set_d_x2,			// first partial derivative wrt x2 of level-set
+       	Array3<double> d_level_set_d_x3,			// first partial derivative wrt x3 of level-set
+       	Array3<double> d_2_level_set_d_x1_2,		// pure second partial derivative wrt x1 of level-set
+       	Array3<double> d_2_level_set_d_x2_2,		// pure second partial derivative wrt x2 of level-set
+       	Array3<double> d_2_level_set_d_x3_2,		// pure second partial derivative wrt x3 of level-set
+       	Array3<double> d_2_level_set_d_x1_d_x2,		// mixed second partial derivative wrt x1 and x2 of level-set
+       	Array3<double> d_2_level_set_d_x1_d_x3,		// mixed second partial derivative wrt x1 and x3 of level-set
+       	Array3<double> d_2_level_set_d_x2_d_x3,		// mixed second partial derivative wrt x2 and x3 of level-set
+ 	Array3<double> length_gradient,			// length of gradient vector at center of cell
+	Array3<double> curvature,				// interface curvature
+	Array3<double> curvature_error,			// error in the curvature for laplace testcase
 	int number_primary_cells_i,			// number of primary (pressure) 
 							// cells in x1 direction
 	int number_primary_cells_j,			// number of primary (pressure) 
@@ -52,24 +53,6 @@ using namespace std;
 	
 	)
 	{
-      void  write_coordinates_vtk( 			// write coordinates in vtk format 
-	  ofstream& output_stream, 		
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k,		
-	  double mesh_width_x1,			
-	  double mesh_width_x2,			
-	  double mesh_width_x3			
-       );
-      void  write_cell_centered_field_vtk(     	// write cell centered field in vtk format
-	  ofstream& output_stream, 			
-	  string scalar_name,				
-	  string look_up_table_name,				
-	  double ***cell_centered_field, 			
-	  int number_primary_cells_i,			
-	  int number_primary_cells_j,			
-	  int number_primary_cells_k			
-	    );
       int total_number_primary_cells=		// total number of primary cells
 	  number_primary_cells_i*
 	    number_primary_cells_j*

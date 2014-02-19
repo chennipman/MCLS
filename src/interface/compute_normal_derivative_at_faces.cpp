@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -18,15 +19,15 @@
 /* approximated with central differences. Note that in this case the            */
 /* actual derivative is computed, so a divided difference.          h           */
 /********************************************************************************/
-   void   compute_normal_derivative_at_faces(				
-	double ***scalar_field, 			// scalar field defined at cell centers
-	double ***d_field_d_x1_face,			// first normal derivative of
+EXPORT void   compute_normal_derivative_at_faces(				
+	Array3<double> scalar_field, 			// scalar field defined at cell centers
+	Array3<double> d_field_d_x1_face,			// first normal derivative of
 							// scalar field at cell face orthogonal
 							// to x1 direction                       
-	double ***d_field_d_x2_face,			// first normal derivative of
+	Array3<double> d_field_d_x2_face,			// first normal derivative of
 							// scalar field at cell face orthogonal
 							// to x2 direction
-	double ***d_field_d_x3_face,			// first normal derivative of
+	Array3<double> d_field_d_x3_face,			// first normal derivative of
 							// scalar field at cell face orthogonal
 							// to x3 direction
         int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
@@ -37,18 +38,6 @@
 	double mesh_width_x3				// grid spacing in x3 direction (uniform)
 	  )
    {
-     
-	/* function definitions */ 
-	
-       void set_constant_matrix2(
-	    int first_dimension,			// number of elements in first dimension
-	    int second_dimension,			// number of elements in second dimension
-	    int third_dimension,			// number of elements in third dimension
-	    double ***matrix2_to_set,			// the name of the array that has to be set
-	    double constant_value			// the constant value the vector has to be set to
-	    );
-	
-	
 	int i_index, j_index, k_index;  		// local variables for loop indexing
 	int vector_length= 				// length of the one dimensional array
 	    (number_primary_cells_i+2)*			// that results from reshaping the 3D

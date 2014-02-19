@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to construct the compressed solution vector for the pressure       */
@@ -10,8 +11,8 @@
 /* Notes									*/
 /********************************************************************************/
  void compress_solution_pressure(
-      double ***full_solution,		     // 3-D array with solution, virtual cells included
-      double   *compressed_solution_vector,  // 1-D array with solution, virtual cells excluded
+      Array3<double> full_solution,		     // 3-D array with solution, virtual cells included
+      Array1<double> compressed_solution_vector,  // 1-D array with solution, virtual cells excluded
       int number_primary_cells_i,	     // number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,	     // number of primary (pressure) cells in x2 direction
       int number_primary_cells_k	     // number of primary (pressure) cells in x3 direction

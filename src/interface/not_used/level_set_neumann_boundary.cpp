@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 /********************************************************************************/
 /********************************************************************************/
@@ -18,7 +19,7 @@
 /********************************************************************************/
 //
 void  level_set_neumann_boundary(
-      double ***level_set_new, 		// level set field at new time level
+      Array3<double> level_set_new, 		// level set field at new time level
       int number_primary_cells_i,	// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,	// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k	// number of primary (pressure) cells in x3 direction

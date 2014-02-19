@@ -14,7 +14,7 @@
 /********************************************************************************/
 /* Notes									*/
 /********************************************************************************/
-      double compute_redistribution_velocity(
+EXPORT double compute_redistribution_velocity(
 	      double left_hand_value_level_set, 	// left hand value of the level-set field
 							// with respect to cell face
 	      double right_hand_value_level_set,	// right hand value of the level-set field
@@ -22,8 +22,6 @@
 	      double meshwidth				// grid spacing / mesh width
 	)
       {
-	double sign(double value, double set_sign);    // return the sign of 'value'
-	
 	double mean_value_level_set;			// average of left and right hand side value
 							// of the level-set field
 	double redistribution_velocity_threshold=0.1;	// threshold value for the redistribution

@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 #include <iostream>
 #include <stdlib.h>
@@ -28,7 +29,7 @@ using namespace std;
 /* written to file for visual inspection.                                       */
 /********************************************************************************/
    void dump_divergence_for_debugging(
-       double ***local_divergence,               // local discrete divergence
+       Array3<double> local_divergence,               // local discrete divergence
        int number_primary_cells_i,               // number of primary (pressure)
                                                  // cells in x1 direction
        int number_primary_cells_j,               // number of primary (pressure)
@@ -54,7 +55,7 @@ using namespace std;
          ofstream& output_stream,
          string scalar_name,
          string look_up_table_name,
-         double ***cell_centered_field,
+         Array3<double> cell_centered_field,
          int number_primary_cells_i,
          int number_primary_cells_j,
          int number_primary_cells_k

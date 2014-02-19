@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to apply a precomputed incomplete choleski preconditioner          */
@@ -13,12 +14,12 @@
 /* It is sufficient to store only a diagonal matrix. The formulation of the     */
 /* preconditioner is described in the Lecture Notes of CFD II Burgers course.   */
 /********************************************************************************/
-     void build_preconditioner(
+EXPORT void build_preconditioner(
 	int i_dimension,    	// number of unknowns in the system in i-direction
 	int j_dimension, 	// number of unknowns in the system in i-direction
 	int k_dimension, 	// number of unknowns in the system in i-direction
-	double **matrix_A,			// matrix under consideration
-	double *preconditioner_matrix_M 	// preconditioner matrix
+	Array2<double> matrix_A,			// matrix under consideration
+	Array1<double> preconditioner_matrix_M 	// preconditioner matrix
 	)
       
      

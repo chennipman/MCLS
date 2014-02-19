@@ -1,36 +1,9 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
-enum boundary_conditions_type{dirichlet, neumann, periodic};
-enum boundary_conditions_rule{constant, function};
-enum cell_centerings{cell_centered, vertex_centered};
 
-
-class boundary_variable
-{
-public:
-  variable variable_name;
-  boundary_conditions_type boundary_condition_type;
-  boundary_conditions_rule boundary_condition_rule;
-  cell_centerings cell_centering;
-  double boundary_condition_value;
-  boundary_variable(variable varname, boundary_conditions_type bound_type,
-				     boundary_conditions_rule bound_rule,
-				     cell_centerings  cell_cent,
-					double bound_value );
-  boundary_variable(variable varname);
-};
-
-class boundary_face
-{
-public:
-    boundary_variable boundary_variables[5];
-    boundary_face(void);
-   
-};
-      
 /********************************************************************************/
 /*  Function to apply the boundary conditions to a given velocity field in the  */
 /*  x1 direction.						                */
@@ -45,10 +18,10 @@ public:
 /* separately. This function handles the boundary conditions for the x2         */
 /* components.									*/
 /********************************************************************************/
-      void apply_boundary_conditions_velocity_u2(
+EXPORT void apply_boundary_conditions_velocity_u2(
 	  boundary_face boundary_faces[6],		// array with all the information
 							// for the boundary conditions 
-	  double ***u_2_velocity, 			// velocity field x2 direction
+	  Array3<double> u_2_velocity, 			// velocity field x2 direction
 	  double mesh_width_x1,				// grid spacing in x1 direction (uniform)
 	  double mesh_width_x2,				// grid spacing in x2 direction (uniform)
 	  double mesh_width_x3,				// grid spacing in x3 direction (uniform)

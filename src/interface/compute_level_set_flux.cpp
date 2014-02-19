@@ -13,7 +13,7 @@
 /********************************************************************************/
 
 
-  double compute_level_set_flux( 		
+EXPORT double compute_level_set_flux( 		
     double cell_face_velocity,				// normal velocity at the face
     double left_phi, 					// left hand value of level-set
     double right_phi)					// right hand value of level-set

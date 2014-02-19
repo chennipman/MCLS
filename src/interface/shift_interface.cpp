@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -15,25 +16,16 @@
 /*  											*/
 /********************************************************************************/
 
-    void shift_interface(
-      double ***level_set_new, 		// level set field at new time level
+EXPORT void shift_interface(
+      Array3<double> level_set_new, 		// level set field at new time level
 						// mass conserving
-      double ***level_set_old, 		// level set field at old time level
+      Array3<double> level_set_old, 		// level set field at old time level
 						// mass conserving
       int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k		// number of primary (pressure) cells in x3 direction
 	 )		      
       {
-	/* function definitions */
-      void copy_cell_centered_field(         // copy cell centered field from source to target
-	    double ***source_field, 		
-	    double ***target_field,		
-	    int number_primary_cells_i,		
-	    int number_primary_cells_j,		
-	    int number_primary_cells_k		
-	   );
- 
       /* shift the level-set field from the new to old time level*/
       
 

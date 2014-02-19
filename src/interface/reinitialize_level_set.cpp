@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<math.h>
@@ -21,8 +22,8 @@
 /*    --------------  * q(Phi^0)						*/
 /*        Delta t'								*/
 /********************************************************************************/
-    void reinitialize_level_set(
-      double ***level_set_star, 		// level set field at star time level
+EXPORT void reinitialize_level_set(
+      Array3<double> level_set_star, 		// level set field at star time level
       int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,		// number of primary (pressure) cells in x3 direction
@@ -40,80 +41,28 @@
   
 
  {
-      /* function definitions */
-      
-      void copy_cell_centered_field(     				// copy general cell centered field
-	    double ***source_field, 		                	// including virtual cells
-	    double ***target_field,		
-	    int number_primary_cells_i,		
-						
-	    int number_primary_cells_j,		
-						
-	    int number_primary_cells_k
-	      );		
-      double ***double_Matrix2(                                         // allocate memory for a three-
-            int number_primary_cells_i,		                        // dimensional array of doubles
-	    int number_primary_cells_j, 		
-	    int number_primary_cells_k
-	    );
-      void   free_double_Matrix2( 					// deallocate memory for a three
-	    double ***doubleMatrix2, 				        // dimensional array of doubles
-	    int number_primary_cells_i,	
-            int number_primary_cells_j
-	    );
-      
-      void compute_normal_derivative_at_faces(			        // compute normal derivative at cell faces			
-	    double ***scalar_field, 			
-	    double ***d_field_d_x1_face,			
-	    double ***d_field_d_x2_face,
-	    double ***d_field_d_x3_face,			
-	    int number_primary_cells_i,			
-	    int number_primary_cells_j,			
-	    int number_primary_cells_k,			
-	    double mesh_width_x1,				
-	    double mesh_width_x2,				
-	    double mesh_width_x3				
-	    );
-      void dump_reinitialization_for_debugging(                         // dump details of reinitialization
-            double ***level_set_reinitialized,                          // for inspection
-            double ***level_set_0,                  
-            double ***level_set_residual_reinit,    
-            int number_primary_cells_i,             
-            int number_primary_cells_j,                 
-            int number_primary_cells_k,                 
-            double mesh_width_x1,                     
-            double mesh_width_x2,                     
-            double mesh_width_x3                      
-            );
-      void field_extrapolate_boundary(                                 // extrapolate field to virtual cells
-            double ***field,                        
-            int number_primary_cells_i,     
-            int number_primary_cells_j,     
-            int number_primary_cells_k      
-            );
-						
-      double ***level_set_0;					// level-set field, after advection
+      Array3<double> level_set_0;					// level-set field, after advection
 								// but not reinitialized
-      double ***level_set_residual_reinit;                      // residual of the reinitialization
+      Array3<double> level_set_residual_reinit;                      // residual of the reinitialization
                                                                 // equation
-      double ***d_level_set_d_x1;				// first partial derivative of
+      Array3<double> d_level_set_d_x1;				// first partial derivative of
 								// the level-set field wrt x1
 								// second order central approximation
 								// defined at the cell faces
-      double ***d_level_set_d_x2;				// first partial derivative of 
+      Array3<double> d_level_set_d_x2;				// first partial derivative of 
 								// the level-set field wrt x2
 								// second order central approximation
 								// defined at the cell faces
-      double ***d_level_set_d_x3;				// first partial derivative of
+      Array3<double> d_level_set_d_x3;				// first partial derivative of
  								// the level-set field wrt x3
 								// second order central approximation
 								// defined at the cell faces
-      double ***d_level_set_d_t_prime;			// time derivative in the level-set
+      Array3<double> d_level_set_d_t_prime;			// time derivative in the level-set
  								// reinitialization equation          
 								// this defines the complete right hand side
 								// of the equation, before used to update the level-set
 								// defined at the cell faces
-      double ***weighting_function_q0;			// weighting function in the level-set
+      Array3<double> weighting_function_q0;			// weighting function in the level-set
 								// reinitialization equation 
       double scalefactor_bandwidth_reinitialization=1.0;	// scale factor for the width of the reinitialization zone			
       double time_step_reinitialization;			// time step for the reinitialization equation
@@ -159,30 +108,30 @@
      
 	/* allocate memory to save the un-reinitialized level-set field */
 	
-	level_set_0=double_Matrix2( number_primary_cells_i+2, 
+	level_set_0.create( number_primary_cells_i+2, 
 			number_primary_cells_j+2  , number_primary_cells_k+2);
 	
 	
 	/* allocate memory for the diffusive fluxes */
 	
-	d_level_set_d_x1=double_Matrix2( number_primary_cells_i+1, 
+	d_level_set_d_x1.create( number_primary_cells_i+1, 
 			number_primary_cells_j+2, number_primary_cells_k+2);
-	d_level_set_d_x2=double_Matrix2( number_primary_cells_i+2, 
+	d_level_set_d_x2.create( number_primary_cells_i+2, 
 			number_primary_cells_j+1, number_primary_cells_k+2);
-	d_level_set_d_x3=double_Matrix2( number_primary_cells_i+2, 
+	d_level_set_d_x3.create( number_primary_cells_i+2, 
 			number_primary_cells_j+2, number_primary_cells_k+1);
 
 	/* allocate memory for the time derivative part of the equation */
 
-	d_level_set_d_t_prime=double_Matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
+	d_level_set_d_t_prime.create(number_primary_cells_i+2, number_primary_cells_j+2, 
 					     number_primary_cells_k+2);
 
 	/* allocate memory for the weighting function in the re-initialization equation*/
         /* and for the residual of the reinitialization equation                       */
 
-	weighting_function_q0=double_Matrix2( number_primary_cells_i+2  , 
+	weighting_function_q0.create( number_primary_cells_i+2  , 
 			number_primary_cells_j+2  , number_primary_cells_k+2);
-	level_set_residual_reinit=double_Matrix2( number_primary_cells_i+2  , 
+	level_set_residual_reinit.create( number_primary_cells_i+2  , 
                         number_primary_cells_j+2  , number_primary_cells_k+2);
 
 
@@ -417,31 +366,24 @@
      
 	/* allocate memory to save the un-reinitialized level-set field */
 	
-	free_double_Matrix2(level_set_0, number_primary_cells_i+2, 
-			number_primary_cells_j+2 );
+	level_set_0.destroy();
 	
 	
 	/* allocate memory for the diffusive fluxes */
 	
-	free_double_Matrix2(d_level_set_d_x1, number_primary_cells_i+1, 
-			number_primary_cells_j+2);
-	free_double_Matrix2(d_level_set_d_x2, number_primary_cells_i+2, 
-			number_primary_cells_j+1);
-	free_double_Matrix2(d_level_set_d_x3, number_primary_cells_i+2, 
-			number_primary_cells_j+2);
+	d_level_set_d_x1.destroy();
+	d_level_set_d_x2.destroy();
+	d_level_set_d_x3.destroy();
 
 	/* allocate memory for the time derivative part of the equation */
 
-	free_double_Matrix2(d_level_set_d_t_prime, number_primary_cells_i+2  , 
-			number_primary_cells_j+2  );
+	d_level_set_d_t_prime.destroy();
 
 	/* allocate memory for the weighting function in the re-initialization equation*/
         /* and the residual of the reinitialization equation                           */
 
-        free_double_Matrix2(weighting_function_q0, number_primary_cells_i+2  , 
-                        number_primary_cells_j+2  );
-        free_double_Matrix2(level_set_residual_reinit, number_primary_cells_i+2  , 
-                        number_primary_cells_j+2  );
+        weighting_function_q0.destroy();
+        level_set_residual_reinit.destroy();
 	
 	std::cerr<< " end reinitialize_level_set \n";
 

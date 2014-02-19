@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 #include<cstdlib>
 #include<iostream>
@@ -24,12 +25,12 @@
 /* Have to handled in a way that does not disturb the global mass conservation. */
 /* level set fields.								       */
 /********************************************************************************/
-      void apply_volume_of_fluid_redistribution(
-	    double ***volume_of_fluid, 				// volume of fluid field
-	    double ***level_set_star, 				// level set field at new time level
+EXPORT void apply_volume_of_fluid_redistribution(
+	    Array3<double> volume_of_fluid, 				// volume of fluid field
+	    Array3<double> level_set_star, 				// level set field at new time level
 									// after convection and reinitialization
 									// not mass conserving
-	    double ***level_set_new, 					// level set field at new time level
+	    Array3<double> level_set_new, 					// level set field at new time level
 									// mass conserving
 	    int number_primary_cells_i,				// number of primary (pressure) cells in x1 direction
 	    int number_primary_cells_j,				// number of primary (pressure) cells in x2 direction
@@ -56,93 +57,10 @@
 									// these are the sweeps on the vof error
 	    )
       {
-      void match_level_set_to_volume_of_fluid(			// compute a new level-set field
-		 double ***level_set_not_mass_conserving, 		// that corresponds to given
-		 double ***volume_of_fluid,				// volume of fluid field
-		 double ***level_set_mass_conserving,		// using an existing level-set
-		 int number_primary_cells_i, 				// field as a starting value
-		 int number_primary_cells_j, 
-		 int number_primary_cells_k,			
-		 double volume_of_fluid_tolerance,		
-		 double lower_bound_derivatives,		
-		 int number_vof_2_level_set_iterations,		
-		 int number_iterations_ridder,			
-		 double vof_2_level_set_tolerance		
-		);
-      double ***double_Matrix2(                                   // allocate memory for a three-
-               int number_primary_cells_i,		               // dimensional array of doubles
-		int number_primary_cells_j, 		
-		int number_primary_cells_k);
-      void free_double_Matrix2( 					// deallocate memory for a three
-		double ***doubleMatrix2,				// dimensional array of doubles
-		int number_primary_cells_i,	
-		int number_primary_cells_j);
-      void copy_cell_centered_field(					// copy a source field
-		 double ***source_field, 				// to a target field 
-		 double ***target_field, 				
-		 int number_primary_cells_i, 
-		 int number_primary_cells_j,
-		 int number_primary_cells_k);
-       void match_level_set_to_volume_of_fluid(			// compute a new level-set field
-		 double ***level_set_not_mass_conserving, 		// that corresponds to given
-		 double ***volume_of_fluid,				// volume of fluid field
-		 double ***level_set_mass_conserving,		// using an existing level-set
-		 int number_primary_cells_i, 				// field as a starting value
-		 int number_primary_cells_j, 
-		 int number_primary_cells_k,			
-		 double volume_of_fluid_tolerance,		
-		 double lower_bound_derivatives,		
-		 int number_vof_2_level_set_iterations,		
-		 int number_iterations_ridder,			
-		 double vof_2_level_set_tolerance,
-		 double mesh_width_x1,
-		 double mesh_width_x2,
-		 double mesh_width_x3
-		 );
-     int modify_volume_of_fluid_values(				// modify volume of fluid
-		double ***level_set, 					// values and count number
-		double ***volume_of_fluid,			       // of cells with invalid	
-		double ***volume_of_fluid_correction,		// volume of fluid valuesluid_correction,
-		int number_primary_cells_i,			  
-		int number_primary_cells_j,			  
-		int number_primary_cells_k,			  
-		double volume_of_fluid_tolerance
-		  );
-      void redistribute_volume_of_fluid_error(			// solve artifical convection				
-		double ***level_set, 					// equation to redistribute
-		double ***volume_of_fluid, 				// volume of fluid error
-		double ***volume_of_fluid_correction,	
-		int number_primary_cells_i,		 
-		int number_primary_cells_j,		 
-		int number_primary_cells_k,		 
-		double mesh_width_x2,			
-		double mesh_width_x1,			
-		double mesh_width_x3,			
-		double time_step_mass_redistribution,	
-		double volume_of_fluid_tolerance,	
-		double redistribution_vof_tolerance,	
-		int maximum_number_mass_redistribution_iterations  	
-		  );
-      int apply_volume_of_fluid_clipping(				// clip the values of		
-		 double ***volume_of_fluid, 		              	// the volume of fluid field                     	
-		 int number_primary_cells_i,		              	// to bring them in the correct
-		 int number_primary_cells_j,		           	// interval [0,1]
-		 int number_primary_cells_k,		
-		 double volume_of_fluid_tolerance	
-		
-      );
-      int check_volume_of_fluid(
-               double ***volume_of_fluid,
-               int number_primary_cells_i,
-               int number_primary_cells_j,
-               int number_primary_cells_k,
-               double volume_of_fluid_tolerance
-
-              );
-      double ***volume_of_fluid_star;				// volume of fluid field, uncorrected
+      Array3<double> volume_of_fluid_star;				// volume of fluid field, uncorrected
 									// so with possible vapour cells and 
 									// under/overfilled cells
-      double ***volume_of_fluid_correction;				// correction to the volume of fluid field
+      Array3<double> volume_of_fluid_correction;				// correction to the volume of fluid field
 								       // to make it valid
       
       int number_cells_vof_out_of_bounds=100;	              // number of control volumes where the volume of fluid
@@ -161,10 +79,10 @@
       /* allocate memory for the volume of fluid correction and the tentative */
       /* volume of fluid field 						      */
       
-	volume_of_fluid_correction=double_Matrix2(number_primary_cells_i+2, 
+	volume_of_fluid_correction.create(number_primary_cells_i+2, 
 						    number_primary_cells_j+2,
 						      number_primary_cells_k+2);
-	volume_of_fluid_star=double_Matrix2(number_primary_cells_i+2, 
+	volume_of_fluid_star.create(number_primary_cells_i+2, 
 						    number_primary_cells_j+2,
 						      number_primary_cells_k+2);
       
@@ -278,9 +196,7 @@
 	
 	/* deallocate temporary storage */
 	  
-      free_double_Matrix2(volume_of_fluid_star, number_primary_cells_i+2, 
-			          number_primary_cells_j+2);
-      free_double_Matrix2(volume_of_fluid_correction, number_primary_cells_i+2,
-				  number_primary_cells_j+2);
+      volume_of_fluid_star.destroy();
+      volume_of_fluid_correction.destroy();
 }
   

@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -6,72 +7,7 @@
 #include <sstream>
 #include <fstream>
 using namespace std;
-enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
-enum boundary_conditions_type{dirichlet, neumann, periodic};
-enum boundary_conditions_rule{constant, function};
-enum cell_centerings{cell_centered, vertex_centered};
-enum geometry{bubbly_flow, wavy_flow};
 
-
-class boundary_variable
-{
-public:
-  variable variable_name;
-  boundary_conditions_type boundary_condition_type;
-  boundary_conditions_rule boundary_condition_rule;
-  cell_centerings cell_centering;
-  double boundary_condition_value;
-  boundary_variable(variable varname, boundary_conditions_type bound_type,
-				     boundary_conditions_rule bound_rule,
-				     cell_centerings  cell_cent,
-					double bound_value );
-  boundary_variable(variable varname);
-};
-
-class boundary_face
-{
-public:
-    boundary_variable boundary_variables[5];
-    boundary_face(void);
-   
-};
-class coordinate
-{
-public:
-  double x1,x2,x3;
-  coordinate(double xx1=0, double xx2=0, double xx3=0){x1=xx1;x2=xx2;x3=xx3;}
-};
-class bubble
-{
-public:
-  double principle_axis_x1;
-  double principle_axis_x2;
-  double principle_axis_x3;
-  int label;
-  coordinate center_location;
-  bubble(int number, coordinate bubble_center, double bubble_radius);
-};
-class surface
-{
-public:
-  int active;
-  int orientation;
-  double height;
-};
-class vector
-{
-public:
-  double u1,u2,u3;
-};
-class restart_parameters
-{
-public:
-      int start_from_restart_file;		
-      int write_solution_to_restart_file;
-      string name_restart_file_to_write;
-      string name_restart_file_to_read;
-      restart_parameters(void);
-};
 /********************************************************************************/
 /********************************************************************************/
 /*  initialize_computation						     	       */
@@ -80,36 +16,36 @@ public:
 /*  Date	: 03-01       							       */
 /*  Update	:        							       */
 /********************************************************************************/
-void initialize_computation( 
-      double *** &u_1_velocity_new, 				// velocity field at new time level x1 direction
-      double *** &u_2_velocity_new, 				// velocity field at new time level x2 direction
-      double *** &u_3_velocity_new,				// velocity field at new time level x3 direction
-      double *** &u_1_velocity_old, 				// velocity field at old time level x1 direction
-      double *** &u_2_velocity_old, 				// velocity field at old time level x2 direction
-      double *** &u_3_velocity_old,				// velocity field at old time level x3 direction
-      double *** &pressure,					// pressure
-      double *** &level_set_old,				// level-set field at old time level
-      double *** &level_set_new,				// level-set field at new time level
-      double *** &volume_of_fluid,				// volume of fluid field
-      double *** &curvature,					// interface curvature
-      double *** &unsmoothed_curvature,			// interface curvature without smoothing
-      double *** & momentum_source_term_u_1,              // source term of the momentum equation in x1 direction
+EXPORT void initialize_computation( 
+      Array3<double> &u_1_velocity_new, 				// velocity field at new time level x1 direction
+      Array3<double> &u_2_velocity_new, 				// velocity field at new time level x2 direction
+      Array3<double> &u_3_velocity_new,				// velocity field at new time level x3 direction
+      Array3<double> &u_1_velocity_old, 				// velocity field at old time level x1 direction
+      Array3<double> &u_2_velocity_old, 				// velocity field at old time level x2 direction
+      Array3<double> &u_3_velocity_old,				// velocity field at old time level x3 direction
+      Array3<double> &pressure,					// pressure
+      Array3<double> &level_set_old,				// level-set field at old time level
+      Array3<double> &level_set_new,				// level-set field at new time level
+      Array3<double> &volume_of_fluid,				// volume of fluid field
+      Array3<double> &curvature,					// interface curvature
+      Array3<double> &unsmoothed_curvature,			// interface curvature without smoothing
+      Array3<double> & momentum_source_term_u_1,              // source term of the momentum equation in x1 direction
                                                           // defined on all u1 points (including boundaries)
-      double *** & momentum_source_term_u_2,              // source term of the momentum equation in x2 direction
+      Array3<double> & momentum_source_term_u_2,              // source term of the momentum equation in x2 direction
                                                           // defined on all u1 points (including boundaries)
-      double *** & momentum_source_term_u_3,              // source term of the momentum equation in x3 direction
+      Array3<double> & momentum_source_term_u_3,              // source term of the momentum equation in x3 direction
                                                           // defined on all u1 points (including boundaries)
-      double *** & surface_tension_body_force_x1,         // source term of the momentum equation in x1 direction
+      Array3<double> & surface_tension_body_force_x1,         // source term of the momentum equation in x1 direction
                                                           // defined on all u1 points (including boundaries)
-      double *** & surface_tension_body_force_x2,         // source term of the momentum equation in x2 direction
+      Array3<double> & surface_tension_body_force_x2,         // source term of the momentum equation in x2 direction
                                                           // defined on all u1 points (including boundaries)
-      double *** & surface_tension_body_force_x3,         // source term of the momentum equation in x3 direction
+      Array3<double> & surface_tension_body_force_x3,         // source term of the momentum equation in x3 direction
                                                           // defined on all u1 points (including boundaries)
-      double *** & scaled_density_u1,                     // scaled density for the controlvolumes
+      Array3<double> & scaled_density_u1,                     // scaled density for the controlvolumes
                                                           // of the momentum equation in x1 direction
-      double *** & scaled_density_u2,                     // scaled density for the controlvolumes
+      Array3<double> & scaled_density_u2,                     // scaled density for the controlvolumes
                                                           // of the momentum equation in x2 direction
-      double *** & scaled_density_u3,                     // scaled density for the controlvolumes
+      Array3<double> & scaled_density_u3,                     // scaled density for the controlvolumes
                                                           // of the momentum equation in x3 direction
       boundary_face boundary_faces[6],			// array with all the information
 								// for the boundary conditions 
@@ -219,174 +155,6 @@ void initialize_computation(
  
 	   )
 {
-      void set_parameters(					// set parameters for the computation
-         int &number_primary_cells_i,		
-         int &number_primary_cells_j,		
-         int &number_primary_cells_k,		
-         double &actual_time_step_level_set,	
-         double &mesh_width_x1,			
-         double &mesh_width_x2,			
-         double &mesh_width_x3,			
-         int &apply_mass_distribution_algorithm,    
-         int &apply_mass_conservation_correction,   
-         double &volume_of_fluid_tolerance,		
-         double &lower_bound_derivatives,		
-         int &number_vof_2_level_set_iterations,	
-         int &number_iterations_ridder,		
-         double &vof_2_level_set_tolerance,		
-         double &cfl_number_reinitialization,	
-         double &cfl_number_navier_stokes,		
-         int &maximum_reinitialization_steps,	
-         double &tolerance_reinitialization,	
-      	  int &number_matrix_connections,			     
-         vector &gravity,				
-         double &actual_time_step_navier_stokes,	
-         double &rho_plus_over_rho_minus,		
-         double &smoothing_distance_factor,		
-         double &rho_minus_over_mu_minus,		
-         double &mu_plus_over_mu_minus,		
-         double &tolerance_pressure,	  		
-         int &maximum_iterations_allowed_pressure,	
-         double &tolerance_velocity,	  		
-         int &maximum_iterations_allowed_velocity,	
-         int &continuous_surface_force_model,       
-         int &source_terms_in_momentum_predictor,   
-         double &sigma_over_rho_minus,		
-         double &time_step_restriction_global,      
-         int &fixed_time_step,			
-         int &apply_curvature_smoothing,		
-         int &number_curvature_smoothing_steps,	
-         int &apply_curvature_smoothing_filter,	
-         int &number_of_subcycles,			
-         int &vtk_output,				
-         int &tecplot_output,			
-         double &time_interval_for_output,		
-         double &domain_size_x1,			
-         double &domain_size_x2,			
-         double &domain_size_x3, 			
-         geometry &flow_type,			 
-         bubble *the_bubbles,			 
-         int &number_of_bubbles,			 
-         surface *the_free_surfaces,		 
-         int &number_of_free_surfaces,
-	 double &start_time_simulation,		
-         double &end_time_simulation,
-	 vector &initial_velocity,
-	 restart_parameters &my_restart_parameters,
-      	  int &maximum_number_mass_redistribution_iterations, 
-         double &time_step_mass_redistribution,	
-         double &redistribution_vof_tolerance, 
-         int &number_of_phases,
-	  int &debugging_mode,
-	  double &time_interval_for_reinitialization
-	   );
-
-  void initialize_all_variables(				// initialize all variables
-      double ***u_1_velocity_new, 			
-      double ***u_2_velocity_new, 			
-      double ***u_3_velocity_new,			
-      double ***u_1_velocity_old, 			
-      double ***u_2_velocity_old, 			
-      double ***u_3_velocity_old,			
-      double ***pressure,				
-      double ***level_set_old,				
-      double ***volume_of_fluid,	
-      double ***curvature,
-      double ***unsmoothed_curvature,
-      double ***momentum_source_term_u_1,
-      double ***momentum_source_term_u_2,
-      double ***momentum_source_term_u_3,
-      double ***surface_tension_body_force_x1,
-      double ***surface_tension_body_force_x2,
-      double ***surface_tension_body_force_x3,
-      double ***scaled_density_u1,
-      double ***scaled_density_u2,
-      double ***scaled_density_u3,
-      boundary_face boundary_faces[6],			
-      geometry flow_type,				
-      bubble *the_bubbles,				
-      int number_of_bubbles,				
-      surface *the_free_surfaces,			
-      int number_of_free_surfaces, 			
-      double lower_bound_derivatives,			
-      double mesh_width_x1,				
-      double mesh_width_x2,				
-      double mesh_width_x3,				
-      int number_primary_cells_i,			
-      int number_primary_cells_j,			
-      int number_primary_cells_k,
-      vector initial_velocity,
-      restart_parameters my_restart_parameters,
-      double &start_time_simulation,
-      int apply_curvature_smoothing, 
-      int number_curvature_smoothing_steps,
-      int apply_curvature_smoothing_filter,
-      double smoothing_distance_factor,
-      int debugging_mode,
-      vector gravity,                                                              
-      double tolerance,
-      double actual_time_step_navier_stokes,
-      double rho_plus_over_rho_minus,
-      double sigma_over_rho_minus,
-      int continuous_surface_force_model,
-      int source_terms_in_momentum_predictor,           
-      int maximum_iterations_allowed
-                                                         
-     );
-    void allocate_main_variables(				// allocate memory for the main variables
-      double *** & u_1_velocity_new, 			
-      double *** & u_2_velocity_new, 			
-      double *** & u_3_velocity_new,			
-      double *** & u_1_velocity_old, 			
-      double *** & u_2_velocity_old, 			
-      double *** & u_3_velocity_old,			
-      double *** & pressure,				
-      double *** & level_set_old,				
-      double *** & level_set_new,				
-      double *** & volume_of_fluid,
-      double *** & curvature,
-      double *** & unsmoothed_curvature,
-      double *** & momentum_source_term_u_1,
-      double *** & momentum_source_term_u_2,
-      double *** & momentum_source_term_u_3,
-      double *** & surface_tension_body_force_x1,
-      double *** & surface_tension_body_force_x2,
-      double *** & surface_tension_body_force_x3,
-      double *** & scaled_density_u1,
-      double *** & scaled_density_u2,
-      double *** & scaled_density_u3,
-      int number_primary_cells_i,			
-      int number_primary_cells_j,			
-      int number_primary_cells_k			
-	 );
-    void set_boundary_conditions( 				// set the boundary conditions
-	  boundary_face boundary_faces[6],
-	  vector initial_velocity
-	 );
-    void output_solution(					// output the solution to file
-	  double ***level_set_new, 		
-	  double ***volume_of_fluid, 	
-	  double ***curvature,
-	  double ***smoothed_curvature,
-	  double ***u_1_velocity_new, 		
-	  double ***u_2_velocity_new, 		
-	  double ***u_3_velocity_new,		
-	  double ***pressure,			
-	  int vtk_output,			
-	  int tecplot_output,			
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k,		
-	  double mesh_width_x1,			
-	  double mesh_width_x2,			
-	  double mesh_width_x3,			
-	  int index_of_output_file
-	    );
-
-   
-/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/ 
-/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/ 
- 
 /*  compute all necessary parameters */
 
     set_parameters( number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		

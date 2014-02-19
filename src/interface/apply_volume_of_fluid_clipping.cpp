@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 #include<cstdlib>
 #include<iostream>
@@ -18,8 +19,8 @@
 /* This functions simply clips off the excess values and monitors the number    */
 /* of cells that need correcting.                                               */
 /********************************************************************************/
-      int apply_volume_of_fluid_clipping(				
-		 double ***volume_of_fluid, 		// volume of fluid field		
+EXPORT int apply_volume_of_fluid_clipping(				
+		 Array3<double> volume_of_fluid, 		// volume of fluid field		
 		 int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
 		 int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction
 		 int number_primary_cells_k,		// number of primary (pressure) cells in x3 direction

@@ -16,7 +16,7 @@
 /* higher order kappa-schemes could be used here.                               */
 /* This is the reason why it is contained within a separate function		*/
 /********************************************************************************/
-     double compute_convection_term( 			
+EXPORT double compute_convection_term( 			
 	      double u_1_velocity_cell_center,		// u_1 velocity component at center of
 							// control volume of u_alpha
 	      double u_2_velocity_cell_center,		// u_2 velocity component at center of

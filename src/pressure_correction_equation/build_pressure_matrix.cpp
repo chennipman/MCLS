@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 
 
 /********************************************************************************/
@@ -24,17 +25,17 @@
 /* - the righthand neighbour	index 2	in the matrix					*/
 /* - the upper neighbour	index 3	in the matrix  				*/
 /********************************************************************************/
-void build_pressure_matrix (
-      double **pressure_correction_matrix,   	// pressure correction matrix
+EXPORT void build_pressure_matrix (
+      Array2<double> pressure_correction_matrix,   	// pressure correction matrix
       double mesh_width_x1,		     		// grid spacing in x1 direction (uniform)
       double mesh_width_x2,		     		// grid spacing in x2 direction (uniform)
       double mesh_width_x3,		     		// grid spacing in x3 direction (uniform)
-      double ***level_set_new, 		     	// level set field at new time level
-      double ***scaled_density_u1,			// scaled density for the controlvolumes
+      Array3<double> level_set_new, 		     	// level set field at new time level
+      Array3<double> scaled_density_u1,			// scaled density for the controlvolumes
 							// of the momentum equation in x1 direction
-      double ***scaled_density_u2,			// scaled density for the controlvolumes
+      Array3<double> scaled_density_u2,			// scaled density for the controlvolumes
 							// of the momentum equation in x2 direction
-      double ***scaled_density_u3,			// scaled density for the controlvolumes
+      Array3<double> scaled_density_u3,			// scaled density for the controlvolumes
 							// of the momentum equation in x3 direction
       int number_primary_cells_i,	     		// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,	     		// number of primary (pressure) cells in x2 direction
@@ -44,19 +45,6 @@ void build_pressure_matrix (
     
     )
 {
-      double compute_scaled_density(         	// compute the scaled density 		
-	  double level_set_left, 			
-	  double level_set_right,			
-	  double rho_plus_over_rho_minus		
-		);
-      int map_index_pressure(                	// map 3-D array index to 1-D array
-	  int i_index,			     		// index
-	  int j_index, 				
-	  int k_index,  			
-	  int number_primary_cells_i,		
-	  int number_primary_cells_j,		
-	  int number_primary_cells_k		
-      );
       double rho;                     	     	// density value
       double one_over_dx1_squared=           	// 1/(grid spacing in x1 direction)^2 
 	  1.0/(mesh_width_x1*

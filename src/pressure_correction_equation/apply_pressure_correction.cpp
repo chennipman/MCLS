@@ -1,12 +1,9 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-class vector
-{
-public:
-  double u1,u2,u3;
-};
+
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to apply the pressure correction to the tentative velocity field   */
@@ -24,29 +21,29 @@ public:
 /* equation, not the pressure correction.                                       */
 /* Currently we assume a Dirichlet boundary condition for all normal velocities.*/
 /********************************************************************************/
-  void apply_pressure_correction(
-	    double ***level_set, 				// level-set field
-	    double ***pressure,					// pressure field
-	    double ***u_1_velocity_star, 	     		// velocity field at star time level x1 direction
-	    double ***u_2_velocity_star, 	     		// velocity field at star time level x2 direction
-	    double ***u_3_velocity_star,	     		// velocity field at star time level x3 direction
-	    double ***surface_tension_body_force_x1,		// x1 component of the body force due to
+EXPORT void apply_pressure_correction(
+	    Array3<double> level_set, 				// level-set field
+	    Array3<double> pressure,					// pressure field
+	    Array3<double> u_1_velocity_star, 	     		// velocity field at star time level x1 direction
+	    Array3<double> u_2_velocity_star, 	     		// velocity field at star time level x2 direction
+	    Array3<double> u_3_velocity_star,	     		// velocity field at star time level x3 direction
+	    Array3<double> surface_tension_body_force_x1,		// x1 component of the body force due to
 								// CSF formulation of surface tension model
-	    double ***surface_tension_body_force_x2,		// x2 component of the body force due to
+	    Array3<double> surface_tension_body_force_x2,		// x2 component of the body force due to
 								// CSF formulation of surface tension model
-	    double ***surface_tension_body_force_x3,		// x3 component of the body force due to
+	    Array3<double> surface_tension_body_force_x3,		// x3 component of the body force due to
 								// CSF formulation of surface tension model
-	    double ***momentum_source_term_u_1, 		// complete source term for the momentum equation
+	    Array3<double> momentum_source_term_u_1, 		// complete source term for the momentum equation
 								// in x1 direction=(-p,1+ g_1 +F1)
-	    double ***momentum_source_term_u_2, 		// complete source term for the momentum equation
+	    Array3<double> momentum_source_term_u_2, 		// complete source term for the momentum equation
 								// in x2 direction=(-p,2+ g_2 +F2)
-	    double ***momentum_source_term_u_3, 		// complete source term for the momentum equation
+	    Array3<double> momentum_source_term_u_3, 		// complete source term for the momentum equation
 								// in x3 direction=(-p,3+ g_3 +F3)
-      	    double ***scaled_density_u1,			// scaled density for the controlvolumes
+      	    Array3<double> scaled_density_u1,			// scaled density for the controlvolumes
 								// of the momentum equation in x1 direction
-           double ***scaled_density_u2,				// scaled density for the controlvolumes
+           Array3<double> scaled_density_u2,				// scaled density for the controlvolumes
 								// of the momentum equation in x2 direction
-           double ***scaled_density_u3,				// scaled density for the controlvolumes
+           Array3<double> scaled_density_u3,				// scaled density for the controlvolumes
 								// of the momentum equation in x3 direction
 	    int number_primary_cells_i,				// number of primary (pressure) cells in x1 direction
 	    int number_primary_cells_j,				// number of primary (pressure) cells in x2 direction
@@ -59,33 +56,6 @@ public:
 	    vector gravity					// gravitational acceleration vector 
        )
   {
-	/* function definitions */
-	
-	    double compute_scaled_density(			// compute the density at a cell face
-		double level_set_left, 				// based on the level-set values at the cell
-		double level_set_right,				// centers of the two cells that share that face
-		double rho_plus_over_rho_minus
-           );
-           void dump_divergence_for_debugging(            	// visualize local discrete divergence 
-               double ***local_divergence,
-               int number_primary_cells_i,
-               int number_primary_cells_j,
-               int number_primary_cells_k,
-               double mesh_width_x1,
-               double mesh_width_x2,
-               double mesh_width_x3                      
-           );
-           double ***double_Matrix2(                      	// allocate memory for a three-
-              int number_primary_cells_i,                 	// dimensional array of doubles
-              int number_primary_cells_j,
-              int number_primary_cells_k
-             );
-           void   free_double_Matrix2(                    	// deallocate memory for a three
-              double ***doubleMatrix2,                    	// dimensional array of doubles
-              int number_primary_cells_i,
-              int number_primary_cells_j
-             );
-
 	    double density_cell_face_x1;			// density at cell face, normal in x1 direction
 								// (location of u1 velocity)
 	    double density_cell_face_x2;			// density at cell face, normal in x2 direction
@@ -100,7 +70,7 @@ public:
 		1.0/(mesh_width_x3);
 	    double level_set_left; 				// level-set value in left hand neighbouring cell
 	    double level_set_right;				// level-set value in right hand neighbouring cell
-	    double ***local_discrete_divergence;           	// local discrete divergence
+	    Array3<double> local_discrete_divergence;           	// local discrete divergence
 	    double max_local_discrete_divergence;          	// maximum value of the local discrete divergence
 	    double total_discrete_divergence;              	// sum of local discrete divergence over all cells
 	    int i_index, j_index, k_index;  			// local variables for loop indexing
@@ -181,7 +151,7 @@ public:
 
 
       /* compute the discrete divergence for all nonvirtual cells and  sum the results  */
-      local_discrete_divergence=double_Matrix2(number_primary_cells_i+1, number_primary_cells_j+1,
+      local_discrete_divergence.create(number_primary_cells_i+1, number_primary_cells_j+1,
                                 number_primary_cells_k+1);
 
       total_discrete_divergence=0;
@@ -216,7 +186,7 @@ public:
 //                                       number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
 //                                           mesh_width_x1, mesh_width_x2, mesh_width_x3);
 
-      free_double_Matrix2(local_discrete_divergence, number_primary_cells_i+1, number_primary_cells_j+1);
+      local_discrete_divergence.destroy();
       
       std::cerr<<"total_discrete_divergence ="<<total_discrete_divergence<<"\n";
       std::cerr<<"maximum local_discrete_divergence ="<<max_local_discrete_divergence<<"\n";

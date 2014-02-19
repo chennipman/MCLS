@@ -1,3 +1,4 @@
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<math.h>
@@ -15,10 +16,10 @@
 /* smoothness in the curvature that leads to undesirable effects in the         */
 /* solution.										*/
 /********************************************************************************/
-void smooth_curvature(
-  	    double ***level_set, 				// level set field
-	    double ***curvature_new,				// interface curvature
-	    double ***unsmoothed_curvature,			// interface curvature after smoothing
+EXPORT void smooth_curvature(
+  	    Array3<double> level_set, 				// level set field
+	    Array3<double> curvature_new,				// interface curvature
+	    Array3<double> unsmoothed_curvature,			// interface curvature after smoothing
 	    int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	    int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
 	    int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
@@ -31,30 +32,7 @@ void smooth_curvature(
   
        )
 	{
-    
-      double ***double_Matrix2(
-	    int number_primary_cells_i,		// allocate memory for a three-
-	    int number_primary_cells_j, 		// dimensional array of doubles
-	    int number_primary_cells_k
-	    );
-      void free_double_Matrix2( 			// deallocate memory for a three
-	    double ***doubleMatrix2, 			// dimensional array of doubles
-	    int number_primary_cells_i,	
-	    int number_primary_cells_j);
-      void copy_cell_centered_field( 		// copy cell centered field
-	    double ***source_field, 		   			
-	    double ***target_field,		
-	    int number_primary_cells_i,		
-	    int number_primary_cells_j,		
-	    int number_primary_cells_k		
-	    );
-      double curvature_filter(			// the curvature filter modifies
-	    double level_set_value,			// the diffusion coefficient of
-	    double mesh_width_x1,			// the filtering equation, so only
-	    double mesh_width_x2,			// a small band is affected
-	    double mesh_width_x3			
-		   );
-      double ***curvature_old;			// curvature at the previous time step in the 
+      Array3<double> curvature_old;			// curvature at the previous time step in the 
 							// curvature smoothing algorithm
       double time_step_curvature_smoothing;		// time-step in the curvature smoothing algorithm
       double filter_value_i_min;			// value of the filter, between cell and its i- neighbour
@@ -74,7 +52,7 @@ void smooth_curvature(
       /* allocate memory for a second time level for the curvature */
       /* and copy the curvature to this second 'old' time level */
       
-      curvature_old=double_Matrix2(number_primary_cells_i+2,
+      curvature_old.create(number_primary_cells_i+2,
 				   number_primary_cells_j+2, number_primary_cells_k+2);
       copy_cell_centered_field(curvature_new, curvature_old, 
 				number_primary_cells_i, number_primary_cells_j, number_primary_cells_k);
@@ -217,5 +195,5 @@ void smooth_curvature(
 // 		std::cerr<<"max curv difference "<<max_curv_difference<<"\n";
 	
 	
-	free_double_Matrix2(curvature_old, number_primary_cells_i+2,number_primary_cells_j+2);
+	curvature_old.destroy();
   }
