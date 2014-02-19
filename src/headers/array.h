@@ -231,3 +231,97 @@ private:
     int n0;
     T * data;
 };
+
+
+template< typename T >
+class XYZ
+{
+public:
+    XYZ( const T & x, const T & y, const T & z ) : x( x ), y( y ), z( z ) {}
+
+    double norm2_squared() const { return this->x*this->x + this->y*this->y + this->z*this->z; }
+    double norm2() const { return sqrt( this->norm2_squared() ); }
+
+    template< typename S >
+    XYZ< S > cast() const { return XYZ< S >( this->x, this->y, this->z ); }
+
+    T x, y, z;
+};
+
+template< typename T >
+XYZ< T > operator-( const XYZ< T > & r )
+{
+    return XYZ< T >( -r.x, -r.y, -r.z );
+}
+
+template< typename T >
+XYZ< T > operator+( const XYZ< T > & l, const XYZ< T > & r )
+{
+    return XYZ< T >( l.x + r.x, l.y + r.y, l.z + r.z );
+}
+
+template< typename T >
+XYZ< T > operator+( const T & l, const XYZ< T > & r )
+{
+    return XYZ< T >( l + r.x, l + r.y, l + r.z );
+}
+
+template< typename T >
+XYZ< T > operator+( const XYZ< T > & l, const T & r )
+{
+    return XYZ< T >( l.x + r, l.y + r, l.z + r );
+}
+
+template< typename T >
+XYZ< T > operator-( const XYZ< T > & l, const XYZ< T > & r )
+{
+    return XYZ< T >( l.x - r.x, l.y - r.y, l.z - r.z );
+}
+
+template< typename T >
+XYZ< T > operator-( const T & l, const XYZ< T > & r )
+{
+    return XYZ< T >( l - r.x, l - r.y, l - r.z );
+}
+
+template< typename T >
+XYZ< T > operator-( const XYZ< T > & l, const T & r )
+{
+    return XYZ< T >( l.x - r, l.y - r, l.z - r );
+}
+
+template< typename T >
+XYZ< T > operator*( const XYZ< T > & l, const XYZ< T > & r )
+{
+    return XYZ< T >( l.x * r.x, l.y * r.y, l.z * r.z );
+}
+
+template< typename T >
+XYZ< T > operator*( const T & l, const XYZ< T > & r )
+{
+    return XYZ< T >( l * r.x, l * r.y, l * r.z );
+}
+
+template< typename T >
+XYZ< T > operator*( const XYZ< T > & l, const T & r )
+{
+    return XYZ< T >( l.x * r, l.y * r, l.z * r );
+}
+
+template< typename T >
+XYZ< T > operator/( const XYZ< T > & l, const XYZ< T > & r )
+{
+    return XYZ< T >( l.x / r.x, l.y / r.y, l.z / r.z );
+}
+
+template< typename T >
+XYZ< T > operator/( const T & l, const XYZ< T > & r )
+{
+    return XYZ< T >( l / r.x, l / r.y, l / r.z );
+}
+
+template< typename T >
+XYZ< T > operator/( const XYZ< T > & l, const T & r )
+{
+    return XYZ< T >( l.x / r, l.y / r, l.z / r );
+}
