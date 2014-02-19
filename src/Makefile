@@ -1,6 +1,6 @@
 CXX=g++
 RM=rm -f
-CFLAGS= -c -O3 -include ../objects/funcdefs.h
+CFLAGS= -c -O3 -include ../objects/funcdefs.h -Wall
 #############################################
 OBJS_DIR:=../objects/
 EXEC_DIR:=../executable/
