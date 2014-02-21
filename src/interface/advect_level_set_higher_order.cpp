@@ -27,7 +27,7 @@
 /********************************************************************************/
 //
 EXPORT void advect_level_set_higher_order(
-      Array3<double> level_set_old, 		        // level set field at old time level
+      Array3<double> level_set_old, 		// level set field at old time level
       Array3<double> level_set_star, 		// level set field at star time level
       Array3<double> u_1_velocity_new, 	        // velocity field at new time level x1 direction
       Array3<double> u_2_velocity_new, 	        // velocity field at new time level x2 direction
@@ -44,16 +44,6 @@ EXPORT void advect_level_set_higher_order(
       
 )
 {
-    double one_over_dx1	=    		        // 1/(grid spacing in x1 direction)
-	1.0/(mesh_width_x1);
-    double one_over_dx2	=    		        // 1/(grid spacing in x2 direction)
-	1.0/(mesh_width_x1);
-    double one_over_dx3	=    		        // 1/(grid spacing in x3 direction)
-	1.0/(mesh_width_x3);
-    double cell_face_velocity; 		        // velocity at the cell face (no interpolation required)
-					        // because of staggered mesh
-    double flux_level_set; 		        // advective flux
-    int i_index, j_index, k_index;              // local variables for loop indexing
     
     
     Array3<double> level_set_stage_1;                // stage 1 for RK time integration

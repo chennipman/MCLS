@@ -22,12 +22,12 @@
 /* The tasks are:								*/
 /* 1) Determine the domain of unknowns						*/
 /* 2) remove any connections outside the domain	using the boundary conditions	*/
-/* 
+/*                                                                              */
 /********************************************************************************/
 EXPORT void fold_momentum_matrix_u2(
       boundary_face boundary_faces[6],			// array with all the information
 							// for the boundary conditions 
-      Array2<double> momentum_matrix_u2,			// momentum matrix velocity x2 direction
+      Array2<double> momentum_matrix_u2,		// momentum matrix velocity x2 direction
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
@@ -355,7 +355,7 @@ EXPORT void fold_momentum_matrix_u2(
 			/* and the nonexistent connection is set to zero */
 
 
-			    one_dimensional_index=map_index_u2(i_index,cell_label_boundary,k_index,
+			    one_dimensional_index=map_index_u2(i_index, j_index,cell_label_boundary,
 				      number_primary_cells_i, number_primary_cells_j, 
 								  number_primary_cells_k);
 			    momentum_matrix_u2[0][one_dimensional_index]-=

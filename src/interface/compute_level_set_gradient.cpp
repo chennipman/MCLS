@@ -39,10 +39,10 @@ EXPORT void   compute_level_set_gradient(
 	  )
    {
 	int i_index, j_index, k_index;  			// local variables for loop indexing
-	int vector_length= 					// length of the one dimensional array
-	    (number_primary_cells_i+2)*				// that results from reshaping the 3D
-		(number_primary_cells_j+2)*			// array of unknowns, with 1 virtual cell
-		    (number_primary_cells_k+2);			// on all sides
+// 	int vector_length= 					// length of the one dimensional array
+// 	    (number_primary_cells_i+2)*				// that results from reshaping the 3D
+// 		(number_primary_cells_j+2)*			// array of unknowns, with 1 virtual cell
+// 		    (number_primary_cells_k+2);			// on all sides
 
 		    
 	/* set all first derivatives to zero, this takes care of all the virtual cells */

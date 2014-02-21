@@ -24,27 +24,26 @@ using namespace std;
 /********************************************************************************/
 EXPORT void solve_pressure_correction_system(
       Array2<double> pressure_matrix, 		          // pressure matrix
-      Array1<double> pressure_rhside,		 	   // pressure rhside
+      Array1<double> pressure_rhside,		 	  // pressure rhside
       Array3<double> pressure,			          // pressure field
       int number_primary_cells_i,	 	          // number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,	  	          // number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,		          // number of primary (pressure) cells in x3 direction
       double   tolerance_pressure,	  	          // the tolerance with which the system is solved	
-      int maximum_iterations_allowed_pressure         // maximum number of iterations allowed for the
+      int maximum_iterations_allowed_pressure             // maximum number of iterations allowed for the
 						          //conjugate gradient method
       )
    {
-      int  iteration_number;  		  	   // the number of iterations where the iterative
+      int  iteration_number;  		  	          // the number of iterations where the iterative
 						          // process was terminated
       double   relative_L2_norm_residual; 	          // the L2 norm of the residual, scaled with
 						          // the L2 norm of the right hand side
-      double   relative_Linfinity_norm_residual;      // the L infinity norm of the residual
+      double   relative_Linfinity_norm_residual;          // the L infinity norm of the residual
 						          // scaled with the maximum difference 
 						          // between two components of the residual
-      Array1<double> preconditioner_matrix_M;		   // preconditioner matrix (only main diagonal)
-      Array1<double> compressed_pressure;		          // 1-D array with pressure , with virtual points excluded
-      int total_number_pressure_points;		   // total number of points with pressure
-      int i;
+      Array1<double> preconditioner_matrix_M;		  // preconditioner matrix (only main diagonal)
+      Array1<double> compressed_pressure;		  // 1-D array with pressure , with virtual points excluded
+      int total_number_pressure_points;		          // total number of points with pressure
       
       /* allocate memory for the main diagonal of preconditioner matrix M */
       /* and for the compressed solution vector */

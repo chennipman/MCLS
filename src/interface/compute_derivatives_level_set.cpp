@@ -5,8 +5,7 @@
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to compute the derivatives of the level-set field at the cell      */
-/* faces.
-/*  method. 									*/
+/*  faces.									*/
 /*  										*/
 /*  Programmer	: Duncan van der Heul       					*/
 /*  Date	: 10-03-2013       						*/
@@ -26,18 +25,18 @@
 /* cell faces for the diffusive fluxes.						*/
 /********************************************************************************/
 EXPORT void  compute_derivatives_level_set(				
-		Array3<double> level_set, 			// level set field at new time level
+		Array3<double> level_set, 		// level set field at new time level
 							// after convection and reinitialization
 							// not mass conserving
-		Array3<double> d_level_set_d_x1,		// first partial derivative of
+		Array3<double> d_level_set_d_x1,	// first partial derivative of
 							// the level-set field wrt x1
 							// second order central approximation
 							// at cell faces 
-		Array3<double> d_level_set_d_x2,		// first partial derivative of 
+		Array3<double> d_level_set_d_x2,	// first partial derivative of 
 							// the level-set field wrt x2
 							// second order central approximation
 							// at cell faces 
-		Array3<double> d_level_set_d_x3,		// first partial derivative of
+		Array3<double> d_level_set_d_x3,	// first partial derivative of
  							// the level-set field wrt x3
 							// second order central approximation
 							// at cell faces 
@@ -57,7 +56,7 @@ EXPORT void  compute_derivatives_level_set(
 		    1.0/(mesh_width_x2);
 		double one_over_dx3	=    		// 1/(grid spacing in x3 direction)
 		    1.0/(mesh_width_x3);
-		int i_index, j_index, k_index;  // local variables for loop indexing
+		int i_index, j_index, k_index;          // local variables for loop indexing
      
       
       /* derivative in x1-direction */
@@ -87,9 +86,9 @@ EXPORT void  compute_derivatives_level_set(
 		    {
 			  for(k_index=1;k_index<number_primary_cells_k+1;k_index++)
 			  {
-			    d_level_set_d_x1[i_index][j_index][k_index]=
+			    d_level_set_d_x2[i_index][j_index][k_index]=
 				(level_set[i_index  ][j_index+1][k_index  ]-
-				    level_set[i_index][j_index][k_index])*one_over_dx1;
+				    level_set[i_index][j_index][k_index])*one_over_dx2;
 			  }
 		    }
 	      }
@@ -104,9 +103,9 @@ EXPORT void  compute_derivatives_level_set(
 		    {
 			  for(k_index=0;k_index<number_primary_cells_k+1;k_index++)
 			  {
-			    d_level_set_d_x1[i_index][j_index][k_index]=
-				(level_set[i_index][j_index][k_index]-
-				    level_set[i_index][j_index][k_index])*one_over_dx1;
+			    d_level_set_d_x3[i_index][j_index][k_index]=
+				(level_set[i_index][j_index][k_index+1]-
+				    level_set[i_index][j_index][k_index])*one_over_dx3;
 			  }
 		    }
 	      }

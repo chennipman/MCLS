@@ -7,12 +7,12 @@
 /********************************************************************************/
 /*  Function to check the symmetry of all quantities in the case of a           */
 /*  symmetric problem 								*/
-/*  											*/
-/*  Programmer	: Duncan van der Heul       						*/
-/*  Date	: 10-03-2013       							*/
-/*  Update	:        								*/
+/*  										*/
+/*  Programmer	: Duncan van der Heul       					*/
+/*  Date	: 10-03-2013       						*/
+/*  Update	:        							*/
 /********************************************************************************/
-/* Notes										*/
+/* Notes									*/
 /********************************************************************************/
 EXPORT void check_symmetry_velocities(
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
@@ -24,7 +24,7 @@ EXPORT void check_symmetry_velocities(
 	  )
     {
     
-      int i_index, j_index, k_index;  		// local variables for loop indexing
+      int i_index, j_index;  		                // local variables for loop indexing
       int symmetry_plane_index=20;			// index of the symmetry plane 
      
       double max_error_jk_11=0;				// max difference between i and j constant planes

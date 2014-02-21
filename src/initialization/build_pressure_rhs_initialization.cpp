@@ -17,23 +17,23 @@
 /* Notes									*/
 /********************************************************************************/
 EXPORT void build_pressure_rhs_initialization(
-      Array3<double> initial_pressure_rhs,	     		// right hand side of pressure correction equation
+      Array3<double> initial_pressure_rhs,	     	// right hand side of pressure correction equation
 					     		// excluding contributions 
 					     		// inhomogeneous boundary conditions
-      Array3<double> momentum_source_term_u_1,          	// complete source term for the momentum equation
+      Array3<double> momentum_source_term_u_1,          // complete source term for the momentum equation
                                                    	// in x1 direction=(-p,1+ g_1 +F1)
-      Array3<double> momentum_source_term_u_2,          	// complete source term for the momentum equation
+      Array3<double> momentum_source_term_u_2,          // complete source term for the momentum equation
                                                    	// in x2 direction=(-p,2+ g_2 +F2)
-      Array3<double> momentum_source_term_u_3,          	// complete source term for the momentum equation
+      Array3<double> momentum_source_term_u_3,          // complete source term for the momentum equation
                                                    	// in x3 direction=(-p,3+ g_3 +F3)
-      Array3<double> csf_force_x1,	 	     		// source term of the momentum equation in x1 direction
+      Array3<double> csf_force_x1,	 	     	// source term of the momentum equation in x1 direction
 					     		// defined on all u1 points (including boundaries)
-      Array3<double> csf_force_x2,	             		// source term of the momentum equation in x2 direction
+      Array3<double> csf_force_x2,	             	// source term of the momentum equation in x2 direction
 					     		// defined on all u1 points (including boundaries)
-      Array3<double> csf_force_x3,		     		// source term of the momentum equation in x3 direction
+      Array3<double> csf_force_x3,		     	// source term of the momentum equation in x3 direction
 					    		// defined on all u1 points (including boundaries)
-      Array3<double> u_1_velocity_star, 	     		// velocity field at star time level x1 direction
-      Array3<double> u_2_velocity_star, 	     		// velocity field at star time level x2 direction
+      Array3<double> u_1_velocity_star, 	     	// velocity field at star time level x1 direction
+      Array3<double> u_2_velocity_star, 	     	// velocity field at star time level x2 direction
       Array3<double> u_3_velocity_star,	     		// velocity field at star time level x3 direction
 			      
       double mesh_width_x1,		     		// grid spacing in x1 direction (uniform)
@@ -59,8 +59,6 @@ EXPORT void build_pressure_rhs_initialization(
 	    1.0/(mesh_width_x2);
       double one_over_dx3	=    			// 1/(grid spacing in x3 direction)
 	    1.0/(mesh_width_x3);
-      double one_over_actual_time_step_navier_stokes=	// 1/( actual time step used 		    
-	    1.0/actual_time_step_navier_stokes;		// in navier stokes solution algorithm
 					  
 
 /* compute the divergence of the body force field                  */

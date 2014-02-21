@@ -23,12 +23,12 @@ EXPORT void output_predictor_velocityfields(
 	  Array3<double> u_1_velocity_new, 		// velocity field at new time level x1 direction
 	  Array3<double> u_2_velocity_new, 		// velocity field at new time level x2 direction
 	  Array3<double> u_3_velocity_new,		// velocity field at new time level x3 direction
-	  int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
-	  int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction
-	  int number_primary_cells_k,		// number of primary (pressure) cells in x3 direction
-	  double mesh_width_x1,			// grid spacing in x1 direction (uniform)
-	  double mesh_width_x2,			// grid spacing in x2 direction (uniform)
-	  double mesh_width_x3			// grid spacing in x3 direction (uniform)
+	  int number_primary_cells_i,		        // number of primary (pressure) cells in x1 direction
+	  int number_primary_cells_j,		        // number of primary (pressure) cells in x2 direction
+	  int number_primary_cells_k,		        // number of primary (pressure) cells in x3 direction
+	  double mesh_width_x1,			        // grid spacing in x1 direction (uniform)
+	  double mesh_width_x2,			        // grid spacing in x2 direction (uniform)
+	  double mesh_width_x3			        // grid spacing in x3 direction (uniform)
 		    )
 	      {  
       Array3<double> u_1_velocity_center;		// velocity in cell center, x1 component
@@ -37,22 +37,16 @@ EXPORT void output_predictor_velocityfields(
       Array3<double> u_1_velocity_vertex;		// velocity in cell vertex, x1 component
       Array3<double> u_2_velocity_vertex;		// velocity in cell vertex, x2 component
       Array3<double> u_3_velocity_vertex;		// velocity in cell vertex, x3 component
-      int i_index, j_index, k_index; 		// local variables for loop indexing
-      int full_row;				// a full row of 8 numbers has been written to file
-      int total_number_primary_cells=		// total number of primary cells
-	  number_primary_cells_i*
-	    number_primary_cells_j*
-	      number_primary_cells_k;
-      int total_number_vertices=		// total number of vertices
+      int total_number_vertices=		        // total number of vertices
 	  (number_primary_cells_i+1)*
 	    (number_primary_cells_j+1)*
 	      (number_primary_cells_k+1);
      
-      string filename_tecplot;			// the filename of the current output file for tecplot format
-      string filename_vtk;			// the filename of the current output file for vtk format
-      string scalar_name;			// name of the scalar field to be written 
-      string vector_name;			// name of the vector field to be written 
-      string look_up_table_name;		// name of the look-up table to be used
+      string filename_tecplot;			        // the filename of the current output file for tecplot format
+      string filename_vtk;			        // the filename of the current output file for vtk format
+      string scalar_name;			        // name of the scalar field to be written 
+      string vector_name;			        // name of the vector field to be written 
+      string look_up_table_name;		        // name of the look-up table to be used
       
       
 
@@ -95,63 +89,6 @@ EXPORT void output_predictor_velocityfields(
  				number_primary_cells_i,	number_primary_cells_j,	number_primary_cells_k);
  	    interpolate_velocity_u3_vertex( u_3_velocity_new, u_3_velocity_vertex,		
  				number_primary_cells_i,	number_primary_cells_j,	number_primary_cells_k);
-  
-
-     
-
-      
-		  // 	    if(tecplot_output)
-		  // 	    {
-		  // 	
-		  // 	    /* generate an output file in tecplot format */
-		  // 	
-		  // 	    /* open the output file */
-		  //       
-		  // ofstream output_tecplot( filename_tecplot.c_str());
-		  // if(!output_tecplot)
-		  // {
-		  //     /* the contructor returned a 0-pointer :-( */
-		  //     cout << "Cannot open file.\n";
-		  //     exit(1);
-		  // }
-		  // 	    
-		  // /* write the header for the tecplot file */
-		  // 	    
-		  // output_tecplot << "VARIABLES = x1, x2, x3, u1_velocity_center, ";
-		  // output_tecplot << "u2_velocity_center, u3_velocity_center \n";
-		  // output_tecplot << "ZONE I=" << number_primary_cells_i+1 << ", J=" << number_primary_cells_j+1;
-		  // output_tecplot << ", K=" << number_primary_cells_k+1 << ", ";
-		  // output_tecplot << "DATAPACKING=BLOCK, VARLOCATION = ([4,5,6]=CELLCENTERED) \n";
-		  // /* for the floating point data, use scientific notation */
-		  // output_tecplot.setf(ios::scientific);
-		  // 
-		  // /* write coordinates of cell vertices to file */
-		  // 	    
-		  // write_coordinates_tecplot(output_tecplot, number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		
-		  // 				      mesh_width_x1, mesh_width_x2, mesh_width_x3);
-		  // 	    
-		  // /* write velocity x1 component */
-		  // 
-		  // write_cell_centered_field_tecplot(output_tecplot, u_1_velocity_center, number_primary_cells_i,
-		  // 				       number_primary_cells_j, number_primary_cells_k);
-		  //  	      
-		  // /* write velocity x2 component */
-		  // 
-		  // write_cell_centered_field_tecplot(output_tecplot, u_2_velocity_center, number_primary_cells_i,
-		  // 				       number_primary_cells_j, number_primary_cells_k);
-		  //  	      
-		  // /* write velocity x3 component */
-		  // 
-		  // write_cell_centered_field_tecplot(output_tecplot, u_3_velocity_center, number_primary_cells_i,
-		  // 				       number_primary_cells_j, number_primary_cells_k);
-		  //  	      
-		  // 	      
-		  // 	    }
-		  //  	    if(vtk_output)
-		  // 	    {
-		  /* generate an output file in vtk format */
-
-		  /* generate the header for the vtk file */
 	
 	    /* open the output file */
       

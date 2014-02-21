@@ -8,25 +8,25 @@
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to make the level-set field mass conserving                        */
-/*  method. 										*/
-/*  											*/
-/*  Programmer	: Duncan van der Heul       						*/
-/*  Date	: 10-03-2013       							*/
-/*  Update	:        								*/
+/*  method. 									*/
+/*  										*/
+/*  Programmer	: Duncan van der Heul       					*/
+/*  Date	: 10-03-2013       						*/
+/*  Update	:        							*/
 /********************************************************************************/
-/* Notes										*/
+/* Notes									*/
 /* The level set field is advected, but does not remain mass conserving even    */
 /* when it is advected in a conservative way. In this function the level-set    */
 /* field is adapted to the volume of fluid field in an iterative way.           */
 /* When the maximum number of correction steps has been applied, and the        */
 /* level-set field is still not completely complying with the volume of fluid   */
-/* field, the computation is terminated.	                                	*/
+/* field, the computation is terminated.	                                */
 /* For debugging purposes all variables involved in the corrective process are  */
-/* written to file for visual inspection.						*/
+/* written to file for visual inspection.					*/
 /********************************************************************************/
 EXPORT void match_level_set_to_volume_of_fluid(				
 		 Array3<double> level_set_star,			// non mass conserving level-set field
-		 Array3<double> volume_of_fluid,			// volume of fluid field
+		 Array3<double> volume_of_fluid,		// volume of fluid field
 		 Array3<double> level_set_mass_conserving,	// corrected, mass conserving level-set field
 		 int number_primary_cells_i,			// number of primary (pressure) 
 								// cells in x1 direction
@@ -39,42 +39,42 @@ EXPORT void match_level_set_to_volume_of_fluid(
 		 double lower_bound_derivatives,		// lower bound for the first partial derivatives
 								// to consider it a limiting case of vanishing
 								// partial derivatives
-		 int number_vof_2_level_set_iterations,	// number of OUTER iterations in the conversion 
+		 int number_vof_2_level_set_iterations,	        // number of OUTER iterations in the conversion 
 								// from volume of fluid to level-set
-		 int number_iterations_ridder,		// maximum number of iterations allowed in the
-							       // nonlinear root finding algorithm
+		 int number_iterations_ridder,		        // maximum number of iterations allowed in the
+							        // nonlinear root finding algorithm
 								// this is the number of INNER iterations
 		 double vof_2_level_set_tolerance,		// tolerance in the conversion from volume
 								// of fluid value to level-set value
-	  	 double mesh_width_x1,			// grid spacing in x1 direction (uniform)
-	  	 double mesh_width_x2,			// grid spacing in x2 direction (uniform)
+	  	 double mesh_width_x1,			        // grid spacing in x1 direction (uniform)
+	  	 double mesh_width_x2,			        // grid spacing in x2 direction (uniform)
 	  	 double mesh_width_x3				// grid spacing in x3 direction (uniform)
 		 )
 		{
 	Array3<double> d_level_set_d_x1; 			// first partial derivative of level-set with 
-							// respect to x1, central approximation
+							        // respect to x1, central approximation
 	Array3<double> d_level_set_d_x2; 			// first partial derivative of level-set with 
-							// respect to x2, central approximation 
+							        // respect to x2, central approximation 
 	Array3<double> d_level_set_d_x3; 			// first partial derivative of level-set with 
-							// respect to x3, central approximation
-	Array3<double> volume_of_fluid_star;		// volume of fluid field, evaluated from the star
-							// level-set field
-	Array3<double> level_set_correction;		// correction to be applied to the level-set field
-							// to make it mass-conserving
-	double maximum_level_set_correction;		// maximum of correction that needs to be applied
-							// to the convected level-set field to make it mass
-							// conserving
-	double maximum_volume_of_fluid_deviation;	// maximum of volume of fluid deviation
+							        // respect to x3, central approximation
+	Array3<double> volume_of_fluid_star;		        // volume of fluid field, evaluated from the star
+							        // level-set field
+	Array3<double> level_set_correction;		        // correction to be applied to the level-set field
+							        // to make it mass-conserving
+	double maximum_level_set_correction=0.0;		        // maximum of correction that needs to be applied
+							        // to the convected level-set field to make it mass
+							        // conserving
+	double maximum_volume_of_fluid_deviation=0.0;	        // maximum of volume of fluid deviation
 	Array3<double> volume_of_fluid_deviation;		// difference between the converted, advected level
-							// set field and the advected volume of fluid field
+							        // set field and the advected volume of fluid field
 	
-	int i_index, j_index, k_index;  	// local variables for loop indexing
-	int correction_step_index;		// index of the iteration number to make the level-set
-						// field mass-conserving
-	int number_of_error_cells=0;    	// Number of cells where the volume of fluid fiels is outside the
-						// allowed interval [0,1] (with proper tolerances)
-	int number_of_cells_to_correct=0;	// number of cells for which the level-set does
-						// not match the mass conservation criterion
+	int i_index, j_index, k_index;  	                // local variables for loop indexing
+	int correction_step_index;		                // index of the iteration number to make the level-set
+						                // field mass-conserving
+	int number_of_error_cells=0;    	                // Number of cells where the volume of fluid fiels is outside the
+						                // allowed interval [0,1] (with proper tolerances)
+	int number_of_cells_to_correct=0;	                // number of cells for which the level-set does
+						                // not match the mass conservation criterion
 	
       
       /* allocate memory for the volume of fluid field corresponding to    */
@@ -223,6 +223,8 @@ EXPORT void match_level_set_to_volume_of_fluid(
  				    level_set_correction[i_index][j_index][k_index]=
 					level_set_mass_conserving[i_index][j_index][k_index]-
 					level_set_star[i_index][j_index][k_index];
+                                    maximum_level_set_correction=std::max(maximum_level_set_correction,
+                                                            fabs(level_set_correction[i_index][j_index][k_index]));
 				}
 			    }
 			}

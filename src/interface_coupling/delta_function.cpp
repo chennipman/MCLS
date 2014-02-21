@@ -28,10 +28,7 @@ EXPORT double delta_function(
  {
       double smoothing_distance;			// the heaviside function is smoothed over
 							// an interval of width 2*smoothing_distance
-      double minimal_meshwidth;				// smallest mesh width
       double smallest_meshwidth;			// the smaller of the three meshwidths
-      double heaviside_left;
-      double heaviside_right;
       double delta;
       
       /* determine the smallest meshwidth */
@@ -46,10 +43,7 @@ EXPORT double delta_function(
       delta = 0.0;
       if (fabs(level_set) < smoothing_distance) 
       {
-        delta = (1.0 + cos(atan(1.0)*4.0*level_set/smoothing_distance)) * 0.5/smoothing_distance;
-	 
 	 delta = 0.5/smoothing_distance*2.0*atan(1.0)*cos(level_set/smoothing_distance*2*atan(1.0));
-// 	heaviside_right=0.5*(1.0+sin(level_set_right/smoothing_distance*2*atan(1.0)));
-	     }
+      }
       return delta;
  }

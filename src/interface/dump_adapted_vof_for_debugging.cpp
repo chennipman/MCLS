@@ -42,20 +42,16 @@ EXPORT void dump_adapted_vof_for_debugging(
 							// cells in x2 direction
 	int number_primary_cells_k,			// number of primary (pressure) 
 							// cells in x3 direction
-	  double mesh_width_x1,			// grid spacing in x1 direction (uniform)
-	  double mesh_width_x2,			// grid spacing in x2 direction (uniform)
-	  double mesh_width_x3			// grid spacing in x3 direction (uniform)
+	  double mesh_width_x1,			        // grid spacing in x1 direction (uniform)
+	  double mesh_width_x2,			        // grid spacing in x2 direction (uniform)
+	  double mesh_width_x3			        // grid spacing in x3 direction (uniform)
 	
 	)
 	{
-      int total_number_primary_cells=		// total number of primary cells
+      int total_number_primary_cells=		        // total number of primary cells
 	  number_primary_cells_i*
 	    number_primary_cells_j*
 	      number_primary_cells_k;
-      int total_number_vertices=			// total number of vertices
-	  (number_primary_cells_i+1)*
-	    (number_primary_cells_j+1)*
-	      (number_primary_cells_k+1);
 	
        	string scalar_name;				// name of the scalar field to be written 
       	string look_up_table_name;			// name of the look-up table to be used

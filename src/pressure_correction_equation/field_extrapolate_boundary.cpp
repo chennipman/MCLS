@@ -44,7 +44,7 @@ void  field_extrapolate_boundary(
      /* edge 11 i_index=0, j_index=0, k_index=1..number_primary_cells_k */
      /* edge 12 i_index=0, j_index=number_primary_cells_j+1, k_index=1..number_primary_cells_k */
 
-     double table_edge_extrapolation_range[12][6]=
+     int table_edge_extrapolation_range[12][6]=
      { 
 	{			1,			 1,			  1,  number_primary_cells_j, 			    1, 			     1},
 	{  number_primary_cells_i,  number_primary_cells_i,			  1,  number_primary_cells_j,			    1,			     1},
@@ -94,7 +94,7 @@ void  field_extrapolate_boundary(
 	
      };
      
-     double table_face_extrapolation_range[6][6]=
+     int table_face_extrapolation_range[6][6]=
      { 
 	{			1,			 1,			  1,  number_primary_cells_j, 			    1,  number_primary_cells_k},
 	{  number_primary_cells_i,  number_primary_cells_i,			  1,  number_primary_cells_j,			    1,	number_primary_cells_k},

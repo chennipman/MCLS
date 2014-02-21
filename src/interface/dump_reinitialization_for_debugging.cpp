@@ -26,8 +26,8 @@ using namespace std;
 /********************************************************************************/
 EXPORT void dump_reinitialization_for_debugging(
 	Array3<double> level_set_reinitialized,	        // level set field reinitialized
-	Array3<double> level_set_0,		 	        // level set before reinitialization
-	Array3<double> level_set_residual_reinit,		// residual of reinitialization equation
+	Array3<double> level_set_0,		 	// level set before reinitialization
+	Array3<double> level_set_residual_reinit,       // residual of reinitialization equation
 	int number_primary_cells_i,			// number of primary (pressure) 
 							// cells in x1 direction
 	int number_primary_cells_j,			// number of primary (pressure) 
@@ -44,10 +44,6 @@ EXPORT void dump_reinitialization_for_debugging(
 	  number_primary_cells_i*
 	    number_primary_cells_j*
 	      number_primary_cells_k;
-      int total_number_vertices=			// total number of vertices
-	  (number_primary_cells_i+1)*
-	    (number_primary_cells_j+1)*
-	      (number_primary_cells_k+1);
 	
        	string scalar_name;				// name of the scalar field to be written 
       	string look_up_table_name;			// name of the look-up table to be used

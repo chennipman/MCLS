@@ -33,7 +33,7 @@ EXPORT int ridders_method(
       double function_g_value_beta;			// function value in the new estimate of the
 							// root location based on the midpoint of the
 							// search interval
-      double function_g_value;				// function value in the new estimate of the
+      double function_g_value=10E10;			// function value in the new estimate of the
 							// root location
       double new_volume_of_fluid;			// volume of fluid at the new estimate of the
 							// root location
@@ -129,7 +129,13 @@ EXPORT int ridders_method(
 		  /* apparently the algorithm failed to converge in the allowed number of iterations */
 		  return 1;
 	      }
-	    
-	  }
+	      else
+              {
+                  /* apparently the algorithm is converged in the allowed number of iterations */
+                  /* compiler was unsure of outcome */
+                  
+                  return 0;
+              }
+ 	  }
       }
 }

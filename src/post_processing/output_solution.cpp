@@ -15,15 +15,15 @@ string convertInt(int number)
 }
 
 EXPORT void output_solution(
-	  Array3<double> level_set_new, 		// level set field at new time level
+	  Array3<double> level_set_new, 	// level set field at new time level
 						// mass conserving
-	  Array3<double> volume_of_fluid, 		// volume of fluid field
+	  Array3<double> volume_of_fluid, 	// volume of fluid field
 	  Array3<double> curvature, 		// interface curvature
 	  Array3<double> unsmoothed_curvature,	// interface curvature without smoothing
 	  Array3<double> u_1_velocity_new, 	// velocity field at new time level x1 direction
 	  Array3<double> u_2_velocity_new, 	// velocity field at new time level x2 direction
-	  Array3<double> u_3_velocity_new,		// velocity field at new time level x3 direction
-	  Array3<double> pressure,			// pressure field
+	  Array3<double> u_3_velocity_new,	// velocity field at new time level x3 direction
+	  Array3<double> pressure,		// pressure field
 	  int vtk_output,			// =1, write output in vtk format
 						// =0, skip output in vtk format
 	  int tecplot_output,			// =1, write output in tecplot format
@@ -37,14 +37,12 @@ EXPORT void output_solution(
 	  int index_of_output_file		// index of the output file
 		    )
 	      {  
-      Array3<double> u_1_velocity_center;		// velocity in cell center, x1 component
-      Array3<double> u_2_velocity_center;		// velocity in cell center, x2 component
-      Array3<double> u_3_velocity_center;		// velocity in cell center, x3 component
-      Array3<double> u_1_velocity_vertex;		// velocity in cell vertex, x1 component
-      Array3<double> u_2_velocity_vertex;		// velocity in cell vertex, x2 component
-      Array3<double> u_3_velocity_vertex;		// velocity in cell vertex, x3 component
-      int i_index, j_index, k_index; 		// local variables for loop indexing
-      int full_row;				// a full row of 8 numbers has been written to file
+      Array3<double> u_1_velocity_center;	// velocity in cell center, x1 component
+      Array3<double> u_2_velocity_center;	// velocity in cell center, x2 component
+      Array3<double> u_3_velocity_center;	// velocity in cell center, x3 component
+      Array3<double> u_1_velocity_vertex;	// velocity in cell vertex, x1 component
+      Array3<double> u_2_velocity_vertex;	// velocity in cell vertex, x2 component
+      Array3<double> u_3_velocity_vertex;	// velocity in cell vertex, x3 component
       int total_number_primary_cells=		// total number of primary cells
 	  number_primary_cells_i*
 	    number_primary_cells_j*

@@ -21,13 +21,13 @@
 /********************************************************************************/
 EXPORT void   compute_normal_derivative_at_faces(				
 	Array3<double> scalar_field, 			// scalar field defined at cell centers
-	Array3<double> d_field_d_x1_face,			// first normal derivative of
+	Array3<double> d_field_d_x1_face,		// first normal derivative of
 							// scalar field at cell face orthogonal
 							// to x1 direction                       
-	Array3<double> d_field_d_x2_face,			// first normal derivative of
+	Array3<double> d_field_d_x2_face,		// first normal derivative of
 							// scalar field at cell face orthogonal
 							// to x2 direction
-	Array3<double> d_field_d_x3_face,			// first normal derivative of
+	Array3<double> d_field_d_x3_face,		// first normal derivative of
 							// scalar field at cell face orthogonal
 							// to x3 direction
         int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
@@ -39,10 +39,6 @@ EXPORT void   compute_normal_derivative_at_faces(
 	  )
    {
 	int i_index, j_index, k_index;  		// local variables for loop indexing
-	int vector_length= 				// length of the one dimensional array
-	    (number_primary_cells_i+2)*			// that results from reshaping the 3D
-		(number_primary_cells_j+2)*		// array of unknowns, with 1 virtual cell
-		    (number_primary_cells_k+2);		// on all sides
 
 	double one_over_dx1	=    			// 1/(grid spacing in x1 direction)
 	    1.0/(mesh_width_x1);

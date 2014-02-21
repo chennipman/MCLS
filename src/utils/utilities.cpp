@@ -341,7 +341,7 @@ EXPORT double maximum_element(int vector_length, //length of the vector
 	
 /********************************************************************************/
 /********************************************************************************/
-/*  Function to compute the sign of a Array1<double> /
+/*  Function to compute the sign of a <double>                                  */
 /*  weights									*/
 /*  										*/
 /*  Programmer	: Duncan van der Heul       					*/

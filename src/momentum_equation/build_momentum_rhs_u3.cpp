@@ -22,10 +22,10 @@
 /********************************************************************************/
 
 EXPORT void build_momentum_rhs_u3(
-      Array1<double> momentum_rhside_u3,			// momentum matrix velocity x1 direction
-      Array3<double> level_set, 				// level-set field
+      Array1<double> momentum_rhside_u3,		// momentum matrix velocity x1 direction
+      Array3<double> level_set, 			// level-set field
       Array3<double> scaled_density_u3,                 // scaled density for the controlvolumes
-                                                   // of the momentum equation in x3 direction
+                                                        // of the momentum equation in x3 direction
       Array3<double> momentum_source_term_u_3, 		// complete source term for the momentum equation
 							// in x1 direction=(-p,1+ g_1 +F1)
       Array3<double> u_1_velocity_old, 			// velocity field at old time level x1 direction
@@ -64,7 +64,7 @@ EXPORT void build_momentum_rhs_u3(
       double level_set_face_x2_pls;                     // level-set at the x2+ face of the cell
       double level_set_face_x3_min;                     // level-set at the x3- face of the cell
       double level_set_face_x3_pls;                     // level-set at the x3+ face of the cell
-      double level_set_cell_center;			// level-set at cell center
+//       double level_set_cell_center;			// level-set at cell center
       double viscosity_x1_min;				// viscosity at the x1- face of the cell
       double viscosity_x1_pls;				// viscosity at the x1+ face of the cell
       double viscosity_x2_min;				// viscosity at the x2- face of the cell
@@ -91,10 +91,10 @@ EXPORT void build_momentum_rhs_u3(
 		  /* compute the level-set value at the center of the control volume */
 		  /* and at the centers of the 6 faces */
 		  
-		  level_set_cell_center=0.5*(
-					level_set[i_index  ][j_index  ][k_index  ]+
-					level_set[i_index  ][j_index  ][k_index+1]
-					         );
+// 		  level_set_cell_center=0.5*(
+// 					level_set[i_index  ][j_index  ][k_index  ]+
+// 					level_set[i_index  ][j_index  ][k_index+1]
+// 					         );
 		  level_set_face_x1_min=0.25*(
 					level_set[i_index-1][j_index  ][k_index  ]+
 					level_set[i_index  ][j_index  ][k_index  ]+

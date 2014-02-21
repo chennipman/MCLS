@@ -62,9 +62,9 @@ EXPORT void initialize_coupling(
 								// partial derivatives
       )
 	{
-        double maximum_weighted_curvature;                // maximum 'active' value of the curvature
-                                                          // used to evaluate the capillary time step
-                                                          // restriction
+        double maximum_weighted_curvature=0;                    // maximum 'active' value of the curvature
+                                                                // used to evaluate the capillary time step
+                                                                // restriction
 
 	/* compute the density field at the velocity points */
 

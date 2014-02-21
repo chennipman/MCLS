@@ -49,9 +49,9 @@ EXPORT void compute_time_step_size(
       {
 
 
-      double time_step_restriction_surface_tension; 		// time step restriction due to 
-								// surface tension
-      double time_step_restriction_convection;	    		// time step restriction due to convection
+//       double time_step_restriction_surface_tension; 		// time step restriction due to 
+// 								// surface tension
+//       double time_step_restriction_convection;	    		// time step restriction due to convection
       double time_step_restriction;				// time step restriction
       double one_over_time_step_restriction;	    		// reciprocal value of the time step 
 								// restriction

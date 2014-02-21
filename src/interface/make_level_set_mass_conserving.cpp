@@ -558,9 +558,10 @@ EXPORT void make_level_set_mass_conserving
 
 	              if(apply_mass_distribution_algorithm)
 
-/* the mass redistribution algorithm is applied to circumvent the occurence of flotsam and jetsam 
-/* and volume of fluid values that are outside the physically realizable range [0,1]              */
-/* within the function the level-set field is adapted to conform to the new volume of fluid field */
+   /* the mass redistribution algorithm is applied to circumvent the occurence  */ 
+   /* of flotsam and jetsam and volume of fluid values that are outside the     */
+   /* physically realizable range [0,1] within the function the level-set field */
+   /* is adapted to conform to the new volume of fluid field                    */
 
 	               {
 		              apply_volume_of_fluid_redistribution(volume_of_fluid, level_set_star, level_set_new, 				       

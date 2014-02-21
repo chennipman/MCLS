@@ -20,9 +20,9 @@
 /***********************************************************************************/
 
 EXPORT void redistribute_volume_of_fluid_error(						
-	Array3<double> level_set, 					// level set field 
+	Array3<double> level_set, 				// level set field 
 								// mass conserving
-	Array3<double> volume_of_fluid, 				// volume of fluid field
+	Array3<double> volume_of_fluid, 			// volume of fluid field
 	Array3<double> volume_of_fluid_correction,		// correction to the volume of fluid field
 								// to make it valid
 	int number_primary_cells_i,				// number of primary (pressure) cells in x1 direction
@@ -31,12 +31,12 @@ EXPORT void redistribute_volume_of_fluid_error(
 	double mesh_width_x1,					// grid spacing in x1 direction (uniform)
 	double mesh_width_x2,					// grid spacing in x2 direction (uniform)
 	double mesh_width_x3,					// grid spacing in x3 direction (uniform)
-	double time_step_mass_redistribution,		// time step for the mass redistribution
+	double time_step_mass_redistribution,		        // time step for the mass redistribution
 								// algorithm
-       double volume_of_fluid_tolerance,			// tolerance for volume of fluid value
+        double volume_of_fluid_tolerance,			// tolerance for volume of fluid value
 	double redistribution_vof_tolerance,			// threshold value of time-derivative 
 								// in volume of fluid redistribution equation
-       int maximum_number_mass_redistribution_iterations	// number of iterations allowed to make
+        int maximum_number_mass_redistribution_iterations	// number of iterations allowed to make
 								// the volume of fluid field valid
 								// these are the sweeps on the vof error
  
@@ -47,12 +47,6 @@ EXPORT void redistribute_volume_of_fluid_error(
 	Array3<double> redistribution_velocity_x3;			// artificial redistribution velocity x3 direction
 	Array3<double> time_derivative_volume_of_fluid_correction;	// time derivative in the discretised
 									// volume of fluid redistribution equation
-	double one_over_dx1	=    					// 1/(grid spacing in x1 direction)
-	    1.0/(mesh_width_x1);
-	double one_over_dx2	=    					// 1/(grid spacing in x2 direction)
-	    1.0/(mesh_width_x2);
-	double one_over_dx3	=    					// 1/(grid spacing in x3 direction)
-	    1.0/(mesh_width_x3);
 	double time_step_vof_error_distribution;			// time step used in the volume of fluid
 									// error redistribution algorithm
 	

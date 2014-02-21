@@ -22,18 +22,18 @@
 /********************************************************************************/
 //
 EXPORT void apply_boundary_conditions_pressure(
-      Array3<double> pressure,                                 // pressure field
-      Array3<double> pressure_boundary_condition_x1,           // inhomogeneous boundary condition for
+      Array3<double> pressure,                            // pressure field
+      Array3<double> pressure_boundary_condition_x1,      // inhomogeneous boundary condition for
                                                           // the pressure planes with normal in x1 direction
-      Array3<double> pressure_boundary_condition_x2,           // inhomogeneous boundary condition for the pressure
+      Array3<double> pressure_boundary_condition_x2,      // inhomogeneous boundary condition for the pressure
                                                           // the pressure planes with normal in x1 direction
-      Array3<double> pressure_boundary_condition_x3,           // inhomogeneous boundary condition for the pressure
+      Array3<double> pressure_boundary_condition_x3,      // inhomogeneous boundary condition for the pressure
                                                           // the pressure planes with normal in x1 direction
-      Array3<double> scaled_density_u1,                        // scaled density for the controlvolumes
+      Array3<double> scaled_density_u1,                   // scaled density for the controlvolumes
                                                           // of the momentum equation in x1 direction
-      Array3<double> scaled_density_u2,                        // scaled density for the controlvolumes
+      Array3<double> scaled_density_u2,                   // scaled density for the controlvolumes
                                                           // of the momentum equation in x2 direction
-      Array3<double> scaled_density_u3,                        // scaled density for the controlvolumes
+      Array3<double> scaled_density_u3,                   // scaled density for the controlvolumes
                                                           // of the momentum equation in x3 direction
       double mesh_width_x1,                               // grid spacing in x1 direction (uniform)
       double mesh_width_x2,                               // grid spacing in x2 direction (uniform)
@@ -45,7 +45,7 @@ EXPORT void apply_boundary_conditions_pressure(
 )
 
 {
-     double table_face_extrapolation_range[6][6]=
+     int table_face_extrapolation_range[6][6]=
      { 
 	{			1,			 1,			  1,  number_primary_cells_j, 			    1,  number_primary_cells_k},
 	{  number_primary_cells_i,  number_primary_cells_i,			  1,  number_primary_cells_j,			    1,	number_primary_cells_k},
@@ -76,7 +76,7 @@ EXPORT void apply_boundary_conditions_pressure(
      };
      
    int i_index, j_index, k_index;  	// local variables for loop indexing
-   int face_index, edge_index;	        // local variables for loop indexing
+   int face_index;	                // local variables for loop indexing
    int i_shift, j_shift, k_shift;  	// shifts underlying the interpolation
    int i_index_start; 	 	        // first i_index for extrapolation
    int i_index_end; 	 		// last i_index for extrapolation

@@ -22,7 +22,7 @@
 /* The tasks are:								*/
 /* 1) Determine the domain of unknowns						*/
 /* 2) remove any connections outside the domain	using the boundary conditions	*/
-/* 
+/*                                                                              */
 /********************************************************************************/
 EXPORT void fold_momentum_rhside_u3(
       boundary_face boundary_faces[6],			// array with all the information

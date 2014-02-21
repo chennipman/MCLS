@@ -30,7 +30,6 @@ EXPORT double compute_scaled_viscosity(
       {
       double smoothing_distance;			// the heaviside function is smoothed over
 							// an interval of width 2*smoothing_distance
-      double minimal_meshwidth;				// smallest mesh width
       double smallest_meshwidth;			// the smaller of the three meshwidths
       double heaviside_value;				// value of the smoothed heaviside function
       double scaled_viscosity;				// local viscosity scaled with rho_minus

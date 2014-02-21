@@ -63,7 +63,7 @@ EXPORT void build_momentum_rhs_u1(
       double level_set_face_x2_pls;                // level-set at the x2+ face of the cell
       double level_set_face_x3_min;                // level-set at the x3- face of the cell
       double level_set_face_x3_pls;                // level-set at the x3+ face of the cell
-      double level_set_cell_center;			// level-set at cell center
+//       double level_set_cell_center;			// level-set at cell center
       double viscosity_x1_min;			// viscosity at the x1- face of the cell
       double viscosity_x1_pls;			// viscosity at the x1+ face of the cell
       double viscosity_x2_min;			// viscosity at the x2- face of the cell
@@ -89,10 +89,10 @@ EXPORT void build_momentum_rhs_u1(
 		  /* and at the centers of the 6 faces */
 		  
 		  
-		  level_set_cell_center=0.5*(
-					level_set[i_index  ][j_index  ][k_index  ]+
-					level_set[i_index+1][j_index  ][k_index  ]
-					         );
+// 		  level_set_cell_center=0.5*(
+// 					level_set[i_index  ][j_index  ][k_index  ]+
+// 					level_set[i_index+1][j_index  ][k_index  ]
+// 					         );
 		  level_set_face_x1_min=level_set[i_index  ][j_index  ][k_index  ];
 		  level_set_face_x1_pls=level_set[i_index+1][j_index  ][k_index  ];
 		  level_set_face_x2_min=0.25*(

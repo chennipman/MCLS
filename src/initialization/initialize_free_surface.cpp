@@ -34,7 +34,7 @@ EXPORT void initialize_free_surface(
     double x2_coordinate_cell_center;			// x2 coordinate cell center
     double x3_coordinate_cell_center;			// x3 coordinate cell center
     double distance_to_all_free_surfaces;		// distance to all free surfaces
-    double distance_to_free_surface;			// distance to a free surface
+    double distance_to_free_surface=10E10;		// distance to a free surface
     double surface_height;				// distance between origin and free surface
     int i_index, j_index, k_index;  			// local variables for loop indexing
     int surface_index;					// index of free surface
@@ -91,7 +91,7 @@ EXPORT void initialize_free_surface(
 			    
 			      default:
 		      
-				std::cerr << "**************************************************** \n";
+                                std::cerr << "**************************************************** \n";
 				std::cerr << "ERROR \n";
 				std::cerr << "invalid orientation of free surface, terminating...";
 				std::cerr << "in function initialize_free_surface, line 77 \n";

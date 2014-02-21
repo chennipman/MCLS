@@ -32,41 +32,6 @@ EXPORT void shift_velocity_field(
       int number_primary_cells_k		// number of primary (pressure) cells in x3 direction
 	 )		      
       {
-      int i,j,k;
- 
-      /* shift the velocity fields */
-      /* new becomes old */
-      /* new becomes star */
-      
-//       copy_general_field(u_1_velocity_new, u_1_velocity_old,
-//                        0, number_primary_cells_i,
-//                          0, number_primary_cells_j+1,
-//                            0, number_primary_cells_k+1);
-// 
-//       copy_general_field(u_1_velocity_star, u_1_velocity_new,
-//                        0, number_primary_cells_i,
-//                          0, number_primary_cells_j+1,
-//                            0, number_primary_cells_k+1);
-// 
-//       copy_general_field(u_2_velocity_new, u_2_velocity_old,
-//                        0, number_primary_cells_i+1,
-//                          0, number_primary_cells_j,
-//                            0, number_primary_cells_k+1);
-// 
-//       copy_general_field(u_2_velocity_star, u_2_velocity_new,
-//                        0, number_primary_cells_i+1,
-//                          0, number_primary_cells_j,
-//                            0, number_primary_cells_k+1);
-// 
-//       copy_general_field(u_3_velocity_new, u_3_velocity_old,
-//                        0, number_primary_cells_i+1,
-//                          0, number_primary_cells_j+1,
-//                            0, number_primary_cells_k);
-// 
-//       copy_general_field(u_3_velocity_star, u_3_velocity_new,
-//                        0, number_primary_cells_i+1,
-//                          0, number_primary_cells_j+1,
-//                            0, number_primary_cells_k);
 
 
       copy_general_field(u_1_velocity_star, u_1_velocity_new,

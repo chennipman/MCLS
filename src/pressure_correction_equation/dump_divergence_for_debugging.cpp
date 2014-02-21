@@ -60,17 +60,12 @@ using namespace std;
          int number_primary_cells_j,
          int number_primary_cells_k
            );
-      int total_number_primary_cells=            // total number of primary cells
+       int total_number_primary_cells=            // total number of primary cells
          number_primary_cells_i*
            number_primary_cells_j*
              number_primary_cells_k;
-      int total_number_vertices=                 // total number of vertices
-         (number_primary_cells_i+1)*
-           (number_primary_cells_j+1)*
-             (number_primary_cells_k+1);
 
-       int i_index, j_index, k_index;            // local variables for loop indexing
-              string scalar_name;                // name of the scalar field to be written
+       string scalar_name;                       // name of the scalar field to be written
        string look_up_table_name;                // name of the look-up table to be used
 
 

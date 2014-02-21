@@ -43,7 +43,7 @@ EXPORT void  field_neumann_boundary(
      /* edge 11 i_index=0, j_index=0, k_index=1..number_primary_cells_k */
      /* edge 12 i_index=0, j_index=number_primary_cells_j+1, k_index=1..number_primary_cells_k */
 
-     double table_edge_extrapolation_range[12][6]=
+     int table_edge_extrapolation_range[12][6]=
      { 
 	{			1,			 1,			  1,  number_primary_cells_j, 			    1, 			     1},
 	{  number_primary_cells_i,  number_primary_cells_i,			  1,  number_primary_cells_j,			    1,			     1},
@@ -93,7 +93,7 @@ EXPORT void  field_neumann_boundary(
 	
      };
      
-     double table_face_extrapolation_range[6][6]=
+     int table_face_extrapolation_range[6][6]=
      { 
 	{			1,			 1,			  1,  number_primary_cells_j, 			    1,  number_primary_cells_k},
 	{  number_primary_cells_i,  number_primary_cells_i,			  1,  number_primary_cells_j,			    1,	number_primary_cells_k},
@@ -148,11 +148,11 @@ EXPORT void  field_neumann_boundary(
     
       for(face_index=0;face_index<6;face_index++){
 
-	  i_index_start	= table_face_extrapolation_range[face_index][0];
+	  i_index_start	        = table_face_extrapolation_range[face_index][0];
 	  i_index_end		= table_face_extrapolation_range[face_index][1];
-	  j_index_start	= table_face_extrapolation_range[face_index][2];
+	  j_index_start	        = table_face_extrapolation_range[face_index][2];
 	  j_index_end		= table_face_extrapolation_range[face_index][3];
-	  k_index_start	= table_face_extrapolation_range[face_index][4];
+	  k_index_start	        = table_face_extrapolation_range[face_index][4];
 	  k_index_end		= table_face_extrapolation_range[face_index][5];
 	  i_shift		= table_face_extrapolation_shift[face_index][0];
 	  j_shift		= table_face_extrapolation_shift[face_index][1];
@@ -176,11 +176,11 @@ EXPORT void  field_neumann_boundary(
     
       for(edge_index=0;edge_index<12;edge_index++){
 
-	  i_index_start	= table_edge_extrapolation_range[edge_index][0];
+	  i_index_start	        = table_edge_extrapolation_range[edge_index][0];
 	  i_index_end		= table_edge_extrapolation_range[edge_index][1];
-	  j_index_start	= table_edge_extrapolation_range[edge_index][2];
+	  j_index_start	        = table_edge_extrapolation_range[edge_index][2];
 	  j_index_end		= table_edge_extrapolation_range[edge_index][3];
-	  k_index_start	= table_edge_extrapolation_range[edge_index][4];
+	  k_index_start	        = table_edge_extrapolation_range[edge_index][4];
 	  k_index_end		= table_edge_extrapolation_range[edge_index][5];
 	  i_shift		= table_edge_extrapolation_shift[edge_index][0];
 	  j_shift		= table_edge_extrapolation_shift[edge_index][1];

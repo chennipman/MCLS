@@ -18,10 +18,10 @@
 /********************************************************************************/
 
 EXPORT void build_momentum_matrix_u2(
-      Array2<double> momentum_matrix_u2,			// momentum matrix velocity x1 direction
-      Array3<double> level_set, 				// level-set field
+      Array2<double> momentum_matrix_u2,		// momentum matrix velocity x1 direction
+      Array3<double> level_set, 			// level-set field
       Array3<double> scaled_density_u2,                 // scaled density for the controlvolumes
-                                                   // of the momentum equation in x2 direction
+                                                        // of the momentum equation in x2 direction
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
@@ -52,7 +52,7 @@ EXPORT void build_momentum_matrix_u2(
       double level_set_face_x2_pls;                     // level-set at the x2+ face of the cell
       double level_set_face_x3_min;                     // level-set at the x3- face of the cell
       double level_set_face_x3_pls;                     // level-set at the x3+ face of the cell
-      double level_set_cell_center;			// level-set at cell center
+//       double level_set_cell_center;			// level-set at cell center
       double viscosity_x1_min;				// viscosity at the x1- face of the cell
       double viscosity_x1_pls;				// viscosity at the x1+ face of the cell
       double viscosity_x2_min;				// viscosity at the x2- face of the cell
@@ -73,10 +73,10 @@ EXPORT void build_momentum_matrix_u2(
 		  /* compute the level-set value at the center of the control volume */
 		  /* and at the centers of the 6 faces */
 		  
-		  level_set_cell_center=0.5*(
-					level_set[i_index  ][j_index  ][k_index  ]+
-					level_set[i_index  ][j_index+1][k_index  ]
-					         );
+// 		  level_set_cell_center=0.5*(
+// 					level_set[i_index  ][j_index  ][k_index  ]+
+// 					level_set[i_index  ][j_index+1][k_index  ]
+// 					         );
 		  level_set_face_x1_min=0.25*(
 					level_set[i_index-1][j_index  ][k_index  ]+
 					level_set[i_index  ][j_index  ][k_index  ]+
