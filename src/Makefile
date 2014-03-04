@@ -1,4 +1,5 @@
-CXX=g++
+# CXX=g++
+CXX=clang++
 RM=rm -f
 CFLAGS= -c -O3 -include ../objects/funcdefs.h -Wall
 #############################################

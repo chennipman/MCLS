@@ -57,9 +57,18 @@ EXPORT void compute_vof_at_u3_points(
 					   d_level_set_d_x2[i_index][j_index][k_index],
 					      d_level_set_d_x3[i_index][j_index][k_index]*0.5,
 					    scaled_volume_donating_region,
-					      lower_bound_derivatives));
-				volume_of_fluid_u3[i_index][j_index][k_index]+=
-			  		0.5*scaled_volume_donating_region;
+					      lower_bound_derivatives))
+                                {
+				        volume_of_fluid_u3[i_index][j_index][k_index]+=
+			  		        0.5*scaled_volume_donating_region;
+                                }
+                                else
+                                {
+                                        std::cerr<< "function evaluation level_set_2_vof\n";
+                                        std::cerr<< "failed in compute_vof_at_u3_points \n";
+                                        std::cerr<< "line 55 \n";
+                                        exit(1);
+                                }
 			}
 			if(k_index<number_primary_cells_k)
 			{
@@ -71,11 +80,19 @@ EXPORT void compute_vof_at_u3_points(
 					   d_level_set_d_x2[i_index][j_index][k_index+1],
 					      d_level_set_d_x3[i_index][j_index][k_index+1]*0.5,
 					    scaled_volume_donating_region,
-					    lower_bound_derivatives));
-				volume_of_fluid_u3[i_index][j_index][k_index]+=
-			  	0.5*scaled_volume_donating_region;
+					    lower_bound_derivatives))
+                                {
+				        volume_of_fluid_u3[i_index][j_index][k_index]+=
+			  	                0.5*scaled_volume_donating_region;
+                                }
+                                else
+                                {
+                                        std::cerr<< "function evaluation level_set_2_vof\n";
+                                        std::cerr<< "failed in compute_vof_at_u3_points \n";
+                                        std::cerr<< "line 78 \n";
+                                        exit(1);
+                                }
 			}
-//  			  std::cerr<<"vof u3 "<<volume_of_fluid_u3[i_index][j_index][k_index]<<"\n";
 		}
 	    }
 	}

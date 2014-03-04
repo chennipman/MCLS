@@ -51,7 +51,7 @@ EXPORT void redistribute_volume_of_fluid_error(
 									// error redistribution algorithm
 	
        
-	double cfl_number_vof_error_distribution;       		// cfl number used in the volume of fluid
+	double cfl_number_vof_error_distribution=0.5;       		// cfl number used in the volume of fluid
 									// error redistribution algorithm
 	double flux_minus_x1;						// flux of error advection equation at plus i face
 	double flux_minus_x2;						// flux of error advection equation at plus j face
