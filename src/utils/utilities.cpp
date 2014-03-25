@@ -195,6 +195,42 @@ EXPORT void set_constant_matrix2(
 }
 /********************************************************************************/
 /********************************************************************************/
+/*  Function to add two three-dimensional arrays multiplied by a integer        */
+/*  										*/
+/*  Programmer	: Coen Hennipman	       					*/
+/*  Date	: 13-03-2014       						*/
+/*  Update	:        							*/
+/********************************************************************************/
+/* Notes									*/
+/* This function adds two arrays and multiplies them with a constant value      */
+/*                                     		                                */
+/********************************************************************************/
+EXPORT void add_arrays(
+    Array3<double> output_array,	// the output array that is calculated
+    double first_constant_value,	// the constant value the vector has to be set to
+    Array3<double> first_array,	// the name of the vector that has to be set
+    double second_constant_value,	// the constant value the vector has to be set to
+    Array3<double> second_array,	// the name of the vector that has to be set
+    int first_dimension,		// number of elements in first dimension
+    int second_dimension,		// number of elements in second dimension
+    int third_dimension			// number of elements in third dimension
+     )
+{
+  int i_index, j_index, k_index;  // local variables for loop indexing
+
+  for(i_index=0;i_index<first_dimension;i_index++)
+  {
+     for(j_index=0;j_index<second_dimension;j_index++)
+      {
+	  for(k_index=0;k_index<third_dimension;k_index++)
+	  {
+	      output_array[i_index][j_index][k_index]=first_constant_value*first_array[i_index][j_index][k_index]+second_constant_value*second_array[i_index][j_index][k_index];
+	  }  
+        }  
+  } 
+}
+/********************************************************************************/
+/********************************************************************************/
 /*  Function to set a two-dimensional array to a constant value	                */
 /*  										*/
 /*  Programmer	: Duncan van der Heul       					*/
