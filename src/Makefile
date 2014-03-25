@@ -16,9 +16,10 @@ PRESS_DIR:=./pressure_correction_equation/
 COUPL_DIR:=./interface_coupling/
 OUTPUT_DIR:=./post_processing/
 RESTART_DIR:=./restart/
+UNITTEST_DIR=../unittest/
 #############################################
 
-OBJS=$(addprefix $(OBJS_DIR),dns.o time_stepping_sequence.o advance_flow_field.o \
+OBJS=$(addprefix $(OBJS_DIR),time_stepping_sequence.o advance_flow_field.o \
 				compute_time_step_size.o \
 				initialize_computation.o set_parameters.o \
 				set_boundary_conditions.o allocate_main_variables.o \
@@ -31,28 +32,21 @@ OBJS=$(addprefix $(OBJS_DIR),dns.o time_stepping_sequence.o advance_flow_field.o
 				compute_level_set_gradient.o level_set_2_vof.o \
 				advance_interface.o advect_level_set.o \
 				apply_ridders_method.o apply_volume_of_fluid_clipping.o \
-				check_volume_of_fluid.o compute_derivatives_level_set.o compute_redistribution_velocity.o \
-				compute_vof_flux_x1.o compute_vof_flux_x2.o compute_vof_flux_x3.o copy_cell_centered_field.o \
+				check_volume_of_fluid.o compute_derivatives_level_set.o \
+				compute_redistribution_velocity.o \
+				compute_vof_flux_x1.o compute_vof_flux_x2.o compute_vof_flux_x3.o \
+				copy_cell_centered_field.o \
 				field_neumann_boundary.o level_set_2_vof_phi_negative.o \
 				make_level_set_mass_conserving.o match_level_set_to_volume_of_fluid.o \
 				modify_volume_of_fluid_values.o reinitialize_level_set.o \
-				update_volume_of_fluid_flux_x1.o update_volume_of_fluid_flux_x2.o update_volume_of_fluid_flux_x3.o \
+				update_volume_of_fluid_flux_x1.o update_volume_of_fluid_flux_x2.o \
+				 update_volume_of_fluid_flux_x3.o \
 				upwind_flux_mass_redistribution.o vof_2_level_set.o \
-				compute_level_set_flux.o build_momentum_matrix_u1.o \
-				build_momentum_matrix_u2.o build_momentum_matrix_u3.o \
-				build_momentum_predictor_u1.o build_momentum_predictor_u2.o \
-				build_momentum_predictor_u3.o build_momentum_rhs_u1.o \
-				build_momentum_rhs_u2.o build_momentum_rhs_u3.o \
-				compute_convection_term.o  \
+				compute_level_set_flux.o \
 				compute_scaled_density.o compute_scaled_viscosity.o \
 				compute_weighted_average.o  \
-				fold_momentum_matrix_u1.o fold_momentum_matrix_u2.o \
-				fold_momentum_matrix_u3.o fold_momentum_rhside_u1.o \
-				fold_momentum_rhside_u2.o fold_momentum_rhside_u3.o \
-				shift_velocity_field.o solve_momentum_predictor.o \
-				solve_momentum_predictor_u1.o solve_momentum_predictor_u2.o \
-				solve_momentum_predictor_u3.o apply_preconditioner.o \
-				build_preconditioner.o conjugate_gradient_method.o \
+				shift_velocity_field.o \
+				build_preconditioner.o apply_preconditioner.o conjugate_gradient_method.o \
 				apply_pressure_correction.o build_pressure_matrix.o \
 				build_pressure_rhs_boundary.o build_pressure_rhs_momentum_part.o \
 				build_pressure_system.o set_pressure_boundary_condition.o \
@@ -69,20 +63,18 @@ OBJS=$(addprefix $(OBJS_DIR),dns.o time_stepping_sequence.o advance_flow_field.o
 				write_cell_centered_field_tecplot.o write_cell_centered_field_vtk.o \
 				write_vertex_centered_vector_field_vtk.o write_coordinates_tecplot.o \
 				write_coordinates_vtk.o  write_vertex_centered_field_vtk.o \
-				apply_bisection.o map_index_u1.o map_index_u2.o map_index_u3.o \
+				apply_bisection.o \
 				map_index_pressure.o  \
 				decompress_solution_pressure.o copy_general_field.o \
-				export_matrix_matlab.o compress_solution_velocity_u1.o \
-				compress_solution_velocity_u2.o compress_solution_velocity_u3.o \
-				decompress_solution_velocity_u1.o decompress_solution_velocity_u2.o \
-				decompress_solution_velocity_u3.o field_extrapolate_boundary.o \
+				export_matrix_matlab.o field_extrapolate_boundary.o \
 				project_pressure_rhside.o shift_interface.o \
 				write_restart_file.o read_restart_file.o \
 				compute_normal_derivative_at_faces.o \
 				redistribute_volume_of_fluid_error.o \
 				apply_volume_of_fluid_redistribution.o initialize_curvature.o \
 				dump_solution_for_debugging.o dump_curvature_for_debugging.o \
-				check_symmetry_scalars.o compute_weighted_curvature.o check_symmetry_velocities.o \
+				check_symmetry_scalars.o compute_weighted_curvature.o \
+				check_symmetry_velocities.o \
 				write_interface_solution.o dump_adapted_vof_for_debugging.o \
 				compute_mass_in_domain.o analyse_interface_properties.o \
 				compute_vof_at_u1_points.o compute_vof_at_u2_points.o \
@@ -97,16 +89,43 @@ OBJS=$(addprefix $(OBJS_DIR),dns.o time_stepping_sequence.o advance_flow_field.o
 				dump_reinitialization_for_debugging.o compute_first_stage_RK.o \
 				compute_second_stage_RK.o compute_new_time_RK.o \
 				advect_level_set_higher_order.o weno_flux_computation.o \
+				momentum_predictor.o \
+				momentum_predictor_unit_test.o advance_flow_field_unit_test.o\
+				add_arrays_unit_test.o\
 				evaluate_convection_operator_weno.o)
-#                               apply_redistribution_volume_of_fluid_correction.o 
+
 all:$(EXEC_DIR)MCLS
 
-$(EXEC_DIR)MCLS:../objects/funcdefs.h $(OBJS)
-	$(CXX) $(OBJS) -O3 -o $(EXEC_DIR)MCLS
+$(EXEC_DIR)MCLS:../objects/funcdefs.h $(OBJS) $(OBJS_DIR)dns.o
+	$(CXX) $(OBJS) $(OBJS_DIR)dns.o -O3 -o $(EXEC_DIR)MCLS
 
 ../objects/funcdefs.h:
 	./gen_funcdefs.h
 
+test:$(EXEC_DIR)UNITTEST
+	cd $(EXECDIR)
+	../executable/UNITTEST
+
+$(EXEC_DIR)UNITTEST:../objects/funcdefs.h $(OBJS) $(OBJS_DIR)mainunittest.o
+	$(CXX) $(OBJS) $(OBJS_DIR)mainunittest.o -O3 -o $(EXEC_DIR)UNITTEST
+	
+testadvanceflowfield:$(EXEC_DIR)UNITTESTADVANCEFLOWFIELD
+	cd $(EXECDIR)
+	../executable/UNITTESTADVANCEFLOWFIELD
+
+$(EXEC_DIR)UNITTESTADVANCEFLOWFIELD:../objects/funcdefs.h $(OBJS) $(OBJS_DIR)mainunittestadvanceflowfield.o
+	$(CXX) $(OBJS) $(OBJS_DIR)mainunittestadvanceflowfield.o -O3 -o $(EXEC_DIR)UNITTESTADVANCEFLOWFIELD	
+
+#---------------------------#
+#  unit tests		    #
+#---------------------------#
+
+$(OBJS_DIR)mainunittest.o:$(UNITTEST_DIR)mainunittest.cpp $(HEADER_DIR)header_main.h
+	$(CXX) $(CFLAGS) $(UNITTEST_DIR)mainunittest.cpp -o $(OBJS_DIR)mainunittest.o
+
+$(OBJS_DIR)mainunittestadvanceflowfield.o:$(UNITTEST_DIR)mainunittestadvanceflowfield.cpp $(HEADER_DIR)header_main.h
+	$(CXX) $(CFLAGS) $(UNITTEST_DIR)mainunittestadvanceflowfield.cpp -o $(OBJS_DIR)mainunittestadvanceflowfield.o
+	
 #---------------------------#
 #  main program functions   #
 #---------------------------#
@@ -231,44 +250,13 @@ $(OBJS_DIR)apply_boundary_conditions_velocity_u2.o:$(MOMENTUM_DIR)apply_boundary
 	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)apply_boundary_conditions_velocity_u2.cpp -o $(OBJS_DIR)apply_boundary_conditions_velocity_u2.o
 $(OBJS_DIR)apply_boundary_conditions_velocity_u3.o:$(MOMENTUM_DIR)apply_boundary_conditions_velocity_u3.cpp 
 	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)apply_boundary_conditions_velocity_u3.cpp -o $(OBJS_DIR)apply_boundary_conditions_velocity_u3.o
-$(OBJS_DIR)build_momentum_matrix_u1.o:$(MOMENTUM_DIR)build_momentum_matrix_u1.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)build_momentum_matrix_u1.cpp -o $(OBJS_DIR)build_momentum_matrix_u1.o
-$(OBJS_DIR)build_momentum_matrix_u2.o:$(MOMENTUM_DIR)build_momentum_matrix_u2.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)build_momentum_matrix_u2.cpp -o $(OBJS_DIR)build_momentum_matrix_u2.o
-$(OBJS_DIR)build_momentum_matrix_u3.o:$(MOMENTUM_DIR)build_momentum_matrix_u3.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)build_momentum_matrix_u3.cpp -o $(OBJS_DIR)build_momentum_matrix_u3.o
-$(OBJS_DIR)build_momentum_predictor_u1.o:$(MOMENTUM_DIR)build_momentum_predictor_u1.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)build_momentum_predictor_u1.cpp -o $(OBJS_DIR)build_momentum_predictor_u1.o
-$(OBJS_DIR)build_momentum_predictor_u2.o:$(MOMENTUM_DIR)build_momentum_predictor_u2.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)build_momentum_predictor_u2.cpp -o $(OBJS_DIR)build_momentum_predictor_u2.o
-$(OBJS_DIR)build_momentum_predictor_u3.o:$(MOMENTUM_DIR)build_momentum_predictor_u3.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)build_momentum_predictor_u3.cpp -o $(OBJS_DIR)build_momentum_predictor_u3.o
-$(OBJS_DIR)build_momentum_rhs_u1.o:$(MOMENTUM_DIR)build_momentum_rhs_u1.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)build_momentum_rhs_u1.cpp -o $(OBJS_DIR)build_momentum_rhs_u1.o
-$(OBJS_DIR)build_momentum_rhs_u2.o:$(MOMENTUM_DIR)build_momentum_rhs_u2.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)build_momentum_rhs_u2.cpp -o $(OBJS_DIR)build_momentum_rhs_u2.o
-$(OBJS_DIR)build_momentum_rhs_u3.o:$(MOMENTUM_DIR)build_momentum_rhs_u3.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)build_momentum_rhs_u3.cpp -o $(OBJS_DIR)build_momentum_rhs_u3.o
-$(OBJS_DIR)compute_convection_term.o:$(MOMENTUM_DIR)compute_convection_term.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)compute_convection_term.cpp -o $(OBJS_DIR)compute_convection_term.o
+
 $(OBJS_DIR)compute_scaled_density.o:$(MOMENTUM_DIR)compute_scaled_density.cpp 
 	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)compute_scaled_density.cpp -o $(OBJS_DIR)compute_scaled_density.o
 $(OBJS_DIR)compute_scaled_viscosity.o:$(MOMENTUM_DIR)compute_scaled_viscosity.cpp 
 	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)compute_scaled_viscosity.cpp -o $(OBJS_DIR)compute_scaled_viscosity.o
 $(OBJS_DIR)compute_weighted_average.o:$(MOMENTUM_DIR)compute_weighted_average.cpp 
 	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)compute_weighted_average.cpp -o $(OBJS_DIR)compute_weighted_average.o
-$(OBJS_DIR)fold_momentum_matrix_u1.o:$(MOMENTUM_DIR)fold_momentum_matrix_u1.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)fold_momentum_matrix_u1.cpp -o $(OBJS_DIR)fold_momentum_matrix_u1.o
-$(OBJS_DIR)fold_momentum_matrix_u2.o:$(MOMENTUM_DIR)fold_momentum_matrix_u2.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)fold_momentum_matrix_u2.cpp -o $(OBJS_DIR)fold_momentum_matrix_u2.o
-$(OBJS_DIR)fold_momentum_matrix_u3.o:$(MOMENTUM_DIR)fold_momentum_matrix_u3.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)fold_momentum_matrix_u3.cpp -o $(OBJS_DIR)fold_momentum_matrix_u3.o
-$(OBJS_DIR)fold_momentum_rhside_u1.o:$(MOMENTUM_DIR)fold_momentum_rhside_u1.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)fold_momentum_rhside_u1.cpp -o $(OBJS_DIR)fold_momentum_rhside_u1.o
-$(OBJS_DIR)fold_momentum_rhside_u2.o:$(MOMENTUM_DIR)fold_momentum_rhside_u2.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)fold_momentum_rhside_u2.cpp -o $(OBJS_DIR)fold_momentum_rhside_u2.o
-$(OBJS_DIR)fold_momentum_rhside_u3.o:$(MOMENTUM_DIR)fold_momentum_rhside_u3.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)fold_momentum_rhside_u3.cpp -o $(OBJS_DIR)fold_momentum_rhside_u3.o
 $(OBJS_DIR)shift_velocity_field.o:$(MOMENTUM_DIR)shift_velocity_field.cpp 
 	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)shift_velocity_field.cpp -o $(OBJS_DIR)shift_velocity_field.o
 $(OBJS_DIR)solve_momentum_predictor.o:$(MOMENTUM_DIR)solve_momentum_predictor.cpp 
@@ -279,29 +267,12 @@ $(OBJS_DIR)solve_momentum_predictor_u2.o:$(MOMENTUM_DIR)solve_momentum_predictor
 	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)solve_momentum_predictor_u2.cpp -o $(OBJS_DIR)solve_momentum_predictor_u2.o
 $(OBJS_DIR)solve_momentum_predictor_u3.o:$(MOMENTUM_DIR)solve_momentum_predictor_u3.cpp 
 	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)solve_momentum_predictor_u3.cpp -o $(OBJS_DIR)solve_momentum_predictor_u3.o
-$(OBJS_DIR)map_index_u1.o:$(MOMENTUM_DIR)map_index_u1.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)map_index_u1.cpp -o $(OBJS_DIR)map_index_u1.o
-$(OBJS_DIR)map_index_u2.o:$(MOMENTUM_DIR)map_index_u2.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)map_index_u2.cpp -o $(OBJS_DIR)map_index_u2.o
-$(OBJS_DIR)map_index_u3.o:$(MOMENTUM_DIR)map_index_u3.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)map_index_u3.cpp -o $(OBJS_DIR)map_index_u3.o
 $(OBJS_DIR)copy_general_field.o:$(MOMENTUM_DIR)copy_general_field.cpp 
 	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)copy_general_field.cpp -o $(OBJS_DIR)copy_general_field.o
-$(OBJS_DIR)decompress_solution_velocity_u1.o:$(MOMENTUM_DIR)decompress_solution_velocity_u1.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)decompress_solution_velocity_u1.cpp -o $(OBJS_DIR)decompress_solution_velocity_u1.o
-$(OBJS_DIR)decompress_solution_velocity_u2.o:$(MOMENTUM_DIR)decompress_solution_velocity_u2.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)decompress_solution_velocity_u2.cpp -o $(OBJS_DIR)decompress_solution_velocity_u2.o
-$(OBJS_DIR)decompress_solution_velocity_u3.o:$(MOMENTUM_DIR)decompress_solution_velocity_u3.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)decompress_solution_velocity_u3.cpp -o $(OBJS_DIR)decompress_solution_velocity_u3.o
-$(OBJS_DIR)compress_solution_velocity_u1.o:$(MOMENTUM_DIR)compress_solution_velocity_u1.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)compress_solution_velocity_u1.cpp -o $(OBJS_DIR)compress_solution_velocity_u1.o
-$(OBJS_DIR)compress_solution_velocity_u2.o:$(MOMENTUM_DIR)compress_solution_velocity_u2.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)compress_solution_velocity_u2.cpp -o $(OBJS_DIR)compress_solution_velocity_u2.o
-$(OBJS_DIR)compress_solution_velocity_u3.o:$(MOMENTUM_DIR)compress_solution_velocity_u3.cpp 
-	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)compress_solution_velocity_u3.cpp -o $(OBJS_DIR)compress_solution_velocity_u3.o
 $(OBJS_DIR)output_predictor_velocityfield.o:$(MOMENTUM_DIR)output_predictor_velocityfield.cpp 
 	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)output_predictor_velocityfield.cpp -o $(OBJS_DIR)output_predictor_velocityfield.o
-
+$(OBJS_DIR)momentum_predictor.o:$(MOMENTUM_DIR)momentum_predictor.cpp
+	$(CXX) $(CFLAGS) $(MOMENTUM_DIR)momentum_predictor.cpp -o $(OBJS_DIR)momentum_predictor.o
 
 #---------------------------------#
 #  pressure_correction_equation   #
@@ -495,6 +466,17 @@ $(OBJS_DIR)write_restart_file.o:$(RESTART_DIR)write_restart_file.cpp
 	$(CXX) $(CFLAGS) $(RESTART_DIR)write_restart_file.cpp -o $(OBJS_DIR)write_restart_file.o
 $(OBJS_DIR)read_restart_file.o:$(RESTART_DIR)read_restart_file.cpp 
 	$(CXX) $(CFLAGS) $(RESTART_DIR)read_restart_file.cpp -o $(OBJS_DIR)read_restart_file.o
+
+#------------------------------------#
+#  unit tests functions    	     F#
+#------------------------------------#
+
+$(OBJS_DIR)momentum_predictor_unit_test.o:$(UNITTEST_DIR)momentum_predictor_unit_test.cpp
+	$(CXX) $(CFLAGS) $(UNITTEST_DIR)momentum_predictor_unit_test.cpp -o $(OBJS_DIR)momentum_predictor_unit_test.o
+$(OBJS_DIR)advance_flow_field_unit_test.o:$(UNITTEST_DIR)advance_flow_field_unit_test.cpp
+	$(CXX) $(CFLAGS) $(UNITTEST_DIR)advance_flow_field_unit_test.cpp -o $(OBJS_DIR)advance_flow_field_unit_test.o
+$(OBJS_DIR)add_arrays_unit_test.o:$(UNITTEST_DIR)add_arrays_unit_test.cpp
+	$(CXX) $(CFLAGS) $(UNITTEST_DIR)add_arrays_unit_test.cpp -o $(OBJS_DIR)add_arrays_unit_test.o
 
 
 clean:

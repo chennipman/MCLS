@@ -6,7 +6,45 @@
 #include <sstream>
 #include <fstream>
 using namespace std;
+class coordinate
+{
+public:
+  double x1,x2,x3;
+  coordinate(double xx1=0, double xx2=0, double xx3=0){x1=xx1;x2=xx2;x3=xx3;}
+};
+class bubble
+{
+public:
+  double principle_axis_x1;
+  double principle_axis_x2;
+  double principle_axis_x3;
+  int label;
+  coordinate center_location;
+  bubble(int number, coordinate bubble_center, double bubble_radius);
+};
+class surface
+{
+public:
+  int active;
+  int orientation;
+  double height;
+};
+enum geometry{bubbly_flow, wavy_flow};
 
+class vector
+{
+public:
+  double u1,u2,u3;
+};
+class restart_parameters
+{
+public:
+      int start_from_restart_file;		
+      int write_solution_to_restart_file;
+      string name_restart_file_to_write;
+      string name_restart_file_to_read;
+      restart_parameters(void);
+};
 /********************************************************************************/
 /*  Function to set the computation parameters                                  */
 /*  										*/
@@ -18,7 +56,7 @@ using namespace std;
 /* This function should be replaced by a function that reads all parameters     */
 /* from an input file.                                                           */
 /********************************************************************************/
-EXPORT void set_parameters(
+      void set_parameters(
       int &number_primary_cells_i,				// number of primary (pressure) cells in x1 direction
       int &number_primary_cells_j,				// number of primary (pressure) cells in x2 direction
       int &number_primary_cells_k,				// number of primary (pressure) cells in x3 direction
@@ -30,14 +68,14 @@ EXPORT void set_parameters(
       double &mesh_width_x3,					// grid spacing in x3 direction (uniform)
       int &apply_mass_distribution_algorithm,   		// =1:apply the mass redistribution algorithm
 								// to avoid numerical vapour
-      int &apply_mass_conservation_correction, 			// =1:apply the mass conservation correction
+      int &apply_mass_conservation_correction, 		// =1:apply the mass conservation correction
 								// to the level-set field
       double &volume_of_fluid_tolerance,			// tolerance in volume of fluid field
 								// for admissable values
-      double &lower_bound_derivatives,				// lower bound for the first partial derivatives
+      double &lower_bound_derivatives,			// lower bound for the first partial derivatives
 								// to consider it a limiting case of vanishing
 								// partial derivatives
-      int &number_vof_2_level_set_iterations,			// number of OUTER iterations in the conversion 
+      int &number_vof_2_level_set_iterations,		// number of OUTER iterations in the conversion 
 								// from volume of fluid to level-set
       int &number_iterations_ridder,				// maximum number of iterations allowed in the
 								// nonlinear root finding algorithm
@@ -46,55 +84,55 @@ EXPORT void set_parameters(
 								// of fluid value to level-set value
       double &cfl_number_reinitialization,			// courant-friedrichs-lewy number for the reinitialization
 								// equation
-      double &cfl_number_navier_stokes,				// courant-friedrichs-lewy number for the navier-stokes
+      double &cfl_number_navier_stokes,			// courant-friedrichs-lewy number for the navier-stokes
 								// equations
       int &maximum_reinitialization_steps,			// maximum number of time steps in the reinitialization
 								// algorithm
       double &tolerance_reinitialization,			// stop the reinitialization when the infinite norm of
 								// the pseudo time derivative has fallen below this
 								// tolerance value
-      int &number_matrix_connections,				// number of connections in momentum matrix				       
-      vector &gravity,						// gravitational acceleration vector 
-      double &actual_time_step_navier_stokes,			// time step used for level-set advection
+      int &number_matrix_connections,			// number of connections in momentum matrix				       
+      vector &gravity,					// gravitational acceleration vector 
+      double &actual_time_step_navier_stokes,		// time step used for level-set advection
 								// computed from all stability restrictions and 
 								// possibly subscycling
-      double &rho_plus_over_rho_minus,				// ratio of the densities of the two phases
+      double &rho_plus_over_rho_minus,			// ratio of the densities of the two phases
       double &smoothing_distance_factor,			// the smoothing distance is smoothing_distance_factor
 								// times the smallest mesh width
-      double &rho_minus_over_mu_minus,				// this was the 'Reynolds' number
+      double &rho_minus_over_mu_minus,			// this was the 'Reynolds' number
 								// in the original implementation of Sander
       double &mu_plus_over_mu_minus,				// ratio of the viscosities of both phases
       double &tolerance_pressure,	  			// the tolerance with which the system for the pressure is solved	
-      int &maximum_iterations_allowed_pressure,			// maximum number of iterations allowed for the
+      int &maximum_iterations_allowed_pressure,		// maximum number of iterations allowed for the
 								// conjugate gradient method
       double &tolerance_velocity,	  			// the tolerance with which the system for the momentum predictor is solved	
-      int &maximum_iterations_allowed_velocity,			// maximum number of iterations allowed for the
+      int &maximum_iterations_allowed_velocity,		// maximum number of iterations allowed for the
 								// conjugate gradient method
-      int &continuous_surface_force_model,     	 		// =1, the continuous surface force model is applied
+      int &continuous_surface_force_model,     	 	// =1, the continuous surface force model is applied
 					        		// =0, the exact interface boundary conditions are applied
       int &source_terms_in_momentum_predictor,  		// =1, the source terms are applied in the momentum predictor
 					        		// equation
 					        		// =0, the source terms are applied in the momentum corrector
       double &sigma_over_rho_minus,				// sigma / rho_minus (scaled sigma)
-      double &time_step_restriction_global,    			// upper bound on the time step, set by user
+      double &time_step_restriction_global,    		// upper bound on the time step, set by user
       int &fixed_time_step,					// =1 the time step is not restricted by 
 								// physical constraints 
 								// =0 the time step is adapted to the physical
 								// constraints
-      int &apply_curvature_smoothing,				// =1, apply curvature smoothing
+      int &apply_curvature_smoothing,			// =1, apply curvature smoothing
 								// =0, use unsmoothed curvature
-      int &number_curvature_smoothing_steps,			// number of iterations applied in the
+      int &number_curvature_smoothing_steps,		// number of iterations applied in the
 								// curvature smoothing algorithm
-      int &apply_curvature_smoothing_filter,			// =1, apply curvature smoothing filter
+      int &apply_curvature_smoothing_filter,		// =1, apply curvature smoothing filter
 								// =0, do not apply curvature smoothing filter
-      int &number_of_subcycles,					// for every time step for the Navier-Stokes
+      int &number_of_subcycles,				// for every time step for the Navier-Stokes
 								// equations number_of_subcycles steps are taken
 								// with the interface evolution equations
-      int &vtk_output,						// =1, write output in vtk format
+      int &vtk_output,					// =1, write output in vtk format
 								// =0, skip output in vtk format
       int &tecplot_output,					// =1, write output in tecplot format
 								// =0, skip output in tecplot format
-      double &time_interval_for_output,				// interval in time for which the solution is written to file
+      double &time_interval_for_output,			// interval in time for which the solution is written to file
       double &domain_size_x1,					// length of edges of domain in x1 direction 
       double &domain_size_x2,					// length of edges of domain in x1 direction 
       double &domain_size_x3,					// length of edges of domain in x1 direction 
@@ -105,14 +143,14 @@ EXPORT void set_parameters(
       int &number_of_free_surfaces, 				// number of bubbles in the domain (<10)
       double &start_time_simulation,				// starting time for the simulation
       double &end_time_simulation,				// end time for the simulation
-      vector &initial_velocity,					// initial velocity at t=0
+      vector &initial_velocity,				// initial velocity at t=0
       restart_parameters &my_restart_parameters,		// all parameters for reading/writing restart files
-      int &maximum_number_mass_redistribution_iterations, 	// number of iterations allowed to make
+      int &maximum_number_mass_redistribution_iterations, // number of iterations allowed to make
 								// the volume of fluid field valid
 								// these are the sweeps on the vof error
-      double &time_step_mass_redistribution,			// time step for the mass redistribution
+      double &time_step_mass_redistribution,		// time step for the mass redistribution
 								// algorithm
-      double &redistribution_vof_tolerance, 			// threshold value of time-derivative 
+      double &redistribution_vof_tolerance, 		// threshold value of time-derivative 
       int &number_of_phases,					// number of phases in the domain:
 								// 1: single phase flow
 								// 2: two phase flow
@@ -128,32 +166,31 @@ EXPORT void set_parameters(
 /*-------------------------------------------------------------------------------------------------*/
 
       /* general settings */
-      debugging_mode					       = 0;
+      debugging_mode					= 0;
 
       /* computational domain geometry information */
       /* the origin is always chosen in the lower, left corner */
       
-      domain_size_x1                                            = 1.0;
-      domain_size_x2                                            = 1.0/129;
-      domain_size_x3                                            = 1.0;
+      domain_size_x1=6.0;
+      domain_size_x2=0.005;
+      domain_size_x3=0.1;
       
       /* settings for modelling */
-      number_of_phases					        = 2;
+      number_of_phases				= 2;
   
 
       /* settings for time-stepping */
 
-      cfl_number_navier_stokes				        = 1.0; 
-      time_step_restriction_global			        = 0.001;      
-      actual_time_step_navier_stokes    		        = time_step_restriction_global;
-      time_interval_for_output				        = 1000*time_step_restriction_global;
-      time_interval_for_reinitialization		        = time_step_restriction_global*1e10; //worked fine
-//       time_interval_for_reinitialization		        = time_step_restriction_global*1000;
-      number_of_subcycles				        = 1;
-      actual_time_step_level_set			        = actual_time_step_navier_stokes/number_of_subcycles;
-      fixed_time_step					        = 1;	
-      start_time_simulation				        = 0.0;
-      end_time_simulation				        = 50.0;
+      cfl_number_navier_stokes				= 1.0; 
+      time_step_restriction_global			= 1e-6;      
+      actual_time_step_navier_stokes    		= time_step_restriction_global;
+      time_interval_for_output				= time_step_restriction_global*10000;
+      time_interval_for_reinitialization		= time_step_restriction_global*10;
+      number_of_subcycles				= 1;
+      actual_time_step_level_set			= actual_time_step_navier_stokes/number_of_subcycles;
+      fixed_time_step					= 1;	
+      start_time_simulation				= 0.0;
+      end_time_simulation				= 2.0;
       
       /* settings for restart from solution file and solution file writing */
       
@@ -164,9 +201,9 @@ EXPORT void set_parameters(
 						
 
       /* grid parameters */
-      number_primary_cells_i                                    = 129;
-      number_primary_cells_j                                    = 1;
-      number_primary_cells_k                                    = 129;
+      number_primary_cells_i=1200;		
+      number_primary_cells_j=1;	
+      number_primary_cells_k=20;	
       mesh_width_x1=domain_size_x1/number_primary_cells_i;		
       mesh_width_x2=domain_size_x2/number_primary_cells_j;			
       mesh_width_x3=domain_size_x3/number_primary_cells_k;		
@@ -174,76 +211,70 @@ EXPORT void set_parameters(
       /* interface handling parameters */
       apply_mass_distribution_algorithm  				= 0;    
       apply_mass_conservation_correction 				= 1;    
-      volume_of_fluid_tolerance		 				= 1e-6;
-      lower_bound_derivatives		 				= 1e-9;
+      volume_of_fluid_tolerance		 				= 0.000001;
+      lower_bound_derivatives		 				= 0.000000001;
       number_vof_2_level_set_iterations  				= 30;	
       number_iterations_ridder		 				= 120;	
-      vof_2_level_set_tolerance		 				= 1e-6;
+      vof_2_level_set_tolerance		 				= 0.0000000001;	
       cfl_number_reinitialization	 				= 0.5;
-      maximum_reinitialization_steps	 				= 300;
-      tolerance_reinitialization	 				= 0.01;
+      maximum_reinitialization_steps	 				= 400;
+      tolerance_reinitialization	 				= 0.0001;
       apply_curvature_smoothing	        				=  1;
-      number_curvature_smoothing_steps                            	= 20;
-      number_curvature_smoothing_steps                           	= 4;
+      number_curvature_smoothing_steps   				= 20;
       apply_curvature_smoothing_filter	 				=  0;
-      maximum_number_mass_redistribution_iterations			= 200;
+      maximum_number_mass_redistribution_iterations			= 3000;
       time_step_mass_redistribution					= 0.01;	
-      redistribution_vof_tolerance 					= 0.00001;		
+      redistribution_vof_tolerance 					= 0.1;		
      
-	
       /* initial condition */
-      flow_type				 				= bubbly_flow;
-      the_bubbles[0].principle_axis_x1	 				= 20;
-      the_bubbles[0].principle_axis_x2	 				= 20;
-      the_bubbles[0].principle_axis_x3	 				= 20;
-      the_bubbles[0].center_location.x1  				= 0.5*domain_size_x1;
+      flow_type				 			= bubbly_flow;
+      the_bubbles[0].principle_axis_x1	 			= 10.0;
+      the_bubbles[0].principle_axis_x2	 			= 10.0; //2D-flow 
+      the_bubbles[0].principle_axis_x3	 			= 10.0;
+      the_bubbles[0].center_location.x1  				= 13.0;
       the_bubbles[0].center_location.x2  				= 0.5*domain_size_x2;
-//      the_bubbles[0].center_location.x3                                 = 0.025;
-      the_bubbles[0].center_location.x3                                 = 0.5*domain_size_x3;;
+      the_bubbles[0].center_location.x3  				= 0.5*domain_size_x3;
+ //     the_bubbles[0].center_location.x3  				= 0.3;
       number_of_bubbles			 				= 0;
       number_of_free_surfaces		 				= 1;	
       the_free_surfaces[0].active	 				= 1;
-      the_free_surfaces[0].orientation   				= 3;
-      the_free_surfaces[0].height	 				= 20.0;
+      the_free_surfaces[0].orientation   				= -1;
+      the_free_surfaces[0].height	 				= 3.0;
       initial_velocity.u1		 				= 0.0;
       initial_velocity.u2		 				= 0.0;
       initial_velocity.u3		 				= 0.0;
      
 
       /* material properties */
+      rho_minus_over_mu_minus		 	=1e3;
+      mu_plus_over_mu_minus		 	=1.0;
+      rho_plus_over_rho_minus		 	=1e10;	
+      sigma_over_rho_minus		 	=0/100.0;
+      smoothing_distance_factor			=1.5;	
+      
 
-      rho_minus_over_mu_minus		 	=    100.0;
-      mu_plus_over_mu_minus		 	=    1.0;
-      rho_plus_over_rho_minus		 	=    1.0;
-      sigma_over_rho_minus                      =     0.0;
-//       sigma_over_rho_minus                =0;
-//       rho_minus_over_mu_minus             =3.6556E3;
-//       mu_plus_over_mu_minus               =0.01;
-//       rho_plus_over_rho_minus             =0.01;
-//       sigma_over_rho_minus                =0.01;
-      smoothing_distance_factor                 =      1.5;
       
       /* physics */
       
-      gravity.u1			        =      0.0;				
-      gravity.u2			        =      0.0;				
-      gravity.u3			        =      0.0;
+      gravity.u1			 =0.0;				
+      gravity.u2			 =0.0;				
+      gravity.u3			 =-10.0;	
       
       /* linear solvers and matrices*/
 
-      tolerance_pressure		 	=    1e-08;
-      tolerance_velocity		 	=    1e-08;
-      maximum_iterations_allowed_pressure	=      1000;	
-      maximum_iterations_allowed_velocity	=      200;
-      number_matrix_connections		 	=        7;		       
+      tolerance_pressure		 		=0.000001;	 
+      tolerance_velocity		 		=0.000001;
+      maximum_iterations_allowed_pressure		=     1000;	
+      maximum_iterations_allowed_velocity		=      100;
+      number_matrix_connections		 		=        7;		       
 
       /* coupling between interface and flow model */
 
-      continuous_surface_force_model	 	=        1;      
-      source_terms_in_momentum_predictor	=        1;
+      continuous_surface_force_model	 	 = 1;      
+      source_terms_in_momentum_predictor	 = 1;
 
       /* output */
       
-      vtk_output			        =        1;				
-      tecplot_output			        =        0;			
+      vtk_output			 = 1;				
+      tecplot_output			 = 0;			
       }
