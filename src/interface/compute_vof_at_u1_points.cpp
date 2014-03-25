@@ -59,9 +59,18 @@ EXPORT void compute_vof_at_u1_points(
 					   d_level_set_d_x2[i_index][j_index][k_index],
 					      d_level_set_d_x3[i_index][j_index][k_index],
 					    scaled_volume_donating_region,
-					      lower_bound_derivatives));
-				volume_of_fluid_u1[i_index][j_index][k_index]=
-			  	0.5*scaled_volume_donating_region;
+					      lower_bound_derivatives))
+                                {
+				        volume_of_fluid_u1[i_index][j_index][k_index]=
+			  	                0.5*scaled_volume_donating_region;
+                                }
+                                else
+                                {
+                                        std::cerr<< "function evaluation level_set_2_vof\n";
+                                        std::cerr<< "failed in compute_vof_at_u1_points \n";
+                                        std::cerr<< "line 57 \n";
+                                        exit(1);
+                                }
 			}
 			if(i_index<number_primary_cells_i)
 			{
@@ -73,9 +82,18 @@ EXPORT void compute_vof_at_u1_points(
 					   d_level_set_d_x2[i_index+1][j_index][k_index],
 					      d_level_set_d_x3[i_index+1][j_index][k_index],
 					    scaled_volume_donating_region,
-					    lower_bound_derivatives));
-				volume_of_fluid_u1[i_index][j_index][k_index]+=
-			  	0.5*scaled_volume_donating_region;
+					    lower_bound_derivatives))
+                                {
+				        volume_of_fluid_u1[i_index][j_index][k_index]+=
+			  	                0.5*scaled_volume_donating_region;
+                                }
+                                else
+                                {
+                                        std::cerr<< "function evaluation level_set_2_vof\n";
+                                        std::cerr<< "failed in compute_vof_at_u1_points \n";
+                                        std::cerr<< "line 80 \n";
+                                        exit(1);
+                                }
 			}
 // 			  std::cerr<<"vof u1 "<<volume_of_fluid_u1[i_index][j_index][k_index]<<"\n";
 		}

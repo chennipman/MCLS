@@ -86,9 +86,18 @@ EXPORT void compute_vof_flux_x3(
 					d_level_set_d_x2[i_index][j_index][k_index],
 					  d_level_set_d_x3[i_index][j_index][k_index]*cfl_number,
 					    scaled_volume_donating_region,
-					      lower_bound_derivatives));
-			flux_x3[i_index][j_index][k_index]=
-			  cfl_number*scaled_volume_donating_region;
+					      lower_bound_derivatives))
+                        {
+			        flux_x3[i_index][j_index][k_index]=
+			                cfl_number*scaled_volume_donating_region;
+                        }
+                        else
+                        {
+                                std::cerr<< "function evaluation level_set_2_vof\n";
+                                std::cerr<< "failed in compute_vof_flux_x3 \n";
+                                std::cerr<< "line 84 \n";
+                                exit(1);
+                       }
 		    }
 		    else
 		    {
@@ -103,10 +112,18 @@ EXPORT void compute_vof_flux_x3(
 					d_level_set_d_x2[i_index][j_index][k_index+1],
 					  -d_level_set_d_x3[i_index][j_index][k_index+1]*cfl_number,
 					    scaled_volume_donating_region,
-					    lower_bound_derivatives));
-			flux_x3[i_index][j_index][k_index]=
-			  cfl_number*scaled_volume_donating_region;
-		    
+					    lower_bound_derivatives))
+                        {
+			        flux_x3[i_index][j_index][k_index]=
+			                cfl_number*scaled_volume_donating_region;
+                        }
+                        else
+                        {
+                                std::cerr<< "function evaluation level_set_2_vof\n";
+                                std::cerr<< "failed in compute_vof_flux_x3 \n";
+                                std::cerr<< "line 110 \n";
+                                exit(1);
+                        }
 		    }
 		}
 	    }
