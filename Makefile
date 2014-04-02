@@ -1,6 +1,6 @@
 CFLAGS=-O3 -Wall
 
-BUILD_ROOT=build
+BUILD_ROOT=objects
 EXECUTABLE_DIR=executable
 
 COMMON_OBJS=\
@@ -194,10 +194,10 @@ target_dirs:
 clean:
 	$(RM) $(ALL_TARGETS)
 
-build/%.o: src/%.c build/funcdefs.h | target_dirs
-	$(CC) -c -include build/funcdefs.h $(CFLAGS) $< -o $@
+$(BUILD_ROOT)/%.o: src/%.c $(BUILD_ROOT)/funcdefs.h | target_dirs
+	$(CC) -c -include $(BUILD_ROOT)/funcdefs.h $(CFLAGS) $< -o $@
 
-build/%.o: src/%.cpp build/funcdefs.h | target_dirs
-	$(CXX) -c -include build/funcdefs.h $(CFLAGS) $< -o $@
+$(BUILD_ROOT)/%.o: src/%.cpp $(BUILD_ROOT)/funcdefs.h | target_dirs
+	$(CXX) -c -include $(BUILD_ROOT)/funcdefs.h $(CFLAGS) $< -o $@
 
 # vim: noet
