@@ -26,13 +26,33 @@ def parse( filename, funcdefs ):
 
 if __name__ == '__main__':
 
-    with open( '../objects/funcdefs.h', 'w' ) as funcdefs:
+    import sys
+
+    source_files = []
+    output = None
+
+    args = iter( sys.argv )
+    next( args ) # skip program name
+    for arg in args:
+        if arg == '--':
+            break
+        elif arg == '--output':
+            output = next( args )
+        else:
+            source_files.append( arg )
+    source_files.extend( args )
+
+    if output is None:
+        print( 'ERROR: `--output OUTPUT` argument missing' )
+        raise SystemExit( 1 )
+
+    with open( output, 'w' ) as funcdefs:
         print( '#pragma once', file = funcdefs )
         print( '#define EXPORT', file = funcdefs )
-        print( '#include "../src/headers/header_clsses.h"', file = funcdefs )
-        print( '#include "../src/headers/array.h"', file = funcdefs )
-        for root, dirs, files in os.walk( '.' ):
-            for file in files:
-                if not file.endswith( '.cpp' ):
-                    continue
-                parse( os.path.join( root, file ), funcdefs )
+        path_to_headers = os.path.relpath( 'src/headers', os.path.dirname( output ) )
+        print( '#include "{}/header_clsses.h"'.format( path_to_headers ), file = funcdefs )
+        print( '#include "{}/array.h"'.format( path_to_headers ), file = funcdefs )
+        for file in source_files:
+            if not file.endswith( '.cpp' ):
+                continue
+            parse( file, funcdefs )
