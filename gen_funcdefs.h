@@ -20,7 +20,6 @@ def parse( filename, funcdefs ):
         match, n = re.subn( r'\s*,\s?', lambda m: ', ', match )
         match, n = re.subn( r'\s*\)\s*', lambda m: ' )', match )
         match, n = re.subn( r'\s*\(\s*', lambda m: '( ', match )
-        match, n = re.subn( r'([(,] ?)(string|ofstream)', lambda m: m.group(1) + 'std::' + m.group(2), match ) # )
         print( match, file = funcdefs )
 
 

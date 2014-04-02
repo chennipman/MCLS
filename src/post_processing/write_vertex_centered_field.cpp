@@ -24,7 +24,7 @@ using namespace std;
 /********************************************************************************/
 
 EXPORT void  write_vertex_centered_field_tecplot( 
-	ofstream& output_stream, 			// stream connected to output file
+	std::ofstream& output_stream, 			// stream connected to output file
 	Array3<double> vertex_centered_field, 		// cell centered scalar field
 	int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
