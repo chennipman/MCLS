@@ -18,7 +18,7 @@
 
 
 
-EXPORT void add_arrays_unit_test()
+int main()
 {
       Array3<double> output_array;			// output array
       Array3<double> input_array_1;			// input_array_1
@@ -58,7 +58,5 @@ add_arrays(output_array,a,input_array_1,b,input_array_2, number_primary_cells_i+
 	  }  
       }  
   } 
+  return 0;
 }
-	
-	
-

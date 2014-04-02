@@ -174,10 +174,25 @@ $(EXECUTABLE_DIR)/MCLS: $(COMMON_OBJS) $(MCLS_OBJS) | target_dirs
 MCLS: $(EXECUTABLE_DIR)/MCLS
 
 
-# TODO: unit tests
-# momentum_predictor_unit_test.o
-# advance_flow_field_unit_test.o
-# add_arrays_unit_test.o
+# UNIT TESTS
+
+UNIT_TESTS=$(addprefix test_, \
+	momentum_predictor \
+	advance_flow_field \
+	add_arrays \
+)
+
+ALL_TARGETS:=$(ALL_TARGETS) $(addprefix $(EXECUTABLE_DIR)/,$(UNIT_TESTS))
+
+$(EXECUTABLE_DIR)/test_%: unittest/%.cpp $(COMMON_OBJS)
+	$(CXX) -include $(BUILD_ROOT)/funcdefs.h $(CFLAGS) $^ -o $@
+
+.PHONY: test $(UNIT_TESTS)
+
+test: $(UNIT_TESTS)
+
+$(UNIT_TESTS): $(addprefix $(EXECUTABLE_DIR)/,$(UNIT_TESTS))
+	$(EXECUTABLE_DIR)/$@
 
 
 # common rules
