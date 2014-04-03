@@ -1,4 +1,5 @@
 CFLAGS=-O3 -Wall
+CXXFLAGS=-O3 -Wall
 
 BUILD_ROOT=objects
 EXECUTABLE_DIR=executable
@@ -170,7 +171,7 @@ MCLS_OBJS=$(BUILD_ROOT)/src/main_program/dns.o
 ALL_TARGETS:=$(ALL_TARGETS) $(MCLS_OBJS) $(EXECUTABLE_DIR)/MCLS
 
 $(EXECUTABLE_DIR)/MCLS: $(COMMON_OBJS) $(MCLS_OBJS) | target_dirs
-	$(CXX) $^ -o $@
+	$(CXX) $(LDFLAGS) $^ -o $@
 
 .PHONY: MCLS
 MCLS: $(EXECUTABLE_DIR)/MCLS
@@ -186,7 +187,7 @@ ALL_TARGETS:= \
 	$(addprefix $(BUILD_ROOT)/unittest/, $(addsuffix .o, $(UNIT_TESTS)))
 
 $(EXECUTABLE_DIR)/test_%: $(BUILD_ROOT)/unittest/%.o $(COMMON_OBJS) | target_dirs
-	$(CXX) $^ -o $@
+	$(CXX) $(LDFLAGS) $^ -o $@
 
 .PHONY: test $(UNIT_TESTS)
 
@@ -211,9 +212,9 @@ clean:
 	$(RM) $(ALL_TARGETS)
 
 $(BUILD_ROOT)/%.o: %.c $(BUILD_ROOT)/funcdefs.h | target_dirs
-	$(CC) -c -include $(BUILD_ROOT)/funcdefs.h $(CFLAGS) $< -o $@
+	$(CC) -c -include $(BUILD_ROOT)/funcdefs.h $(CPPFLAGS) $(CFLAGS) $< -o $@
 
 $(BUILD_ROOT)/%.o: %.cpp $(BUILD_ROOT)/funcdefs.h | target_dirs
-	$(CXX) -c -include $(BUILD_ROOT)/funcdefs.h $(CFLAGS) $< -o $@
+	$(CXX) -c -include $(BUILD_ROOT)/funcdefs.h $(CPPFLAGS) $(CXXFLAGS) $< -o $@
 
 # vim: noet
