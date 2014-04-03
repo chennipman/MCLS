@@ -3,168 +3,170 @@ CFLAGS=-O3 -Wall
 BUILD_ROOT=objects
 EXECUTABLE_DIR=executable
 
-COMMON_OBJS=\
-	$(addprefix $(BUILD_ROOT)/initialization/,\
-		allocate_main_variables.o\
-		build_pressure_rhs_initialization.o\
-		build_pressure_system_initialization.o\
-		initialize_all_variables.o\
-		initialize_bubbles.o\
-		initialize_computation.o\
-		initialize_coupling.o\
-		initialize_curvature.o\
-		initialize_flow_field.o\
-		initialize_free_surface.o\
-		initialize_interface.o\
-		initialize_level_set.o\
-		initialize_pressure.o\
-		initialize_volume_of_fluid.o\
-		set_boundary_conditions.o\
-		set_parameters.o\
-		write_interface_solution.o\
-	)\
-	$(addprefix $(BUILD_ROOT)/interface/,\
-		advance_interface.o\
-		advect_level_set.o\
-		advect_level_set_higher_order.o\
-		analyse_interface_properties.o\
-		apply_bisection.o\
-		apply_ridders_method.o\
-		apply_volume_of_fluid_clipping.o\
-		apply_volume_of_fluid_redistribution.o\
-		check_volume_of_fluid.o\
-		compute_derivatives_level_set.o\
-		compute_first_stage_RK.o\
-		compute_level_set_flux.o\
-		compute_level_set_gradient.o\
-		compute_mass_in_domain.o\
-		compute_new_time_RK.o\
-		compute_normal_derivative_at_faces.o\
-		compute_redistribution_velocity.o\
-		compute_second_stage_RK.o\
-		compute_vof_at_u1_points.o\
-		compute_vof_at_u2_points.o\
-		compute_vof_at_u3_points.o\
-		compute_vof_flux_x1.o\
-		compute_vof_flux_x2.o\
-		compute_vof_flux_x3.o\
-		compute_volume_of_fluid.o\
-		copy_cell_centered_field.o\
-		dump_adapted_vof_for_debugging.o\
-		dump_reinitialization_for_debugging.o\
-		dump_solution_for_debugging.o\
-		evaluate_convection_operator_weno.o\
-		field_neumann_boundary.o\
-		level_set_2_vof.o\
-		level_set_2_vof_phi_negative.o\
-		make_level_set_mass_conserving.o\
-		match_level_set_to_volume_of_fluid.o\
-		modify_volume_of_fluid_values.o\
-		redistribute_volume_of_fluid_error.o\
-		reinitialize_level_set.o\
-		shift_interface.o\
-		update_volume_of_fluid_flux_x1.o\
-		update_volume_of_fluid_flux_x2.o\
-		update_volume_of_fluid_flux_x3.o\
-		upwind_flux_mass_redistribution.o\
-		vof_2_level_set.o\
-		weno_flux_computation.o\
-	)\
-	$(addprefix $(BUILD_ROOT)/interface_coupling/,\
-		advance_coupling.o\
-		advance_coupling_part1.o\
-		advance_coupling_part2.o\
-		compute_body_force_x1.o\
-		compute_body_force_x2.o\
-		compute_body_force_x3.o\
-		compute_curvature.o\
-		compute_curvature_error_laplace.o\
-		compute_density_u_controlvolumes.o\
-		compute_momentum_source_terms.o\
-		compute_scaled_density_u1.o\
-		compute_scaled_density_u2.o\
-		compute_scaled_density_u3.o\
-		compute_surface_tension_body_force.o\
-		compute_weighted_curvature.o\
-		computed_derivative_heaviside_function.o\
-		curvature_filter.o\
-		delta_function.o\
-		dump_curvature_for_debugging.o\
-		smooth_curvature.o\
-	)\
-	$(addprefix $(BUILD_ROOT)/linear_solver/,\
-		apply_preconditioner.o\
-		build_preconditioner.o\
-		conjugate_gradient_method.o\
-		export_matrix_matlab.o\
-	)\
-	$(addprefix $(BUILD_ROOT)/main_program/,\
-		advance_flow_field.o\
-		compute_time_step_size.o\
-		time_stepping_sequence.o\
-	)\
-	$(addprefix $(BUILD_ROOT)/momentum_equation/,\
-		apply_boundary_conditions_velocity.o\
-		apply_boundary_conditions_velocity_u1.o\
-		apply_boundary_conditions_velocity_u2.o\
-		apply_boundary_conditions_velocity_u3.o\
-		compute_scaled_density.o\
-		compute_scaled_viscosity.o\
-		compute_weighted_average.o\
-		copy_general_field.o\
-		momentum_predictor.o\
-		output_predictor_velocityfield.o\
-		shift_velocity_field.o\
-	)\
-	$(addprefix $(BUILD_ROOT)/post_processing/,\
-		check_symmetry_scalars.o\
-		check_symmetry_velocities.o\
-		interpolate_velocity_u1_center.o\
-		interpolate_velocity_u1_vertex.o\
-		interpolate_velocity_u2_center.o\
-		interpolate_velocity_u2_vertex.o\
-		interpolate_velocity_u3_center.o\
-		interpolate_velocity_u3_vertex.o\
-		output_solution.o\
-		write_cell_centered_field_tecplot.o\
-		write_cell_centered_field_vtk.o\
-		write_coordinates_tecplot.o\
-		write_coordinates_vtk.o\
-		write_vertex_centered_field_vtk.o\
-		write_vertex_centered_vector_field_vtk.o\
-	)\
-	$(addprefix $(BUILD_ROOT)/pressure_correction_equation/,\
-		apply_boundary_conditions_pressure.o\
-		apply_pressure_correction.o\
-		build_pressure_matrix.o\
-		build_pressure_rhs_boundary.o\
-		build_pressure_rhs_momentum_part.o\
-		build_pressure_system.o\
-		compress_solution_pressure.o\
-		decompress_solution_pressure.o\
-		dump_divergence_for_debugging.o\
-		field_extrapolate_boundary.o\
-		map_index_pressure.o\
-		project_pressure_rhside.o\
-		set_pressure_boundary_condition.o\
-		shift_pressure_solution.o\
-		solve_momentum_corrector.o\
-		solve_pressure_correction_system.o\
-	)\
-	$(addprefix $(BUILD_ROOT)/restart/,\
-		read_restart_file.o\
-		write_restart_file.o\
-	)\
-	$(addprefix $(BUILD_ROOT)/utils/,\
-		utilities.o\
+COMMON_SRCS= \
+	$(addprefix src/initialization/, \
+		allocate_main_variables.cpp \
+		build_pressure_rhs_initialization.cpp \
+		build_pressure_system_initialization.cpp \
+		initialize_all_variables.cpp \
+		initialize_bubbles.cpp \
+		initialize_computation.cpp \
+		initialize_coupling.cpp \
+		initialize_curvature.cpp \
+		initialize_flow_field.cpp \
+		initialize_free_surface.cpp \
+		initialize_interface.cpp \
+		initialize_level_set.cpp \
+		initialize_pressure.cpp \
+		initialize_volume_of_fluid.cpp \
+		set_boundary_conditions.cpp \
+		set_parameters.cpp \
+		write_interface_solution.cpp \
+	) \
+	$(addprefix src/interface/, \
+		advance_interface.cpp \
+		advect_level_set.cpp \
+		advect_level_set_higher_order.cpp \
+		analyse_interface_properties.cpp \
+		apply_bisection.cpp \
+		apply_ridders_method.cpp \
+		apply_volume_of_fluid_clipping.cpp \
+		apply_volume_of_fluid_redistribution.cpp \
+		check_volume_of_fluid.cpp \
+		compute_derivatives_level_set.cpp \
+		compute_first_stage_RK.cpp \
+		compute_level_set_flux.cpp \
+		compute_level_set_gradient.cpp \
+		compute_mass_in_domain.cpp \
+		compute_new_time_RK.cpp \
+		compute_normal_derivative_at_faces.cpp \
+		compute_redistribution_velocity.cpp \
+		compute_second_stage_RK.cpp \
+		compute_vof_at_u1_points.cpp \
+		compute_vof_at_u2_points.cpp \
+		compute_vof_at_u3_points.cpp \
+		compute_vof_flux_x1.cpp \
+		compute_vof_flux_x2.cpp \
+		compute_vof_flux_x3.cpp \
+		compute_volume_of_fluid.cpp \
+		copy_cell_centered_field.cpp \
+		dump_adapted_vof_for_debugging.cpp \
+		dump_reinitialization_for_debugging.cpp \
+		dump_solution_for_debugging.cpp \
+		evaluate_convection_operator_weno.cpp \
+		field_neumann_boundary.cpp \
+		level_set_2_vof.cpp \
+		level_set_2_vof_phi_negative.cpp \
+		make_level_set_mass_conserving.cpp \
+		match_level_set_to_volume_of_fluid.cpp \
+		modify_volume_of_fluid_values.cpp \
+		redistribute_volume_of_fluid_error.cpp \
+		reinitialize_level_set.cpp \
+		shift_interface.cpp \
+		update_volume_of_fluid_flux_x1.cpp \
+		update_volume_of_fluid_flux_x2.cpp \
+		update_volume_of_fluid_flux_x3.cpp \
+		upwind_flux_mass_redistribution.cpp \
+		vof_2_level_set.cpp \
+		weno_flux_computation.cpp \
+	) \
+	$(addprefix src/interface_coupling/, \
+		advance_coupling.cpp \
+		advance_coupling_part1.cpp \
+		advance_coupling_part2.cpp \
+		compute_body_force_x1.cpp \
+		compute_body_force_x2.cpp \
+		compute_body_force_x3.cpp \
+		compute_curvature.cpp \
+		compute_curvature_error_laplace.cpp \
+		compute_density_u_controlvolumes.cpp \
+		compute_momentum_source_terms.cpp \
+		compute_scaled_density_u1.cpp \
+		compute_scaled_density_u2.cpp \
+		compute_scaled_density_u3.cpp \
+		compute_surface_tension_body_force.cpp \
+		compute_weighted_curvature.cpp \
+		computed_derivative_heaviside_function.cpp \
+		curvature_filter.cpp \
+		delta_function.cpp \
+		dump_curvature_for_debugging.cpp \
+		smooth_curvature.cpp \
+	) \
+	$(addprefix src/linear_solver/, \
+		apply_preconditioner.cpp \
+		build_preconditioner.cpp \
+		conjugate_gradient_method.cpp \
+		export_matrix_matlab.cpp \
+	) \
+	$(addprefix src/main_program/, \
+		advance_flow_field.cpp \
+		compute_time_step_size.cpp \
+		time_stepping_sequence.cpp \
+	) \
+	$(addprefix src/momentum_equation/, \
+		apply_boundary_conditions_velocity.cpp \
+		apply_boundary_conditions_velocity_u1.cpp \
+		apply_boundary_conditions_velocity_u2.cpp \
+		apply_boundary_conditions_velocity_u3.cpp \
+		compute_scaled_density.cpp \
+		compute_scaled_viscosity.cpp \
+		compute_weighted_average.cpp \
+		copy_general_field.cpp \
+		momentum_predictor.cpp \
+		output_predictor_velocityfield.cpp \
+		shift_velocity_field.cpp \
+	) \
+	$(addprefix src/post_processing/, \
+		check_symmetry_scalars.cpp \
+		check_symmetry_velocities.cpp \
+		interpolate_velocity_u1_center.cpp \
+		interpolate_velocity_u1_vertex.cpp \
+		interpolate_velocity_u2_center.cpp \
+		interpolate_velocity_u2_vertex.cpp \
+		interpolate_velocity_u3_center.cpp \
+		interpolate_velocity_u3_vertex.cpp \
+		output_solution.cpp \
+		write_cell_centered_field_tecplot.cpp \
+		write_cell_centered_field_vtk.cpp \
+		write_coordinates_tecplot.cpp \
+		write_coordinates_vtk.cpp \
+		write_vertex_centered_field_vtk.cpp \
+		write_vertex_centered_vector_field_vtk.cpp \
+	) \
+	$(addprefix src/pressure_correction_equation/, \
+		apply_boundary_conditions_pressure.cpp \
+		apply_pressure_correction.cpp \
+		build_pressure_matrix.cpp \
+		build_pressure_rhs_boundary.cpp \
+		build_pressure_rhs_momentum_part.cpp \
+		build_pressure_system.cpp \
+		compress_solution_pressure.cpp \
+		decompress_solution_pressure.cpp \
+		dump_divergence_for_debugging.cpp \
+		field_extrapolate_boundary.cpp \
+		map_index_pressure.cpp \
+		project_pressure_rhside.cpp \
+		set_pressure_boundary_condition.cpp \
+		shift_pressure_solution.cpp \
+		solve_momentum_corrector.cpp \
+		solve_pressure_correction_system.cpp \
+	) \
+	$(addprefix src/restart/, \
+		read_restart_file.cpp \
+		write_restart_file.cpp \
+	) \
+	$(addprefix src/utils/, \
+		utilities.cpp \
 	)
+
+COMMON_OBJS=$(addprefix $(BUILD_ROOT)/, $(addsuffix .o, $(basename $(COMMON_SRCS))))
 
 ALL_TARGETS:=$(COMMON_OBJS)
 
 
 # MCLS
 
-MCLS_OBJS=$(BUILD_ROOT)/main_program/dns.o
+MCLS_OBJS=$(BUILD_ROOT)/src/main_program/dns.o
 ALL_TARGETS:=$(ALL_TARGETS) $(MCLS_OBJS) $(EXECUTABLE_DIR)/MCLS
 
 $(EXECUTABLE_DIR)/MCLS: $(COMMON_OBJS) $(MCLS_OBJS) | target_dirs
@@ -182,10 +184,13 @@ UNIT_TESTS=$(addprefix test_, \
 	add_arrays \
 )
 
-ALL_TARGETS:=$(ALL_TARGETS) $(addprefix $(EXECUTABLE_DIR)/,$(UNIT_TESTS))
+ALL_TARGETS:= \
+	$(ALL_TARGETS) \
+	$(addprefix $(EXECUTABLE_DIR)/, $(UNIT_TESTS)) \
+	$(addprefix $(BUILD_ROOT)/unittest/, $(addsuffix .o, $(UNIT_TESTS)))
 
-$(EXECUTABLE_DIR)/test_%: unittest/%.cpp $(COMMON_OBJS)
-	$(CXX) -include $(BUILD_ROOT)/funcdefs.h $(CFLAGS) $^ -o $@
+$(EXECUTABLE_DIR)/test_%: $(BUILD_ROOT)/unittest/%.o $(COMMON_OBJS) | target_dirs
+	$(CXX) $^ -o $@
 
 .PHONY: test $(UNIT_TESTS)
 
@@ -199,7 +204,7 @@ $(UNIT_TESTS): $(addprefix $(EXECUTABLE_DIR)/,$(UNIT_TESTS))
 
 ALL_TARGETS:=$(ALL_TARGETS) $(BUILD_ROOT)/funcdefs.h
 $(BUILD_ROOT)/funcdefs.h: | target_dirs
-	./gen_funcdefs.h --output $@ -- $(patsubst $(BUILD_ROOT)/%.o,src/%.cpp,$(COMMON_OBJS))
+	./gen_funcdefs.h --output $@ -- $(COMMON_SRCS)
 
 .PHONY: target_dirs
 target_dirs:
@@ -209,10 +214,10 @@ target_dirs:
 clean:
 	$(RM) $(ALL_TARGETS)
 
-$(BUILD_ROOT)/%.o: src/%.c $(BUILD_ROOT)/funcdefs.h | target_dirs
+$(BUILD_ROOT)/%.o: %.c $(BUILD_ROOT)/funcdefs.h | target_dirs
 	$(CC) -c -include $(BUILD_ROOT)/funcdefs.h $(CFLAGS) $< -o $@
 
-$(BUILD_ROOT)/%.o: src/%.cpp $(BUILD_ROOT)/funcdefs.h | target_dirs
+$(BUILD_ROOT)/%.o: %.cpp $(BUILD_ROOT)/funcdefs.h | target_dirs
 	$(CXX) -c -include $(BUILD_ROOT)/funcdefs.h $(CFLAGS) $< -o $@
 
 # vim: noet
