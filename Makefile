@@ -170,7 +170,8 @@ ALL_TARGETS:=$(COMMON_OBJS)
 MCLS_OBJS=$(BUILD_DIR)/src/main_program/dns.o
 ALL_TARGETS:=$(ALL_TARGETS) $(MCLS_OBJS) $(EXECUTABLE_DIR)/MCLS
 
-$(EXECUTABLE_DIR)/MCLS: $(COMMON_OBJS) $(MCLS_OBJS) | target_dirs
+$(EXECUTABLE_DIR)/MCLS: $(COMMON_OBJS) $(MCLS_OBJS)
+	@mkdir -p $(dir $@)
 	$(CXX) $(LDFLAGS) $^ -o $@
 
 .PHONY: MCLS
@@ -186,7 +187,8 @@ ALL_TARGETS:= \
 	$(addprefix $(EXECUTABLE_DIR)/, $(UNIT_TESTS)) \
 	$(addprefix $(BUILD_DIR)/unittest/, $(addsuffix .o, $(UNIT_TESTS)))
 
-$(EXECUTABLE_DIR)/test_%: $(BUILD_DIR)/unittest/%.o $(COMMON_OBJS) | target_dirs
+$(EXECUTABLE_DIR)/test_%: $(BUILD_DIR)/unittest/%.o $(COMMON_OBJS)
+	@mkdir -p $(dir $@)
 	$(CXX) $(LDFLAGS) $^ -o $@
 
 .PHONY: test $(UNIT_TESTS)
@@ -200,21 +202,20 @@ $(UNIT_TESTS): $(addprefix $(EXECUTABLE_DIR)/,$(UNIT_TESTS))
 # common rules
 
 ALL_TARGETS:=$(ALL_TARGETS) $(BUILD_DIR)/funcdefs.h
-$(BUILD_DIR)/funcdefs.h: | target_dirs
+$(BUILD_DIR)/funcdefs.h:
+	@mkdir -p $(dir $@)
 	./gen_funcdefs.h --output $@ -- $(COMMON_SRCS)
-
-.PHONY: target_dirs
-target_dirs:
-	mkdir -p $(sort $(dir $(ALL_TARGETS)))
 
 .PHONY: clean
 clean:
 	$(RM) $(ALL_TARGETS)
 
-$(BUILD_DIR)/%.o: %.c $(BUILD_DIR)/funcdefs.h | target_dirs
+$(BUILD_DIR)/%.o: %.c $(BUILD_DIR)/funcdefs.h
+	@mkdir -p $(dir $@)
 	$(CC) -c -include $(BUILD_DIR)/funcdefs.h $(CPPFLAGS) $(CFLAGS) $< -o $@
 
-$(BUILD_DIR)/%.o: %.cpp $(BUILD_DIR)/funcdefs.h | target_dirs
+$(BUILD_DIR)/%.o: %.cpp $(BUILD_DIR)/funcdefs.h
+	@mkdir -p $(dir $@)
 	$(CXX) -c -include $(BUILD_DIR)/funcdefs.h $(CPPFLAGS) $(CXXFLAGS) $< -o $@
 
 # vim: noet
