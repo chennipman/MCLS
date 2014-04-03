@@ -178,11 +178,7 @@ MCLS: $(EXECUTABLE_DIR)/MCLS
 
 # UNIT TESTS
 
-UNIT_TESTS=$(addprefix test_, \
-	momentum_predictor \
-	advance_flow_field \
-	add_arrays \
-)
+UNIT_TESTS=$(addprefix test_, $(notdir $(basename $(wildcard unittest/*.cpp))))
 
 ALL_TARGETS:= \
 	$(ALL_TARGETS) \
