@@ -1,7 +1,7 @@
 CFLAGS=-O3 -Wall
 CXXFLAGS=-O3 -Wall
 
-BUILD_ROOT=objects
+BUILD_DIR=objects
 EXECUTABLE_DIR=executable
 
 COMMON_SRCS= \
@@ -160,14 +160,14 @@ COMMON_SRCS= \
 		utilities.cpp \
 	)
 
-COMMON_OBJS=$(addprefix $(BUILD_ROOT)/, $(addsuffix .o, $(basename $(COMMON_SRCS))))
+COMMON_OBJS=$(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(COMMON_SRCS))))
 
 ALL_TARGETS:=$(COMMON_OBJS)
 
 
 # MCLS
 
-MCLS_OBJS=$(BUILD_ROOT)/src/main_program/dns.o
+MCLS_OBJS=$(BUILD_DIR)/src/main_program/dns.o
 ALL_TARGETS:=$(ALL_TARGETS) $(MCLS_OBJS) $(EXECUTABLE_DIR)/MCLS
 
 $(EXECUTABLE_DIR)/MCLS: $(COMMON_OBJS) $(MCLS_OBJS) | target_dirs
@@ -184,9 +184,9 @@ UNIT_TESTS=$(addprefix test_, $(notdir $(basename $(wildcard unittest/*.cpp))))
 ALL_TARGETS:= \
 	$(ALL_TARGETS) \
 	$(addprefix $(EXECUTABLE_DIR)/, $(UNIT_TESTS)) \
-	$(addprefix $(BUILD_ROOT)/unittest/, $(addsuffix .o, $(UNIT_TESTS)))
+	$(addprefix $(BUILD_DIR)/unittest/, $(addsuffix .o, $(UNIT_TESTS)))
 
-$(EXECUTABLE_DIR)/test_%: $(BUILD_ROOT)/unittest/%.o $(COMMON_OBJS) | target_dirs
+$(EXECUTABLE_DIR)/test_%: $(BUILD_DIR)/unittest/%.o $(COMMON_OBJS) | target_dirs
 	$(CXX) $(LDFLAGS) $^ -o $@
 
 .PHONY: test $(UNIT_TESTS)
@@ -199,8 +199,8 @@ $(UNIT_TESTS): $(addprefix $(EXECUTABLE_DIR)/,$(UNIT_TESTS))
 
 # common rules
 
-ALL_TARGETS:=$(ALL_TARGETS) $(BUILD_ROOT)/funcdefs.h
-$(BUILD_ROOT)/funcdefs.h: | target_dirs
+ALL_TARGETS:=$(ALL_TARGETS) $(BUILD_DIR)/funcdefs.h
+$(BUILD_DIR)/funcdefs.h: | target_dirs
 	./gen_funcdefs.h --output $@ -- $(COMMON_SRCS)
 
 .PHONY: target_dirs
@@ -211,10 +211,10 @@ target_dirs:
 clean:
 	$(RM) $(ALL_TARGETS)
 
-$(BUILD_ROOT)/%.o: %.c $(BUILD_ROOT)/funcdefs.h | target_dirs
-	$(CC) -c -include $(BUILD_ROOT)/funcdefs.h $(CPPFLAGS) $(CFLAGS) $< -o $@
+$(BUILD_DIR)/%.o: %.c $(BUILD_DIR)/funcdefs.h | target_dirs
+	$(CC) -c -include $(BUILD_DIR)/funcdefs.h $(CPPFLAGS) $(CFLAGS) $< -o $@
 
-$(BUILD_ROOT)/%.o: %.cpp $(BUILD_ROOT)/funcdefs.h | target_dirs
-	$(CXX) -c -include $(BUILD_ROOT)/funcdefs.h $(CPPFLAGS) $(CXXFLAGS) $< -o $@
+$(BUILD_DIR)/%.o: %.cpp $(BUILD_DIR)/funcdefs.h | target_dirs
+	$(CXX) -c -include $(BUILD_DIR)/funcdefs.h $(CPPFLAGS) $(CXXFLAGS) $< -o $@
 
 # vim: noet
