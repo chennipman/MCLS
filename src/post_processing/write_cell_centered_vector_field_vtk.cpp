@@ -24,9 +24,9 @@ using namespace std;
 /********************************************************************************/
 
 EXPORT void  write_cell_centered_vector_field_vtk( 
-	ofstream& output_stream, 			// stream connected to output file
-	string vector_name,				// name of the scalar field to write to file 
-	string look_up_table_name,			// name of the look-up table
+	std::ofstream& output_stream, 			// stream connected to output file
+	std::string vector_name,			// name of the scalar field to write to file 
+	std::string look_up_table_name,			// name of the look-up table
 	Array3<double> cell_centered_vector_field_1, 	// cell centered vector field, x1 component
 	Array3<double> cell_centered_vector_field_2, 	// cell centered vector field, x2 component
 	Array3<double> cell_centered_vector_field_3, 	// cell centered vector field, x3 component

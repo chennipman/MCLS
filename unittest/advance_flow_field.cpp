@@ -18,7 +18,7 @@
 /* To test the momentum_predictor, use momentum_predictor_unit_test             */
 /********************************************************************************/
 
-EXPORT void advance_flow_field_unit_test()
+int main()
 {
       Array3<double> level_set;				// level-set field
       Array3<double> pressure;				// pressure field
@@ -320,9 +320,6 @@ for(i=1;i<number_primary_cells_i+1;i++)
 	
 
       printf("%s \n", "advance_flow_field_unit_test finish");
-      
-      }
 
-
-
-
+      return 0;
+}

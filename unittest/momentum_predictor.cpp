@@ -21,7 +21,7 @@
 /* The convection and diffusion can be tested seperataly. 			*/
 /********************************************************************************/
 
-EXPORT void momentum_predictor_unit_test()
+int main()
 {
       Array3<double> pressure;				// pressure field
       Array3<double> level_set;				// level-set field
@@ -264,7 +264,5 @@ for(i=1;i<number_primary_cells_i+1;i++)
 }}}
        printf("%s \n", "moment_predictor_unit_test finish");
 
+       return 0;
 }
-
-
-
