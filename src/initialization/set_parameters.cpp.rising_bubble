@@ -179,22 +179,22 @@ public:
 
       /* settings for time-stepping */
 
-      cfl_number_navier_stokes			= 1.0;
+      cfl_number_navier_stokes			        = 1.0;
       time_step_restriction_global			= 0.001;      
       actual_time_step_navier_stokes    		= time_step_restriction_global;
-      time_interval_for_output			= time_step_restriction_global;
+      time_interval_for_output			        = time_step_restriction_global;
       number_of_subcycles				= 1;
       actual_time_step_level_set			= actual_time_step_navier_stokes/number_of_subcycles;
       fixed_time_step					= 1;	
       start_time_simulation				= 0.0;
-      end_time_simulation				= 0.10;
+      end_time_simulation				= 0.002;
       
       /* settings for restart from solution file and solution file writing */
       
-      my_restart_parameters.start_from_restart_file		= 0;		
+      my_restart_parameters.start_from_restart_file		        = 0;		
       my_restart_parameters.write_solution_to_restart_file		= 0;
-      my_restart_parameters.name_restart_file_to_write		= "restart_file_mcls_out";
-      my_restart_parameters.name_restart_file_to_read		= "restart_file_mcls_in";
+      my_restart_parameters.name_restart_file_to_write		        = "restart_file_mcls_out";
+      my_restart_parameters.name_restart_file_to_read		        = "restart_file_mcls_in";
 						
 
       /* grid parameters */
@@ -208,31 +208,31 @@ public:
       /* interface handling parameters */
       apply_mass_distribution_algorithm  				= 0;    
       apply_mass_conservation_correction 				= 0;    
-      volume_of_fluid_tolerance		 			= 0.0001;
+      volume_of_fluid_tolerance		 			        = 0.0001;
       lower_bound_derivatives		 				= 0.00000001;
       number_vof_2_level_set_iterations  				= 20;	
-      number_iterations_ridder		 			= 100;	
-      vof_2_level_set_tolerance		 			= 0.00001;	
+      number_iterations_ridder		 			        = 100;	
+      vof_2_level_set_tolerance		 			        = 0.00001;	
       cfl_number_reinitialization	 				= 0.5;
       maximum_reinitialization_steps	 				= 400;
       tolerance_reinitialization	 				= 0.0001;
-      apply_curvature_smoothing	        			=  0;
+      apply_curvature_smoothing	        			        =  0;
       number_curvature_smoothing_steps   				= 4;
-      apply_curvature_smoothing_filter	 			=  0;
-      maximum_number_mass_redistribution_iterations		= 3000;
+      apply_curvature_smoothing_filter	 			        =  0;
+      maximum_number_mass_redistribution_iterations		        = 3000;
       time_step_mass_redistribution					= 0.01;	
       redistribution_vof_tolerance 					= 0.1;		
      
 	
       /* initial condition */
-      flow_type				 			= bubbly_flow;
-      the_bubbles[0].principle_axis_x1	 			= 0.01;
-      the_bubbles[0].principle_axis_x2	 			= 0.01;
-      the_bubbles[0].principle_axis_x3	 			= 0.01;
+      flow_type				 			        = bubbly_flow;
+      the_bubbles[0].principle_axis_x1	 			        = 0.01;
+      the_bubbles[0].principle_axis_x2	 			        = 0.01;
+      the_bubbles[0].principle_axis_x3	 			        = 0.01;
       the_bubbles[0].center_location.x1  				= 0.5*domain_size_x1;
       the_bubbles[0].center_location.x2  				= 0.5*domain_size_x2;
       the_bubbles[0].center_location.x3  				= 0.025;
-      number_of_bubbles			 			= 1;
+      number_of_bubbles			 			        = 1;
       number_of_free_surfaces		 				= 0;	
       the_free_surfaces[0].active	 				= 1;
       the_free_surfaces[0].orientation   				= 3;
@@ -263,7 +263,7 @@ public:
       tolerance_velocity		 		=0.000001;
       maximum_iterations_allowed_pressure		=      400;	
       maximum_iterations_allowed_velocity		=      100;
-      number_matrix_connections		 	=        7;		       
+      number_matrix_connections		 	        =        7;		       
 
       /* coupling between interface and flow model */
 

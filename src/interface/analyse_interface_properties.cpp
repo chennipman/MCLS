@@ -238,18 +238,11 @@ EXPORT void analyse_interface_properties(
      
   	} 
 	
-	cerr<<"velocity_centroid_vof.u1 "<<velocity_centroid_vof.u1<<"\n";
-	cerr<<"velocity_centroid_vof.u2 "<<velocity_centroid_vof.u2<<"\n";
-	cerr<<"velocity_centroid_vof.u3 "<<velocity_centroid_vof.u3<<"\n";
-	cerr<<"enclosed_volume	   "<<enclosed_volume<<"\n";
 	
 	velocity_centroid_vof.u1=velocity_centroid_vof.u1/enclosed_volume;
 	velocity_centroid_vof.u2=velocity_centroid_vof.u2/enclosed_volume;
 	velocity_centroid_vof.u3=velocity_centroid_vof.u3/enclosed_volume;
 
-// 	cerr<<"velocity_centroid_vof.u1 "<<velocity_centroid_vof.u1<<"\n";
-// 	cerr<<"velocity_centroid_vof.u2 "<<velocity_centroid_vof.u2<<"\n";
-// 	cerr<<"velocity_centroid_vof.u3 "<<velocity_centroid_vof.u3<<"\n";
 		
 	enclosed_volume=enclosed_volume*mesh_width_x1*mesh_width_x2*mesh_width_x3;
 	
@@ -259,7 +252,6 @@ EXPORT void analyse_interface_properties(
 	
 	if(!interface_details.is_open())
 	{
-		cout<<"writing headers\n";
 		interface_details.open("interface_details.csv");
 		
 		/* check if the file is open indeed */

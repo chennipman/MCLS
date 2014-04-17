@@ -61,7 +61,7 @@ EXPORT void match_level_set_to_volume_of_fluid(
 							        // level-set field
 	Array3<double> level_set_correction;		        // correction to be applied to the level-set field
 							        // to make it mass-conserving
-	double maximum_level_set_correction=0.0;		        // maximum of correction that needs to be applied
+	double maximum_level_set_correction=0.0;		// maximum of correction that needs to be applied
 							        // to the convected level-set field to make it mass
 							        // conserving
 	double maximum_volume_of_fluid_deviation=0.0;	        // maximum of volume of fluid deviation

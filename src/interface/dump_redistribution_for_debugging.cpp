@@ -1,5 +1,4 @@
 #include "../headers/array.h"
-
 #include <iostream>
 #include <stdlib.h> 
 #include <stdio.h> 
@@ -28,13 +27,18 @@ using namespace std;
 /* For debugging purposes all variables involved in the corrective process are  */
 /* written to file for visual inspection.					*/
 /********************************************************************************/
-EXPORT void dump_solution_for_debugging(
-	Array3<double> level_set_star,			// level set field
-	Array3<double> volume_of_fluid,		 	// volume of fluid field
-	Array3<double> level_set_mass_conserving,	// corrected, mass conserving level-set field
-	Array3<double> level_set_correction,		// correction needed to make level-set mass conserving
-	Array3<double> volume_of_fluid_deviation,       // difference between the converted, advected level
-							// set field and the advected volume of fluid field
+EXPORT void dump_redistribution_for_debugging(
+	Array3<double> level_set_original,	        // level set field before the redistribution
+	Array3<double> volume_of_fluid_original,	// volume of fluid field before the redistribution
+	Array3<double> level_set_updated,	        // level set field after 1 redistribution sweep
+	Array3<double> invalid_vof_cells,		// indicator field showing cells that are either
+                                                        // within bounds =0
+                                                        // underfilled   =-1
+                                                        // overfilled    =+1
+                                                        // vapour cells  = 5
+	Array3<double> volume_of_fluid_error,           // deviation of the current vof value from
+							// an acceptable value (vapour cell, underfilled,
+                                                        // overfilled)
 	int number_primary_cells_i,			// number of primary (pressure) 
 							// cells in x1 direction
 	int number_primary_cells_j,			// number of primary (pressure) 
@@ -59,7 +63,7 @@ EXPORT void dump_solution_for_debugging(
       
       /* dump the solution to a vtk file for visualisation */
       
-		  ofstream output_vtk ( "debug_interface.vtk");
+		  ofstream output_vtk ( "debug_interface_redistribution.vtk");
 		  if(!output_vtk)
 		  {
 		      /* the contructor returned a 0-pointer :-( */
@@ -89,42 +93,43 @@ EXPORT void dump_solution_for_debugging(
 		  
 		  /* write the volume of fluid */
 		  
-		  scalar_name="volume_of_fluid";
+		  scalar_name="volume_of_fluid_original";
 		  look_up_table_name="vof_tbl";
 		  
-		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, volume_of_fluid, 		
+		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, volume_of_fluid_original, 		
 						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
 
+                  /* write the volume of fluid error: the deviation from valid values in the interval [0,1] */
 		  
-		  scalar_name="volume_of_fluid_deviation";
+		  scalar_name="volume_of_fluid_error";
 		  look_up_table_name="vof_tbl";
 		  
-		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, volume_of_fluid_deviation, 		
+		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, volume_of_fluid_error, 		
 						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
 
 		  /* write the original level-set field */
 		  
-		  scalar_name="level_set_star";
+		  scalar_name="level_set_original";
 		  look_up_table_name="lvst_tbl";
 		  
-		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, level_set_star, 		
+		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, level_set_original, 		
 						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
 
-		  /* write the mass conserving level-set field */
+		  /* write the level-set field obtained after the first update to the volume of fluid field */
 		  
-		  scalar_name="level_set_mass_conserving";
+		  scalar_name="level_set_updated";
 		  look_up_table_name="lvst_tbl";
 		  
-		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, level_set_mass_conserving, 		
+		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, level_set_updated, 		
 						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
 
 
-		  /* write the level-set field correction*/
+		  /* write the field that shows the cells with an invalid volume of fluid value */
 		  
-		  scalar_name="level_set_correction";
+		  scalar_name="invalid_vof_cells";
 		  look_up_table_name="lvst_tbl";
 		  
-		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, level_set_correction, 		
+		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, invalid_vof_cells, 		
 						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
 
 		}

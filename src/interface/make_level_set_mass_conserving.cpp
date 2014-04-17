@@ -549,12 +549,12 @@ EXPORT void make_level_set_mass_conserving
                                            number_primary_cells_j,
                                             number_primary_cells_k,
                                                volume_of_fluid_tolerance);
-             if(cells_out_of_bounds>0)
+             if(cells_out_of_bounds>-1)
              {
 	    
-                            std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
-                            std::cerr<<"cells out of bounds: "<< cells_out_of_bounds <<" \n";
-                            std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
+                            std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
+                            std::cerr<<"cells out of bounds BEFORE redistribution: "<< cells_out_of_bounds <<" \n";
+                            std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
 
 	              if(apply_mass_distribution_algorithm)
 
@@ -572,9 +572,17 @@ EXPORT void make_level_set_mass_conserving
 							      number_iterations_ridder, time_step_mass_redistribution,		
 	   							redistribution_vof_tolerance,	 maximum_number_mass_redistribution_iterations );
 	      
+                              cells_out_of_bounds=check_volume_of_fluid(volume_of_fluid, number_primary_cells_i,
+                                           number_primary_cells_j,
+                                            number_primary_cells_k,
+                                               volume_of_fluid_tolerance);
+                              std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
+                              std::cerr<<"cells out of bounds AFTER redistribution: "<< cells_out_of_bounds <<" \n";
+                              std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
 	               }
 	               else
 	               {
+                              
 /* the volume of fluid values are clipped, such that they are inside 				  */
 /* the physically realizable range [0,1]              						  */      
 /* the array vof_after_x1_update is used here as a work array for temporary storage 		  */
@@ -587,7 +595,7 @@ EXPORT void make_level_set_mass_conserving
                             {
                                    
 	    		          std::cerr<<"WARNING: clipping algorithm is applied \n";
-                                std::cerr<<"to "<< number_clipped_cells<<"cells .\n";
+                                  std::cerr<<"to "<< number_clipped_cells<<"cells .\n";
 			 
 		              }
 		              else
@@ -608,9 +616,10 @@ EXPORT void make_level_set_mass_conserving
 		
 		              /* compute the gradient of the old level-set field, necessary for the level-set/vof conversion */
 
-		             compute_level_set_gradient(level_set_new, d_level_set_d_x1, d_level_set_d_x2, d_level_set_d_x3,
+		              compute_level_set_gradient(level_set_new, d_level_set_d_x1, d_level_set_d_x2, d_level_set_d_x3,
 				    number_primary_cells_i, number_primary_cells_j, number_primary_cells_k					  
 				      );
+                              
 		              /* compute the current volume of fluid field */
 	
 		              if(compute_volume_of_fluid(level_set_new, d_level_set_d_x1, d_level_set_d_x2, d_level_set_d_x3,

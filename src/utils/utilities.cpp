@@ -159,7 +159,7 @@ EXPORT void set_constant_vector(
 
 /********************************************************************************/
 /********************************************************************************/
-/*  Function to set a three-dimensional array to a constant value	                */
+/*  Function to set a three-dimensional array to a constant value	        */
 /*  										*/
 /*  Programmer	: Duncan van der Heul       					*/
 /*  Date	: 10-03-2013       						*/

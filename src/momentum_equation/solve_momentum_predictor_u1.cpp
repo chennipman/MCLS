@@ -56,10 +56,10 @@ EXPORT void solve_momentum_predictor_u1(
 							
 	   )
       {
-      Array2<double> momentum_matrix_u1;			// momentum matrix velocity x1 direction
-      Array1<double> momentum_rhside_u1;			// momentum rhside velocity x1 direction
-      Array1<double> preconditioner_matrix_M;			// preconditioner matrix (diagonal)
-      Array1<double> compressed_velocity_u1;			// compressed solution vector
+      Array2<double> momentum_matrix_u1;		// momentum matrix velocity x1 direction
+      Array1<double> momentum_rhside_u1;		// momentum rhside velocity x1 direction
+      Array1<double> preconditioner_matrix_M;		// preconditioner matrix (diagonal)
+      Array1<double> compressed_velocity_u1;		// compressed solution vector
       double   relative_L2_norm_residual; 	  	// the L2 norm of the residual, scaled with
 							// the L2 norm of the right hand side
       double   relative_Linfinity_norm_residual;  	// the L infinity norm of the residual

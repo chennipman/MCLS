@@ -1,5 +1,7 @@
 CFLAGS=-O3 -Wall
 CXXFLAGS=-O3 -Wall
+# CFLAGS=-g -Wall
+# CXXFLAGS=-g -Wall
 
 BUILD_DIR=objects
 EXECUTABLE_DIR=executable
@@ -29,6 +31,8 @@ COMMON_SRCS= \
 		advect_level_set.cpp \
 		advect_level_set_higher_order.cpp \
 		analyse_interface_properties.cpp \
+		analyse_validity_vof_correction.cpp \
+		analyse_validity_vof_field.cpp \
 		apply_bisection.cpp \
 		apply_ridders_method.cpp \
 		apply_volume_of_fluid_clipping.cpp \
@@ -41,7 +45,9 @@ COMMON_SRCS= \
 		compute_mass_in_domain.cpp \
 		compute_new_time_RK.cpp \
 		compute_normal_derivative_at_faces.cpp \
+		compute_redistribution_time_derivative.cpp \
 		compute_redistribution_velocity.cpp \
+		compute_redistribution_velocity_field.cpp \
 		compute_second_stage_RK.cpp \
 		compute_vof_at_u1_points.cpp \
 		compute_vof_at_u2_points.cpp \
@@ -54,11 +60,13 @@ COMMON_SRCS= \
 		dump_adapted_vof_for_debugging.cpp \
 		dump_reinitialization_for_debugging.cpp \
 		dump_solution_for_debugging.cpp \
+		dump_redistribution_for_debugging.cpp \
 		evaluate_convection_operator_weno.cpp \
 		field_neumann_boundary.cpp \
 		level_set_2_vof.cpp \
 		level_set_2_vof_phi_negative.cpp \
 		make_level_set_mass_conserving.cpp \
+		make_vof_field_valid.cpp \
 		match_level_set_to_volume_of_fluid.cpp \
 		modify_volume_of_fluid_values.cpp \
 		redistribute_volume_of_fluid_error.cpp \
@@ -113,9 +121,39 @@ COMMON_SRCS= \
 		compute_scaled_viscosity.cpp \
 		compute_weighted_average.cpp \
 		copy_general_field.cpp \
-		momentum_predictor.cpp \
 		output_predictor_velocityfield.cpp \
 		shift_velocity_field.cpp \
+		build_momentum_matrix_u1.cpp \
+		build_momentum_matrix_u2.cpp \
+		build_momentum_matrix_u3.cpp \
+		build_momentum_predictor_u1.cpp \
+		build_momentum_predictor_u2.cpp \
+		build_momentum_predictor_u3.cpp \
+		build_momentum_rhs_u1.cpp \
+		build_momentum_rhs_u2.cpp \
+		build_momentum_rhs_u3.cpp \
+		compress_solution_velocity_u1.cpp \
+		compress_solution_velocity_u2.cpp \
+		compress_solution_velocity_u3.cpp \
+		compute_convection_term.cpp \
+		copy_general_field.cpp \
+		decompress_solution_velocity_u1.cpp \
+		decompress_solution_velocity_u2.cpp \
+		decompress_solution_velocity_u3.cpp \
+		fold_momentum_matrix_u1.cpp \
+		fold_momentum_matrix_u2.cpp \
+		fold_momentum_matrix_u3.cpp \
+		fold_momentum_rhside_u1.cpp \
+		fold_momentum_rhside_u2.cpp \
+		fold_momentum_rhside_u3.cpp \
+		map_index_u1.cpp \
+		map_index_u2.cpp \
+		map_index_u3.cpp \
+		solve_momentum_predictor_imex.cpp \
+		solve_momentum_predictor_explicit.cpp \
+		solve_momentum_predictor_u1.cpp \
+		solve_momentum_predictor_u2.cpp \
+		solve_momentum_predictor_u3.cpp \
 	) \
 	$(addprefix src/post_processing/, \
 		check_symmetry_scalars.cpp \

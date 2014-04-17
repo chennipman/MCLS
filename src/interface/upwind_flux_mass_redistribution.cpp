@@ -26,7 +26,7 @@ EXPORT double upwind_flux_mass_redistribution(
 	 
 	 upwind_selector=0.5+sign(0.5, mass_redistribution_velocity);
 	 upwind_flux_mass_redistribution=mass_redistribution_velocity*
-		  (left_hand_value_correction+ 
+		  (right_hand_value_correction+ 
 		      upwind_selector*(left_hand_value_correction-right_hand_value_correction));
 	
 	  return upwind_flux_mass_redistribution;
