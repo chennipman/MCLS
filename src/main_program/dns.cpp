@@ -80,7 +80,7 @@ int main ()
 								      start_time_simulation, end_time_simulation,
 								    my_restart_parameters, maximum_number_mass_redistribution_iterations,
 								time_step_mass_redistribution, redistribution_vof_tolerance, number_of_phases,
-								debugging_mode, time_interval_for_reinitialization
+								debugging_mode, time_interval_for_reinitialization, mass_redistribution_diffusion_coefficient
 				);
 
     std::cout << "Time stepping completed \n";

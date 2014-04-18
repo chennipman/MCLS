@@ -31,12 +31,15 @@ EXPORT int modify_volume_of_fluid_values(
 									// under/overfilled cells
       Array3<double> volume_of_fluid_correction,		    	// correction to the volume of fluid field
 									// to make it valid
-      Array3<double> invalid_vof_cells,                                  // indication field to show what is wrong
+      Array3<double> invalid_vof_cells,                                 // indication field to show what is wrong
                                                                         // indicator field showing cells that are either
                                                                         // within bounds =0
                                                                         // underfilled   =-1
                                                                         // overfilled    =+1
                                                                         // vapour cells  = 5
+      double mesh_width_x1,                                             // grid spacing in x1 direction (uniform)
+      double mesh_width_x2,                                             // grid spacing in x2 direction (uniform)
+      double mesh_width_x3,                                             // grid spacing in x3 direction (uniform)
       int number_primary_cells_i,			    		// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			    	    	// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,			            	// number of primary (pressure) cells in x3 direction
@@ -87,7 +90,7 @@ EXPORT int modify_volume_of_fluid_values(
 		        current_level_set_value=level_set[i_index][j_index][k_index];
 		        current_volume_of_fluid_value=volume_of_fluid[i_index][j_index][k_index];
                       
-
+                        /* assume the cell has a valid vof value */
                     
 		        adapt_vof_value=0;
 		      
@@ -96,15 +99,19 @@ EXPORT int modify_volume_of_fluid_values(
 		        if(
                                
 			/* is the cell surrounded by neighbours with the same sign ?*/
+                        
 		                (
 		                (level_set[i_index-1][j_index  ][k_index  ]*current_level_set_value>0)&&
 		                (level_set[i_index+1][j_index  ][k_index  ]*current_level_set_value>0)&&
 		                (level_set[i_index  ][j_index-1][k_index  ]*current_level_set_value>0)&&
 		                (level_set[i_index  ][j_index+1][k_index  ]*current_level_set_value>0)&&
 		                (level_set[i_index  ][j_index  ][k_index+1]*current_level_set_value>0)&&
-		                (level_set[i_index  ][j_index  ][k_index-1]*current_level_set_value>0))
+		                (level_set[i_index  ][j_index  ][k_index-1]*current_level_set_value>0)
+                                )
 			    &&
+			    
 			/* is the volume of fluid at the same time in the OPEN interval <0,1>? */
+                        
 		                (current_volume_of_fluid_value<(1.0-volume_of_fluid_tolerance) &&
 			                current_volume_of_fluid_value>(0.0+volume_of_fluid_tolerance))
 		           )
@@ -122,9 +129,10 @@ EXPORT int modify_volume_of_fluid_values(
 		        if( (current_volume_of_fluid_value> 1.0+volume_of_fluid_tolerance)||
 			    (current_volume_of_fluid_value < 0.0-volume_of_fluid_tolerance))
 		        {
-		      /* the volume of fluid value is out of bounds */
-		      /* additional iterations are required */
-		      /* update the number of out of bounds cells */
+                               
+		        /* the volume of fluid value is out of bounds */
+		        /* additional iterations are required */
+		        /* update the number of out of bounds cells */
 			  
 			        number_cells_vof_out_of_bounds++;
 			        adapt_vof_value=1;
@@ -141,9 +149,10 @@ EXPORT int modify_volume_of_fluid_values(
 		        }  
 		        if(adapt_vof_value)
 		        {
-		      /* cell is either a vapour cell or an over/under filled cell   */
-		      /* the correct value shoul be either 1/0 depending on the sign */
-		      /* of the level-set field                                      */
+                               
+		        /* cell is either a vapour cell or an over/under filled cell   */
+		        /* the correct value shoul be either 1/0 depending on the sign */
+		        /* of the level-set field                                      */
                       
 			        correct_vof_value=0.5+sign(0.5,current_level_set_value);
 			        if(current_level_set_value==0.0)

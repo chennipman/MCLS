@@ -32,7 +32,8 @@ EXPORT double compute_redistribution_time_derivative(
         int number_primary_cells_k,                                     // number of primary (pressure) cells in x3 direction
         double mesh_width_x1,                                           // grid spacing in x1 direction (uniform)
         double mesh_width_x2,                                           // grid spacing in x2 direction (uniform)
-        double mesh_width_x3                                            // grid spacing in x3 direction (uniform)
+        double mesh_width_x3,                                           // grid spacing in x3 direction (uniform)
+        double mass_redistribution_diffusion_coefficient                // diffusion coefficient for mass redistribution equation
         )
 {
         double flux_minus_x1;                                           // flux of error advection equation at plus i face
@@ -52,8 +53,9 @@ EXPORT double compute_redistribution_time_derivative(
         double maximum_time_derivative_vof_error=0;                     // largest value of time derivative in the volume of fluid
                                                                         // error redistribution equation
         int i_index, j_index, k_index;                                  // local variables for loop indexing
-        double diffusion_coefficient=0.00001;
-       
+//         double diffusion_coefficient=0.00001;
+        double diffusion_coefficient=0.0000002;
+        mass_redistribution_diffusion_coefficient=diffusion_coefficient;
         
         /* compute time derivative of the redistribution equation */
         
@@ -66,7 +68,7 @@ EXPORT double compute_redistribution_time_derivative(
                                     redistribution_velocity_x1[i_index  ][j_index][k_index],
                                         volume_of_fluid_correction[i_index  ][j_index][k_index],
                                             volume_of_fluid_correction[i_index+1][j_index][k_index])
-                                    -diffusion_coefficient*
+                                    -mass_redistribution_diffusion_coefficient*one_over_dx1*
                                      (volume_of_fluid_correction[i_index+1][j_index][k_index]-
                                        volume_of_fluid_correction[i_index  ][j_index][k_index]);
                                 
@@ -75,7 +77,7 @@ EXPORT double compute_redistribution_time_derivative(
                                     redistribution_velocity_x1[i_index-1][j_index][k_index],
                                         volume_of_fluid_correction[i_index-1][j_index][k_index],
                                             volume_of_fluid_correction[i_index  ][j_index][k_index])
-                                   -diffusion_coefficient*
+                                   -mass_redistribution_diffusion_coefficient*one_over_dx1*
                                      (volume_of_fluid_correction[i_index][j_index][k_index]-
                                        volume_of_fluid_correction[i_index-1][j_index][k_index]);
                         flux_pluss_x2=
@@ -83,7 +85,7 @@ EXPORT double compute_redistribution_time_derivative(
                                     redistribution_velocity_x2[i_index][j_index  ][k_index],
                                         volume_of_fluid_correction[i_index][j_index  ][k_index],
                                             volume_of_fluid_correction[i_index][j_index+1][k_index])
-                                    -diffusion_coefficient*
+                                    -mass_redistribution_diffusion_coefficient*one_over_dx2*
                                      (volume_of_fluid_correction[i_index][j_index+1][k_index]-
                                        volume_of_fluid_correction[i_index][j_index][k_index]);
                        flux_minus_x2=
@@ -91,7 +93,7 @@ EXPORT double compute_redistribution_time_derivative(
                                     redistribution_velocity_x2[i_index][j_index-1][k_index],
                                         volume_of_fluid_correction[i_index][j_index-1][k_index],
                                             volume_of_fluid_correction[i_index][j_index][k_index])
-                                    -diffusion_coefficient*
+                                    -mass_redistribution_diffusion_coefficient*one_over_dx2*
                                      (volume_of_fluid_correction[i_index][j_index][k_index]-
                                        volume_of_fluid_correction[i_index][j_index-1][k_index]);
                          flux_pluss_x3=
@@ -99,7 +101,7 @@ EXPORT double compute_redistribution_time_derivative(
                                     redistribution_velocity_x3[i_index][j_index][k_index  ],
                                         volume_of_fluid_correction[i_index][j_index][k_index  ],
                                             volume_of_fluid_correction[i_index][j_index][k_index+1])
-                                    -diffusion_coefficient*
+                                    -mass_redistribution_diffusion_coefficient*one_over_dx3*
                                      (volume_of_fluid_correction[i_index][j_index][k_index+1]-
                                        volume_of_fluid_correction[i_index][j_index][k_index]);
                         flux_minus_x3=
@@ -107,7 +109,7 @@ EXPORT double compute_redistribution_time_derivative(
                                     redistribution_velocity_x3[i_index][j_index][k_index-1],
                                         volume_of_fluid_correction[i_index][j_index][k_index-1],
                                             volume_of_fluid_correction[i_index][j_index][k_index])
-                                    -diffusion_coefficient*
+                                    -mass_redistribution_diffusion_coefficient*one_over_dx3*
                                      (volume_of_fluid_correction[i_index][j_index][k_index]-
                                        volume_of_fluid_correction[i_index][j_index][k_index-1]);
                                 

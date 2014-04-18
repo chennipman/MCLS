@@ -28,10 +28,10 @@ EXPORT void advance_interface
 								// mass conserving
       	Array3<double> level_set_old, 				// level set field at old time level
 								// mass conserving
-      	Array3<double> volume_of_fluid, 				// volume of fluid field
-      	Array3<double> u_1_velocity_new, 				// velocity field at new time level x1 direction
-      	Array3<double> u_2_velocity_new, 				// velocity field at new time level x2 direction
-      	Array3<double> u_3_velocity_new,				// velocity field at new time level x3 direction
+      	Array3<double> volume_of_fluid, 			// volume of fluid field
+      	Array3<double> u_1_velocity_new, 			// velocity field at new time level x1 direction
+      	Array3<double> u_2_velocity_new, 			// velocity field at new time level x2 direction
+      	Array3<double> u_3_velocity_new,			// velocity field at new time level x3 direction
       	int number_primary_cells_i,				// number of primary (pressure) cells in x1 direction
       	int number_primary_cells_j,				// number of primary (pressure) cells in x2 direction
       	int number_primary_cells_k,				// number of primary (pressure) cells in x3 direction
@@ -47,10 +47,10 @@ EXPORT void advance_interface
 								// to the level-set field
       	double volume_of_fluid_tolerance,			// tolerance in volume of fluid field
 								// for admissable values
-      	double lower_bound_derivatives,			// lower bound for the first partial derivatives
+      	double lower_bound_derivatives,			        // lower bound for the first partial derivatives
 								// to consider it a limiting case of vanishing
 								// partial derivatives
-      	int number_vof_2_level_set_iterations,		// number of OUTER iterations in the conversion 
+      	int number_vof_2_level_set_iterations,		        // number of OUTER iterations in the conversion 
 								// from volume of fluid to level-set
       	int number_iterations_ridder,				// maximum number of iterations allowed in the
 								// nonlinear root finding algorithm
@@ -64,24 +64,25 @@ EXPORT void advance_interface
       	double tolerance_reinitialization,			// stop the reinitialization when the infinite norm of
 								// the pseudo time derivative has fallen below this
 								// tolerance value
-      	int maximum_number_mass_redistribution_iterations, // number of iterations allowed to make
+      	int maximum_number_mass_redistribution_iterations,      // number of iterations allowed to make
 								// the volume of fluid field valid
 								// these are the sweeps on the vof error
-      	double time_step_mass_redistribution,		// time step for the mass redistribution
+      	double time_step_mass_redistribution,		        // time step for the mass redistribution
 								// algorithm
-	double redistribution_vof_tolerance, 		// threshold value of time-derivative 
+	double redistribution_vof_tolerance, 		        // threshold value of time-derivative 
 								// in volume of fluid redistribution equation
     	double &time_to_reinitialize,				// time at which reinitialization of the 
     								// level-set field will be performed
 	double time_interval_for_reinitialization, 		// time interval between reinitialization
 								// of level-set field
-	double actual_time					// actual time in the simulation for which the solution
+	double actual_time,					// actual time in the simulation for which the solution
+        double mass_redistribution_diffusion_coefficient        // diffusion coefficient for mass redistribution equation
       )
       {
-       Array3<double> level_set_star; 		// level set field at new time level
-						// after convection and reinitialization
-						// not mass conserving
-      
+       Array3<double> level_set_star; 		                // level set field at new time level
+						                // after convection and reinitialization
+						                // not mass conserving
+     
       /* allocate memory for the level-set field */
       
       level_set_star.create(number_primary_cells_i+2, number_primary_cells_j+2,
@@ -136,7 +137,7 @@ EXPORT void advance_interface
 							      vof_2_level_set_tolerance,
 					   		     maximum_number_mass_redistribution_iterations,
       							  time_step_mass_redistribution,		
-							redistribution_vof_tolerance);
+							redistribution_vof_tolerance, mass_redistribution_diffusion_coefficient);
       
       std::cerr<<"mass conserving correction applied \n";
       

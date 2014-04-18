@@ -139,10 +139,10 @@ int apply_mass_conservation_correction; 		// =1:apply the mass conservation corr
 							// to the level-set field
 double volume_of_fluid_tolerance;			// tolerance in volume of fluid field
 							// for admissable values
-double lower_bound_derivatives;			// lower bound for the first partial derivatives
+double lower_bound_derivatives;			        // lower bound for the first partial derivatives
 							// to consider it a limiting case of vanishing
 							// partial derivatives
-int number_vof_2_level_set_iterations;		// number of OUTER iterations in the conversion 
+int number_vof_2_level_set_iterations;		        // number of OUTER iterations in the conversion 
 							// from volume of fluid to level-set
 int number_iterations_ridder;				// maximum number of iterations allowed in the
 							// nonlinear root finding algorithm
@@ -152,23 +152,23 @@ int maximum_reinitialization_steps;			// maximum number of time steps in the rei
 double tolerance_reinitialization;			// stop the reinitialization when the infinite norm of
 							// the pseudo time derivative has fallen below this
 							// tolerance value
-int apply_curvature_smoothing;			// =1, apply curvature smoothing
+int apply_curvature_smoothing;			        // =1, apply curvature smoothing
 							// =0, use unsmoothed curvature
-int number_curvature_smoothing_steps;		// number of iterations applied in the
+int number_curvature_smoothing_steps;		        // number of iterations applied in the
 							// curvature smoothing algorithm
-int apply_curvature_smoothing_filter;		// =1, apply curvature smoothing filter
+int apply_curvature_smoothing_filter;		        // =1, apply curvature smoothing filter
 							// =0, do not apply curvature smoothing filter
-int number_redistribution_iterations; 		// number of iterations allowed to make
+int number_redistribution_iterations; 		        // number of iterations allowed to make
 							// the volume of fluid field valid
 							// these are the sweeps on the vof error
-int maximum_number_mass_redistribution_iterations; // number of iterations allowed to make
+int maximum_number_mass_redistribution_iterations;      // number of iterations allowed to make
 							// the volume of fluid field valid
 							// these are the sweeps on the vof error
-double time_step_mass_redistribution;		// time step for the mass redistribution
+double time_step_mass_redistribution;		        // time step for the mass redistribution
 							// algorithm
-double redistribution_vof_tolerance; 		// threshold value of time-derivative 
+double redistribution_vof_tolerance; 		        // threshold value of time-derivative 
 							// in volume of fluid redistribution equation
-
+double mass_redistribution_diffusion_coefficient;       // diffusion coefficient for mass redistribution equation
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/  
 /* Primary variables for linear solvers handling	    	  */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/  

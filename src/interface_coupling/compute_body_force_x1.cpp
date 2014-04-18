@@ -95,6 +95,5 @@ EXPORT void compute_body_force_x1(
 	      }
 	  }
       }
-	  	std::cerr<< " maximum body force x1 direction "<< maximum_body_force_x1 <<"\n";
- 	  	std::cerr<< " maximum weighted curvature x1 "<< maximum_weighted_curvature <<"\n";
+
  }

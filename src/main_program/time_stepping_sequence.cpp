@@ -143,10 +143,10 @@ EXPORT void time_stepping_sequence(
       int debugging_mode,					// =1, program is run in 
       								// debugging mode with additional output and checks
       								// =0, progam is run in production mode
-      double time_interval_for_reinitialization 		// time interval between reinitialization
+      double time_interval_for_reinitialization, 		// time interval between reinitialization
 								// of level-set field
-
-						
+      double mass_redistribution_diffusion_coefficient          // diffusion coefficient for mass redistribution equation
+					
   
 	 )
 
@@ -220,7 +220,7 @@ EXPORT void time_stepping_sequence(
 						      maximum_number_mass_redistribution_iterations,
       	   					 time_step_mass_redistribution, redistribution_vof_tolerance,
 						time_to_reinitialize, time_interval_for_reinitialization,
-			 			actual_time
+			 			actual_time, mass_redistribution_diffusion_coefficient
    					);
 	  	}
 	  

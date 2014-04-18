@@ -44,10 +44,11 @@ EXPORT void redistribute_volume_of_fluid_error(
         double volume_of_fluid_tolerance,			// tolerance for volume of fluid value
 	double redistribution_vof_tolerance,			// threshold value of time-derivative 
 								// in volume of fluid redistribution equation
-        int maximum_number_mass_redistribution_iterations	// number of iterations allowed to make
+        int maximum_number_mass_redistribution_iterations,	// number of iterations allowed to make
 								// the volume of fluid field valid
 								// these are the sweeps on the vof error
- 
+        double mass_redistribution_diffusion_coefficient        // diffusion coefficient for mass redistribution equation
+
  	)
      {
 	Array3<double> redistribution_velocity_x1;			// artificial redistribution velocity x1 direction
@@ -146,7 +147,7 @@ EXPORT void redistribute_volume_of_fluid_error(
                                                 redistribution_velocity_x1, redistribution_velocity_x2, redistribution_velocity_x3,                      
                                                    time_derivative_volume_of_fluid_correction, volume_of_fluid_correction,
                                                       number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,                                     
-                                                        mesh_width_x1, mesh_width_x2, mesh_width_x3);
+                                                        mesh_width_x1, mesh_width_x2, mesh_width_x3, mass_redistribution_diffusion_coefficient);
                                 
             /* update the correction for the volume of fluid field */
                                 

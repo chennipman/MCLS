@@ -52,9 +52,10 @@ EXPORT void apply_volume_of_fluid_redistribution(
 	    double time_step_mass_redistribution,			// time step for the mass redistribution
 	    double redistribution_vof_tolerance,			// threshold value of time-derivative 
 									// in volume of fluid redistribution equation
-      	    int maximum_number_mass_redistribution_iterations 	        // number of iterations allowed to make
+      	    int maximum_number_mass_redistribution_iterations, 	        // number of iterations allowed to make
 									// the volume of fluid field valid
 									// these are the sweeps on the vof error
+            double mass_redistribution_diffusion_coefficient            // diffusion coefficient for mass redistribution equation
 	    )
       {
       Array3<double> volume_of_fluid_star;				// volume of fluid field, uncorrected
@@ -88,7 +89,7 @@ EXPORT void apply_volume_of_fluid_redistribution(
                                                                         // domain with respect to the initial mass
       bool detailed_output=0;                                           // =1, provide detailed output
                                                                         // =0, provide non output 
-                                                                        
+                                                                       
       /* allocate memory for the volume of fluid correction, the tentative    */
       /* volume of fluid field, and the indicator field                       */
       
@@ -180,7 +181,8 @@ EXPORT void apply_volume_of_fluid_redistribution(
       
       
 	    	number_cells_invalid_volume_of_fluid=			
-			modify_volume_of_fluid_values( level_set_new, volume_of_fluid, volume_of_fluid_correction, invalid_vof_cells,	
+			modify_volume_of_fluid_values( level_set_new, volume_of_fluid, volume_of_fluid_correction, invalid_vof_cells,
+                                                   mesh_width_x1, mesh_width_x2, mesh_width_x3,
 						    number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,			  
 						      volume_of_fluid_tolerance);
 		
@@ -204,17 +206,18 @@ EXPORT void apply_volume_of_fluid_redistribution(
 							mesh_width_x1,	mesh_width_x1,	mesh_width_x3,			
 								time_step_mass_redistribution, volume_of_fluid_tolerance,		
 	 								redistribution_vof_tolerance,	
-						 				maximum_number_mass_redistribution_iterations);
+						 				maximum_number_mass_redistribution_iterations,
+                                                                                  mass_redistribution_diffusion_coefficient);
      
       
 		}
 		
+		/* compute the change in mass that resulted from this redistribution sweep */
 		
-		
-                std::cerr<<"change in mass after redistribution step  "<< index_redistribution_attempt<<" "<< compute_mass_in_domain(
-                                                                volume_of_fluid,                
-                                                                number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,         
-                                                        mesh_width_x1, mesh_width_x2, mesh_width_x3)-initial_mass<< " \n";
+                change_in_mass= compute_mass_in_domain(volume_of_fluid, number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,         
+                                                        mesh_width_x1, mesh_width_x2, mesh_width_x3)-initial_mass;
+                std::cerr<<"change in mass after redistribution step  "<< index_redistribution_attempt<<" "<< change_in_mass<< " \n";
+                
 
                 index_redistribution_attempt++;
                         
@@ -236,7 +239,8 @@ EXPORT void apply_volume_of_fluid_redistribution(
       	if(number_cells_invalid_volume_of_fluid>0)
 	{
 	    	  number_cells_invalid_volume_of_fluid=			
-			modify_volume_of_fluid_values(level_set_new, volume_of_fluid, volume_of_fluid_correction, invalid_vof_cells,			  
+			modify_volume_of_fluid_values(level_set_new, volume_of_fluid, volume_of_fluid_correction, invalid_vof_cells,
+                                                       mesh_width_x1, mesh_width_x2, mesh_width_x3,
 							number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,			  
 								volume_of_fluid_tolerance);
 
@@ -267,6 +271,7 @@ EXPORT void apply_volume_of_fluid_redistribution(
                 
         final_mass=compute_mass_in_domain( volume_of_fluid, number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,         
                                                         mesh_width_x1, mesh_width_x2, mesh_width_x3);
+        
         std::cerr<<"final mass after redistribution "<< final_mass << " \n";
 	
 	/* deallocate temporary storage */
