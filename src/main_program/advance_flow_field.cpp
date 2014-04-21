@@ -59,6 +59,7 @@ EXPORT void advance_flow_field(
       double actual_time_step_navier_stokes,	        // time step used for level-set advection
 							// computed from all stability restrictions and 
 							// possibly subscycling
+      int time_stepping_method, 			// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
       double rho_plus_over_rho_minus,		        // ratio of the densities of the two phases
       double smoothing_distance_factor,		        // the smoothing distance is smoothing_distance_factor
 							// times the smallest mesh width
@@ -98,6 +99,44 @@ EXPORT void advance_flow_field(
   
     /* solve momentum predictor equation */
     /* compute a new velocity field u star, that is not divergence free */
+   
+   printf(" %i " , time_stepping_method); 
+   printf(" %d " , time_stepping_method); 
+       
+    if (time_stepping_method == 1)
+    {
+      printf("explicit euler \n"); 
+    }
+    
+    else if (time_stepping_method == 2)
+    {
+      printf("imex");
+      solve_momentum_predictor_imex(	level_set, u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,			
+				  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star,			
+				    momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3, 	
+				     scaled_density_u1, scaled_density_u2, scaled_density_u3,
+				      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,			
+					number_matrix_connections, actual_time_step_navier_stokes,		
+					  mesh_width_x1, mesh_width_x2, mesh_width_x3,				
+					    rho_plus_over_rho_minus, smoothing_distance_factor, rho_minus_over_mu_minus,			
+					      mu_plus_over_mu_minus, boundary_faces,
+					      tolerance_velocity, maximum_iterations_allowed_velocity); 
+    }
+
+      
+    else if (time_stepping_method == 3)
+    {
+      printf("runge kutta \n"); 
+    }
+    
+    else 
+    {
+      printf("unkown time stepping method \n"); 
+    }
+
+  
+  
+    
     
       solve_momentum_predictor_imex(	level_set, u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,			
 				  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star,			

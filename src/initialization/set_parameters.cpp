@@ -104,6 +104,7 @@ EXPORT void set_parameters(
       int &number_of_free_surfaces, 				// number of bubbles in the domain (<10)
       double &start_time_simulation,				// starting time for the simulation
       double &end_time_simulation,				// end time for the simulation
+      int &time_stepping_method, 				// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
       vector &initial_velocity,				        // initial velocity at t=0
       restart_parameters &my_restart_parameters,		// all parameters for reading/writing restart files
       int &maximum_number_mass_redistribution_iterations,       // number of iterations allowed to make
@@ -133,9 +134,9 @@ EXPORT void set_parameters(
       /* computational domain geometry information */
       /* the origin is always chosen in the lower, left corner */
       
-      domain_size_x1=0.1;
-      domain_size_x2=0.1;
-      domain_size_x3=0.14;
+      domain_size_x1                                            = 1.0;
+      domain_size_x2                                            = 1.0/50;
+      domain_size_x3                                            = 1.0;
       
       /* settings for modelling */
       number_of_phases				= 2;
@@ -144,15 +145,16 @@ EXPORT void set_parameters(
       /* settings for time-stepping */
 
       cfl_number_navier_stokes			        = 1.0;
-      time_step_restriction_global			= 0.001;      
+      time_step_restriction_global			= 0.01;      
       actual_time_step_navier_stokes    		= time_step_restriction_global;
-      time_interval_for_output			        = time_step_restriction_global*10;
-      time_interval_for_reinitialization                = time_step_restriction_global*2; //worked fine
+      time_interval_for_output			        = time_step_restriction_global*100;
+      time_interval_for_reinitialization                = time_step_restriction_global*1e10; //worked fine
       number_of_subcycles				= 1;
       actual_time_step_level_set			= actual_time_step_navier_stokes/number_of_subcycles;
       fixed_time_step					= 1;	
       start_time_simulation				= 0.0;
-      end_time_simulation				= 0.150;
+      end_time_simulation				= 50.0;
+      time_stepping_method 				= 2; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
       
       /* settings for restart from solution file and solution file writing */
       
@@ -163,9 +165,9 @@ EXPORT void set_parameters(
 						
 
       /* grid parameters */
-      number_primary_cells_i=50;		
-      number_primary_cells_j=50;	
-      number_primary_cells_k=70;	
+      number_primary_cells_i                                    = 50;
+      number_primary_cells_j                                    = 1;
+      number_primary_cells_k                                    = 50;	
       mesh_width_x1=domain_size_x1/number_primary_cells_i;		
       mesh_width_x2=domain_size_x2/number_primary_cells_j;			
       mesh_width_x3=domain_size_x3/number_primary_cells_k;		
@@ -173,8 +175,7 @@ EXPORT void set_parameters(
       /* interface handling parameters */
       apply_mass_distribution_algorithm  				= 1;    
       apply_mass_conservation_correction 				= 1;    
-      volume_of_fluid_tolerance		 			        = 0.000005;
-      volume_of_fluid_tolerance                                                = 0.000001;
+      volume_of_fluid_tolerance		 			        = 0.000001;
       lower_bound_derivatives		 				= 0.00000001;
       number_vof_2_level_set_iterations  				= 25;	
       number_iterations_ridder		 			        = 100;	
@@ -198,7 +199,7 @@ EXPORT void set_parameters(
       the_bubbles[0].center_location.x1  				= 0.5*domain_size_x1;
       the_bubbles[0].center_location.x2  				= 0.5*domain_size_x2;
       the_bubbles[0].center_location.x3  				= 0.025;
-      number_of_bubbles			 			        = 1;
+      number_of_bubbles			 			        = 0;
       number_of_free_surfaces		 				= 0;	
       the_free_surfaces[0].active	 				= 1;
       the_free_surfaces[0].orientation   				= 3;
@@ -210,18 +211,17 @@ EXPORT void set_parameters(
 
       /* material properties */
 
-      rho_minus_over_mu_minus		 	=3.6556E3;
-      mu_plus_over_mu_minus		 	=100.0;
-//       mu_plus_over_mu_minus		 	=1.0;
-      rho_plus_over_rho_minus		 	=100.0;	
-      sigma_over_rho_minus		 	=0.01;
+      rho_minus_over_mu_minus		 	=    100.0;
+      mu_plus_over_mu_minus		 	=    1.0;
+      rho_plus_over_rho_minus		 	=    1.0;
+      sigma_over_rho_minus                      =     0.0;
       smoothing_distance_factor		        =1.5;	
       
       /* physics */
       
       gravity.u1			 =0.0;				
       gravity.u2			 =0.0;				
-      gravity.u3			 =-10.0;				
+      gravity.u3			 =0.0;				
       
       /* linear solvers and matrices*/
 

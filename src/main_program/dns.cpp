@@ -43,7 +43,7 @@ int main ()
 								   domain_size_x1, domain_size_x2, domain_size_x3, flow_type,			
 								  the_bubbles, number_of_bubbles, the_free_surfaces,		
 								 number_of_free_surfaces, 
-								start_time_simulation, end_time_simulation, initial_velocity,
+								start_time_simulation, end_time_simulation, time_stepping_method, initial_velocity,
 							      my_restart_parameters, maximum_number_mass_redistribution_iterations, 
   							    time_step_mass_redistribution, redistribution_vof_tolerance,
 							  number_of_phases, debugging_mode, time_interval_for_reinitialization
@@ -77,7 +77,7 @@ int main ()
 								time_step_restriction_global, fixed_time_step, apply_curvature_smoothing,		
 								  number_curvature_smoothing_steps,	apply_curvature_smoothing_filter,	
 								    number_of_subcycles, vtk_output, tecplot_output, time_interval_for_output,
-								      start_time_simulation, end_time_simulation,
+								      start_time_simulation, end_time_simulation, time_stepping_method,
 								    my_restart_parameters, maximum_number_mass_redistribution_iterations,
 								time_step_mass_redistribution, redistribution_vof_tolerance, number_of_phases,
 								debugging_mode, time_interval_for_reinitialization, mass_redistribution_diffusion_coefficient

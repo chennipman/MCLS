@@ -129,6 +129,7 @@ EXPORT void time_stepping_sequence(
       double time_interval_for_output,			        // interval in time for which the solution is written to file
       double start_time_simulation,				// starting time for the simulation
       double end_time_simulation,				// end time for the simulation
+      int time_stepping_method, 				// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
       restart_parameters my_restart_parameters,  		// all parameters for reading/writing restart files
       int maximum_number_mass_redistribution_iterations, 	// number of iterations allowed to make
 								// the volume of fluid field valid
@@ -270,6 +271,7 @@ EXPORT void time_stepping_sequence(
                                   number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
                                    number_matrix_connections, gravity,
                                      actual_time_step_navier_stokes,
+                                       time_stepping_method,
                                        rho_plus_over_rho_minus,
                                          smoothing_distance_factor,
                                           rho_minus_over_mu_minus, mu_plus_over_mu_minus,

@@ -119,7 +119,7 @@ double maximum_time_step_level_set;	/* maximum time step for Level-Set conservat
 double actual_time_step_navier_stokes;  /* actual time step for Navier-Stokes solution algorithm */
 double actual_time_step_level_set;	/* actual time step for Level-Set conservation equation */
 double time_step_output_solution;	/* interval of writing the solution to file */
-
+int time_stepping_method;		/* select time scheme 1:explicit euler 2: imex, 3: runge-kutta */
 
  
   

@@ -151,7 +151,7 @@ EXPORT void set_boundary_conditions(
 // vertex-centered: u3
 // boundary condition type: homogeneous dirichlet
     // u1
-     boundary_faces[4].boundary_variables[0].boundary_condition_value=0.0; // the driven lid
+     boundary_faces[4].boundary_variables[0].boundary_condition_value=1.0; // the driven lid
      boundary_faces[4].boundary_variables[0].boundary_condition_type=dirichlet;
      boundary_faces[4].boundary_variables[0].cell_centering=cell_centered;
     // u2
