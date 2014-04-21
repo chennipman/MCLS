@@ -83,14 +83,7 @@ EXPORT void advance_flow_field(
        Array3<double> u_1_velocity_star; 		// velocity field at star time level x1 direction   
        Array3<double> u_2_velocity_star; 		// velocity field at star time level x2 direction     
        Array3<double> u_3_velocity_star;		// velocity field at star time level x3 direction
-       
-       /* specific for the explicit discretisation */
-       
-       Array3<double> u_1_con_diff;                     // convection and diffusion in  x1 direction   
-       Array3<double> u_2_con_diff;                     // convection and diffusion in x2 direction     
-       Array3<double> u_3_con_diff;                     // convection and diffusion in x3 direction
-       
-       
+
     /* allocate memory for tentative velocity field u star */
     
       u_1_velocity_star.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
@@ -100,17 +93,27 @@ EXPORT void advance_flow_field(
     /* solve momentum predictor equation */
     /* compute a new velocity field u star, that is not divergence free */
    
-   printf(" %i " , time_stepping_method); 
-   printf(" %d " , time_stepping_method); 
-       
-    if (time_stepping_method == 1)
+    if (time_stepping_method == 1) // Explicit Euler
     {
       printf("explicit euler \n"); 
+      
+	/* Explicit Euler  */           								
+    	// calculate momentum predictor 
+      solve_momentum_predictor_explicit(
+       u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,
+       u_1_velocity_old,u_2_velocity_old,u_3_velocity_old,
+       scaled_density_u1,scaled_density_u2,scaled_density_u3,
+       momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
+       level_set, actual_time_step_navier_stokes,
+       number_primary_cells_i,number_primary_cells_j,number_primary_cells_k,
+       mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,
+       rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
+       source_terms_in_momentum_predictor);      
     }
     
     else if (time_stepping_method == 2)
     {
-      printf("imex");
+      printf("imex \n");
       solve_momentum_predictor_imex(	level_set, u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,			
 				  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star,			
 				    momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3, 	
@@ -123,10 +126,19 @@ EXPORT void advance_flow_field(
 					      tolerance_velocity, maximum_iterations_allowed_velocity); 
     }
 
-      
     else if (time_stepping_method == 3)
     {
       printf("runge kutta \n"); 
+      solve_momentum_predictor_rk(
+       u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,
+       u_1_velocity_old,u_2_velocity_old,u_3_velocity_old,
+       scaled_density_u1,scaled_density_u2,scaled_density_u3,
+       momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
+       level_set, actual_time_step_navier_stokes,
+       number_primary_cells_i,number_primary_cells_j,number_primary_cells_k,
+       mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,
+       rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
+       source_terms_in_momentum_predictor);           
     }
     
     else 
@@ -136,20 +148,8 @@ EXPORT void advance_flow_field(
 
   
   
-    
-    
-      solve_momentum_predictor_imex(	level_set, u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,			
-				  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star,			
-				    momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3, 	
-				     scaled_density_u1, scaled_density_u2, scaled_density_u3,
-				      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,			
-					number_matrix_connections, actual_time_step_navier_stokes,		
-					  mesh_width_x1, mesh_width_x2, mesh_width_x3,				
-					    rho_plus_over_rho_minus, smoothing_distance_factor, rho_minus_over_mu_minus,			
-					      mu_plus_over_mu_minus, boundary_faces,
-					      tolerance_velocity, maximum_iterations_allowed_velocity);
-
-     /* solve momentum corrector equation */
+  
+       /* solve momentum corrector equation */
      /* compute a correction to the velocity field u star, to make it divergence free */
      /* and apply this correction to u star */
      

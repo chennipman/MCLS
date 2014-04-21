@@ -224,7 +224,94 @@ EXPORT void add_arrays(
       {
 	  for(k_index=0;k_index<third_dimension;k_index++)
 	  {
-	      output_array[i_index][j_index][k_index]=first_constant_value*first_array[i_index][j_index][k_index]+second_constant_value*second_array[i_index][j_index][k_index];
+	      output_array[i_index][j_index][k_index]=
+	      first_constant_value *first_array[i_index][j_index][k_index]+
+	      second_constant_value*second_array[i_index][j_index][k_index];
+	  }  
+        }  
+  } 
+}
+/********************************************************************************/
+/********************************************************************************/
+/*  Function to add 3 three-dimensional arrays multiplied by a integer       	*/
+/*  										*/
+/*  Programmer	: Coen Hennipman	       					*/
+/*  Date	: 21-04-2014       						*/
+/*  Update	:        							*/
+/********************************************************************************/
+/* Notes									*/
+/* This function adds 3 arrays and multiplies them with a constant value      	*/
+/*                                     		                                */
+/********************************************************************************/
+EXPORT void add_3_arrays(
+    Array3<double> output_array,	// the output array that is calculated
+    double first_constant_value,	// the constant value the vector has to be set to
+    Array3<double> first_array,		// the name of the vector that has to be set
+    double second_constant_value,	// the constant value the vector has to be set to
+    Array3<double> second_array,	// the name of the vector that has to be set
+    double third_constant_value,	// the constant value the vector has to be set to
+    Array3<double> third_array,		// the name of the vector that has to be set
+    int first_dimension,		// number of elements in first dimension
+    int second_dimension,		// number of elements in second dimension
+    int third_dimension			// number of elements in third dimension
+     )
+{
+  int i_index, j_index, k_index;  // local variables for loop indexing
+
+  for(i_index=0;i_index<first_dimension;i_index++)
+  {
+     for(j_index=0;j_index<second_dimension;j_index++)
+      {
+	  for(k_index=0;k_index<third_dimension;k_index++)
+	  {
+	      output_array[i_index][j_index][k_index]=
+	      first_constant_value *first_array[i_index][j_index][k_index]+
+	      second_constant_value*second_array[i_index][j_index][k_index]+
+	      third_constant_value *third_array[i_index][j_index][k_index];
+	  }  
+        }  
+  } 
+}
+/********************************************************************************/
+/********************************************************************************/
+/*  Function to add 4 three-dimensional arrays multiplied by a integer       	*/
+/*  										*/
+/*  Programmer	: Coen Hennipman	       					*/
+/*  Date	: 21-04-2014       						*/
+/*  Update	:        							*/
+/********************************************************************************/
+/* Notes									*/
+/* This function adds 4 arrays and multiplies them with a constant value      	*/
+/*                                     		                                */
+/********************************************************************************/
+EXPORT void add_4_arrays(
+    Array3<double> output_array,	// the output array that is calculated
+    double first_constant_value,	// the constant value the vector has to be set to
+    Array3<double> first_array,		// the name of the vector that has to be set
+    double second_constant_value,	// the constant value the vector has to be set to
+    Array3<double> second_array,	// the name of the vector that has to be set
+    double third_constant_value,	// the constant value the vector has to be set to
+    Array3<double> third_array,		// the name of the vector that has to be set
+    double fourth_constant_value,	// the constant value the vector has to be set to
+    Array3<double> fourth_array,	// the name of the vector that has to be set
+    int first_dimension,		// number of elements in first dimension
+    int second_dimension,		// number of elements in second dimension
+    int third_dimension			// number of elements in third dimension
+     )
+{
+  int i_index, j_index, k_index;  // local variables for loop indexing
+
+  for(i_index=0;i_index<first_dimension;i_index++)
+  {
+     for(j_index=0;j_index<second_dimension;j_index++)
+      {
+	  for(k_index=0;k_index<third_dimension;k_index++)
+	  {
+	      output_array[i_index][j_index][k_index] = 
+	      first_constant_value *first_array[i_index][j_index][k_index]+
+	      second_constant_value*second_array[i_index][j_index][k_index]+
+	      third_constant_value *third_array[i_index][j_index][k_index]+
+	      fourth_constant_value*fourth_array[i_index][j_index][k_index];
 	  }  
         }  
   } 

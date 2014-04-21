@@ -150,7 +150,10 @@ COMMON_SRCS= \
 		map_index_u2.cpp \
 		map_index_u3.cpp \
 		solve_momentum_predictor_imex.cpp \
+		solve_momentum_predictor_rk.cpp \
 		solve_momentum_predictor_explicit.cpp \
+		forward_euler.cpp \
+		convection_diffussion_source_terms.cpp \
 		solve_momentum_predictor_u1.cpp \
 		solve_momentum_predictor_u2.cpp \
 		solve_momentum_predictor_u3.cpp \

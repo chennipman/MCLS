@@ -14,7 +14,7 @@
 /* Notes									*/
 /********************************************************************************/
 
- EXPORT void solve_momentum_predictor_explicit(
+ EXPORT void solve_momentum_predictor_rk(
       Array3<double> u_1_velocity_star, 		// velocity field at star time level x1 direction
       Array3<double> u_2_velocity_star, 		// velocity field at star time level x2 direction
       Array3<double> u_3_velocity_star,			// velocity field at star time level x3 direction
@@ -53,49 +53,30 @@
        )
 
   {
-	double sigma = 1.0;
-	double zeta  = 0.0;
 
-	// these arrays are created but unused in explict euler 
-       Array3<double> u_1_old_con_diff; 	
-       Array3<double> u_2_old_con_diff; 		
-       Array3<double> u_3_old_con_diff;			
 
-      u_1_old_con_diff.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
-      u_2_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
-      u_3_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
 
-       Array3<double> u_1_new_con_diff; 	
-       Array3<double> u_2_new_con_diff; 		
-       Array3<double> u_3_new_con_diff;			
 
-      u_1_new_con_diff.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
-      u_2_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
-      u_3_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
-	
-      forward_euler(
-	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,			
-	u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,   // these terms are unused in explicit euler                   
-	u_1_velocity_old,u_2_velocity_old,u_3_velocity_old,		
-	u_1_old_con_diff,u_2_old_con_diff,u_3_old_con_diff,   // these terms are unused in explicit euler            
- 	scaled_density_u1,scaled_density_u2,scaled_density_u3,			   
- 	momentum_source_term_u_1,momentum_source_term_u_2,momentum_source_term_u_3,	
-	level_set, actual_time_step_navier_stokes,	       
-  	sigma,zeta,					
-  	number_primary_cells_i,number_primary_cells_j,number_primary_cells_k,			
-	mesh_width_x1,mesh_width_x2,mesh_width_x3,				
-	smoothing_distance_factor,
- 	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
- 	source_terms_in_momentum_predictor    	
-       );
 
-	u_1_old_con_diff.destroy();
-	u_2_old_con_diff.destroy();
-	u_3_old_con_diff.destroy();
-	
-	u_1_new_con_diff.destroy();
-	u_2_new_con_diff.destroy();
-	u_3_new_con_diff.destroy();
+
+
+// u* = add_3_arrays 
+
+
+
+// convection diffusion u(n-1)
+
+// u* = add_3_arrays
+
+// convection diffusion u*
+
+// u** = add_4_arrays
+
+// convection diffusion u**
+
+// u*** = add_4_arrays 
+
+
 
   }      
 

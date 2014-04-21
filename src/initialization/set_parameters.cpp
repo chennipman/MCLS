@@ -139,22 +139,22 @@ EXPORT void set_parameters(
       domain_size_x3                                            = 1.0;
       
       /* settings for modelling */
-      number_of_phases				= 2;
+      number_of_phases				= 1;
   
 
       /* settings for time-stepping */
 
       cfl_number_navier_stokes			        = 1.0;
-      time_step_restriction_global			= 0.01;      
+      time_step_restriction_global			= 0.005;      
       actual_time_step_navier_stokes    		= time_step_restriction_global;
-      time_interval_for_output			        = time_step_restriction_global*100;
+      time_interval_for_output			        = time_step_restriction_global*20;
       time_interval_for_reinitialization                = time_step_restriction_global*1e10; //worked fine
       number_of_subcycles				= 1;
       actual_time_step_level_set			= actual_time_step_navier_stokes/number_of_subcycles;
       fixed_time_step					= 1;	
       start_time_simulation				= 0.0;
       end_time_simulation				= 50.0;
-      time_stepping_method 				= 2; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
+      time_stepping_method 				= 1; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
       
       /* settings for restart from solution file and solution file writing */
       
@@ -175,11 +175,11 @@ EXPORT void set_parameters(
       /* interface handling parameters */
       apply_mass_distribution_algorithm  				= 1;    
       apply_mass_conservation_correction 				= 1;    
-      volume_of_fluid_tolerance		 			        = 0.000001;
+      volume_of_fluid_tolerance		 			        = 1e-6;
       lower_bound_derivatives		 				= 0.00000001;
       number_vof_2_level_set_iterations  				= 25;	
       number_iterations_ridder		 			        = 100;	
-      vof_2_level_set_tolerance		 			        = 0.0000001;	
+      vof_2_level_set_tolerance		 			        = 1e-6;	
       cfl_number_reinitialization	 				= 0.5;
       maximum_reinitialization_steps	 				= 400;
       tolerance_reinitialization	 				= 0.0001;
@@ -225,8 +225,8 @@ EXPORT void set_parameters(
       
       /* linear solvers and matrices*/
 
-      tolerance_pressure		 		=0.00000001;	 
-      tolerance_velocity		 		=0.000001;
+      tolerance_pressure		 		= 1e-6;	 
+      tolerance_velocity		 		= 1e-5;
       maximum_iterations_allowed_pressure		=      400;	
       maximum_iterations_allowed_velocity		=      100;
       number_matrix_connections		 	        =        7;		       
