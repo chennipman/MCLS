@@ -139,22 +139,22 @@ EXPORT void set_parameters(
       domain_size_x3                                            = 1.0;
       
       /* settings for modelling */
-      number_of_phases				= 1;
+      number_of_phases				= 2;
   
 
       /* settings for time-stepping */
 
       cfl_number_navier_stokes			        = 1.0;
-      time_step_restriction_global			= 0.005;      
+      time_step_restriction_global			= 0.01;      
       actual_time_step_navier_stokes    		= time_step_restriction_global;
-      time_interval_for_output			        = time_step_restriction_global*20;
-      time_interval_for_reinitialization                = time_step_restriction_global*1e10; //worked fine
+      time_interval_for_output			        = time_step_restriction_global*1;
+      time_interval_for_reinitialization                = time_step_restriction_global*1e10; 
       number_of_subcycles				= 1;
       actual_time_step_level_set			= actual_time_step_navier_stokes/number_of_subcycles;
       fixed_time_step					= 1;	
       start_time_simulation				= 0.0;
       end_time_simulation				= 50.0;
-      time_stepping_method 				= 1; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
+      time_stepping_method 				= 3; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
       
       /* settings for restart from solution file and solution file writing */
       

@@ -12,6 +12,7 @@
 /*  Update	:        							*/
 /********************************************************************************/
 /* Notes									*/
+/* Some notes about the direction and the notation are in my report.		*/
 /********************************************************************************/
 
  EXPORT void convection_diffussion_source_terms(

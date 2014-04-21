@@ -12,6 +12,8 @@
 /*  Update	:        							*/
 /********************************************************************************/
 /* Notes									*/
+/* This functions computes one explicit euler step.				*/
+/* Notes									*/
 /********************************************************************************/
 
  EXPORT void forward_euler(
@@ -61,7 +63,9 @@
        )
 
   {
-       
+       // calculate the convection and diffusion(without momentum_source_terms)
+       // the momentum source term is included below or in the pressure correction
+       // this depends on 'momentum_source_term' 
 	convection_diffussion_source_terms(
        u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,
        u_1_velocity_old,u_2_velocity_old,u_3_velocity_old,
@@ -72,11 +76,8 @@
        mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,
        rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
        0); 
-       // the momentum_source_term is not incorporated in this function, but below or in the pressure correction
-       // depending on 'momentum_source_term'
 
-	// calculate u* by adding 3 or 4 arrays
-	 
+	// calculate u* in all 3 directions
   	if(source_terms_in_momentum_predictor) // the source terms are in the predictor
       	{
        add_4_arrays(u_1_velocity_star,	1.0, u_1_velocity_old,	

@@ -56,7 +56,7 @@
 	double sigma = 1.0;
 	double zeta  = 0.0;
 
-	// these arrays are created but unused in explict euler 
+	// these arrays are created but unused. (I have created these to have a more general forward_euler function) 
        Array3<double> u_1_old_con_diff; 	
        Array3<double> u_2_old_con_diff; 		
        Array3<double> u_3_old_con_diff;			
@@ -65,6 +65,7 @@
       u_2_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
       u_3_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
 
+	// these arrays are created here and used in forward_euler 
        Array3<double> u_1_new_con_diff; 	
        Array3<double> u_2_new_con_diff; 		
        Array3<double> u_3_new_con_diff;			
@@ -75,9 +76,9 @@
 	
       forward_euler(
 	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,			
-	u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,   // these terms are unused in explicit euler                   
+	u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,                      
 	u_1_velocity_old,u_2_velocity_old,u_3_velocity_old,		
-	u_1_old_con_diff,u_2_old_con_diff,u_3_old_con_diff,   // these terms are unused in explicit euler            
+	u_1_old_con_diff,u_2_old_con_diff,u_3_old_con_diff,        
  	scaled_density_u1,scaled_density_u2,scaled_density_u3,			   
  	momentum_source_term_u_1,momentum_source_term_u_2,momentum_source_term_u_3,	
 	level_set, actual_time_step_navier_stokes,	       
