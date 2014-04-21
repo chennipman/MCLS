@@ -12,6 +12,9 @@
 /*  Update	:        							*/
 /********************************************************************************/
 /* Notes									*/
+/* Notes									*/
+/* u_star is reused								*/
+/* Notes									*/
 /********************************************************************************/
 
  EXPORT void solve_momentum_predictor_rk(
@@ -53,30 +56,139 @@
        )
 
   {
+	double sigma, zeta; 
 
 
+	// first step Runge-Kutta
+       Array3<double> u_1_old_con_diff; 	
+       Array3<double> u_2_old_con_diff; 		
+       Array3<double> u_3_old_con_diff;			
+
+      u_1_old_con_diff.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
+      u_2_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
+      u_3_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
+
+       Array3<double> u_1_new_con_diff; 	
+       Array3<double> u_2_new_con_diff; 		
+       Array3<double> u_3_new_con_diff;			
+
+      u_1_new_con_diff.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
+      u_2_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
+      u_3_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
+	
+	sigma = 1.0; // parameter for new time
+	zeta  = 0.0; // parameter for previous time
+		
+      forward_euler(
+	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,			
+	u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,                      
+	u_1_velocity_old,u_2_velocity_old,u_3_velocity_old,		
+	u_1_old_con_diff,u_2_old_con_diff,u_3_old_con_diff,               
+ 	scaled_density_u1,scaled_density_u2,scaled_density_u3,			   
+ 	momentum_source_term_u_1,momentum_source_term_u_2,momentum_source_term_u_3,	
+	level_set, actual_time_step_navier_stokes,	       
+  	sigma,zeta,					
+  	number_primary_cells_i,number_primary_cells_j,number_primary_cells_k,			
+	mesh_width_x1,mesh_width_x2,mesh_width_x3,				
+	smoothing_distance_factor,
+ 	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
+ 	source_terms_in_momentum_predictor    	
+       );
+ 
+      // shift the convection and diffusion term
+      copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
+                       0, number_primary_cells_i,
+                         0, number_primary_cells_j+1,
+                           0, number_primary_cells_k+1);
+      
+      copy_general_field(u_2_new_con_diff, u_2_old_con_diff,
+                       0, number_primary_cells_i+1,
+                         0, number_primary_cells_j,
+                           0, number_primary_cells_k+1);
+  
+      copy_general_field(u_3_new_con_diff, u_3_old_con_diff,
+                       0, number_primary_cells_i+1,
+                         0, number_primary_cells_j+1,
+                           0, number_primary_cells_k);
 
 
+	// second step Runge-Kutta
+       Array3<double> u_1_velocity_star_star; 		// velocity field at star_star time level x1 direction   
+       Array3<double> u_2_velocity_star_star; 		// velocity field at star_star time level x2 direction     
+       Array3<double> u_3_velocity_star_star;		// velocity field at star_star time level x3 direction
 
+    	/* allocate memory for tentative velocity field u star_star */
+      u_1_velocity_star_star.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
+      u_2_velocity_star_star.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
+      u_3_velocity_star_star.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);
 
+	sigma = 5.0/12.0; // parameter for new time
+	zeta  = -17.0/60.0; // parameter for previous time
+		
+      forward_euler(
+	u_1_velocity_star_star,u_2_velocity_star_star,u_3_velocity_star_star,			
+	u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,                      
+	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,		
+	u_1_old_con_diff,u_2_old_con_diff,u_3_old_con_diff,               
+ 	scaled_density_u1,scaled_density_u2,scaled_density_u3,			   
+ 	momentum_source_term_u_1,momentum_source_term_u_2,momentum_source_term_u_3,	
+	level_set, actual_time_step_navier_stokes,	       
+  	sigma,zeta,					
+  	number_primary_cells_i,number_primary_cells_j,number_primary_cells_k,			
+	mesh_width_x1,mesh_width_x2,mesh_width_x3,				
+	smoothing_distance_factor,
+ 	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
+ 	source_terms_in_momentum_predictor    	
+       );
 
-// u* = add_3_arrays 
+      // shift the convection and diffusion term
+      copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
+                       0, number_primary_cells_i,
+                         0, number_primary_cells_j+1,
+                           0, number_primary_cells_k+1);
+      
+      copy_general_field(u_2_new_con_diff, u_2_old_con_diff,
+                       0, number_primary_cells_i+1,
+                         0, number_primary_cells_j,
+                           0, number_primary_cells_k+1);
+  
+      copy_general_field(u_3_new_con_diff, u_3_old_con_diff,
+                       0, number_primary_cells_i+1,
+                         0, number_primary_cells_j+1,
+                           0, number_primary_cells_k);	
 
+	// third step Runge-Kutta
+	
+	sigma = 3.0/4.0; // parameter for new time
+	zeta  = -5.0/12.0; // parameter for previous time
+		
+      forward_euler(
+	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,		// u_star is reused to reduce the number of allocations	
+	u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,                      
+	u_1_velocity_star_star,u_2_velocity_star_star,u_3_velocity_star_star,		
+	u_1_old_con_diff,u_2_old_con_diff,u_3_old_con_diff,               
+ 	scaled_density_u1,scaled_density_u2,scaled_density_u3,			   
+ 	momentum_source_term_u_1,momentum_source_term_u_2,momentum_source_term_u_3,	
+	level_set, actual_time_step_navier_stokes,	       
+  	sigma,zeta,					
+  	number_primary_cells_i,number_primary_cells_j,number_primary_cells_k,			
+	mesh_width_x1,mesh_width_x2,mesh_width_x3,				
+	smoothing_distance_factor,
+ 	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
+ 	source_terms_in_momentum_predictor    	
+       );
 
+	u_1_old_con_diff.destroy();
+	u_2_old_con_diff.destroy();
+	u_3_old_con_diff.destroy();
+	
+	u_1_new_con_diff.destroy();
+	u_2_new_con_diff.destroy();
+	u_3_new_con_diff.destroy();
 
-// convection diffusion u(n-1)
-
-// u* = add_3_arrays
-
-// convection diffusion u*
-
-// u** = add_4_arrays
-
-// convection diffusion u**
-
-// u*** = add_4_arrays 
-
-
+	u_1_velocity_star_star.destroy();
+	u_2_velocity_star_star.destroy();
+	u_3_velocity_star_star.destroy();
 
   }      
 
