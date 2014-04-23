@@ -125,6 +125,7 @@ double time_interval_for_reinitialization; 	// time interval between reinitializ
 						// of level-set field
 int time_stepping_method;			// select time schmeme 1:explicit euler
 						// 2: imex, 3: runge-kutta
+double actual_time;				// actual time 
 					
 					
 /*++++++++++++++++++++++++++++++++++++++++++++++++++*/  

@@ -27,7 +27,8 @@ EXPORT void apply_boundary_conditions_velocity_u1(
 	  double mesh_width_x3,				// grid spacing in x3 direction (uniform)
 	  int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	  int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
-	  int number_primary_cells_k			// number of primary (pressure) cells in x3 direction
+	  int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
+	  double time_over_reynolds			// actual time divided by Reynolds
      )
      {
        double boundary_value;				// value of the boundary condition prescibed:
@@ -41,8 +42,9 @@ EXPORT void apply_boundary_conditions_velocity_u1(
 							// 'virtual' side of the face, with respect to
 							// index of the slice of cells adjacent to the
 							// boundary on the 'real' side.
- 
-
+ 	double x,expo; 
+	double PI=atan(1)*4;
+	
        /******************************************************************/
        /*   +/- I-index faces						 */
        /******************************************************************/
@@ -152,6 +154,23 @@ EXPORT void apply_boundary_conditions_velocity_u1(
 		      }	  
   
 		 }  
+	      }
+	      else if(boundary_faces[face_index].boundary_variables[0].boundary_condition_type==taylor_vortex)
+	      {
+		  /* TAYLOR VORTEX BOUNDARY CONDITION */
+		  /* boundary_value is the prescribed value */
+		expo = exp(-2*PI*PI*time_over_reynolds);
+			
+		 for(i_index=0;i_index<number_primary_cells_i+1;i_index++)
+		 {
+		      for(k_index=0;k_index<number_primary_cells_k+2;k_index++)
+		      {
+			x = mesh_width_x1*(i_index-0.5);
+			u_1_velocity[i_index][cell_label_boundary][k_index]= -sin(PI*x)*expo;
+		      }	  
+  
+		 }  	      
+	      
 	      }  
 	      else
 	      {

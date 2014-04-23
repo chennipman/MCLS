@@ -30,7 +30,8 @@ EXPORT void apply_boundary_conditions_velocity(
 	  double mesh_width_x3,				// grid spacing in x3 direction (uniform)
 	  int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	  int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
-	  int number_primary_cells_k			// number of primary (pressure) cells in x3 direction
+	  int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
+	  double time_over_reynolds			// actual time divided by Reynolds
      )
   {
      apply_boundary_conditions_velocity_u1(boundary_faces,		
@@ -38,7 +39,7 @@ EXPORT void apply_boundary_conditions_velocity(
 						  mesh_width_x1, mesh_width_x2, mesh_width_x3, 
 						    number_primary_cells_i, 
 						      number_primary_cells_j,			
-							number_primary_cells_k);
+							number_primary_cells_k, time_over_reynolds);
 
      
      apply_boundary_conditions_velocity_u2(boundary_faces,		
@@ -46,7 +47,7 @@ EXPORT void apply_boundary_conditions_velocity(
 						  mesh_width_x1, mesh_width_x2, mesh_width_x3, 
 						    number_primary_cells_i, 
 						      number_primary_cells_j,			
-							number_primary_cells_k);
+							number_primary_cells_k, time_over_reynolds);
 
      apply_boundary_conditions_velocity_u3(boundary_faces,		
 					      u_3_velocity, 			

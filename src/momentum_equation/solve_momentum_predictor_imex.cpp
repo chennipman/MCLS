@@ -57,12 +57,14 @@ EXPORT void solve_momentum_predictor_imex(
       boundary_face boundary_faces[6],			// array with all the information
 							// for the boundary conditions
       double tolerance_velocity,	  		// the tolerance with which the system for the momentum predictor is solved	
-      int maximum_iterations_allowed_velocity		// maximum number of iterations allowed for the
+      int maximum_iterations_allowed_velocity,		// maximum number of iterations allowed for the
 							// conjugate gradient method
+      double actual_time
 	
       )
       {
       /* solve the momentum predictor equation for the velocity u star, x1 component */
+      double time_over_reynolds = actual_time/rho_minus_over_mu_minus;
       
       std::cout<<"solve momentum predictor u1 "<< " \n";
 
@@ -109,7 +111,8 @@ EXPORT void solve_momentum_predictor_imex(
       apply_boundary_conditions_velocity(boundary_faces,		
 					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			 
 					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
-					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k);			 
+					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+					      time_over_reynolds);			 
    
       /* visualize the predictor velocity field */
    

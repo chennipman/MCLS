@@ -74,10 +74,11 @@ EXPORT void advance_flow_field(
 							// conjugate gradient method
       int continuous_surface_force_model,       	// =1, the continuous surface force model is applied
 					        	// =0, the exact interface boundary conditions are applied
-      int source_terms_in_momentum_predictor    	// =1, the source terms are applied in the momentum predictor
+      int source_terms_in_momentum_predictor,    	// =1, the source terms are applied in the momentum predictor
 					        	// equation
 					        	// =0, the source terms are applied in the momentum corrector
 					        	// equation
+      double actual_time
 	 )
         {
        Array3<double> u_1_velocity_star; 		// velocity field at star time level x1 direction   
@@ -108,7 +109,7 @@ EXPORT void advance_flow_field(
        number_primary_cells_i,number_primary_cells_j,number_primary_cells_k,
        mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,
        rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
-       source_terms_in_momentum_predictor);      
+       boundary_faces, source_terms_in_momentum_predictor, actual_time);      
     }
     
     else if (time_stepping_method == 2)
@@ -123,7 +124,7 @@ EXPORT void advance_flow_field(
 					  mesh_width_x1, mesh_width_x2, mesh_width_x3,				
 					    rho_plus_over_rho_minus, smoothing_distance_factor, rho_minus_over_mu_minus,			
 					      mu_plus_over_mu_minus, boundary_faces,
-					      tolerance_velocity, maximum_iterations_allowed_velocity); 
+					      tolerance_velocity, maximum_iterations_allowed_velocity,actual_time); 
     }
 
     else if (time_stepping_method == 3)
@@ -138,7 +139,7 @@ EXPORT void advance_flow_field(
        number_primary_cells_i,number_primary_cells_j,number_primary_cells_k,
        mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,
        rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
-       source_terms_in_momentum_predictor);           
+       boundary_faces,source_terms_in_momentum_predictor,actual_time);           
     }
     
     else 
@@ -146,7 +147,6 @@ EXPORT void advance_flow_field(
       printf("unkown time stepping method \n"); 
     }
 
-  
   
   
        /* solve momentum corrector equation */
@@ -163,7 +163,7 @@ EXPORT void advance_flow_field(
 					  gravity, tolerance_pressure, actual_time_step_navier_stokes,    
 					    rho_plus_over_rho_minus, continuous_surface_force_model,       
 					      source_terms_in_momentum_predictor, maximum_iterations_allowed_pressure,	 	
-						boundary_faces);
+						boundary_faces,rho_minus_over_mu_minus, actual_time);
       /* shift the velocity field */
       
       // shift the velocity fields

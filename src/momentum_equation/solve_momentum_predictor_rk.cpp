@@ -49,14 +49,18 @@
       double rho_minus_over_mu_minus,			// this was the 'Reynolds' number
 							// in the original implementation of Sander
       double mu_plus_over_mu_minus,			// ratio of the viscosities of both phases
-      int source_terms_in_momentum_predictor    	// =1, the source terms are applied in the momentum predictor
+      boundary_face boundary_faces[6],		        // array with all the information
+							// for the boundary conditions 
+      int source_terms_in_momentum_predictor,    	// =1, the source terms are applied in the momentum predictor
 					        	// equation
 					        	// =0, the source terms are applied in the momentum corrector
 					        	// equation  
+      double actual_time				// actual time 
        )
 
   {
 	double sigma, zeta; 
+      double time_over_reynolds = actual_time/rho_minus_over_mu_minus;
 
 
 	// first step Runge-Kutta
@@ -94,7 +98,12 @@
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
  	source_terms_in_momentum_predictor    	
        );
- 
+       
+      apply_boundary_conditions_velocity(boundary_faces,		
+					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			 
+					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
+					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+					      time_over_reynolds);	 
       // shift the convection and diffusion term
       copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
                        0, number_primary_cells_i,
@@ -140,6 +149,12 @@
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
  	source_terms_in_momentum_predictor    	
        );
+       
+             apply_boundary_conditions_velocity(boundary_faces,		
+					  u_1_velocity_star_star, u_2_velocity_star_star, u_3_velocity_star_star, 			 
+					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
+					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+					      time_over_reynolds);	
 
       // shift the convection and diffusion term
       copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
@@ -178,6 +193,11 @@
  	source_terms_in_momentum_predictor    	
        );
 
+      apply_boundary_conditions_velocity(boundary_faces,		
+					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			 
+					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
+					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+					      time_over_reynolds);	
 	u_1_old_con_diff.destroy();
 	u_2_old_con_diff.destroy();
 	u_3_old_con_diff.destroy();

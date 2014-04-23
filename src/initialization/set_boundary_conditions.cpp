@@ -68,7 +68,7 @@ EXPORT void set_boundary_conditions(
     boundary_faces[0].boundary_variables[0].boundary_condition_type=dirichlet;
     // u2
      boundary_faces[0].boundary_variables[1].boundary_condition_value=0.0;
-     boundary_faces[0].boundary_variables[1].boundary_condition_type=dirichlet;
+     boundary_faces[0].boundary_variables[1].boundary_condition_type=taylor_vortex;
      boundary_faces[0].boundary_variables[1].cell_centering=cell_centered;
     // u3
      boundary_faces[0].boundary_variables[2].boundary_condition_value=0.0;
@@ -89,7 +89,7 @@ EXPORT void set_boundary_conditions(
     boundary_faces[1].boundary_variables[0].boundary_condition_type=dirichlet;
     // u2
      boundary_faces[1].boundary_variables[1].boundary_condition_value=0.0;
-     boundary_faces[1].boundary_variables[1].boundary_condition_type=dirichlet;
+     boundary_faces[1].boundary_variables[1].boundary_condition_type=taylor_vortex;
      boundary_faces[1].boundary_variables[1].cell_centering=cell_centered;
     // u3
      boundary_faces[1].boundary_variables[2].boundary_condition_value=0.0;
@@ -107,16 +107,16 @@ EXPORT void set_boundary_conditions(
 // vertex-centered: u2
 // boundary condition type: homogeneous dirichlet
     // u1
-//     boundary_faces[2].boundary_variables[0].boundary_condition_value=0.0;
-//     boundary_faces[2].boundary_variables[0].boundary_condition_type=dirichlet;
-//     boundary_faces[2].boundary_variables[0].cell_centering=cell_centered;
+     boundary_faces[2].boundary_variables[0].boundary_condition_value=0.0;
+     boundary_faces[2].boundary_variables[0].boundary_condition_type=taylor_vortex;
+     boundary_faces[2].boundary_variables[0].cell_centering=cell_centered;
     // u2
     boundary_faces[2].boundary_variables[1].boundary_condition_value=initial_velocity.u2;
     boundary_faces[2].boundary_variables[1].boundary_condition_type=dirichlet;
     // u3
-//     boundary_faces[2].boundary_variables[2].boundary_condition_value=0.0;
-//     boundary_faces[2].boundary_variables[2].boundary_condition_type=dirichlet;
-//     boundary_faces[2].boundary_variables[2].cell_centering=cell_centered;
+     boundary_faces[2].boundary_variables[2].boundary_condition_value=0.0;
+     boundary_faces[2].boundary_variables[2].boundary_condition_type=dirichlet;
+     boundary_faces[2].boundary_variables[2].cell_centering=cell_centered;
 
 // Face 3: n=( 0, -1, 0) */
 // Freeslip boundary condition:
@@ -129,16 +129,16 @@ EXPORT void set_boundary_conditions(
 // boundary condition type: homogeneous dirichlet
 
     // u1
-//     boundary_faces[3].boundary_variables[0].boundary_condition_value=0.0;
-//     boundary_faces[3].boundary_variables[0].boundary_condition_type=dirichlet;
-//     boundary_faces[3].boundary_variables[0].cell_centering=cell_centered;
+     boundary_faces[3].boundary_variables[0].boundary_condition_value=0.0;
+     boundary_faces[3].boundary_variables[0].boundary_condition_type=taylor_vortex;
+     boundary_faces[3].boundary_variables[0].cell_centering=cell_centered;
     // u2
     boundary_faces[3].boundary_variables[1].boundary_condition_value=initial_velocity.u2;
     boundary_faces[3].boundary_variables[1].boundary_condition_type=dirichlet;
     // u3
-//     boundary_faces[3].boundary_variables[2].boundary_condition_value=0.0;
-//     boundary_faces[3].boundary_variables[2].boundary_condition_type=dirichlet;
-//     boundary_faces[3].boundary_variables[2].cell_centering=cell_centered;
+     boundary_faces[3].boundary_variables[2].boundary_condition_value=0.0;
+     boundary_faces[3].boundary_variables[2].boundary_condition_type=dirichlet;
+     boundary_faces[3].boundary_variables[2].cell_centering=cell_centered;
 
 
 // Face 4: n=( 0, 0, 1) */
@@ -151,13 +151,13 @@ EXPORT void set_boundary_conditions(
 // vertex-centered: u3
 // boundary condition type: homogeneous dirichlet
     // u1
-     boundary_faces[4].boundary_variables[0].boundary_condition_value=0.0; 
-     boundary_faces[4].boundary_variables[0].boundary_condition_type=dirichlet;
-     boundary_faces[4].boundary_variables[0].cell_centering=cell_centered;
+//     boundary_faces[4].boundary_variables[0].boundary_condition_value=0.0; 
+//     boundary_faces[4].boundary_variables[0].boundary_condition_type=dirichlet;
+//     boundary_faces[4].boundary_variables[0].cell_centering=cell_centered;
     // u2
-     boundary_faces[4].boundary_variables[1].boundary_condition_value=0.0;
-     boundary_faces[4].boundary_variables[1].boundary_condition_type=dirichlet;
-     boundary_faces[4].boundary_variables[1].cell_centering=cell_centered;
+//     boundary_faces[4].boundary_variables[1].boundary_condition_value=0.0;
+//     boundary_faces[4].boundary_variables[1].boundary_condition_type=dirichlet;
+//     boundary_faces[4].boundary_variables[1].cell_centering=cell_centered;
     // u3
     boundary_faces[4].boundary_variables[2].boundary_condition_value=initial_velocity.u3;
     boundary_faces[4].boundary_variables[2].boundary_condition_type=dirichlet;
@@ -174,13 +174,13 @@ EXPORT void set_boundary_conditions(
 // boundary condition type: homogeneous dirichlet
 
      // u1
-     boundary_faces[5].boundary_variables[0].boundary_condition_value=0.0;
-     boundary_faces[5].boundary_variables[0].boundary_condition_type=dirichlet;
-     boundary_faces[5].boundary_variables[0].cell_centering=cell_centered;
+//     boundary_faces[5].boundary_variables[0].boundary_condition_value=0.0;
+//     boundary_faces[5].boundary_variables[0].boundary_condition_type=dirichlet;
+//     boundary_faces[5].boundary_variables[0].cell_centering=cell_centered;
     // u2
-     boundary_faces[5].boundary_variables[1].boundary_condition_value=0.0;
-     boundary_faces[5].boundary_variables[1].boundary_condition_type=dirichlet;
-     boundary_faces[5].boundary_variables[1].cell_centering=cell_centered;
+//     boundary_faces[5].boundary_variables[1].boundary_condition_value=0.0;
+//     boundary_faces[5].boundary_variables[1].boundary_condition_type=dirichlet;
+//     boundary_faces[5].boundary_variables[1].cell_centering=cell_centered;
     // u3
     boundary_faces[5].boundary_variables[2].boundary_condition_value=initial_velocity.u3;
     boundary_faces[5].boundary_variables[2].boundary_condition_type=dirichlet;

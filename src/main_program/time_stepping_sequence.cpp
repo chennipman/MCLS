@@ -278,7 +278,8 @@ EXPORT void time_stepping_sequence(
                                            tolerance_pressure, maximum_iterations_allowed_pressure,
                                              tolerance_velocity, maximum_iterations_allowed_velocity,
                                                 continuous_surface_force_model,
-                                                 source_terms_in_momentum_predictor);
+                                                 source_terms_in_momentum_predictor,
+                                                   actual_time);
 	  std::cerr<<"flow field updated \n";
 
          advance_coupling_part2( level_set_new, pressure, curvature, unsmoothed_curvature,

@@ -33,7 +33,7 @@ bubble::bubble(int number=1, coordinate bubble_center=default_coordinate, double
 };
 
 enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
-enum boundary_conditions_type{dirichlet, neumann, periodic};
+enum boundary_conditions_type{dirichlet, neumann, taylor_vortex, periodic};
 enum boundary_conditions_rule{constant, function};
 enum cell_centerings{cell_centered, vertex_centered};
 
