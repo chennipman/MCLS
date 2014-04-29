@@ -1,4 +1,4 @@
-#include "../../src/headers/array.h"
+#include "../headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -77,6 +77,61 @@ EXPORT void initialize_flow_field(
     /* as specified in the parameter listing */
     
       /* old time level */
+
+
+  for(i=0;i<number_primary_cells_i+2;i++)
+  {
+     for(j=0;j<number_primary_cells_j+2;j++)
+      {
+	  for(k=0;k<number_primary_cells_k+2;k++)
+	  {
+	  x = x_length * i/number_primary_cells_i -0.5*mesh_width_x1;
+	  y = y_length * j/number_primary_cells_j -0.5*mesh_width_x2;
+	  z = z_length * k/number_primary_cells_k -0.5*mesh_width_x3;
+	  
+	  if(i!=number_primary_cells_i+1)
+	  	{x += 0.5*mesh_width_x1;
+	  	u_1_velocity_old[i][j][k]= -sin(PI*x)*cos(PI*y);
+	  	u_1_velocity_new[i][j][k]= -sin(PI*x)*cos(PI*y);
+//	  	u_1_velocity_old[i][j][k]= initial_velocity.u1;
+//	  	u_1_velocity_new[i][j][k]= initial_velocity.u1;
+	  	x -= 0.5*mesh_width_x1;}
+	  if(j!=number_primary_cells_j+1)
+	  	{y += 0.5*mesh_width_x2;
+	  	u_2_velocity_old[i][j][k]= cos(PI*x)*sin(PI*y);
+	  	u_2_velocity_new[i][j][k]= cos(PI*x)*sin(PI*y);	
+//	  	u_2_velocity_old[i][j][k]= initial_velocity.u2;
+//	  	u_2_velocity_new[i][j][k]= initial_velocity.u2;	
+	  	y -= 0.5*mesh_width_x2;}
+	  if(k!=number_primary_cells_k+1)
+	  	{z += 0.5*mesh_width_x3;
+	  	u_3_velocity_old[i][j][k]= initial_velocity.u3; 
+	  	u_3_velocity_new[i][j][k]= initial_velocity.u3;
+	  	z -= 0.5*mesh_width_x3;}
+	  } 
+	  	pressure[i][[j][k] = 1.0/4.0*(cos(2*PI*x)+cos(2*PI*y))
+	   
+  
+      }  
+     
+  } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
       set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, 
 			    number_primary_cells_k+2, u_1_velocity_new, initial_velocity.u1);
