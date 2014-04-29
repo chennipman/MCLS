@@ -42,7 +42,8 @@ EXPORT void apply_boundary_conditions_velocity_u1(
 							// 'virtual' side of the face, with respect to
 							// index of the slice of cells adjacent to the
 							// boundary on the 'real' side.
- 	double x,expo; 
+ 	double expo; 
+ 	double x,y,z; 
 	double PI=atan(1)*4;
 	
        /******************************************************************/
@@ -61,16 +62,18 @@ EXPORT void apply_boundary_conditions_velocity_u1(
 	  }
 	  if(boundary_faces[face_index].boundary_variables[0].boundary_condition_type==dirichlet)
 	  {
-		 boundary_value=
-			boundary_faces[face_index].boundary_variables[0].boundary_condition_value;
+		// boundary_value=
+		//	boundary_faces[face_index].boundary_variables[0].boundary_condition_value;
 			
 		 for(j_index=0;j_index<number_primary_cells_j+2;j_index++)
 		 {
 		      for(k_index=0;k_index<number_primary_cells_k+2;k_index++)
 		      {
 			/* U_real=U_boundary */
-			
-			u_1_velocity[cell_label_boundary][j_index][k_index]=boundary_value;
+			x = mesh_width_x1*(i_index-0.5);
+			y = mesh_width_x2*(j_index-0.5);
+			z = mesh_width_x3*(k_index-0.5);			
+			u_1_velocity[cell_label_boundary][j_index][k_index]=&get_boundary_value(x,y,z,time_over_reynolds);
 		      }	  
   
 		 }  

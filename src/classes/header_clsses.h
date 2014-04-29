@@ -33,7 +33,7 @@ bubble::bubble(int number=1, coordinate bubble_center=default_coordinate, double
 };
 
 enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
-enum boundary_conditions_type{dirichlet, neumann, taylor_vortex, periodic};
+enum boundary_conditions_type{dirichlet, neumann, periodic};
 enum boundary_conditions_rule{constant, function};
 enum cell_centerings{cell_centered, vertex_centered};
 
@@ -45,7 +45,8 @@ public:
   boundary_conditions_type boundary_condition_type;
   boundary_conditions_rule boundary_condition_rule;
   cell_centerings cell_centering;
-  double boundary_condition_value;
+  
+  double (*get_boundary_value)(double, double, double, double); 
   boundary_variable(variable varname, boundary_conditions_type bound_type,
 				     boundary_conditions_rule bound_rule,
 				     cell_centerings  cell_cent,
@@ -64,7 +65,7 @@ boundary_variable::boundary_variable(variable varname=velocity_u1,
     boundary_condition_type=bound_type;
     boundary_condition_rule=bound_rule;
     cell_centering=cell_cent;
-    boundary_condition_value=bound_value;
+//    boundary_condition_value=bound_value;
 };
 // constructor with only the name
 boundary_variable::boundary_variable(variable varname)
@@ -73,7 +74,8 @@ variable_name=varname;
 boundary_condition_type=neumann;
 boundary_condition_rule=constant;
 cell_centering=cell_centered;
-boundary_condition_value=0.0;
+//(*get_boundary_value) = (double, double, double, double); 
+// boundary_condition_value=0.0;
 };
 
 class boundary_face

@@ -52,6 +52,15 @@ EXPORT void set_boundary_conditions(
 	  
 	 )
     {
+    double output;
+double PI=3.1415;    
+double initial_velocity_u1(double x, double y, double z, double t)
+{
+output = sin(PI*x)+sin(PI*y)+sin(PI*z)+sin(PI*t); 
+return output; 
+}
+    
+    
 // Face 0: n=( 1, 0, 0) */
 // Freeslip boundary condition:
 // set the boundary condition for u_1 to homogeneous dirichlet= only non default */
@@ -64,7 +73,7 @@ EXPORT void set_boundary_conditions(
 
 //      boundary_faces[0].boundary_variables[0].boundary_condition_type=dirichlet;
     // u1
-    boundary_faces[0].boundary_variables[0].boundary_condition_value=initial_velocity.u1;
+    boundary_faces[0].boundary_variables[0].get_boundary_value=initial_velocity.u1(x,y,z,t);
     boundary_faces[0].boundary_variables[0].boundary_condition_type=dirichlet;
     // u2
      boundary_faces[0].boundary_variables[1].boundary_condition_value=0.0;
@@ -108,7 +117,7 @@ EXPORT void set_boundary_conditions(
 // boundary condition type: homogeneous dirichlet
     // u1
      boundary_faces[2].boundary_variables[0].boundary_condition_value=0.0;
-     boundary_faces[2].boundary_variables[0].boundary_condition_type=taylor_vortex;
+     boundary_faces[2].boundary_variables[0].boundary_condition_type=dirichlet_time_dependent;
      boundary_faces[2].boundary_variables[0].cell_centering=cell_centered;
     // u2
     boundary_faces[2].boundary_variables[1].boundary_condition_value=initial_velocity.u2;
@@ -130,7 +139,7 @@ EXPORT void set_boundary_conditions(
 
     // u1
      boundary_faces[3].boundary_variables[0].boundary_condition_value=0.0;
-     boundary_faces[3].boundary_variables[0].boundary_condition_type=taylor_vortex;
+     boundary_faces[3].boundary_variables[0].boundary_condition_type=dirichlet_time_dependent;
      boundary_faces[3].boundary_variables[0].cell_centering=cell_centered;
     // u2
     boundary_faces[3].boundary_variables[1].boundary_condition_value=initial_velocity.u2;

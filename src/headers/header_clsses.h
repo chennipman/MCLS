@@ -48,7 +48,7 @@ public:
 };
 
 enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure_field};
-enum boundary_conditions_type{dirichlet, neumann, taylor_vortex, periodic};
+enum boundary_conditions_type{dirichlet, neumann, periodic};
 enum boundary_conditions_rule{constant, function};
 enum cell_centerings{cell_centered, vertex_centered};
 enum geometry{bubbly_flow, wavy_flow};
@@ -68,7 +68,7 @@ public:
     boundary_conditions_type boundary_condition_type;
     boundary_conditions_rule boundary_condition_rule;
     cell_centerings cell_centering;
-    double boundary_condition_value;
+    double (*get_boundary_value)(double, double, double, double);
 
     boundary_variable(variable varname=velocity_u1,
                          boundary_conditions_type bound_type=neumann,
@@ -80,7 +80,7 @@ public:
         boundary_condition_type=bound_type;
         boundary_condition_rule=bound_rule;
         cell_centering=cell_cent;
-        boundary_condition_value=bound_value;
+ //       boundary_condition_value=bound_value;
     };
 
     boundary_variable(variable varname)
@@ -89,7 +89,7 @@ public:
         boundary_condition_type=neumann;
         boundary_condition_rule=constant;
         cell_centering=cell_centered;
-        boundary_condition_value=0.0;
+ //       boundary_condition_value=0.0;
     }
 };
 
