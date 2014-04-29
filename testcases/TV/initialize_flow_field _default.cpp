@@ -1,4 +1,4 @@
-#include "../headers/array.h"
+#include "../../src/headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
@@ -76,50 +76,7 @@ EXPORT void initialize_flow_field(
     /* if no restart file is available, simply set solution to constant value */
     /* as specified in the parameter listing */
     
-
-	double x,y,z;
-	int i,j,k; 
-	double PI=atan(1)*4;
-	
-  for(i=0;i<number_primary_cells_i+2;i++)
-  {
-     for(j=0;j<number_primary_cells_j+2;j++)
-      {
-	  for(k=0;k<number_primary_cells_k+2;k++)
-	  {
-	  
-	  x = mesh_width_x1*(i-0.5);
-	  y = mesh_width_x2*(j-0.5);
-	  z = mesh_width_x3*(k-0.5);
-	  
-	  if(i!=number_primary_cells_i+1)
-	  	{x += 0.5*mesh_width_x1;
-	  	u_1_velocity_old[i][j][k]= -sin(PI*x)*cos(PI*y);
-	  	u_1_velocity_new[i][j][k]= -sin(PI*x)*cos(PI*y);
-//	  	u_1_velocity_old[i][j][k]= initial_velocity.u1;
-//	  	u_1_velocity_new[i][j][k]= initial_velocity.u1;
-	  	x -= 0.5*mesh_width_x1;}
-	  if(j!=number_primary_cells_j+1)
-	  	{y += 0.5*mesh_width_x2;
-	  	u_2_velocity_old[i][j][k]= cos(PI*x)*sin(PI*y);
-	  	u_2_velocity_new[i][j][k]= cos(PI*x)*sin(PI*y);	
-//	  	u_2_velocity_old[i][j][k]= initial_velocity.u2;
-//	  	u_2_velocity_new[i][j][k]= initial_velocity.u2;	
-	  	y -= 0.5*mesh_width_x2;}
-	  if(k!=number_primary_cells_k+1)
-	  	{z += 0.5*mesh_width_x3;
-	  	u_3_velocity_old[i][j][k]= initial_velocity.u3; 
-	  	u_3_velocity_new[i][j][k]= initial_velocity.u3;
-	  	z -= 0.5*mesh_width_x3;}
-	   
-	  	pressure[i][j][k] = 1.0/4.0*(cos(2*PI*x)+cos(2*PI*y));
-	  	
-	  }
-      }  
-  } 
-
-/*
-      // old time level 
+      /* old time level */
     
       set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, 
 			    number_primary_cells_k+2, u_1_velocity_new, initial_velocity.u1);
@@ -129,7 +86,7 @@ EXPORT void initialize_flow_field(
 			    number_primary_cells_k+1, u_3_velocity_new, initial_velocity.u3);
       
 
-      // new time level 
+      /* new time level */
        
       set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, 
 			    number_primary_cells_k+2, u_1_velocity_old, initial_velocity.u1);
@@ -139,12 +96,12 @@ EXPORT void initialize_flow_field(
 			    number_primary_cells_k+1, u_3_velocity_old, initial_velocity.u3);
       
 
-    // intialize the pressure with constant value 0 
+    /* intialize the pressure with constant value 0 */
     
       set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
 			    number_primary_cells_k+2, pressure, 0.0);
 
-*/
+
      /* compute the pressure corresponding to the initial velocity field and the initial velocity field */
      /* because the initial velocity field is chosen constant, it can be ignored in the computation     */
      /* of the initial pressure. We do have to take into account the initial body force field distribution */
@@ -152,7 +109,6 @@ EXPORT void initialize_flow_field(
 
      /* initialize the pressure */
 
-/*
      initialize_pressure( level_set, pressure,
                             momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
                               surface_tension_body_force_x1, surface_tension_body_force_x2, surface_tension_body_force_x3,
@@ -166,7 +122,7 @@ EXPORT void initialize_flow_field(
                                             boundary_faces);
 
 
-*/
+
      
      
     }

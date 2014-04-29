@@ -4,7 +4,10 @@ CXXFLAGS=-O3 -Wall
 # CXXFLAGS=-g -Wall
 
 BUILD_DIR=objects
-EXECUTABLE_DIR=executable
+
+COMMIT_NUMBER:=$(shell git log -n 1 | head -1 | sed 's/commit //')
+NOW:=$(shell date +%m_%d_%H_%M_%S)
+RUN_DIR:=$(NOW)_$(COMMIT_NUMBER)
 
 COMMON_SRCS= \
 	$(addprefix src/initialization/, \
@@ -16,14 +19,11 @@ COMMON_SRCS= \
 		initialize_computation.cpp \
 		initialize_coupling.cpp \
 		initialize_curvature.cpp \
-		initialize_flow_field.cpp \
 		initialize_free_surface.cpp \
 		initialize_interface.cpp \
 		initialize_level_set.cpp \
 		initialize_pressure.cpp \
 		initialize_volume_of_fluid.cpp \
-		set_boundary_conditions.cpp \
-		set_parameters.cpp \
 		write_interface_solution.cpp \
 	) \
 	$(addprefix src/interface/, \
@@ -199,24 +199,41 @@ COMMON_SRCS= \
 	) \
 	$(addprefix src/utils/, \
 		utilities.cpp \
-	)
-
+	) 	
+#	$(addprefix testcases/undefined_case/, \
+#		set_boundary_conditions.cpp \
+#		set_parameters.cpp \
+#	) 
+	
 COMMON_OBJS=$(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(COMMON_SRCS))))
-
 ALL_TARGETS:=$(COMMON_OBJS)
 
 
-# MCLS
+# MCLS(default)
+CASE_DEFAULT=TV
+EXECUTABLE_DIR=testcases/$(CASE_DEFAULT)/$(RUN_DIR)
+CASE_SRCS= \
+	$(addprefix testcases/$(CASE_DEFAULT)/, \
+		set_boundary_conditions.cpp \
+		set_parameters.cpp \
+		initialize_flow_field.cpp \
+	) 
+CASE_OBJS=$(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(CASE_SRCS))))
 
 MCLS_OBJS=$(BUILD_DIR)/src/main_program/dns.o
-ALL_TARGETS:=$(ALL_TARGETS) $(MCLS_OBJS) $(EXECUTABLE_DIR)/MCLS
+ALL_TARGETS:=$(ALL_TARGETS) $(CASE_OBJS) $(MCLS_OBJS) $(EXECUTABLE_DIR)/MCLS
 
-$(EXECUTABLE_DIR)/MCLS: $(COMMON_OBJS) $(MCLS_OBJS)
+$(EXECUTABLE_DIR)/MCLS: $(COMMON_OBJS) $(MCLS_OBJS) $(CASE_OBJS)
 	@mkdir -p $(dir $@)
 	$(CXX) $(LDFLAGS) $^ -o $@
+	cp $(CASE_SRCS) $(EXECUTABLE_DIR)
 
 .PHONY: MCLS
-MCLS: $(EXECUTABLE_DIR)/MCLS
+MCLS: 
+	$(EXECUTABLE_DIR)/MCLS 
+
+# TEST CASES
+
 
 
 # UNIT TESTS
@@ -228,7 +245,7 @@ ALL_TARGETS:= \
 	$(addprefix $(EXECUTABLE_DIR)/, $(UNIT_TESTS)) \
 	$(addprefix $(BUILD_DIR)/unittest/, $(addsuffix .o, $(UNIT_TESTS)))
 
-$(EXECUTABLE_DIR)/test_%: $(BUILD_DIR)/unittest/%.o $(COMMON_OBJS)
+$(EXECUTABLE_DIR)/test_%: $(BUILD_DIR)/unittest/%.o $(COMMON_OBJS) $(CASE_OBJS)
 	@mkdir -p $(dir $@)
 	$(CXX) $(LDFLAGS) $^ -o $@
 
@@ -245,7 +262,7 @@ $(UNIT_TESTS): $(addprefix $(EXECUTABLE_DIR)/,$(UNIT_TESTS))
 ALL_TARGETS:=$(ALL_TARGETS) $(BUILD_DIR)/funcdefs.h
 $(BUILD_DIR)/funcdefs.h:
 	@mkdir -p $(dir $@)
-	./gen_funcdefs.h --output $@ -- $(COMMON_SRCS)
+	./gen_funcdefs.h --output $@ -- $(CASE_SRCS) $(COMMON_SRCS)
 
 .PHONY: clean
 clean:

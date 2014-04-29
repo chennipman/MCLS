@@ -3,3 +3,9 @@
 *.directory
 /executable/
 /objects/
+/testcases/*/*/
+/testcases/*/set_parameters.cpp
+/testcases/*/set_boundary_conditions.cpp
+/testcases/*/initialize_flow_field.cpp
+/testcases/*/MCLS
+/testcases/*/interface_details.csv

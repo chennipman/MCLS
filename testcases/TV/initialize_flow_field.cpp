@@ -1,4 +1,4 @@
-#include "../headers/array.h"
+#include "../../src/headers/array.h"
 #include<cstdlib>
 #include<iostream>
 #include<algorithm>
