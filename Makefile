@@ -227,6 +227,7 @@ $(EXECUTABLE_DIR)/MCLS: $(COMMON_OBJS) $(MCLS_OBJS) $(CASE_OBJS)
 	@mkdir -p $(dir $@)
 	$(CXX) $(LDFLAGS) $^ -o $@
 	cp $(CASE_SRCS) $(EXECUTABLE_DIR)
+	@test -z "`git status --porcelain`" || echo WARNING: there are uncommited changes
 
 .PHONY: MCLS
 MCLS: 
