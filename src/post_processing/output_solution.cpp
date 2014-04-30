@@ -108,7 +108,6 @@ EXPORT void output_solution(
       
 	    if(tecplot_output)
 	    {
-	
 	    /* generate an output file in tecplot format */
 	
 	    /* open the output file */
@@ -165,7 +164,8 @@ EXPORT void output_solution(
 
 		  write_cell_centered_field_tecplot(output_tecplot, pressure, number_primary_cells_i,
 				       number_primary_cells_j, number_primary_cells_k);
- 	      
+				       
+ 	      	  std::cout<< "Finished Tecplot output \n";
 	    }
  	    if(vtk_output)
 	    {
@@ -290,7 +290,7 @@ EXPORT void output_solution(
 	    u_2_velocity_vertex.destroy();
 	    u_3_velocity_vertex.destroy();
 	    
-	    
+ 	    std::cout<< "Finished vtk_plot output \n";
      }
 
   }
