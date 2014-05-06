@@ -51,14 +51,9 @@ EXPORT void set_boundary_conditions(
 	  vector initial_velocity
 	  
 	 )
-    {
-    double output;
-double PI=3.1415;    
-double initial_velocity_u1(double x, double y, double z, double t)
 {
-output = sin(PI*x)+sin(PI*y)+sin(PI*z)+sin(PI*t); 
-return output; 
-}
+
+
     
     
 // Face 0: n=( 1, 0, 0) */
@@ -73,11 +68,12 @@ return output;
 
 //      boundary_faces[0].boundary_variables[0].boundary_condition_type=dirichlet;
     // u1
-    boundary_faces[0].boundary_variables[0].get_boundary_value=initial_velocity.u1(x,y,z,t);
+    boundary_faces[0].boundary_variables[0].boundary_condition_value= 0.0;
     boundary_faces[0].boundary_variables[0].boundary_condition_type=dirichlet;
     // u2
-     boundary_faces[0].boundary_variables[1].boundary_condition_value=0.0;
-     boundary_faces[0].boundary_variables[1].boundary_condition_type=taylor_vortex;
+     boundary_faces[0].boundary_variables[1].boundary_condition_rule=function;
+     boundary_faces[0].boundary_variables[0].custom_boundary_condition_value= initial_velocity_u2;
+     boundary_faces[0].boundary_variables[1].boundary_condition_type=dirichlet;
      boundary_faces[0].boundary_variables[1].cell_centering=cell_centered;
     // u3
      boundary_faces[0].boundary_variables[2].boundary_condition_value=0.0;
@@ -98,7 +94,7 @@ return output;
     boundary_faces[1].boundary_variables[0].boundary_condition_type=dirichlet;
     // u2
      boundary_faces[1].boundary_variables[1].boundary_condition_value=0.0;
-     boundary_faces[1].boundary_variables[1].boundary_condition_type=taylor_vortex;
+     boundary_faces[1].boundary_variables[1].boundary_condition_type=dirichlet;
      boundary_faces[1].boundary_variables[1].cell_centering=cell_centered;
     // u3
      boundary_faces[1].boundary_variables[2].boundary_condition_value=0.0;
@@ -117,9 +113,10 @@ return output;
 // boundary condition type: homogeneous dirichlet
     // u1
      boundary_faces[2].boundary_variables[0].boundary_condition_value=0.0;
-     boundary_faces[2].boundary_variables[0].boundary_condition_type=dirichlet_time_dependent;
+     boundary_faces[2].boundary_variables[0].boundary_condition_type=dirichlet;
      boundary_faces[2].boundary_variables[0].cell_centering=cell_centered;
     // u2
+    boundary_faces[2].boundary_variables[1].boundary_condition_value=initial_velocity.u2;
     boundary_faces[2].boundary_variables[1].boundary_condition_value=initial_velocity.u2;
     boundary_faces[2].boundary_variables[1].boundary_condition_type=dirichlet;
     // u3
@@ -139,7 +136,7 @@ return output;
 
     // u1
      boundary_faces[3].boundary_variables[0].boundary_condition_value=0.0;
-     boundary_faces[3].boundary_variables[0].boundary_condition_type=dirichlet_time_dependent;
+     boundary_faces[3].boundary_variables[0].boundary_condition_type=dirichlet;
      boundary_faces[3].boundary_variables[0].cell_centering=cell_centered;
     // u2
     boundary_faces[3].boundary_variables[1].boundary_condition_value=initial_velocity.u2;
@@ -195,3 +192,14 @@ return output;
     boundary_faces[5].boundary_variables[2].boundary_condition_type=dirichlet;
    
 }
+
+EXPORT double initial_velocity_u2(double t, double x, double y, double z)
+	{
+	double output;
+//	double PI=3.1415;
+	output = x+y; 
+//	output = sin(PI*x)+sin(PI*y)+sin(PI*z)+sin(PI*t); 
+	return output; 
+	}
+	
+	

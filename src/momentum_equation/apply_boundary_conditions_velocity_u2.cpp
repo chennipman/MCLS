@@ -43,8 +43,8 @@ EXPORT void apply_boundary_conditions_velocity_u2(
 							// index of the slice of cells adjacent to the
 							// boundary on the 'real' side.
 														
- 	double y,expo; 
-	double PI=atan(1)*4;
+ //	double y,expo; 
+//	double PI=atan(1)*4;
 	    
        /******************************************************************/
        /*   +/- I-index faces						 */
@@ -119,26 +119,6 @@ EXPORT void apply_boundary_conditions_velocity_u2(
   
 		 }  
 	      }
-	      else if(boundary_faces[face_index].boundary_variables[1].boundary_condition_type==taylor_vortex)
-	      {
-		  /* TAYLOR VORTEX BOUNDARY CONDITION */
-		  /* boundary_value is the prescribed value */
-		expo = exp(-2*PI*PI*time_over_reynolds);
-		
-		 boundary_value= (double) (increment_label_adjacent)*
-			boundary_faces[face_index].boundary_variables[0].boundary_condition_value;
-			
-		 for(j_index=0;j_index<number_primary_cells_j+1;j_index++)
-		 {
-		      for(k_index=0;k_index<number_primary_cells_k+2;k_index++)
-		      {
-			y = mesh_width_x2*(j_index-0.5);
-			u_2_velocity[cell_label_boundary][j_index][k_index]= sin(PI*y)*expo;
-		      }	  
-  
-		 }  	      
-	      
-	      }    
 	      else
 	      {
 	    
