@@ -28,7 +28,7 @@ EXPORT void apply_boundary_conditions_velocity_u2(
 	  int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	  int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
 	  int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
-	  double time_over_reynolds			// actual time divided by Reynolds
+	  double actual_time				// actual time 
      )
      {
        double boundary_value;				// value of the boundary condition prescibed:
@@ -42,9 +42,8 @@ EXPORT void apply_boundary_conditions_velocity_u2(
 							// 'virtual' side of the face, with respect to
 							// index of the slice of cells adjacent to the
 							// boundary on the 'real' side.
-														
- 	double y,expo; 
-	double PI=atan(1)*4;
+ 	double x,y,z; 					// spatial coordinates
+	int boundary_var = 1; 
 	    
        /******************************************************************/
        /*   +/- I-index faces						 */
@@ -56,10 +55,12 @@ EXPORT void apply_boundary_conditions_velocity_u2(
 	  if(face_index==0)
 	  {
 	      cell_label_boundary=number_primary_cells_i+1;
+	      x = number_primary_cells_i*mesh_width_x1;
 	  }
 	  else
 	  {
 	      cell_label_boundary=0;
+	      x = 0.0;
 	  }
 	  
 	      /* increment_label_adjacent is the difference wrt to the */
@@ -72,15 +73,14 @@ EXPORT void apply_boundary_conditions_velocity_u2(
 	  {
 		  /* DIRICHLET BOUNDARY CONDITION */
 		  /* boundary_value is the prescribed DIRICHLET value */
-		  
-		 boundary_value=
-			boundary_faces[face_index].boundary_variables[1].boundary_condition_value;
-			
 		 for(j_index=0;j_index<number_primary_cells_j+1;j_index++)
 		 {
 		      for(k_index=0;k_index<number_primary_cells_k+2;k_index++)
 		      {
-			
+			y = mesh_width_x2*(j_index-0.5);
+			z = mesh_width_x3*(k_index-0.5);
+			boundary_value = boundary_faces[face_index].boundary_variables[boundary_var].get_boundary_condition_value(actual_time,x,y,z);
+						
 			/* the boundary condition is applied using linear interpolation */
 			/* U_virtual=2*U_boundary - U_real */
 			
@@ -119,26 +119,6 @@ EXPORT void apply_boundary_conditions_velocity_u2(
   
 		 }  
 	      }
-	      else if(boundary_faces[face_index].boundary_variables[1].boundary_condition_type==taylor_vortex)
-	      {
-		  /* TAYLOR VORTEX BOUNDARY CONDITION */
-		  /* boundary_value is the prescribed value */
-		expo = exp(-2*PI*PI*time_over_reynolds);
-		
-		 boundary_value= (double) (increment_label_adjacent)*
-			boundary_faces[face_index].boundary_variables[0].boundary_condition_value;
-			
-		 for(j_index=0;j_index<number_primary_cells_j+1;j_index++)
-		 {
-		      for(k_index=0;k_index<number_primary_cells_k+2;k_index++)
-		      {
-			y = mesh_width_x2*(j_index-0.5);
-			u_2_velocity[cell_label_boundary][j_index][k_index]= sin(PI*y)*expo;
-		      }	  
-  
-		 }  	      
-	      
-	      }    
 	      else
 	      {
 	    
@@ -159,23 +139,23 @@ EXPORT void apply_boundary_conditions_velocity_u2(
 	  if(face_index==2)
 	  {
 	      cell_label_boundary=number_primary_cells_j;
+	      y = number_primary_cells_j*mesh_width_x2;
 	  }
 	  else
 	  {
 	      cell_label_boundary=0;
+	      y = 0; 
 	  }
 	  if(boundary_faces[face_index].boundary_variables[1].boundary_condition_type==dirichlet)
 	  {
-		 boundary_value=
-			boundary_faces[face_index].boundary_variables[1].boundary_condition_value;
-			
 		 for(i_index=0;i_index<number_primary_cells_i+2;i_index++)
 		 {
 		      for(k_index=0;k_index<number_primary_cells_k+2;k_index++)
 		      {
+			x = mesh_width_x1*(i_index-0.5);
+			z = mesh_width_x3*(k_index-0.5); 
 			/* U_real=U_boundary */
-			
-			u_2_velocity[i_index][cell_label_boundary][k_index]=boundary_value;
+			u_2_velocity[i_index][cell_label_boundary][k_index]=boundary_faces[face_index].boundary_variables[boundary_var].get_boundary_condition_value(actual_time,x,y,z);
 		      }	  
   
 		 }  
@@ -198,10 +178,12 @@ EXPORT void apply_boundary_conditions_velocity_u2(
 	  if(face_index==4)
 	  {
 	      cell_label_boundary=number_primary_cells_k+1;
+	      z = mesh_width_x3*number_primary_cells_k;
 	  }
 	  else
 	  {
 	      cell_label_boundary=0;
+	      z = 0.0; 
 	  }
 	  
 	      /* increment_label_adjacent is the difference wrt to the */
@@ -215,14 +197,13 @@ EXPORT void apply_boundary_conditions_velocity_u2(
 		/* DIRICHLET BOUNDARY CONDITION */
 		/* boundary_value is the prescribed DIRICHLET value */
 		/* U_virtual=2*U_boundary - U_real */
-		  
-		 boundary_value=
-			boundary_faces[face_index].boundary_variables[1].boundary_condition_value;
-			
 		 for(i_index=0;i_index<number_primary_cells_i+2;i_index++)
 		 {
 		      for(j_index=0;j_index<number_primary_cells_j+1;j_index++)
 		      {
+			x = mesh_width_x1*(i_index-0.5);
+			y = mesh_width_x2*(j_index-0.5); 
+			boundary_value=boundary_faces[face_index].boundary_variables[boundary_var].get_boundary_condition_value(actual_time,x,y,z);
 			
 			/* the boundary condition is applied using linear interpolation */
 			

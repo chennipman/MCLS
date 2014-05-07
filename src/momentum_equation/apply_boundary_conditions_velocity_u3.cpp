@@ -27,8 +27,9 @@ EXPORT void apply_boundary_conditions_velocity_u3(
 	  double mesh_width_x3,				// grid spacing in x3 direction (uniform)
 	  int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	  int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
-	  int number_primary_cells_k			// number of primary (pressure) cells in x3 direction
-     )
+	  int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
+	  double actual_time				// actual time 
+      )
      {
        double boundary_value;				// value of the boundary condition prescibed:
 							// dirichlet-> function value
@@ -41,7 +42,9 @@ EXPORT void apply_boundary_conditions_velocity_u3(
 							// 'virtual' side of the face, with respect to
 							// index of the slice of cells adjacent to the
 							// boundary on the 'real' side.
-       
+ 	double x,y,z; 					// spatial coordinates
+	int boundary_var = 2; 
+	    
        /******************************************************************/
        /*   +/- I-index faces						 */
        /******************************************************************/
@@ -52,10 +55,12 @@ EXPORT void apply_boundary_conditions_velocity_u3(
 	  if(face_index==0)
 	  {
 	      cell_label_boundary=number_primary_cells_i+1;
+	      x = number_primary_cells_i*mesh_width_x1;
 	  }
 	  else
 	  {
 	      cell_label_boundary=0;
+	      x = 0.0;
 	  }
 	  
 	      /* increment_label_adjacent is the difference wrt to the */
@@ -68,15 +73,14 @@ EXPORT void apply_boundary_conditions_velocity_u3(
 	  {
 		  /* DIRICHLET BOUNDARY CONDITION */
 		  /* boundary_value is the prescribed DIRICHLET value */
-		  
-		 boundary_value=
-			boundary_faces[face_index].boundary_variables[2].boundary_condition_value;
-			
 		 for(j_index=0;j_index<number_primary_cells_j+2;j_index++)
 		 {
 		      for(k_index=0;k_index<number_primary_cells_k+1;k_index++)
 		      {
-			
+			y = mesh_width_x2*(j_index-0.5);
+			z = mesh_width_x3*(k_index-0.5);
+			boundary_value = boundary_faces[face_index].boundary_variables[boundary_var].get_boundary_condition_value(actual_time,x,y,z);
+						
 			/* the boundary condition is applied using linear interpolation */
 			/* U_virtual=2*U_boundary - U_real */
 			
@@ -135,10 +139,12 @@ EXPORT void apply_boundary_conditions_velocity_u3(
 	  if(face_index==2)
 	  {
 	      cell_label_boundary=number_primary_cells_j+1;
+	      y = number_primary_cells_j*mesh_width_x2;
 	  }
 	  else
 	  {
 	      cell_label_boundary=0;
+	      y = 0; 
 	  }
 	  
 	      /* increment_label_adjacent is the difference wrt to the */
@@ -151,20 +157,15 @@ EXPORT void apply_boundary_conditions_velocity_u3(
 	  {
 		/* DIRICHLET BOUNDARY CONDITION */
 		/* boundary_value is the prescribed DIRICHLET value */
-		/* U_virtual=2*U_boundary - U_real */
-		
-		std::cerr<<"dirichlet for face "<< face_index<<" \n";
-		  
-		 boundary_value=
-			boundary_faces[face_index].boundary_variables[2].boundary_condition_value;
-			
 		 for(i_index=0;i_index<number_primary_cells_i+2;i_index++)
 		 {
 		      for(k_index=0;k_index<number_primary_cells_k+2;k_index++)
 		      {
-			
+			x = mesh_width_x1*(i_index-0.5);
+			z = mesh_width_x3*(k_index-0.5); 
 			/* the boundary condition is applied using linear interpolation */
-			
+			/* U_virtual=2*U_boundary - U_real */
+			boundary_value = boundary_faces[face_index].boundary_variables[boundary_var].get_boundary_condition_value(actual_time,x,y,z);
 			u_3_velocity[i_index][cell_label_boundary][k_index]=
 			    2.0*boundary_value
 			    -u_3_velocity[i_index][cell_label_boundary+increment_label_adjacent][k_index];
@@ -221,23 +222,22 @@ EXPORT void apply_boundary_conditions_velocity_u3(
 	  if(face_index==4)
 	  {
 	      cell_label_boundary=number_primary_cells_k;
+	      z = mesh_width_x3*number_primary_cells_k; 
 	  }
 	  else
 	  {
 	      cell_label_boundary=0;
+	      z = 0.0;
 	  }
 	  if(boundary_faces[face_index].boundary_variables[2].boundary_condition_type==dirichlet)
 	  {
-		 boundary_value=
-			boundary_faces[face_index].boundary_variables[2].boundary_condition_value;
-			
 		 for(i_index=0;i_index<number_primary_cells_i+2;i_index++)
 		 {
 		      for(j_index=0;j_index<number_primary_cells_j+2;j_index++)
 		      {
 			/* U_real=U_boundary */
 			
-			u_3_velocity[i_index][j_index][cell_label_boundary]=boundary_value;
+			u_3_velocity[i_index][j_index][cell_label_boundary]=boundary_faces[face_index].boundary_variables[boundary_var].get_boundary_condition_value(actual_time,x,y,z);
 		      }	  
   
 		 }  

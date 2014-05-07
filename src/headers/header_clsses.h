@@ -48,7 +48,7 @@ public:
 };
 
 enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure_field};
-enum boundary_conditions_type{dirichlet, neumann, taylor_vortex, periodic};
+enum boundary_conditions_type{dirichlet, neumann, periodic};
 enum boundary_conditions_rule{constant, function};
 enum cell_centerings{cell_centered, vertex_centered};
 enum geometry{bubbly_flow, wavy_flow};
@@ -69,18 +69,21 @@ public:
     boundary_conditions_rule boundary_condition_rule;
     cell_centerings cell_centering;
     double boundary_condition_value;
+    double (*custom_boundary_condition_value)( double time, double space_x, double space_y, double space_z );
 
     boundary_variable(variable varname=velocity_u1,
                          boundary_conditions_type bound_type=neumann,
                          boundary_conditions_rule bound_rule=constant,
                          cell_centerings  cell_cent=cell_centered,
-                        double bound_value =0.0)
+                         double bound_value = 0.0)
+//                         _custom_boundary_condition_value = NULL);
     {
         variable_name=varname;
         boundary_condition_type=bound_type;
         boundary_condition_rule=bound_rule;
         cell_centering=cell_cent;
         boundary_condition_value=bound_value;
+        custom_boundary_condition_value = NULL;
     };
 
     boundary_variable(variable varname)
@@ -91,7 +94,15 @@ public:
         cell_centering=cell_centered;
         boundary_condition_value=0.0;
     }
+     double get_boundary_condition_value( double t, double x, double y, double z)
+     {
+     if (this-> boundary_condition_rule == constant)
+         return this -> boundary_condition_value;
+     else
+         return this -> custom_boundary_condition_value(t,x,y,z);
+     }
 };
+
 
 class boundary_face
 {

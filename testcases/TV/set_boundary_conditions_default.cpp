@@ -1,3 +1,7 @@
+//#include "../headers/header_main.h"
+#include<math.h>
+#include "../headers/header_constants.h"
+
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to set the boundary conditions                                     */
@@ -51,7 +55,9 @@ EXPORT void set_boundary_conditions(
 	  vector initial_velocity
 	  
 	 )
-    {
+{
+
+    
 // Face 0: n=( 1, 0, 0) */
 // Freeslip boundary condition:
 // set the boundary condition for u_1 to homogeneous dirichlet= only non default */
@@ -64,11 +70,12 @@ EXPORT void set_boundary_conditions(
 
 //      boundary_faces[0].boundary_variables[0].boundary_condition_type=dirichlet;
     // u1
-    boundary_faces[0].boundary_variables[0].boundary_condition_value=initial_velocity.u1;
+    boundary_faces[0].boundary_variables[0].boundary_condition_value= 0.0;
     boundary_faces[0].boundary_variables[0].boundary_condition_type=dirichlet;
     // u2
-     boundary_faces[0].boundary_variables[1].boundary_condition_value=0.0;
-     boundary_faces[0].boundary_variables[1].boundary_condition_type=taylor_vortex;
+     boundary_faces[0].boundary_variables[1].boundary_condition_rule=function;
+     boundary_faces[0].boundary_variables[1].custom_boundary_condition_value= boundary_condition_u2;
+     boundary_faces[0].boundary_variables[1].boundary_condition_type=dirichlet;
      boundary_faces[0].boundary_variables[1].cell_centering=cell_centered;
     // u3
      boundary_faces[0].boundary_variables[2].boundary_condition_value=0.0;
@@ -88,8 +95,9 @@ EXPORT void set_boundary_conditions(
     boundary_faces[1].boundary_variables[0].boundary_condition_value=initial_velocity.u1;
     boundary_faces[1].boundary_variables[0].boundary_condition_type=dirichlet;
     // u2
-     boundary_faces[1].boundary_variables[1].boundary_condition_value=0.0;
-     boundary_faces[1].boundary_variables[1].boundary_condition_type=taylor_vortex;
+     boundary_faces[1].boundary_variables[1].boundary_condition_rule=function;
+     boundary_faces[1].boundary_variables[1].custom_boundary_condition_value= boundary_condition_u2;
+     boundary_faces[1].boundary_variables[1].boundary_condition_type=dirichlet;
      boundary_faces[1].boundary_variables[1].cell_centering=cell_centered;
     // u3
      boundary_faces[1].boundary_variables[2].boundary_condition_value=0.0;
@@ -107,8 +115,9 @@ EXPORT void set_boundary_conditions(
 // vertex-centered: u2
 // boundary condition type: homogeneous dirichlet
     // u1
-     boundary_faces[2].boundary_variables[0].boundary_condition_value=0.0;
-     boundary_faces[2].boundary_variables[0].boundary_condition_type=taylor_vortex;
+     boundary_faces[2].boundary_variables[0].boundary_condition_rule=function;
+     boundary_faces[2].boundary_variables[0].custom_boundary_condition_value= boundary_condition_u1;
+     boundary_faces[2].boundary_variables[0].boundary_condition_type=dirichlet;
      boundary_faces[2].boundary_variables[0].cell_centering=cell_centered;
     // u2
     boundary_faces[2].boundary_variables[1].boundary_condition_value=initial_velocity.u2;
@@ -130,7 +139,7 @@ EXPORT void set_boundary_conditions(
 
     // u1
      boundary_faces[3].boundary_variables[0].boundary_condition_value=0.0;
-     boundary_faces[3].boundary_variables[0].boundary_condition_type=taylor_vortex;
+     boundary_faces[3].boundary_variables[0].boundary_condition_type=dirichlet;
      boundary_faces[3].boundary_variables[0].cell_centering=cell_centered;
     // u2
     boundary_faces[3].boundary_variables[1].boundary_condition_value=initial_velocity.u2;
@@ -186,3 +195,20 @@ EXPORT void set_boundary_conditions(
     boundary_faces[5].boundary_variables[2].boundary_condition_type=dirichlet;
    
 }
+
+EXPORT double boundary_condition_u2(double t, double x, double y, double z)
+	{
+	double output;
+	output = cos(PI*x)*sin(PI*y)*exp(-2*PI*PI*t/100.0);
+//	output = x+y; 
+//	output = 10; 
+	return output; 
+	}
+EXPORT double boundary_condition_u1(double t, double x, double y, double z)
+	{
+	double output;
+	output = -sin(PI*x)*cos(PI*y)*exp(-2*PI*PI*t/100.0);
+//	output = 10;
+	return output; 
+	}	
+	
