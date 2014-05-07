@@ -78,7 +78,7 @@ EXPORT void apply_boundary_conditions_velocity_u3(
 		      for(k_index=0;k_index<number_primary_cells_k+1;k_index++)
 		      {
 			y = mesh_width_x2*(j_index-0.5);
-			z = mesh_width_x3*(k_index-0.5);
+			z = mesh_width_x3*k_index;
 			boundary_value = boundary_faces[face_index].boundary_variables[boundary_var].get_boundary_condition_value(actual_time,x,y,z);
 						
 			/* the boundary condition is applied using linear interpolation */
@@ -162,7 +162,7 @@ EXPORT void apply_boundary_conditions_velocity_u3(
 		      for(k_index=0;k_index<number_primary_cells_k+2;k_index++)
 		      {
 			x = mesh_width_x1*(i_index-0.5);
-			z = mesh_width_x3*(k_index-0.5); 
+			z = mesh_width_x3*k_index; 
 			/* the boundary condition is applied using linear interpolation */
 			/* U_virtual=2*U_boundary - U_real */
 			boundary_value = boundary_faces[face_index].boundary_variables[boundary_var].get_boundary_condition_value(actual_time,x,y,z);

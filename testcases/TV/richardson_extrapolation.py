@@ -19,7 +19,7 @@ for time_step_restriction_global in time_steps:
 	#now change the set_parameter file
 	string_time = '      time_step_restriction_global			= ' + str(time_step_restriction_global) + ';  \n '
 	data[147] = string_time
-	time_stepping_method = 1
+	time_stepping_method = 3
 	string_step_method = '      time_stepping_method 				= ' + str(time_stepping_method) + '; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta   \n'
 	data[156] = string_step_method
 
@@ -35,12 +35,13 @@ for time_step_restriction_global in time_steps:
 	os.system("make")
 	os.chdir(cwd)
 
-	case_direc = os.popen("ls -d */ | tail -n 1").readlines()
+	case_direc = os.popen("ls -d */ | tail -n 1").readlines() # most recent made 
+	directory
 	case_direc = "".join(case_direc)
 	case_direc = case_direc.rstrip('\n')
 	os.chdir(case_direc)
 	os.system("./MCLS")
 	os.chdir(cwd)
-	time.sleep(10)
+	time.sleep(1)
 	
 	
