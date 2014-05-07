@@ -1,6 +1,6 @@
-//#include "../headers/header_main.h"
 #include<math.h>
-#include "../headers/header_constants.h"
+#include "../../src/headers/header_constants.h"
+#include<iostream>
 
 /********************************************************************************/
 /********************************************************************************/
@@ -138,7 +138,8 @@ EXPORT void set_boundary_conditions(
 // boundary condition type: homogeneous dirichlet
 
     // u1
-     boundary_faces[3].boundary_variables[0].boundary_condition_value=0.0;
+     boundary_faces[3].boundary_variables[0].boundary_condition_rule=function;
+     boundary_faces[3].boundary_variables[0].custom_boundary_condition_value= boundary_condition_u1;
      boundary_faces[3].boundary_variables[0].boundary_condition_type=dirichlet;
      boundary_faces[3].boundary_variables[0].cell_centering=cell_centered;
     // u2
@@ -199,16 +200,13 @@ EXPORT void set_boundary_conditions(
 EXPORT double boundary_condition_u2(double t, double x, double y, double z)
 	{
 	double output;
-	output = cos(PI*x)*sin(PI*y)*exp(-2*PI*PI*t/100.0);
-//	output = x+y; 
-//	output = 10; 
+	output = cos(PI*x)*sin(PI*y)*exp(-2.0*PI*PI*t/100.0);
 	return output; 
 	}
 EXPORT double boundary_condition_u1(double t, double x, double y, double z)
 	{
 	double output;
-	output = -sin(PI*x)*cos(PI*y)*exp(-2*PI*PI*t/100.0);
-//	output = 10;
+	output = -sin(PI*x)*cos(PI*y)*exp(-2.0*PI*PI*t/100.0);
 	return output; 
 	}	
 	

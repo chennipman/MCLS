@@ -93,7 +93,7 @@ EXPORT void advance_flow_field(
   
     /* solve momentum predictor equation */
     /* compute a new velocity field u star, that is not divergence free */
-   
+    
     if (time_stepping_method == 1) // Explicit Euler
     {
       printf("explicit euler \n"); 

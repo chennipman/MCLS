@@ -79,7 +79,6 @@ EXPORT void solve_momentum_corrector(
       Array3<double> pressure_boundary_condition_x2;
       Array3<double> pressure_boundary_condition_x3;
       int total_number_pressure_points;				// total number of points with pressure
-      double time_over_reynolds = actual_time/rho_minus_over_mu_minus;
     /* allocate memory for the pressure correction matrix and right hand side */
    
       total_number_pressure_points=number_primary_cells_i*number_primary_cells_j*number_primary_cells_k;
@@ -159,6 +158,6 @@ EXPORT void solve_momentum_corrector(
       apply_boundary_conditions_velocity( boundary_faces,		
 					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			
 					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				
-					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k, time_over_reynolds);
+					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k, actual_time);
       
   }

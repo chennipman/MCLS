@@ -44,7 +44,6 @@ EXPORT void apply_boundary_conditions_velocity_u1(
 							// boundary on the 'real' side.
  	double x,y,z; 					// spatial coordinates
 	int boundary_var = 0; 
-	    
        /******************************************************************/
        /*   +/- I-index faces						 */
        /******************************************************************/
