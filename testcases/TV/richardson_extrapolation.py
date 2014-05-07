@@ -19,7 +19,7 @@ for time_step_restriction_global in time_steps:
 	#now change the set_parameter file
 	string_time = '      time_step_restriction_global			= ' + str(time_step_restriction_global) + ';  \n '
 	data[147] = string_time
-	time_stepping_method = 3
+	time_stepping_method = 1
 	string_step_method = '      time_stepping_method 				= ' + str(time_stepping_method) + '; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta   \n'
 	data[156] = string_step_method
 
