@@ -64,8 +64,6 @@ EXPORT void solve_momentum_predictor_imex(
       )
       {
       /* solve the momentum predictor equation for the velocity u star, x1 component */
-      double time_over_reynolds = actual_time/rho_minus_over_mu_minus;
-      
       std::cout<<"solve momentum predictor u1 "<< " \n";
 
       solve_momentum_predictor_u1( level_set, momentum_source_term_u_1, 	scaled_density_u1,
@@ -112,7 +110,7 @@ EXPORT void solve_momentum_predictor_imex(
 					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			 
 					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
 					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-					      time_over_reynolds);			 
+					        actual_time);			 
    
       /* visualize the predictor velocity field */
    

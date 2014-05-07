@@ -60,9 +60,7 @@
 
   {
 	double sigma, zeta; 
-      double time_over_reynolds = actual_time/rho_minus_over_mu_minus;
-
-
+ 
 	// first step Runge-Kutta
        Array3<double> u_1_old_con_diff; 	
        Array3<double> u_2_old_con_diff; 		
@@ -103,7 +101,7 @@
 					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			 
 					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
 					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-					      time_over_reynolds);	 
+					      actual_time);	 
       // shift the convection and diffusion term
       copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
                        0, number_primary_cells_i,
@@ -154,7 +152,7 @@
 					  u_1_velocity_star_star, u_2_velocity_star_star, u_3_velocity_star_star, 			 
 					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
 					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-					      time_over_reynolds);	
+					        actual_time);	
 
       // shift the convection and diffusion term
       copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
@@ -197,7 +195,7 @@
 					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			 
 					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
 					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-					      time_over_reynolds);	
+					        actual_time);	
 	u_1_old_con_diff.destroy();
 	u_2_old_con_diff.destroy();
 	u_3_old_con_diff.destroy();
