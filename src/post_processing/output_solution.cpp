@@ -193,7 +193,8 @@ EXPORT void output_solution(
 		  output_vtk << "DIMENSIONS "<< number_primary_cells_i+1 << " "<< number_primary_cells_j+1;
 		  output_vtk << " "<< number_primary_cells_k+1 << "\n";
 		  output_vtk.setf(ios::scientific);
-
+		  output_vtk.precision(16);
+		  
 		  write_coordinates_vtk( output_vtk, 		
 					number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		
 					  mesh_width_x1, mesh_width_x2, mesh_width_x3);
