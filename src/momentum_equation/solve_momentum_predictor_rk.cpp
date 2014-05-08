@@ -101,7 +101,7 @@
 					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			 
 					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
 					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-					      actual_time);	 
+					      actual_time+(sigma+zeta)*actual_time_step_navier_stokes);	 
       // shift the convection and diffusion term
       copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
                        0, number_primary_cells_i,

@@ -9,4 +9,4 @@
 /testcases/*/initialize_flow_field.cpp
 /testcases/*/MCLS
 /testcases/*/interface_details.csv
-/testcases/*/logfile.txt
+/testcases/TV/logfile.txt
