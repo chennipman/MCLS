@@ -13,7 +13,7 @@
 /********************************************************************************/
 /* Notes									*/
 /* This functions computes one explicit euler step.				*/
-/* Notes									*/
+/* 									*/
 /********************************************************************************/
 
  EXPORT void forward_euler(
@@ -43,8 +43,8 @@
       double actual_time_step_navier_stokes,	        // time step used for level-set advection
 							// computed from all stability restrictions and 
 							// possibly subscycling
-      double sigma,					// sigma
-      double zeta,					// zeta
+      double sigma,					// constant for the convection and diffusion terms of the previous stage
+      double zeta,					// constant for the convection and diffusion terms of the actual stage
       int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
       int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,			// number of primary (pressure) cells in x3 direction
@@ -64,8 +64,8 @@
 
   {
        // calculate the convection and diffusion(without momentum_source_terms)
-       // the momentum source term is included below or in the pressure correction
-       // this depends on 'momentum_source_term' 
+       // the momentum source terms are included below or in the pressure correction
+       // depending on 'source _terms_in_momentum_predictor' 
 	convection_diffussion_source_terms(
        u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,
        u_1_velocity_old,u_2_velocity_old,u_3_velocity_old,
@@ -75,7 +75,7 @@
        number_primary_cells_i,number_primary_cells_j,number_primary_cells_k,
        mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,
        rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
-       0); 
+       0);
 
 	// calculate u* in all 3 directions
   	if(source_terms_in_momentum_predictor) // the source terms are in the predictor

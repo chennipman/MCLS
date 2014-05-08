@@ -61,16 +61,15 @@
   {
 	double sigma, zeta; 
  
-	// first step Runge-Kutta
-       Array3<double> u_1_old_con_diff; 	
-       Array3<double> u_2_old_con_diff; 		
-       Array3<double> u_3_old_con_diff;			
+       Array3<double> u_1_old_con_diff; 	// contains the convection and diffusion terms of a previous RK-stage in the x1 direction
+       Array3<double> u_2_old_con_diff; 	// contains the convection and diffusion terms of a previous RK-stage in the x2 direction
+       Array3<double> u_3_old_con_diff;		// contains the convection and diffusion terms of a previous RK-stage in the x3 direction
 
       u_1_old_con_diff.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
       u_2_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
       u_3_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
 
-       Array3<double> u_1_new_con_diff; 	
+       Array3<double> u_1_new_con_diff; 	// contains the convection and diffusion terms of a RK-stage in the x1 direction
        Array3<double> u_2_new_con_diff; 		
        Array3<double> u_3_new_con_diff;			
 
@@ -80,7 +79,8 @@
 	
 	sigma = 1.0; // parameter for new time
 	zeta  = 0.0; // parameter for previous time
-		
+
+	// first step Runge-Kutta
       forward_euler(
 	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,			
 	u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,                      
@@ -152,7 +152,7 @@
 					  u_1_velocity_star_star, u_2_velocity_star_star, u_3_velocity_star_star, 			 
 					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
 					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-					        actual_time+sigma*actual_time_step_navier_stokes);	
+					        actual_time+(sigma+zeta)*actual_time_step_navier_stokes);	
 
       // shift the convection and diffusion term
       copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
@@ -176,7 +176,7 @@
 	zeta  = -5.0/12.0; // parameter for previous time
 		
       forward_euler(
-	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,		// u_star is reused to reduce the number of allocations	
+	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,		// u_star is reused to reduce the number of allocations it can also be seen as u_star_star_star	
 	u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,                      
 	u_1_velocity_star_star,u_2_velocity_star_star,u_3_velocity_star_star,		
 	u_1_old_con_diff,u_2_old_con_diff,u_3_old_con_diff,               
@@ -195,7 +195,7 @@
 					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			 
 					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
 					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-					        actual_time+sigma*actual_time_step_navier_stokes);	
+					        actual_time+(sigma+zeta)*actual_time_step_navier_stokes);	
 	u_1_old_con_diff.destroy();
 	u_2_old_con_diff.destroy();
 	u_3_old_con_diff.destroy();
