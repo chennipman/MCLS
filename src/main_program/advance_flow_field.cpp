@@ -90,6 +90,10 @@ EXPORT void advance_flow_field(
       u_1_velocity_star.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
       u_2_velocity_star.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
       u_3_velocity_star.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);
+      
+      // quick fix for different interpretation on actual_time
+      actual_time = actual_time-actual_time_step_navier_stokes;
+      
   
     /* solve momentum predictor equation */
     /* compute a new velocity field u star, that is not divergence free */
