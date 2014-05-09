@@ -95,7 +95,7 @@
 	mesh_width_x1,mesh_width_x2,mesh_width_x3,				
 	smoothing_distance_factor,
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
- 	source_terms_in_momentum_predictor    	
+ 	boundary_faces, source_terms_in_momentum_predictor, actual_time    	
        );
 
 	// second step Runge-Kutta
@@ -109,7 +109,7 @@
       u_3_velocity_star_star.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);
 
 	sigma =  5.0/12.0; // parameter for new stage
-	zeta  = --17.0/60.0; // parameter for previous stage
+	zeta  = -17.0/60.0; // parameter for previous stage
 		
       forward_euler(
 	u_1_velocity_star_star,u_2_velocity_star_star,u_3_velocity_star_star,			
@@ -124,7 +124,7 @@
 	mesh_width_x1,mesh_width_x2,mesh_width_x3,				
 	smoothing_distance_factor,
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
- 	source_terms_in_momentum_predictor    	
+ 	boundary_faces, source_terms_in_momentum_predictor, actual_time    	
        );
 
 	// third step Runge-Kutta
@@ -144,7 +144,7 @@
 	mesh_width_x1,mesh_width_x2,mesh_width_x3,				
 	smoothing_distance_factor,
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
- 	source_terms_in_momentum_predictor    	
+ 	boundary_faces, source_terms_in_momentum_predictor, actual_time    	
        );
 
 

@@ -56,10 +56,13 @@
       double rho_minus_over_mu_minus,			// this was the 'Reynolds' number
 							// in the original implementation of Sander
       double mu_plus_over_mu_minus,			// ratio of the viscosities of both phases
-      int source_terms_in_momentum_predictor    	// =1, the source terms are applied in the momentum predictor
+      boundary_face boundary_faces[6],		        // array with all the information
+							// for the boundary conditions 
+      int source_terms_in_momentum_predictor,    	// =1, the source terms are applied in the momentum predictor
 					        	// equation
 					        	// =0, the source terms are applied in the momentum corrector
 					        	// equation  
+      double actual_time				// actual time 
        )
 
   {
@@ -114,6 +117,7 @@
        actual_time_step_navier_stokes*sigma, u_3_new_con_diff, 
        actual_time_step_navier_stokes*zeta, u_3_old_con_diff, 	
        number_primary_cells_i+2,number_primary_cells_j+2,number_primary_cells_k+1);
+       }
        
 	// shift the convection and diffusion term
       copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
@@ -137,8 +141,8 @@
 	    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
 	      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
 	        actual_time+(sigma+zeta)*actual_time_step_navier_stokes);	 
-       
-      	}
+
+
   }      
 
 
