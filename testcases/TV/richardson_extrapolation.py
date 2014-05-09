@@ -1,9 +1,9 @@
 import os
 import time
 
-with open("logfile.txt", 'w') as logfile:
-    logfile.write('')
-    logfile.closed
+with open('logfile.txt', 'w') as file:
+    file.write('')
+    file.closed
 
 
 
@@ -11,17 +11,18 @@ time_stepping_methods = [1,3]
 for time_stepping_method in time_stepping_methods:
 
 	time_steps = [1e-1, 5e-2, 2e-2, 1e-2, 5e-3, 2e-3, 1e-3, 5e-4, 2e-4, 1e-4]
+	
 	#time_steps = [1e-1, 1e-2, 1e-3, 1e-4]
+	
 	for time_step_restriction_global in time_steps:
 
 		print(' time step = ') 
 		print( time_step_restriction_global)
 		with open('set_parameters.cpp', 'r') as file:
-		#open the file
 		    data = file.readlines()
 
 		#now change the set_parameter file
-		string_time = '      time_step_restriction_global			= ' + str(time_step_restriction_global) + ';  \n '
+		string_time = '      time_step_restriction_global			= ' + str(time_step_restriction_global) + ';   \n'
 		data[147] = string_time
 	#	time_stepping_method = 1
 		string_step_method = '      time_stepping_method 				= ' + str(time_stepping_method) + '; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta   \n'
@@ -45,14 +46,14 @@ for time_stepping_method in time_stepping_methods:
 		os.chdir(case_direc)
 		os.system("./MCLS")
 		os.chdir(cwd)
-		with open("logfile.txt", 'a') as logfile:
-		    logfile.write('\n')
+		with open("logfile.txt", 'a') as file:
+		    file.write('\n')
 		    case_direc = case_direc.rstrip('/')
-		    logfile.write(case_direc)
-	#	    logfile.write('\'')
-		    logfile.closed
-	
-	
+		    file.write(case_direc)
+	#	    file.write('\'')
+		    file.closed
+
+
 		time.sleep(1)
-	
-	
+
+

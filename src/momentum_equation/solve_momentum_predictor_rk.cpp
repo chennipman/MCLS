@@ -76,11 +76,12 @@
       u_1_new_con_diff.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
       u_2_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
       u_3_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
-	
-	sigma = 1.0/3.0; // parameter for new stage
-	zeta  = 0.0; // parameter for previous stage
+
 
 	// first step Runge-Kutta
+	sigma = 8.0/15.0; // parameter for new stage
+	zeta  = 0.0; // parameter for previous stage
+
       forward_euler(
 	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,			
 	u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,                      
@@ -96,28 +97,6 @@
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
  	source_terms_in_momentum_predictor    	
        );
-       
-      apply_boundary_conditions_velocity(boundary_faces,		
-					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			 
-					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
-					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-					      actual_time+(sigma+zeta)*actual_time_step_navier_stokes);	 
-      // shift the convection and diffusion term
-      copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
-                       0, number_primary_cells_i,
-                         0, number_primary_cells_j+1,
-                           0, number_primary_cells_k+1);
-      
-      copy_general_field(u_2_new_con_diff, u_2_old_con_diff,
-                       0, number_primary_cells_i+1,
-                         0, number_primary_cells_j,
-                           0, number_primary_cells_k+1);
-  
-      copy_general_field(u_3_new_con_diff, u_3_old_con_diff,
-                       0, number_primary_cells_i+1,
-                         0, number_primary_cells_j+1,
-                           0, number_primary_cells_k);
-
 
 	// second step Runge-Kutta
        Array3<double> u_1_velocity_star_star; 		// velocity field at star_star time level x1 direction   
@@ -129,8 +108,8 @@
       u_2_velocity_star_star.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
       u_3_velocity_star_star.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);
 
-	sigma =  2.0/1.0; // parameter for new stage
-	zeta  = -1.0/1.0; // parameter for previous stage
+	sigma =  5.0/12.0; // parameter for new stage
+	zeta  = --17.0/60.0; // parameter for previous stage
 		
       forward_euler(
 	u_1_velocity_star_star,u_2_velocity_star_star,u_3_velocity_star_star,			
@@ -147,33 +126,10 @@
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
  	source_terms_in_momentum_predictor    	
        );
-       
-             apply_boundary_conditions_velocity(boundary_faces,		
-					  u_1_velocity_star_star, u_2_velocity_star_star, u_3_velocity_star_star, 			 
-					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
-					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-					        actual_time+(sigma+zeta)*actual_time_step_navier_stokes);	
-
-      // shift the convection and diffusion term
-      copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
-                       0, number_primary_cells_i,
-                         0, number_primary_cells_j+1,
-                           0, number_primary_cells_k+1);
-      
-      copy_general_field(u_2_new_con_diff, u_2_old_con_diff,
-                       0, number_primary_cells_i+1,
-                         0, number_primary_cells_j,
-                           0, number_primary_cells_k+1);
-  
-      copy_general_field(u_3_new_con_diff, u_3_old_con_diff,
-                       0, number_primary_cells_i+1,
-                         0, number_primary_cells_j+1,
-                           0, number_primary_cells_k);	
 
 	// third step Runge-Kutta
-	
-	sigma = 1.0/4.0; // parameter for new stage
-	zeta  = 3.0/4.0; // parameter for previous stage
+	sigma = 3.0/4.0; // parameter for new stage
+	zeta  = -5.0/12.0; // parameter for previous stage
 		
       forward_euler(
 	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,		// u_star is reused to reduce the number of allocations it can also be seen as u_star_star_star	
@@ -191,11 +147,7 @@
  	source_terms_in_momentum_predictor    	
        );
 
-      apply_boundary_conditions_velocity(boundary_faces,		
-					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			 
-					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
-					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-					        actual_time+(sigma+zeta)*actual_time_step_navier_stokes);	
+
 	u_1_old_con_diff.destroy();
 	u_2_old_con_diff.destroy();
 	u_3_old_con_diff.destroy();

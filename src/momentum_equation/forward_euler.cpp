@@ -114,6 +114,30 @@
        actual_time_step_navier_stokes*sigma, u_3_new_con_diff, 
        actual_time_step_navier_stokes*zeta, u_3_old_con_diff, 	
        number_primary_cells_i+2,number_primary_cells_j+2,number_primary_cells_k+1);
+       
+	// shift the convection and diffusion term
+      copy_general_field(u_1_new_con_diff, u_1_old_con_diff,
+                       0, number_primary_cells_i,
+                         0, number_primary_cells_j+1,
+                           0, number_primary_cells_k+1);
+      
+      copy_general_field(u_2_new_con_diff, u_2_old_con_diff,
+                       0, number_primary_cells_i+1,
+                         0, number_primary_cells_j,
+                           0, number_primary_cells_k+1);
+  
+      copy_general_field(u_3_new_con_diff, u_3_old_con_diff,
+                       0, number_primary_cells_i+1,
+                         0, number_primary_cells_j+1,
+                           0, number_primary_cells_k);
+                           
+	// apply the boundary conditions 
+       apply_boundary_conditions_velocity(boundary_faces,		
+	  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			 
+	    mesh_width_x1, mesh_width_x2, mesh_width_x3,				 
+	      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+	        actual_time+(sigma+zeta)*actual_time_step_navier_stokes);	 
+       
       	}
   }      
 
