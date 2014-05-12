@@ -12,9 +12,10 @@
 /*  Update	:        							*/
 /********************************************************************************/
 /* Notes									*/
-/* Notes									*/
-/* u_star is reused								*/
-/* Notes									*/
+/* u_star is reused for u***							*/
+/* Both this Runge Kutta procdeure and the forward_euler are designed for 	*/
+/* low storage schemes, therefore only the previous terms from the con_diff	*/
+/* can be incorporated. 							*/
 /********************************************************************************/
 
  EXPORT void solve_momentum_predictor_rk(
@@ -97,6 +98,8 @@
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
  	boundary_faces, source_terms_in_momentum_predictor, actual_time    	
        );
+       
+       actual_time = actual_time+ (sigma+zeta)*actual_time_step_navier_stokes; 
 
 	// second step Runge-Kutta
        Array3<double> u_1_velocity_star_star; 		// velocity field at star_star time level x1 direction   
@@ -124,8 +127,10 @@
 	mesh_width_x1,mesh_width_x2,mesh_width_x3,				
 	smoothing_distance_factor,
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
- 	boundary_faces, source_terms_in_momentum_predictor, actual_time    	
+ 	boundary_faces, source_terms_in_momentum_predictor, actual_time
        );
+       
+       actual_time = actual_time+ (sigma+zeta)*actual_time_step_navier_stokes; 
 
 	// third step Runge-Kutta
 	sigma = 3.0/4.0; // parameter for new stage
