@@ -155,7 +155,6 @@ EXPORT void advance_flow_field(
     }
 
   
-  
        /* solve momentum corrector equation */
      /* compute a correction to the velocity field u star, to make it divergence free */
      /* and apply this correction to u star */
@@ -173,6 +172,7 @@ EXPORT void advance_flow_field(
 						boundary_faces, actual_time);
 
 
+
      /* the part below is a test for a higher order accurate pressure field */
      /* it is based on eq 44 of RKPCM of Benjamin Sanderse */
      /* First calulate new momentum terms */
@@ -186,6 +186,7 @@ EXPORT void advance_flow_field(
       u_2_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
       u_3_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
 
+	// compute the convection and diffusion terms for in the momentum corrector
 	convection_diffussion_source_terms(
        u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,
        u_1_velocity_star,u_2_velocity_star,u_3_velocity_star, // changed to the velocity_star field, normally the old velocity field 
@@ -197,7 +198,8 @@ EXPORT void advance_flow_field(
        rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
        0);
 
-
+/*
+	// apply the momentum corrector on the convection and diffusion terms 
       solve_momentum_corrector(	level_set, pressure,			
 				momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,	
 				  surface_tension_body_force_x1, surface_tension_body_force_x2, surface_tension_body_force_x3,
@@ -209,7 +211,7 @@ EXPORT void advance_flow_field(
 					    rho_plus_over_rho_minus, continuous_surface_force_model,       
 					      source_terms_in_momentum_predictor, maximum_iterations_allowed_pressure,	 	
 						boundary_faces, actual_time);
-  
+  */
 
 	u_1_new_con_diff.destroy();
 	u_2_new_con_diff.destroy();
