@@ -170,7 +170,7 @@ EXPORT void advance_flow_field(
 					  gravity, tolerance_pressure, actual_time_step_navier_stokes,    
 					    rho_plus_over_rho_minus, continuous_surface_force_model,       
 					      source_terms_in_momentum_predictor, maximum_iterations_allowed_pressure,	 	
-						boundary_faces,rho_minus_over_mu_minus, actual_time);
+						boundary_faces, actual_time);
       /* shift the velocity field */
       
       // shift the velocity fields
@@ -185,9 +185,8 @@ EXPORT void advance_flow_field(
      /* the part below is a test for a higher order accurate pressure field */
      /* it is based on eq 44 of RKPCM of Benjamin Sanderse */
      /* First calulate new momentum terms */
-     /* Then use these term for a correction on the pressure */
+     /* Then use these terms for a correction on the pressure */
 
-	// these arrays are created here and used in forward_euler 
        Array3<double> u_1_new_con_diff; 	
        Array3<double> u_2_new_con_diff; 		
        Array3<double> u_3_new_con_diff;			
@@ -198,7 +197,7 @@ EXPORT void advance_flow_field(
 
 	convection_diffussion_source_terms(
        u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,
-       u_1_velocity_star,u_2_velocity_star,u_3_velocity_star, // changed to the velocity_star field 
+       u_1_velocity_star,u_2_velocity_star,u_3_velocity_star, // changed to the velocity_star field, normally the old velocity field 
        scaled_density_u1,scaled_density_u2,scaled_density_u3,
        momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
        level_set,
@@ -207,27 +206,26 @@ EXPORT void advance_flow_field(
        rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
        0);
 
-       // quick fix for different interpretation on actual_time
-      actual_time = actual_time+actual_time_step_navier_stokes;
-
 
       solve_momentum_corrector(	level_set, pressure,			
 				momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,	
 				  surface_tension_body_force_x1, surface_tension_body_force_x2, surface_tension_body_force_x3,
 				    scaled_density_u1, scaled_density_u2, scaled_density_u3,
-				    u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,	        // changed to the convection_diffussion terms 
+				    u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,	        // changed to the convection_diffussion terms, normally the velocity field u_star 
 				      mesh_width_x1, mesh_width_x2, mesh_width_x3,		        
 					number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,	        
 					  gravity, tolerance_pressure, actual_time_step_navier_stokes,    
 					    rho_plus_over_rho_minus, continuous_surface_force_model,       
 					      source_terms_in_momentum_predictor, maximum_iterations_allowed_pressure,	 	
-						boundary_faces,rho_minus_over_mu_minus, actual_time);
+						boundary_faces, actual_time);
   
 
 	u_1_new_con_diff.destroy();
 	u_2_new_con_diff.destroy();
 	u_3_new_con_diff.destroy();
 
+       // quick fix for different interpretation on actual_time
+      actual_time = actual_time+actual_time_step_navier_stokes;
 
 
        

@@ -64,9 +64,6 @@ EXPORT void solve_momentum_corrector(
 								// conjugate gradient method
       boundary_face boundary_faces[6],				// array with all the information
 								// for the boundary conditions 
-      double rho_minus_over_mu_minus,		        	// this was the 'Reynolds' number
-								// in the original implementation of Sander
-								// here only used for the boundary conditions of the velocity
       double actual_time					// actual time
 	
       )

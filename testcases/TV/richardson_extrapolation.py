@@ -10,9 +10,9 @@ with open('logfile.txt', 'w') as file:
 time_stepping_methods = [3,1]
 for time_stepping_method in time_stepping_methods:
 
-	time_steps = [1e-1, 5e-2, 2e-2, 1e-2, 5e-3, 2e-3, 1e-3, 1e-4,]
-	
-	#time_steps = [1e-1, 1e-2, 1e-3, 1e-4]
+#	time_steps = [1e-1, 5e-2, 2e-2, 1e-2, 5e-3, 2e-3, 1e-3, 1e-4,]
+#	time_steps = [1e-1, 5e-2, ]
+	time_steps = [1e-1, 1e-2, 1e-3, 1e-4]
 	
 	for time_step_restriction_global in time_steps:
 
@@ -44,7 +44,7 @@ for time_stepping_method in time_stepping_methods:
 		case_direc = "".join(case_direc)
 		case_direc = case_direc.rstrip('\n')
 		os.chdir(case_direc)
-		os.system("./MCLS")
+		os.system("./MCLS </dev/null 1> output.log 2> error.log &")
 		os.chdir(cwd)
 		with open("logfile.txt", 'a') as file:
 		    file.write('\n')
