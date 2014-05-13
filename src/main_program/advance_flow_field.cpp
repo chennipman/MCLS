@@ -171,16 +171,7 @@ EXPORT void advance_flow_field(
 					    rho_plus_over_rho_minus, continuous_surface_force_model,       
 					      source_terms_in_momentum_predictor, maximum_iterations_allowed_pressure,	 	
 						boundary_faces, actual_time);
-      /* shift the velocity field */
-      
-      // shift the velocity fields
-      // u new -> u old
-      // u star -> u new
-      
-       shift_velocity_field( u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,	     	
-			      u_1_velocity_new, u_2_velocity_new, u_3_velocity_new,	     	
-				u_1_velocity_star, u_2_velocity_star, u_3_velocity_star,	     	
-				  number_primary_cells_i, number_primary_cells_j, number_primary_cells_k);
+
 
      /* the part below is a test for a higher order accurate pressure field */
      /* it is based on eq 44 of RKPCM of Benjamin Sanderse */
@@ -228,6 +219,16 @@ EXPORT void advance_flow_field(
       actual_time = actual_time+actual_time_step_navier_stokes;
 
 
+      /* shift the velocity field */
+      
+      // shift the velocity fields
+      // u new -> u old
+      // u star -> u new
+      
+       shift_velocity_field( u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,	     	
+			      u_1_velocity_new, u_2_velocity_new, u_3_velocity_new,	     	
+				u_1_velocity_star, u_2_velocity_star, u_3_velocity_star,	     	
+				  number_primary_cells_i, number_primary_cells_j, number_primary_cells_k);
        
       
        
