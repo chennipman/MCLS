@@ -130,6 +130,7 @@ int i,j,k;
 
      /* initialize the pressure */
 
+/*
      initialize_pressure( level_set, pressure,
                             momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
                               surface_tension_body_force_x1, surface_tension_body_force_x2, surface_tension_body_force_x3,
@@ -142,7 +143,7 @@ int i,j,k;
                                            source_terms_in_momentum_predictor, maximum_iterations_allowed,
                                             boundary_faces);
 
-
+*/
 
      
      
