@@ -119,8 +119,8 @@ int i,j,k;
 
     /* intialize the pressure with constant value 0 */
     
-      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
-			    number_primary_cells_k+2, pressure, 0.0);
+//      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
+//			    number_primary_cells_k+2, pressure, 0.0);
 
 
      /* compute the pressure corresponding to the initial velocity field and the initial velocity field */
