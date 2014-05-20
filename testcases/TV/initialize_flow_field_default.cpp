@@ -12,15 +12,14 @@
 using namespace std;
 
 /********************************************************************************/
-/*  Function to initialize the flow field                                       */
+/*  Function to initialize the flow field and pressure field                           */
 /*  										       */
 /*  Programmer	: Duncan van der Heul       					       */
 /*  Date	: 10-03-2013       						       */
-/*  Update	:        							       */
+/*  Update	: Coen Hennipman(20-05-2014)					       */
 /********************************************************************************/
 /* Notes									       */
-/* For the moment the whole solution is initially set to zero, this should be   */
-/* extended to more advanced cases, e.g. a parabolic profile etc.		       */
+/* The velocity and pressure field are set here.				       */
 /********************************************************************************/
 EXPORT void initialize_flow_field(
       Array3<double> u_1_velocity_new, 			// velocity field at new time level x1 direction
@@ -75,8 +74,8 @@ EXPORT void initialize_flow_field(
 	)
    /* function definitions */
     {
-    /* initialize the velocity field */
-    /* if no restart file is available, simply set solution to constant value */
+    /* initialize the velocity field and pressure field*/
+    /* if no restart file is available*/
     /* as specified in the parameter listing */
     
       /* old time level */
@@ -116,36 +115,6 @@ int i,j,k;
      
   } 
 
-
-    /* intialize the pressure with constant value 0 */
-    
-      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
-			    number_primary_cells_k+2, pressure, 0.0);
-
-
-     /* compute the pressure corresponding to the initial velocity field and the initial velocity field */
-     /* because the initial velocity field is chosen constant, it can be ignored in the computation     */
-     /* of the initial pressure. We do have to take into account the initial body force field distribution */
-
-
-     /* initialize the pressure */
-
-     initialize_pressure( level_set, pressure,
-                            momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
-                              surface_tension_body_force_x1, surface_tension_body_force_x2, surface_tension_body_force_x3,
-                                scaled_density_u1, scaled_density_u2, scaled_density_u3,
-                                   u_1_velocity_new, u_2_velocity_new, u_3_velocity_new,
-                                     mesh_width_x1, mesh_width_x2, mesh_width_x3,
-                                      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-                                        gravity, tolerance, actual_time_step_navier_stokes,
-                                         rho_plus_over_rho_minus, continuous_surface_force_model,
-                                           source_terms_in_momentum_predictor, maximum_iterations_allowed,
-                                            boundary_faces);
-
-
-
-     
-     
     }
     
     

@@ -6,11 +6,10 @@
 
 /********************************************************************************/
 /********************************************************************************/
-/*  Function to solve for the correction to the velocity field to project it    */
-/*  on the space of divergence free fields					*/
+/*  Function to solve for the correction to the pressure field			*/
 /*  										*/
-/*  Programmer	: Duncan van der Heul       					*/
-/*  Date	: 10-03-2013       						*/
+/*  Programmer	: Coen Hennipman						*/
+/*  Date	: 20-05-2014       						*/
 /*  Update	:        							*/
 /********************************************************************************/
 /* Notes									*/
@@ -19,12 +18,18 @@
 /* Currently we assume a Dirichlet boundary condition for all normal velocities.*/
 /********************************************************************************/
 
-EXPORT void solve_momentum_corrector_two(
+EXPORT void solve_momentum_corrector_final(
       Array3<double> level_set,					// level-set field
       Array3<double> pressure,					// pressure field
-      Array3<double> u_1_new_con_diff, 				// contains the convection and diffusion terms 
-      Array3<double> u_2_new_con_diff, 				// contains the convection and diffusion terms
-      Array3<double> u_3_new_con_diff,				// contains the convection and diffusion terms 
+      Array3<double> u_1_velocity_star, 			// velocity field at star time level x1 direction
+      Array3<double> u_2_velocity_star, 			// velocity field at star time level x2 direction
+      Array3<double> u_3_velocity_star,				// velocity field at star time level x3 direction
+      Array3<double> momentum_source_term_u_1,		// source term of the momentum equation in x1 direction
+					       		// defined on all u1 points (including boundaries)
+      Array3<double> momentum_source_term_u_2,		// source term of the momentum equation in x2 direction
+					        	// defined on all u1 points (including boundaries)
+      Array3<double> momentum_source_term_u_3,		// source term of the momentum equation in x3 direction
+					        	// defined on all u1 points (including boundaries)
       Array3<double> scaled_density_u1,				// scaled density for the controlvolumes
 								// of the momentum equation in x1 direction
       Array3<double> scaled_density_u2,				// scaled density for the controlvolumes
@@ -39,10 +44,16 @@ EXPORT void solve_momentum_corrector_two(
       int number_primary_cells_k,	        		// number of primary (pressure) cells in x3 direction
       vector gravity,						// gravitational acceleration vector 
       double tolerance,	  					// the tolerance with which the system is solved	
-      double actual_time_step_navier_stokes,    		// actual time step for Navier-Stokes solution algorithm 
-      double rho_plus_over_rho_minus,	        		// ratio of density where (level set >0) and 
-					        		// density where (level set < 0)
-      int maximum_iterations_allowed,	 			// maximum number of iterations allowed for the
+      double smoothing_distance_factor,			// the smoothing distance is smoothing_distance_factor
+      double rho_plus_over_rho_minus,			// ratio of the densities of the two phases
+      double rho_minus_over_mu_minus,			// this was the 'Reynolds' number
+							// in the original implementation of Sander
+      double mu_plus_over_mu_minus,			// ratio of the viscosities of both phases
+      int source_terms_in_momentum_predictor,    	// =1, the source terms are applied in the momentum predictor
+					        	// equation
+					        	// =0, the source terms are applied in the momentum corrector
+					        	// equation  
+      int maximum_iterations_allowed_pressure,	 			// maximum number of iterations allowed for the
 								// conjugate gradient method
       boundary_face boundary_faces[6],				// array with all the information
 								// for the boundary conditions 
@@ -52,6 +63,34 @@ EXPORT void solve_momentum_corrector_two(
    
    
    {
+	// initialize the convection and diffusion terms based on the u_star velocity field  
+       Array3<double> u_1_new_con_diff; 	
+       Array3<double> u_2_new_con_diff; 		
+       Array3<double> u_3_new_con_diff;			
+
+      u_1_new_con_diff.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
+      u_2_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
+      u_3_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
+      
+	set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, 
+			    number_primary_cells_k+2, u_1_new_con_diff, 0.0); 
+	set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+1, 
+			    number_primary_cells_k+2, u_2_new_con_diff, 0.0); 
+	set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
+			    number_primary_cells_k+1, u_3_new_con_diff, 0.0); 
+
+	// compute the convection and diffusion terms for in the momentum corrector
+	convection_diffussion_source_terms(
+       u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,
+       u_1_velocity_star,u_2_velocity_star,u_3_velocity_star, // changed to the velocity_star field, normally the old velocity field 
+       scaled_density_u1,scaled_density_u2,scaled_density_u3,
+       momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
+       level_set,
+       number_primary_cells_i,number_primary_cells_j,number_primary_cells_k,
+       mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,
+       rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
+       0); // this function is used here only for calculating the convection_diffussion terms, the momentum_source_terms are not incorporated here
+
       Array2<double> pressure_matrix; 					// pressure matrix
       Array1<double> pressure_rhside;					// pressure right hand side
       Array3<double> pressure_boundary_condition_x1;
@@ -79,7 +118,7 @@ EXPORT void solve_momentum_corrector_two(
    
    /* build the system of equations for the pressure correction equation */
   
-      build_pressure_system_two(pressure_matrix,   
+      build_pressure_system_final(pressure_matrix,   
 					pressure_rhside, level_set,			
 					    scaled_density_u1, scaled_density_u2, scaled_density_u3,
 					     u_1_new_con_diff, u_2_new_con_diff, u_3_new_con_diff,
@@ -87,7 +126,7 @@ EXPORT void solve_momentum_corrector_two(
                                                 pressure_boundary_condition_x3,
 						  mesh_width_x1, mesh_width_x2, mesh_width_x3,		        
 						   number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,	        
-						     actual_time_step_navier_stokes, rho_plus_over_rho_minus,	        
+						     rho_plus_over_rho_minus,	        
 						        gravity);
 
    
@@ -95,7 +134,7 @@ EXPORT void solve_momentum_corrector_two(
 
       solve_pressure_correction_system(pressure_matrix, pressure_rhside, pressure,			  
 					number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		  
-					  tolerance, maximum_iterations_allowed);
+					  tolerance, maximum_iterations_allowed_pressure);
 
      /* apply boundary conditions to pressure field */
    
@@ -107,15 +146,21 @@ EXPORT void solve_momentum_corrector_two(
                                                     mesh_width_x1, mesh_width_x2, mesh_width_x3,
                                                       number_primary_cells_i, number_primary_cells_j, number_primary_cells_k);
    
-    /* allocate memory for the pressure correction matrix and right hand side */
+    /* deallocate memory for the pressure correction matrix and right hand side */
    
       pressure_matrix.destroy();
       pressure_rhside.destroy();
 
-    /* deallocate the memory for the pressure boundary conditions and the */
+    /* deallocate the memory for the pressure boundary conditions 		*/
 
       pressure_boundary_condition_x1.destroy();
       pressure_boundary_condition_x2.destroy();
       pressure_boundary_condition_x3.destroy();
+      
+    /* deallocate the memory for the convection and diffusion terms 		*/
+
+	u_1_new_con_diff.destroy();
+	u_2_new_con_diff.destroy();
+	u_3_new_con_diff.destroy();
       
   }

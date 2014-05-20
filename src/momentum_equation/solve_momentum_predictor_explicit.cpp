@@ -42,7 +42,7 @@
       double mesh_width_x2,				// grid spacing in x2 direction (uniform)
       double mesh_width_x3,				// grid spacing in x3 direction (uniform)
       double smoothing_distance_factor,			// the smoothing distance is smoothing_distance_factor
-      double rho_plus_over_rho_minus,
+      double rho_plus_over_rho_minus,			// ratio of the densities of the two phases
       double rho_minus_over_mu_minus,			// this was the 'Reynolds' number
 							// in the original implementation of Sander
       double mu_plus_over_mu_minus,			// ratio of the viscosities of both phases

@@ -482,3 +482,53 @@ EXPORT double sign(double value, double set_sign)
 	    if(set_sign<0) return -1.0*fabs(value);
 	    return 0;
 }
+
+/********************************************************************************/
+/********************************************************************************/
+/*  Function to compute the divergence of a vector field                        */
+/*  										*/
+/*  Programmer	: Coen Hennipman					*/
+/*  Date	: 20-05-2015       						*/
+/*  Update	:        							*/
+/********************************************************************************/
+/* Notes									*/
+/* The first argument is calculated and is the divergence of the vector field.	*/
+/********************************************************************************/
+EXPORT void divergence_of_vector_field(
+    Array3<double> output_array,		// the output array that is calculated
+    Array3<double> first_vector_field,		// the first input vector field 
+    Array3<double> second_vector_field,		// the second input vector field 
+    Array3<double> third_vector_field,		// the third input vector field 
+    double mesh_width_x1,			// grid spacing in x1 direction (uniform)
+    double mesh_width_x2,			// grid spacing in x2 direction (uniform)
+    double mesh_width_x3,			// grid spacing in x3 direction (uniform)
+    int number_primary_cells_i,	        	// number of primary (pressure) cells in x1 direction
+    int number_primary_cells_j,	        	// number of primary (pressure) cells in x2 direction
+    int number_primary_cells_k	        	// number of primary (pressure) cells in x3 direction
+)
+{
+      int i_index, j_index, k_index;  			// local variables for loop indexing
+      double one_over_dx1	=    			// 1/(grid spacing in x1 direction)
+	    1.0/(mesh_width_x1);
+      double one_over_dx2	=    			// 1/(grid spacing in x2 direction)
+	    1.0/(mesh_width_x2);
+      double one_over_dx3	=    			// 1/(grid spacing in x3 direction)
+	    1.0/(mesh_width_x3);
+	    
+      for( i_index=1; i_index< number_primary_cells_i+1;i_index++)
+      {
+	  for( j_index=1; j_index< number_primary_cells_j+1 ; j_index++)
+	  {
+	    for( k_index=1; k_index< number_primary_cells_k+1; k_index++)
+	    {
+	      output_array[i_index][j_index][k_index]=
+	      ( first_vector_field[i_index][j_index][k_index]-first_vector_field[i_index-1][j_index  ][k_index  ] )
+	      *one_over_dx1+ 
+	      ( second_vector_field[i_index][j_index][k_index]-second_vector_field[i_index  ][j_index-1][k_index  ] )
+	      *one_over_dx2+
+	      ( third_vector_field[i_index][j_index][k_index]-third_vector_field[i_index  ][j_index  ][k_index-1] )
+	      *one_over_dx3;
+	    }  
+	  }
+      }
+}
