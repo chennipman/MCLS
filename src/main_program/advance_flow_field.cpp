@@ -178,9 +178,9 @@ EXPORT void advance_flow_field(
      /* First calulate new momentum terms */
      /* Then use these terms for a correction on the pressure */
  
-	int index_of_output_file; 
-	index_of_output_file = actual_time*10+0.5; 
-	int first_or_second_call =1; 
+//	int index_of_output_file; 
+//	index_of_output_file = actual_time*10+0.5; 
+//	int first_or_second_call =1; 
 
 
        Array3<double> u_1_new_con_diff; 	
