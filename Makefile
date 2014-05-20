@@ -157,6 +157,8 @@ COMMON_SRCS= \
 		solve_momentum_predictor_u1.cpp \
 		solve_momentum_predictor_u2.cpp \
 		solve_momentum_predictor_u3.cpp \
+		dump_to_check_pressure.cpp \
+		solve_momentum_corrector_two.cpp \
 	) \
 	$(addprefix src/post_processing/, \
 		check_symmetry_scalars.cpp \
