@@ -199,7 +199,7 @@ EXPORT void advance_flow_field(
 			    number_primary_cells_k+1, u_3_new_con_diff, 0.0); 
 			    
 	
-	int i,j;
+//	int i,j;
 /*
 	
 for(i=0;i<number_primary_cells_i+1;i++)
