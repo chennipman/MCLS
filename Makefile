@@ -158,7 +158,6 @@ COMMON_SRCS= \
 		solve_momentum_predictor_u2.cpp \
 		solve_momentum_predictor_u3.cpp \
 		dump_to_check_pressure.cpp \
-		solve_momentum_corrector_two.cpp \
 	) \
 	$(addprefix src/post_processing/, \
 		check_symmetry_scalars.cpp \
@@ -184,6 +183,7 @@ COMMON_SRCS= \
 		build_pressure_rhs_boundary.cpp \
 		build_pressure_rhs_momentum_part.cpp \
 		build_pressure_system.cpp \
+		build_pressure_system_two.cpp \
 		compress_solution_pressure.cpp \
 		decompress_solution_pressure.cpp \
 		dump_divergence_for_debugging.cpp \
@@ -194,6 +194,7 @@ COMMON_SRCS= \
 		shift_pressure_solution.cpp \
 		solve_momentum_corrector.cpp \
 		solve_pressure_correction_system.cpp \
+		solve_momentum_corrector_two.cpp \
 	) \
 	$(addprefix src/restart/, \
 		read_restart_file.cpp \

@@ -208,11 +208,6 @@ for(i=0;i<number_primary_cells_i+1;i++)
     printf("i = %i j = %i u_star = %f \n", i,j,u_1_velocity_star[i][j][1]);
   }
 }
-	
-	
-	
-	
-
 	first_or_second_call = 3;
         dump_to_check_pressure(
 	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,
@@ -278,15 +273,13 @@ actual_time_step_navier_stokes = 1.0; // quick fix for the one over dt in the mo
 
 	// apply the momentum corrector on the convection and diffusion terms 
       solve_momentum_corrector_two(	level_set, pressure,			
-				momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,	
-				  surface_tension_body_force_x1, surface_tension_body_force_x2, surface_tension_body_force_x3,
+				  u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,	    
 				    scaled_density_u1, scaled_density_u2, scaled_density_u3,
-				    u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,	        // changed to the convection_diffussion terms, normally the velocity field u_star 
-				      mesh_width_x1, mesh_width_x2, mesh_width_x3,		        
+ 				      mesh_width_x1, mesh_width_x2, mesh_width_x3,		        
 					number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,	        
 					  gravity, tolerance_pressure, actual_time_step_navier_stokes,    
-					    rho_plus_over_rho_minus, 0,  // quick fix, to remove the CSF terms, if there where any 
-					      1, maximum_iterations_allowed_pressure,	 	// quick fix, to remove the momentum_source_terms in momentum corrector 
+					    rho_plus_over_rho_minus,
+					      maximum_iterations_allowed_pressure,	 	
 						boundary_faces, actual_time);
 	
 	

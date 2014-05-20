@@ -22,27 +22,15 @@
 EXPORT void solve_momentum_corrector_two(
       Array3<double> level_set,					// level-set field
       Array3<double> pressure,					// pressure field
-      Array3<double> momentum_source_term_u_1,			// source term of the momentum equation in x1 direction
-					        		// defined on all u1 points (including boundaries)
-      Array3<double> momentum_source_term_u_2,  			// source term of the momentum equation in x2 direction
-					        		// defined on all u1 points (including boundaries)
-      Array3<double> momentum_source_term_u_3,			// source term of the momentum equation in x3 direction
-					        		// defined on all u1 points (including boundaries)
-      Array3<double> surface_tension_body_force_x1,  		// source term of the momentum equation in x1 direction
-					        		// defined on all u1 points (including boundaries)
-      Array3<double> surface_tension_body_force_x2,  		// source term of the momentum equation in x2 direction
-					        		// defined on all u1 points (including boundaries)
-      Array3<double> surface_tension_body_force_x3,			// source term of the momentum equation in x3 direction
-					        		// defined on all u1 points (including boundaries)
+      Array3<double> u_1_new_con_diff, 				// contains the convection and diffusion terms 
+      Array3<double> u_2_new_con_diff, 				// contains the convection and diffusion terms
+      Array3<double> u_3_new_con_diff,				// contains the convection and diffusion terms 
       Array3<double> scaled_density_u1,				// scaled density for the controlvolumes
 								// of the momentum equation in x1 direction
       Array3<double> scaled_density_u2,				// scaled density for the controlvolumes
 								// of the momentum equation in x2 direction
       Array3<double> scaled_density_u3,				// scaled density for the controlvolumes
 								// of the momentum equation in x3 direction
-      Array3<double> u_1_velocity_star, 	        		// velocity field at star time level x1 direction
-      Array3<double> u_2_velocity_star, 	       		 	// velocity field at star time level x2 direction
-      Array3<double> u_3_velocity_star,	        		// velocity field at star time level x3 direction
       double mesh_width_x1,		        		// grid spacing in x1 direction (uniform)
       double mesh_width_x2,		        		// grid spacing in x2 direction (uniform)
       double mesh_width_x3,		        		// grid spacing in x3 direction (uniform)
@@ -54,12 +42,6 @@ EXPORT void solve_momentum_corrector_two(
       double actual_time_step_navier_stokes,    		// actual time step for Navier-Stokes solution algorithm 
       double rho_plus_over_rho_minus,	        		// ratio of density where (level set >0) and 
 					        		// density where (level set < 0)
-      int continuous_surface_force_model,       		// =1, the continuous surface force model is applied
-					        		// =0, the exact interface boundary conditions are applied
-      int source_terms_in_momentum_predictor,   		// =1, the source terms are applied in the momentum predictor
-					        		// equation
-					        		// =0, the source terms are applied in the momentum corrector
-					        		// equation
       int maximum_iterations_allowed,	 			// maximum number of iterations allowed for the
 								// conjugate gradient method
       boundary_face boundary_faces[6],				// array with all the information
@@ -97,18 +79,15 @@ EXPORT void solve_momentum_corrector_two(
    
    /* build the system of equations for the pressure correction equation */
   
-      build_pressure_system(pressure_matrix,   
+      build_pressure_system_two(pressure_matrix,   
 					pressure_rhside, level_set,			
-					  momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,  		        
-					   surface_tension_body_force_x1, surface_tension_body_force_x2, surface_tension_body_force_x3,
 					    scaled_density_u1, scaled_density_u2, scaled_density_u3,
-					     u_1_velocity_star, u_2_velocity_star, u_3_velocity_star,
+					     u_1_new_con_diff, u_2_new_con_diff, u_3_new_con_diff,
                                               pressure_boundary_condition_x1, pressure_boundary_condition_x2,
                                                 pressure_boundary_condition_x3,
 						  mesh_width_x1, mesh_width_x2, mesh_width_x3,		        
 						   number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,	        
 						     actual_time_step_navier_stokes, rho_plus_over_rho_minus,	        
-						       continuous_surface_force_model, source_terms_in_momentum_predictor,   
 						        gravity);
 
    
@@ -128,17 +107,6 @@ EXPORT void solve_momentum_corrector_two(
                                                     mesh_width_x1, mesh_width_x2, mesh_width_x3,
                                                       number_primary_cells_i, number_primary_cells_j, number_primary_cells_k);
    
-   /* apply the pressure correction to the velocity */
-   
-      apply_pressure_correction( level_set, pressure,					
-				u_1_velocity_star, u_2_velocity_star, u_3_velocity_star,	     		
-				  surface_tension_body_force_x1, surface_tension_body_force_x2, surface_tension_body_force_x3,		
-				    momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3, 
-				     scaled_density_u1, scaled_density_u2, scaled_density_u3,
-				      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,				
-					mesh_width_x1, mesh_width_x2, mesh_width_x3, rho_plus_over_rho_minus,			
-					  actual_time_step_navier_stokes, gravity);
-     
     /* allocate memory for the pressure correction matrix and right hand side */
    
       pressure_matrix.destroy();
@@ -149,12 +117,5 @@ EXPORT void solve_momentum_corrector_two(
       pressure_boundary_condition_x1.destroy();
       pressure_boundary_condition_x2.destroy();
       pressure_boundary_condition_x3.destroy();
-
-     /* apply boundary conditions to velocity field */
-     
-      apply_boundary_conditions_velocity( boundary_faces,		
-					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			
-					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				
-					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k, actual_time+actual_time_step_navier_stokes);
       
   }
