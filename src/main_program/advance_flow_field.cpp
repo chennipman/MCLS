@@ -155,9 +155,9 @@ EXPORT void advance_flow_field(
     }
 
   
-       /* solve momentum corrector equation */
-     /* compute a correction to the velocity field u star, to make it divergence free */
-     /* and apply this correction to u star */
+     /* solve momentum corrector equation 						*/
+     /* compute the new pressure that makes the velocity field u star divergence free 	*/
+     /* apply the new computed pressure to u star 					*/
      
       solve_momentum_corrector(	level_set, pressure,			
 				momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,	
@@ -173,8 +173,10 @@ EXPORT void advance_flow_field(
 
 
 
-     /* the fuction below gives a pressure field of the same order as the velocity field */
-     /* it is based on eq 44 of SanRKPCM1 by Benjamin Sanderse */
+     /* the fuction below gives a pressure field of the same order as the velocity field 	*/
+     /* it is based on eq 44 of 								*/
+     /* New explicit Runge-Kutta methods for the incompressible Navier_Stokes equations		*/
+     /* by: Bejamin Sanderse and B. Koren Bibref:SanRKPCM1 					*/
       solve_momentum_corrector_final(	level_set, pressure,			
 				u_1_velocity_star, u_2_velocity_star, u_3_velocity_star,	        
 				momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,

@@ -7,6 +7,7 @@
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to solve for the correction to the pressure field			*/
+/*  This function is partly a copy of solve_momentum_corrector.			*/
 /*  										*/
 /*  Programmer	: Coen Hennipman						*/
 /*  Date	: 20-05-2014       						*/
@@ -16,6 +17,22 @@
 /* Note that in all cases the PRESSURE is computed in the pressure correction   */
 /* equation, not the pressure correction.                                       */
 /* Currently we assume a Dirichlet boundary condition for all normal velocities.*/
+/* The fuction below gives a pressure field of the same order as the velocity  	*/
+/* field, it is based on eq 44 of 						*/
+/* 'New explicit Runge-Kutta methods for the incompressible Navier_Stokes	*/
+/* equations' written by: Bejamin Sanderse and B. Koren Bibref:SanRKPCM1	*/
+/* This function is almost similar to solve_momentum_corrector,			*/
+/* the difference is the build of the rhs. 					*/
+/* eq 44: Lp_{n+1}=MF_{n+1}-r_1^.(t_{n+1})					*/
+/* where:									*/
+/* L is the laplaciaan								*/
+/* p_{n+1} is the pressure at the new time_stepping_method			*/
+/* M is the discrete convergence 						*/
+/* F_{n+1} are the convection_diffussion terms at the new time 			*/
+/* r_1^.(t_{n+1}) is the time derivative of the divergence which is asssumed to */
+/* be zero in our case. 							*/
+/* By applying this method the order of the pressure field is of the same order	*/
+/* as the velocity field. 							*/
 /********************************************************************************/
 
 EXPORT void solve_momentum_corrector_final(
@@ -70,7 +87,7 @@ EXPORT void solve_momentum_corrector_final(
 
       u_1_new_con_diff.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
       u_2_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
-      u_3_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
+      u_3_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);
       
 	set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, 
 			    number_primary_cells_k+2, u_1_new_con_diff, 0.0); 
@@ -79,10 +96,10 @@ EXPORT void solve_momentum_corrector_final(
 	set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, 
 			    number_primary_cells_k+1, u_3_new_con_diff, 0.0); 
 
-	// compute the convection and diffusion terms for in the momentum corrector
+	// compute the convection and diffusion terms for in the pressure corrector
 	convection_diffussion_source_terms(
        u_1_new_con_diff,u_2_new_con_diff,u_3_new_con_diff,
-       u_1_velocity_star,u_2_velocity_star,u_3_velocity_star, // changed to the velocity_star field, normally the old velocity field 
+       u_1_velocity_star,u_2_velocity_star,u_3_velocity_star, // the terms are calculated based on u_star, normally based on u_n
        scaled_density_u1,scaled_density_u2,scaled_density_u3,
        momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
        level_set,
