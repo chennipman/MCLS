@@ -200,6 +200,7 @@ EXPORT void advance_flow_field(
 			    
 	
 	int i,j;
+/*
 	
 for(i=0;i<number_primary_cells_i+1;i++)
 {
@@ -208,7 +209,7 @@ for(i=0;i<number_primary_cells_i+1;i++)
     printf("i = %i j = %i u_star = %f \n", i,j,u_1_velocity_star[i][j][1]);
   }
 }
-	first_or_second_call = 3;
+/	first_or_second_call = 3;
         dump_to_check_pressure(
 	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,
 	pressure, 1,
@@ -216,7 +217,7 @@ for(i=0;i<number_primary_cells_i+1;i++)
 	mesh_width_x1, mesh_width_x2, mesh_width_x3,
 	index_of_output_file, first_or_second_call);
 
-
+*/
 
 	// compute the convection and diffusion terms for in the momentum corrector
 	convection_diffussion_source_terms(
@@ -230,6 +231,7 @@ for(i=0;i<number_primary_cells_i+1;i++)
        rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
        0); // only the convection_diffussion terms not the momentum_source_terms
 
+/*
 for(i=0;i<number_primary_cells_i+1;i++)
 {
   for(j=0;j<number_primary_cells_j+2;j++)
@@ -246,7 +248,7 @@ for(i=0;i<number_primary_cells_i+1;i++)
 	mesh_width_x1, mesh_width_x2, mesh_width_x3,
 	index_of_output_file, first_or_second_call);
 	
-	
+*/	
 	/*
 	  Array3<double> u_1_velocity_new, 	// velocity field at new time level x1 direction
 	  Array3<double> u_2_velocity_new, 	// velocity field at new time level x2 direction
@@ -282,7 +284,7 @@ actual_time_step_navier_stokes = 1.0; // quick fix for the one over dt in the mo
 					      maximum_iterations_allowed_pressure,	 	
 						boundary_faces, actual_time);
 	
-	
+/*	
 	first_or_second_call = 2; // pressure_file_after
         dump_to_check_pressure(
 	u_1_new_con_diff, u_2_new_con_diff, u_3_new_con_diff,
@@ -290,7 +292,7 @@ actual_time_step_navier_stokes = 1.0; // quick fix for the one over dt in the mo
 	number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
 	mesh_width_x1, mesh_width_x2, mesh_width_x3,
 	index_of_output_file, first_or_second_call);
-
+*/
 
 	u_1_new_con_diff.destroy();
 	u_2_new_con_diff.destroy();
