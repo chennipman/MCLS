@@ -1,11 +1,17 @@
 import os
 import time
 
-with open('logfile.txt', 'w') as file:
+# make timestamp for logfile
+ts = int(time.time())
+tsstr = str(ts)
+namelogfile = []
+namelogfile.append(tsstr)
+namelogfile.append("logfile.txt")
+namelogfile = ''.join(namelogfile)
+
+with open(namelogfile, 'w') as file:
     file.write('')
     file.closed
-
-
 
 time_stepping_methods = [3,1]
 for time_stepping_method in time_stepping_methods:
@@ -46,7 +52,9 @@ for time_stepping_method in time_stepping_methods:
 		os.chdir(case_direc)
 		os.system("./MCLS </dev/null 1> output.log 2> error.log &")
 		os.chdir(cwd)
-		with open("logfile.txt", 'a') as file:
+		
+		
+		with open(namelogfile, 'a') as file:
 		    file.write('\n')
 		    case_direc = case_direc.rstrip('/')
 		    file.write(case_direc)

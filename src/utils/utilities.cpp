@@ -485,14 +485,15 @@ EXPORT double sign(double value, double set_sign)
 
 /********************************************************************************/
 /********************************************************************************/
-/*  Function to compute the divergence of a vector field                        */
+/*  Function to compute the divergence of a staggered vector field              */
 /*  										*/
-/*  Programmer	: Coen Hennipman					*/
+/*  Programmer	: Coen Hennipman						*/
 /*  Date	: 20-05-2015       						*/
 /*  Update	:        							*/
 /********************************************************************************/
 /* Notes									*/
-/* The first argument is calculated and is the divergence of the vector field.	*/
+/* The first argument is calculated and is the divergence of the staggered	*/
+/* vector field.								*/
 /********************************************************************************/
 EXPORT void divergence_of_vector_field(
     Array3<double> output_array,		// the output array that is calculated
