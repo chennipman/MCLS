@@ -3,8 +3,8 @@ import time
 import datetime
 
 # make timestamp for logfile
-ts = datetime.datetime.fromtimestamp(ts).strftime('%m-%d-%H-%M')
-ts = int(time.time())
+st = int(time.time())
+ts = datetime.datetime.fromtimestamp(st).strftime('%m-%d-%H-%M')
 tsstr = str(ts)
 namelogfile = []
 namelogfile.append(tsstr)
