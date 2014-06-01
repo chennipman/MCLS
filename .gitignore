@@ -9,5 +9,5 @@
 /testcases/*/initialize_flow_field.cpp
 /testcases/*/MCLS
 /testcases/*/interface_details.csv
-/testcases/TV/logfile.txt
+/testcases/TV/*logfile.txt
 *.pvsm
