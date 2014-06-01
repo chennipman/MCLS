@@ -80,7 +80,7 @@
 
 
 	// first step Runge-Kutta
-	sigma = 1.0/2.0; // parameter for new stage
+	sigma = 8.0/15.0; // parameter for new stage
 	zeta  = 0.0; // parameter for previous stage
 
       forward_euler(
@@ -111,8 +111,8 @@
       u_2_velocity_star_star.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
       u_3_velocity_star_star.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);
 
-	sigma = 1.0/4.0; // parameter for new stage
-	zeta  = 1.0/4.0; // parameter for previous stage
+	sigma = 5.0/12.0; // parameter for new stage
+	zeta  = -17.0/60.0; // parameter for previous stage
 		
       forward_euler(
 	u_1_velocity_star_star,u_2_velocity_star_star,u_3_velocity_star_star,			
@@ -133,8 +133,8 @@
        actual_time = actual_time+ (sigma+zeta)*actual_time_step_navier_stokes; 
 
 	// third step Runge-Kutta
-	sigma = 2.0/1.0; // parameter for new stage
-	zeta  = -1.0/1.0; // parameter for previous stage
+	sigma = 3.0/4.0; // parameter for new stage
+	zeta  = -5.0/12.0; // parameter for previous stage
 		
       forward_euler(
 	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,		// u_star is reused to reduce the number of allocations it can also be seen as u_star_star_star	
