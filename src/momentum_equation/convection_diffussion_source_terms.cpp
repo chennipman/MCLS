@@ -100,8 +100,6 @@ for(i=1;i<number_primary_cells_i+1;i++)
 		scaled_density_u1[i][j][k], momentum_source_term_u_1[i][j][k],
 		viscosity_left,viscosity_right,viscosity_back,viscosity_front,viscosity_top,viscosity_bottom,
 		source_terms_in_momentum_predictor);
-		
-		printf("i = %i j = %i con_diff = %f \n", i,j,u_1_momentum[i][j][k] );
 	}
 	
 	if(j!=number_primary_cells_j)

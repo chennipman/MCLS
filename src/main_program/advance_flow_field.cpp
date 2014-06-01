@@ -94,7 +94,7 @@ EXPORT void advance_flow_field(
       printf("actual time = %f ", actual_time );
       printf("\n");
       // quick fix for different interpretation on actual_time
-      actual_time = actual_time-actual_time_step_navier_stokes;
+      actual_time = actual_time-(0.5*actual_time_step_navier_stokes);
       printf("actual time after actual time change in advance_flow_field = %f ", actual_time );
       printf("\n");
   
