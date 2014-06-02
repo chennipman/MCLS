@@ -114,6 +114,7 @@ EXPORT void solve_momentum_corrector_final(
       Array3<double> pressure_boundary_condition_x2;
       Array3<double> pressure_boundary_condition_x3;
       int total_number_pressure_points;				// total number of points with pressure
+
     /* allocate memory for the pressure correction matrix and right hand side */
    
       total_number_pressure_points=number_primary_cells_i*number_primary_cells_j*number_primary_cells_k;

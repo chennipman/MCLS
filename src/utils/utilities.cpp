@@ -522,13 +522,14 @@ EXPORT void divergence_of_vector_field(
 	  {
 	    for( k_index=1; k_index< number_primary_cells_k+1; k_index++)
 	    {
-	      output_array[i_index][j_index][k_index]=
+	      output_array[i_index][j_index][k_index]=-1*(
 	      ( first_vector_field[i_index][j_index][k_index]-first_vector_field[i_index-1][j_index  ][k_index  ] )
 	      *one_over_dx1+ 
 	      ( second_vector_field[i_index][j_index][k_index]-second_vector_field[i_index  ][j_index-1][k_index  ] )
 	      *one_over_dx2+
 	      ( third_vector_field[i_index][j_index][k_index]-third_vector_field[i_index  ][j_index  ][k_index-1] )
-	      *one_over_dx3;
+	      *one_over_dx3
+	      );
 	    }  
 	  }
       }
