@@ -35,7 +35,7 @@
 /* as the velocity field. 							*/
 /********************************************************************************/
 
-EXPORT void solve_momentum_corrector_final(
+EXPORT void solve_final_pressure_corrector(
       Array3<double> level_set,					// level-set field
       Array3<double> pressure,					// pressure field
       Array3<double> u_1_velocity_star, 			// velocity field at star time level x1 direction
@@ -66,10 +66,6 @@ EXPORT void solve_momentum_corrector_final(
       double rho_minus_over_mu_minus,			// this was the 'Reynolds' number
 							// in the original implementation of Sander
       double mu_plus_over_mu_minus,			// ratio of the viscosities of both phases
-      int source_terms_in_momentum_predictor,    	// =1, the source terms are applied in the momentum predictor
-					        	// equation
-					        	// =0, the source terms are applied in the momentum corrector
-					        	// equation  
       int maximum_iterations_allowed_pressure,	 			// maximum number of iterations allowed for the
 								// conjugate gradient method
       boundary_face boundary_faces[6],				// array with all the information

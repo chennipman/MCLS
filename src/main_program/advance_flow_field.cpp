@@ -177,7 +177,7 @@ EXPORT void advance_flow_field(
      /* it is based on eq 44 of 								*/
      /* New explicit Runge-Kutta methods for the incompressible Navier_Stokes equations		*/
      /* by: Bejamin Sanderse and B. Koren Bibref:SanRKPCM1 					*/
-      solve_momentum_corrector_final(	level_set, pressure,			
+      solve_final_pressure_corrector(	level_set, pressure,			
 				u_1_velocity_star, u_2_velocity_star, u_3_velocity_star,	        
 				momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
 				scaled_density_u1, scaled_density_u2, scaled_density_u3,
