@@ -194,7 +194,7 @@ COMMON_SRCS= \
 		shift_pressure_solution.cpp \
 		solve_momentum_corrector.cpp \
 		solve_pressure_correction_system.cpp \
-		solve_momentum_corrector_final.cpp \
+		solve_final_pressure_corrector.cpp \
 	) \
 	$(addprefix src/restart/, \
 		read_restart_file.cpp \

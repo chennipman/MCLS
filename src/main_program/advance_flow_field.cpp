@@ -185,7 +185,6 @@ EXPORT void advance_flow_field(
 				number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,	        
 				gravity, tolerance_pressure,smoothing_distance_factor,
 				rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
-				source_terms_in_momentum_predictor,
 				maximum_iterations_allowed_pressure,
 				boundary_faces, actual_time);
 	
