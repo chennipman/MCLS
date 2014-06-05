@@ -60,7 +60,8 @@
        )
 
   {
-	double sigma, zeta; 
+	double sigma, zeta;
+	double actual_time_in_RK;  		// actual time used to evaluate the boundary conditon
  
        Array3<double> u_1_old_con_diff; 	// contains the convection and diffusion terms of a previous RK-stage in the x1 direction
        Array3<double> u_2_old_con_diff; 	// contains the convection and diffusion terms of a previous RK-stage in the x2 direction
@@ -82,6 +83,7 @@
 	// first step Runge-Kutta
 	sigma = 8.0/15.0; // parameter for new stage
 	zeta  = 0.0; // parameter for previous stage
+	actual_time_in_RK = actual_time+(sigma+zeta-1)*actual_time_step_navier_stokes;
 
       forward_euler(
 	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,			
@@ -96,10 +98,10 @@
 	mesh_width_x1,mesh_width_x2,mesh_width_x3,				
 	smoothing_distance_factor,
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
- 	boundary_faces, source_terms_in_momentum_predictor, actual_time    	
-       );
+ 	boundary_faces, source_terms_in_momentum_predictor, 
+ 	actual_time_in_RK
+ 	);
        
-       actual_time = actual_time+ (sigma+zeta)*actual_time_step_navier_stokes; 
 
 	// second step Runge-Kutta
        Array3<double> u_1_velocity_star_star; 		// velocity field at star_star time level x1 direction   
@@ -113,6 +115,9 @@
 
 	sigma = 5.0/12.0; // parameter for new stage
 	zeta  = -17.0/60.0; // parameter for previous stage
+	actual_time_in_RK = actual_time_in_RK + (sigma+zeta)*actual_time_step_navier_stokes; 
+
+
 		
       forward_euler(
 	u_1_velocity_star_star,u_2_velocity_star_star,u_3_velocity_star_star,			
@@ -127,14 +132,15 @@
 	mesh_width_x1,mesh_width_x2,mesh_width_x3,				
 	smoothing_distance_factor,
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
- 	boundary_faces, source_terms_in_momentum_predictor, actual_time
+ 	boundary_faces, source_terms_in_momentum_predictor, 
+ 	actual_time_in_RK
        );
-       
-       actual_time = actual_time+ (sigma+zeta)*actual_time_step_navier_stokes; 
 
 	// third step Runge-Kutta
 	sigma = 3.0/4.0; // parameter for new stage
 	zeta  = -5.0/12.0; // parameter for previous stage
+	actual_time_in_RK = actual_time_in_RK + (sigma+zeta)*actual_time_step_navier_stokes; 
+
 		
       forward_euler(
 	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,		// u_star is reused to reduce the number of allocations it can also be seen as u_star_star_star	
@@ -149,7 +155,8 @@
 	mesh_width_x1,mesh_width_x2,mesh_width_x3,				
 	smoothing_distance_factor,
  	rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,			
- 	boundary_faces, source_terms_in_momentum_predictor, actual_time    	
+ 	boundary_faces, source_terms_in_momentum_predictor, 
+ 	actual_time_in_RK
        );
 
 
