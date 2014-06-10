@@ -94,9 +94,9 @@ EXPORT void advance_flow_field(
       
       
         // quick fix for different runs in Taylor Vortex interpretation on actual_time
-//      printf("actual time before actual time change in advance_flow_field = %f  \n", actual_time );
- //     actual_time = actual_time+(0.5*actual_time_step_navier_stokes);
-//      printf("actual time after actual time change in advance_flow_field = %f  \n", actual_time );
+     printf("actual time before actual time change in advance_flow_field = %f  \n", actual_time );
+     actual_time = actual_time+(0.5*actual_time_step_navier_stokes);
+     printf("actual time after actual time change in advance_flow_field = %f  \n", actual_time );
 
   
   
