@@ -112,8 +112,8 @@ int i,j,k;
 	  	u_3_velocity_new[i][j][k]= initial_velocity.u3;
 	  	z -= 0.5*mesh_width_x3;}
 
-//	  	pressure[i][j][k] = 1.0/4.0*(cos(2*PI*x)+cos(2*PI*y));
-	  	pressure[i][j][k] = 1.0/4.0*(cos(2*PI*x)+cos(2*PI*y))*exp(4.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
+	  	pressure[i][j][k] = 1.0/4.0*(cos(2*PI*x)+cos(2*PI*y));
+//	  	pressure[i][j][k] = 1.0/4.0*(cos(2*PI*x)+cos(2*PI*y))*exp(4.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
 	  }
   
       }  
