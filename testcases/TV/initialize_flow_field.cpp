@@ -94,17 +94,17 @@ int i,j,k;
 	  
 	  if(i!=number_primary_cells_i+1)
 	  	{x += 0.5*mesh_width_x1;
-	  	u_1_velocity_old[i][j][k]= -sin(PI*x)*cos(PI*y);
-	  	u_1_velocity_new[i][j][k]= -sin(PI*x)*cos(PI*y);
-//	  	u_1_velocity_old[i][j][k]= -sin(PI*x)*cos(PI*y)*exp(-2.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
-//	  	u_1_velocity_new[i][j][k]= -sin(PI*x)*cos(PI*y)*exp(-2.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
+//	  	u_1_velocity_old[i][j][k]= -sin(PI*x)*cos(PI*y);
+//	  	u_1_velocity_new[i][j][k]= -sin(PI*x)*cos(PI*y);
+	  	u_1_velocity_old[i][j][k]= -sin(PI*x)*cos(PI*y)*exp(-2.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
+	  	u_1_velocity_new[i][j][k]= -sin(PI*x)*cos(PI*y)*exp(-2.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
 	  	x -= 0.5*mesh_width_x1;}
 	  if(j!=number_primary_cells_j+1)
 	  	{y += 0.5*mesh_width_x2;
-	  	u_2_velocity_old[i][j][k]= cos(PI*x)*sin(PI*y);
-	  	u_2_velocity_new[i][j][k]= cos(PI*x)*sin(PI*y);	
-//	  	u_2_velocity_old[i][j][k]= cos(PI*x)*sin(PI*y)*exp(-2.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
-//	  	u_2_velocity_new[i][j][k]= cos(PI*x)*sin(PI*y)*exp(-2.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);	
+//	  	u_2_velocity_old[i][j][k]= cos(PI*x)*sin(PI*y);
+//	  	u_2_velocity_new[i][j][k]= cos(PI*x)*sin(PI*y);	
+	  	u_2_velocity_old[i][j][k]= cos(PI*x)*sin(PI*y)*exp(-2.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
+	  	u_2_velocity_new[i][j][k]= cos(PI*x)*sin(PI*y)*exp(-2.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);	
 	  	y -= 0.5*mesh_width_x2;}
 	  if(k!=number_primary_cells_k+1)
 	  	{z += 0.5*mesh_width_x3;
@@ -112,8 +112,8 @@ int i,j,k;
 	  	u_3_velocity_new[i][j][k]= initial_velocity.u3;
 	  	z -= 0.5*mesh_width_x3;}
 
-//	  	pressure[i][j][k] = 1.0/4.0*(cos(2*PI*x)+cos(2*PI*y));
-	  	pressure[i][j][k] = 1.0/4.0*(cos(2*PI*x)+cos(2*PI*y))*exp(4.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
+	  	pressure[i][j][k] = 1.0/4.0*(cos(2*PI*x)+cos(2*PI*y));
+//	  	pressure[i][j][k] = 1.0/4.0*(cos(2*PI*x)+cos(2*PI*y))*exp(4.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
 	  }
   
       }  

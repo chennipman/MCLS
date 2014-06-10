@@ -38,8 +38,8 @@ EXPORT void apply_boundary_conditions_velocity(
       printf("actual time in apply_boundary_conditions_velocity = %f ", actual_time );
       printf("\n");
       // quick fix for different runs in Taylor Vortex interpretation on actual_time
-//      actual_time = actual_time-(0.5*actual_time_step_navier_stokes);
-//      printf("actual time after actual time change in apply boundary condition = %f  \n", actual_time );
+      actual_time = actual_time+(0.5*actual_time_step_navier_stokes);
+      printf("actual time after actual time change in apply boundary condition = %f  \n", actual_time );
 
   
   
