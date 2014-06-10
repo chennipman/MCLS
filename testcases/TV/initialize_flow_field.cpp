@@ -95,7 +95,7 @@ int i,j,k;
 	  if(i!=number_primary_cells_i+1)
 	  	{x += 0.5*mesh_width_x1;
 	  	u_1_velocity_old[i][j][k]= -sin(PI*x)*cos(PI*y);
-	  	u_1_velocity_new[i][j][k]= -sin(PI*x)*cos(PI*y));
+	  	u_1_velocity_new[i][j][k]= -sin(PI*x)*cos(PI*y);
 //	  	u_1_velocity_old[i][j][k]= -sin(PI*x)*cos(PI*y)*exp(-2.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
 //	  	u_1_velocity_new[i][j][k]= -sin(PI*x)*cos(PI*y)*exp(-2.0*PI*PI*0.5*actual_time_step_navier_stokes/100.0);
 	  	x -= 0.5*mesh_width_x1;}
