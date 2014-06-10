@@ -65,10 +65,6 @@ EXPORT void apply_boundary_conditions_velocity(
 						      number_primary_cells_j,			
 							number_primary_cells_k, actual_time);
 							
-      printf("actual time in apply boundary conditions = %f ", actual_time );
-      printf("\n");
-
- 
   }
 
 

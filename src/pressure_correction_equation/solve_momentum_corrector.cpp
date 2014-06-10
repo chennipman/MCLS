@@ -155,6 +155,6 @@ EXPORT void solve_momentum_corrector(
       apply_boundary_conditions_velocity( boundary_faces,		
 					  u_1_velocity_star, u_2_velocity_star, u_3_velocity_star, 			
 					    mesh_width_x1, mesh_width_x2, mesh_width_x3,				
-					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k, actual_time+actual_time_step_navier_stokes);
+					      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k, actual_time);
       
   }
