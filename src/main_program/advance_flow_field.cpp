@@ -141,7 +141,7 @@ EXPORT void advance_flow_field(
 					      tolerance_velocity, maximum_iterations_allowed_velocity,actual_time); 
     }
 
-    else if (time_stepping_method == 3)
+    else if ( (time_stepping_method == 3) || (time_stepping_method == 4) )
     {
       printf("runge kutta \n"); 
       solve_momentum_predictor_rk(
@@ -165,7 +165,7 @@ EXPORT void advance_flow_field(
      /* solve momentum corrector equation 						*/
      /* compute the new pressure that makes the velocity field u star divergence free 	*/
      /* apply the new computed pressure to u star 					*/
-     
+
       solve_momentum_corrector(	level_set, pressure,			
 				momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,	
 				  surface_tension_body_force_x1, surface_tension_body_force_x2, surface_tension_body_force_x3,
@@ -179,7 +179,9 @@ EXPORT void advance_flow_field(
 						boundary_faces, actual_time);
 
 
-
+    if (time_stepping_method == 4) // extra pressure correction step 
+    {
+       printf("second pressure correction step \n"); 
      /* the fuction below gives a pressure field of the same order as the velocity field 	*/
      /* it is based on eq 44 of 								*/
      /* New explicit Runge-Kutta methods for the incompressible Navier_Stokes equations		*/
@@ -194,7 +196,7 @@ EXPORT void advance_flow_field(
 				rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
 				maximum_iterations_allowed_pressure,
 				boundary_faces, actual_time);
-	
+    }
       /* shift the velocity field */
       
       // shift the velocity fields
