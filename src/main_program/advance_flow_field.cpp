@@ -91,6 +91,19 @@ EXPORT void advance_flow_field(
       u_2_velocity_star.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
       u_3_velocity_star.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);
       
+      
+      
+        // quick fix for different runs in Taylor Vortex interpretation on actual_time
+      printf("actual time before actual time change in advance_flow_field = %f  \n", actual_time );
+      actual_time = actual_time+(0.5*actual_time_step_navier_stokes);
+      printf("actual time after actual time change in advance_flow_field = %f  \n", actual_time );
+
+  
+  
+  
+  
+  
+  
   
     /* solve momentum predictor equation */
     /* compute a new velocity field u star, that is not divergence free */
