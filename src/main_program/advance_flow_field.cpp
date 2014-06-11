@@ -98,13 +98,6 @@ EXPORT void advance_flow_field(
      actual_time = actual_time+(0.5*actual_time_step_navier_stokes);
      printf("actual time after actual time change in advance_flow_field = %f  \n", actual_time );
 
-  
-  
-  
-  
-  
-  
-  
     /* solve momentum predictor equation */
     /* compute a new velocity field u star, that is not divergence free */
     
@@ -141,7 +134,7 @@ EXPORT void advance_flow_field(
 					      tolerance_velocity, maximum_iterations_allowed_velocity,actual_time); 
     }
 
-    else if ( (time_stepping_method == 3) || (time_stepping_method == 4) )
+    else if ( (time_stepping_method == 3) || (time_stepping_method == 4) || (time_stepping_method == 5) )
     {
       printf("runge kutta \n"); 
       solve_momentum_predictor_rk(
@@ -194,8 +187,7 @@ EXPORT void advance_flow_field(
 				number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,	        
 				gravity, tolerance_pressure,smoothing_distance_factor,
 				rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
-				maximum_iterations_allowed_pressure,
-				boundary_faces, actual_time);
+				maximum_iterations_allowed_pressure);
     }
       /* shift the velocity field */
       

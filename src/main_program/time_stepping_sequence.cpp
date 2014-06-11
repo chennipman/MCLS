@@ -306,6 +306,25 @@ EXPORT void time_stepping_sequence(
 	   /* should occur							*/
 
 
+    if (time_stepping_method == 5) // extra pressure correction step before the output of the solution
+    {
+       printf("second pressure correction applied before output solution \n"); 
+     /* the fuction below gives a pressure field of the same order as the velocity field 	*/
+     /* it is based on eq 44 of 								*/
+     /* New explicit Runge-Kutta methods for the incompressible Navier_Stokes equations		*/
+     /* by: Bejamin Sanderse and B. Koren Bibref:SanRKPCM1 					*/
+      solve_final_pressure_corrector(level_set_new, pressure,			
+				u_1_velocity_new, u_2_velocity_new, u_3_velocity_new,	        
+				momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
+				scaled_density_u1, scaled_density_u2, scaled_density_u3,
+ 				mesh_width_x1, mesh_width_x2, mesh_width_x3,		        
+				number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,	        
+				gravity, tolerance_pressure,smoothing_distance_factor,
+				rho_plus_over_rho_minus,rho_minus_over_mu_minus,mu_plus_over_mu_minus,
+				maximum_iterations_allowed_pressure);
+    }
+
+
 	   /* build the  output file name for this instant of outputting */
 	   /* the index of the solution file is included in the name    */
 	   /* of the output file					*/
@@ -323,7 +342,7 @@ EXPORT void time_stepping_sequence(
      
     }
     
-    /* if a restart file should be written, it is written to binary file now */
+    /* if a remstart file should be written, it is written to binary file now */
     
     if(my_restart_parameters.write_solution_to_restart_file)
     {

@@ -66,12 +66,8 @@ EXPORT void solve_final_pressure_corrector(
       double rho_minus_over_mu_minus,			// this was the 'Reynolds' number
 							// in the original implementation of Sander
       double mu_plus_over_mu_minus,			// ratio of the viscosities of both phases
-      int maximum_iterations_allowed_pressure,	 			// maximum number of iterations allowed for the
+      int maximum_iterations_allowed_pressure	 			// maximum number of iterations allowed for the
 								// conjugate gradient method
-      boundary_face boundary_faces[6],				// array with all the information
-								// for the boundary conditions 
-      double actual_time					// actual time
-	
       )
    
    
