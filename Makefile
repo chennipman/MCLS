@@ -23,6 +23,7 @@ COMMON_SRCS= \
 		initialize_interface.cpp \
 		initialize_level_set.cpp \
 		initialize_pressure.cpp \
+		initialize_rayleigh_taylor.cpp \
 		initialize_volume_of_fluid.cpp \
 		write_interface_solution.cpp \
 	) \
@@ -213,7 +214,7 @@ ALL_TARGETS:=$(COMMON_OBJS)
 
 
 # MCLS(default)
-CASE_DEFAULT=TV
+CASE_DEFAULT=RT
 EXECUTABLE_DIR=testcases/$(CASE_DEFAULT)/$(RUN_DIR)
 CASE_SRCS= \
 	$(addprefix testcases/$(CASE_DEFAULT)/, \

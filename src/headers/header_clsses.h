@@ -51,7 +51,7 @@ enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure_field};
 enum boundary_conditions_type{dirichlet, neumann, periodic};
 enum boundary_conditions_rule{constant, function};
 enum cell_centerings{cell_centered, vertex_centered};
-enum geometry{bubbly_flow, wavy_flow};
+enum geometry{bubbly_flow, wavy_flow, rayleigh_taylor};
 
 class surface
 {

@@ -89,6 +89,15 @@ EXPORT void initialize_level_set(
 	   
 	    exit(1);
 	    break;
+	case rayleigh_taylor:
+	
+	  /* initialize a flat surface with a small disturbance */
+	  
+		initialize_rayleigh_taylor(the_free_surfaces, number_of_free_surfaces,
+				number_primary_cells_i,	number_primary_cells_j,	 number_primary_cells_k,
+				  mesh_width_x1, mesh_width_x2, mesh_width_x3, level_set);
+	    break;
+	  
 	  
 	default:
 	  

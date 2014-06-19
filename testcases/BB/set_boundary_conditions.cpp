@@ -1,3 +1,7 @@
+#include<math.h>
+#include "../../src/headers/header_constants.h"
+#include<iostream>
+
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to set the boundary conditions                                     */
@@ -45,7 +49,7 @@
 /*  											*/
 /*  											*/
 /********************************************************************************/
-    void set_boundary_conditions( 
+EXPORT void set_boundary_conditions( 
 	  boundary_face boundary_faces[6],			// array with all the information
 								// for the boundary conditions 
 	  vector initial_velocity
