@@ -204,17 +204,14 @@ COMMON_SRCS= \
 	$(addprefix src/utils/, \
 		utilities.cpp \
 	) 	
-#	$(addprefix testcases/undefined_case/, \
-#		set_boundary_conditions.cpp \
-#		set_parameters.cpp \
-#	) 
-	
+
+
 COMMON_OBJS=$(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(COMMON_SRCS))))
 ALL_TARGETS:=$(COMMON_OBJS)
 
 
 # MCLS(default)
-CASE_DEFAULT=RT
+CASE_DEFAULT=KH
 EXECUTABLE_DIR=testcases/$(CASE_DEFAULT)/$(RUN_DIR)
 CASE_SRCS= \
 	$(addprefix testcases/$(CASE_DEFAULT)/, \
@@ -237,9 +234,11 @@ $(EXECUTABLE_DIR)/MCLS: $(COMMON_OBJS) $(MCLS_OBJS) $(CASE_OBJS)
 MCLS: 
 	$(EXECUTABLE_DIR)/MCLS 
 
-# TEST CASES
-
-
+# TEST CASES (under construction)
+#TEST_CASES =$(addprefix case_, $(notdir ($(wildcard testcases/*))))
+#.PHONY: case $(TEST_CASES)
+#case: $(TEST_CASES)
+#EXECUTABLE_DIR=testcases/$(CASE_DEFAULT)/$(RUN_DIR)
 
 # UNIT TESTS
 

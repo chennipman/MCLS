@@ -195,8 +195,8 @@ int main()
       set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, 
 			    number_primary_cells_k+2, pressure, 10000.0);
       
-       printf("Start momentum predictor \n");
-       momentum_predictor(
+       printf("Start convection_diffusion_source_terms \n");
+       convection_diffussion_source_terms(
        u_1_momentum, u_2_momentum, u_3_momentum,
        u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,
        scaled_density_u1, scaled_density_u2, scaled_density_u3,

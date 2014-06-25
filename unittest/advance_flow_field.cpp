@@ -59,6 +59,7 @@ int main()
       double actual_time_step_navier_stokes;	// time step used for level-set advection
 							// computed from all stability restrictions and 
 							// possibly subscycling
+      int time_stepping_method =3; 			// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
       double rho_plus_over_rho_minus;		// ratio of the densities of the two phases
       double smoothing_distance_factor;		// the smoothing distance is smoothing_distance_factor
 							// times the smallest mesh width
@@ -77,6 +78,8 @@ int main()
 					        	// equation
 					        	// =0, the source terms are applied in the momentum corrector
 					        	// equation
+      double actual_time =1;
+
       vector initial_velocity;				// some initial velocity to fill the arrays
 
 
@@ -92,7 +95,7 @@ double z_length = 3;
       double viscosity_over_density;
       double output_polynomial; 
       double scaled_density_constant = 1; 
-
+ 
       initial_velocity.u1 = 0.0;
       initial_velocity.u2 = 0.0;
       initial_velocity.u3 = 0.0;
@@ -243,14 +246,14 @@ viscosity_over_density = (1/scaled_density_constant)*compute_scaled_viscosity(10
                                 mesh_width_x1, mesh_width_x2, mesh_width_x3,
                                   number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
                                    number_matrix_connections, gravity,
-                                     actual_time_step_navier_stokes,
+                                     actual_time_step_navier_stokes, time_stepping_method,
                                        rho_plus_over_rho_minus,
                                          smoothing_distance_factor,
                                           rho_minus_over_mu_minus, mu_plus_over_mu_minus,
                                            tolerance_pressure, maximum_iterations_allowed_pressure,
                                              tolerance_velocity, maximum_iterations_allowed_velocity,
                                                 continuous_surface_force_model,
-                                                 source_terms_in_momentum_predictor
+                                                 source_terms_in_momentum_predictor, actual_time
 	);
 	
 	
