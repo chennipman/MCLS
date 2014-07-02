@@ -91,7 +91,14 @@ public:
     {
         input.read( reinterpret_cast< char * >( this->data ), sizeof( T ) * this->n0 * this->n1 * this->n2 );
     }
-
+    T * get_pointer()
+    {
+        return this->data;
+    }
+    void put_pointer(T *reference)
+    {
+        this->data=reference;
+    }
 private:
     int n0, n1, n2;
     T * data;
@@ -168,7 +175,14 @@ public:
     {
         input.read( reinterpret_cast< char * >( this->data ), sizeof( T ) * this->n0 * this->n1 );
     }
-
+    T * get_pointer()
+    {
+        return this->data;
+    }
+    void put_pointer(T *reference)
+    {
+        this->data=reference;
+    }
 private:
     int n0, n1;
     T * data;
@@ -226,7 +240,14 @@ public:
     {
         input.read( reinterpret_cast< char * >( this->data ), sizeof( T ) * this->n0 );
     }
-
+    T * get_pointer()
+    {
+        return this->data;
+    }
+    void put_pointer(T *reference)
+    {
+        this->data=reference;
+    }
 private:
     int n0;
     T * data;

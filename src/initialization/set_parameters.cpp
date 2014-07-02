@@ -238,6 +238,6 @@ EXPORT void set_parameters(
 
       /* output */
       
-      vtk_output			 = 1;				
+      vtk_output			 = 0;				
       tecplot_output			 = 0;			
       }

@@ -1,5 +1,6 @@
-CFLAGS=-O3 -Wall
-CXXFLAGS=-O3 -Wall
+CFLAGS=-O3 -Wall -fopenmp -I../../paralution-0.7.0/build/inc -I$(CUDA_INSTALL_PATH)/include 
+CXXFLAGS=-O3 -Wall -fopenmp -I../../paralution-0.7.0/build/inc -I$(CUDA_INSTALL_PATH)/include
+NVCCFLAGS=-gencode arch=compute_20,code=sm_20 -gencode arch=compute_35,code=sm_35
 # CFLAGS=-g -Wall
 # CXXFLAGS=-g -Wall
 
@@ -189,6 +190,9 @@ COMMON_SRCS= \
 		shift_pressure_solution.cpp \
 		solve_momentum_corrector.cpp \
 		solve_pressure_correction_system.cpp \
+		mmio.cpp	\
+		dpcg_rohit_paralution.cpp	\
+		dpcg_rohit_paralution_utils.cpp	\
 	) \
 	$(addprefix src/restart/, \
 		read_restart_file.cpp \
@@ -202,6 +206,7 @@ COMMON_OBJS=$(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(COMMON_SRCS)
 
 ALL_TARGETS:=$(COMMON_OBJS)
 
+LDFLAGS+= -fopenmp -L../../paralution-0.7.0/build/lib -L$(CUDA_INSTALL_PATH)/lib64 -lparalution -lcublas -lcudart -lcusparse
 
 # MCLS
 
