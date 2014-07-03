@@ -222,6 +222,12 @@ int  call_paralution_dpcg(double *acsrvals, int *acsrrows, int *acsrcols, double
   mat.MoveToAccelerator();
   x.MoveToAccelerator();
   rhs.MoveToAccelerator();
+  ls.MoveToHost();
+#else
+  mat.MoveToHost();
+  x.MoveToHost();
+  rhs.MoveToHost();
+  ls.MoveToHost();
 #endif
   
 gettimeofday(&now, NULL);
@@ -250,14 +256,9 @@ tick = now.tv_sec*1000000.0+(now.tv_usec);
   if(setlssd_in)
     ls.MakeZLSSD(bubmap_ptr, maxbmap); // bubmap must be ready and maxbmap available
 #endif 
-    
-  
-  
-
+ 
   ls.Build();
   mat.ConvertToDIA();
-  // Uncomment for GPU
-  ls.MoveToAccelerator(); 
   
 gettimeofday(&now, NULL);
 tack = now.tv_sec*1000000.0+(now.tv_usec);
@@ -270,6 +271,7 @@ std::cout << "Building:" << (tack-tick)/1000000 << " sec" << std::endl;
 gettimeofday(&now, NULL);
 tick = now.tv_sec*1000000.0+(now.tv_usec);
   //call DPCG solver
+//   x.info();	rhs.info();
   ls.Solve(rhs, &x);
 
 gettimeofday(&now, NULL);

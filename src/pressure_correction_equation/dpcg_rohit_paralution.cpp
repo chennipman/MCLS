@@ -19,11 +19,14 @@ int call_to_cg_wrapper(Array2<double> A,Array1<double> x,Array1<double> b, int m
   bin = (double*)calloc(dim,sizeof(double));
 
   bref=b.get_pointer();  xref=x.get_pointer();
+#pragma omp parallel
+    {  
 #pragma omp for private(i)     
   for(i=0;i<dim;i++)
   {
     xin[i]=xref[i];	bin[i]=bref[i];
   }
+    }
 //   memcpy(xin,x.get_pointer(),sizeof(double)*dim);
 //   memcpy(bin,b.get_pointer(),sizeof(double)*dim);
   if(setlssd_in){
@@ -31,7 +34,9 @@ int call_to_cg_wrapper(Array2<double> A,Array1<double> x,Array1<double> b, int m
     //std::copy(level_set.get_pointer(), level_set.get_pointer()+phisize,levelsetptr);
 //     memcpy(levelsetptr,level_set.get_pointer(),sizeof(double)*phisize);
     levref=level_set.get_pointer();
-#pragma omp for private(i)   
+#pragma omp parallel
+    {
+#pragma omp for 
     for(i=0;i<phisize;i++)
       levelsetptr[i]=(levref)[i]*(-1.0f);
 
@@ -47,6 +52,7 @@ int call_to_cg_wrapper(Array2<double> A,Array1<double> x,Array1<double> b, int m
 //       
 //     }
 //     fclose(fp);
+    }
   }
   
   gettimeofday(&now, NULL);
@@ -65,9 +71,12 @@ int call_to_cg_wrapper(Array2<double> A,Array1<double> x,Array1<double> b, int m
 			      phisize, levelsetptr, xout);
 //   printf("\n Solver status has been reported as %d",status);
   //std::copy(xout, xout+dim,x.get_pointer());
+#pragma omp parallel
+  {
 #pragma omp for  
   for(i=0;i<dim;i++)
     x[i]=xout[i];
+  }
 //   printf("\n going to free stuff now");
   free(Aptr);	free(xout);	
   if(setlssd_in) 

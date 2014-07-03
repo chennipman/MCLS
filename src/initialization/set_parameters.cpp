@@ -152,7 +152,7 @@ EXPORT void set_parameters(
       actual_time_step_level_set			= actual_time_step_navier_stokes/number_of_subcycles;
       fixed_time_step					= 1;	
       start_time_simulation				= 0.0;
-      end_time_simulation				= 0.150;
+      end_time_simulation				= 0.010;
       
       /* settings for restart from solution file and solution file writing */
       

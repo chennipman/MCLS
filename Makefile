@@ -1,6 +1,10 @@
 CFLAGS=-O3 -Wall -fopenmp -I../../paralution-0.7.0/build/inc -I$(CUDA_INSTALL_PATH)/include 
 CXXFLAGS=-O3 -Wall -fopenmp -I../../paralution-0.7.0/build/inc -I$(CUDA_INSTALL_PATH)/include
 NVCCFLAGS=-gencode arch=compute_20,code=sm_20 -gencode arch=compute_35,code=sm_35
+
+#CFLAGS=-pg -O3 -Wall -fopenmp -I../../paralution-0.7.0/build/inc -I$(CUDA_INSTALL_PATH)/include 
+#CXXFLAGS=-pg -O3 -Wall -fopenmp -I../../paralution-0.7.0/build/inc -I$(CUDA_INSTALL_PATH)/include
+#NVCCFLAGS=-pg -gencode arch=compute_20,code=sm_20 -gencode arch=compute_35,code=sm_35
 # CFLAGS=-g -Wall
 # CXXFLAGS=-g -Wall
 
