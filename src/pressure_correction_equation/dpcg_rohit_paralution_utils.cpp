@@ -27,32 +27,32 @@ void wrap_A_intoDIA(Array2<double> Adblptr, double *Aptr, int xdim, int ydim, in
   FILE *fp;
   lclnnz1=0; lclnnz2=0; lclnnz3=0; lclnnzmain=0;
   
-  max_threads=omp_get_max_threads();
-    num_procs= omp_get_num_procs();
-    printf("\n Number of thread for openMP inside makebubmap are %d. max_threads are %d. num_procs %d", omp_get_num_threads(), max_threads, num_procs);
-    omp_set_dynamic(0);
-    omp_set_num_threads(8);
-    printf("\n Number of thread for openMP inside makebubmap are now %d", omp_get_num_threads());
- #pragma omp for   
+//   max_threads=omp_get_max_threads();
+//     num_procs= omp_get_num_procs();
+//     printf("\n Number of thread for openMP inside makebubmap are %d. max_threads are %d. num_procs %d", omp_get_num_threads(), max_threads, num_procs);
+//     omp_set_dynamic(0);
+//     omp_set_num_threads(8);
+//     printf("\n Number of thread for openMP inside makebubmap are now %d", omp_get_num_threads());
+//  #pragma omp for   
   for(i=0;i<dim-(nsqr);i++)
   {
     Aptr[i+nsqr]=Adblptr[3][i];//storing diagonal with offset -n*n.
     if(fabs(Aptr[i+nsqr])>0.0f)lclnnz1++;
   }
- #pragma omp for   
+//  #pragma omp for   
   for(j=0;j<dim-xdim;j++)
   {
     Aptr[dim+j+xdim]=Adblptr[2][j];//storing diagonal with offset -n.
     if(fabs(Aptr[dim+j+xdim])>0.0f)lclnnz2++; //it is stored the opposite way since Jok stores upper triangular part
   }
- #pragma omp for   
+//  #pragma omp for   
   for(k=0;k<dim-1;k++)
   {
     Aptr[2*dim+k+1]=Adblptr[1][k];//storing diagonal with offset -1.
     if(fabs(Aptr[2*dim+k+1])>0.0f)lclnnz3++;//it is stored the opposite way since Jok stores upper triangular part
   }
-  printf("\n Num openmp threads is %d", omp_get_num_threads());
- #pragma omp for
+//   printf("\n Num openmp threads is %d", omp_get_num_threads());
+//  #pragma omp for
   for(l=0;l<dim;l++)
   {
     Aptr[3*dim+l]=Adblptr[0][l];//storing main diagonal
