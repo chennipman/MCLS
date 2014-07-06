@@ -47,7 +47,10 @@ EXPORT void redistribute_volume_of_fluid_error(
         int maximum_number_mass_redistribution_iterations,	// number of iterations allowed to make
 								// the volume of fluid field valid
 								// these are the sweeps on the vof error
-        double mass_redistribution_diffusion_coefficient        // diffusion coefficient for mass redistribution equation
+        double mass_redistribution_diffusion_coefficient,       // diffusion coefficient for mass redistribution equation
+        int index_redistribution_attempt	                // number of attempts to achieve a
+						                // valid volume of fluid field
+						                // through the redistribution algorithm
 
  	)
      {
@@ -73,9 +76,9 @@ EXPORT void redistribute_volume_of_fluid_error(
         int number_cells_invalid_volume_of_fluid=100;                   // sum of number of vapour cells and number of cells
                                                                         // with the volume of fluid outside [0,1];
 	int i_index, j_index, k_index;  				// local variables for loop indexing
-	int iteration_index=0;						// index of the iteration/sweep in the 
+	int pseudo_time_step_index=0;					// index of the iteration/sweep in the 
 									// vof redistribution algorithm
-        bool detailed_output=0;                                         // =1, provide detailed output
+        bool detailed_output=1;                                         // =1, provide detailed output
                                                                         // =0, provide non output 
 							
 	/* compute the time step for the error redistribution algorithm */
@@ -127,7 +130,7 @@ EXPORT void redistribute_volume_of_fluid_error(
 	/* the requirements, while the original volume of fluid field is left unchanged */
 	
 	
-	while(iteration_index<10 && number_cells_invalid_volume_of_fluid>0 &&
+	while(pseudo_time_step_index<20 && number_cells_invalid_volume_of_fluid>0 &&
 	      maximum_time_derivative_vof_error>redistribution_vof_tolerance)
 	{
             /* reset all numbers of invalid cells  */
@@ -138,7 +141,7 @@ EXPORT void redistribute_volume_of_fluid_error(
             number_cells_numerical_vapor=0;
 	    maximum_time_derivative_vof_error=0.0;
             
-            iteration_index++;
+            pseudo_time_step_index++;
             
             /* compute the time-derivative of the volume of fluid redistribution equation */
             
@@ -148,6 +151,8 @@ EXPORT void redistribute_volume_of_fluid_error(
                                                    time_derivative_volume_of_fluid_correction, volume_of_fluid_correction,
                                                       number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,                                     
                                                         mesh_width_x1, mesh_width_x2, mesh_width_x3, mass_redistribution_diffusion_coefficient);
+                            
+            // std::cerr<<" maximum_time_derivative_vof_error : "<<maximum_time_derivative_vof_error<<"\n";
                                 
             /* update the correction for the volume of fluid field */
                                 
@@ -170,6 +175,16 @@ EXPORT void redistribute_volume_of_fluid_error(
                                                 volume_of_fluid_tolerance, 
                                                    number_cells_vof_out_of_bounds, number_cells_numerical_vapor,                           
                                                       number_cells_invalid_volume_of_fluid);
+        /* if detailed output is required, write all fields to file */
+
+         if(detailed_output && index_redistribution_attempt==0)
+          {
+         	std::cerr<<"writing dump for sweep "<<pseudo_time_step_index<<"\n";
+                 dump_redistribution_for_debugging(level_set_old, volume_of_fluid,        
+                                                     level_set, invalid_vof_cells, volume_of_fluid_correction,          
+                                                       number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,                    
+                                                         mesh_width_x1, mesh_width_x2, mesh_width_x3, pseudo_time_step_index );
+          }
 	    
  	}
 	
@@ -192,20 +207,32 @@ EXPORT void redistribute_volume_of_fluid_error(
                                           volume_of_fluid_tolerance, number_cells_vof_out_of_bounds, number_cells_numerical_vapor,                             
                                                 number_cells_invalid_volume_of_fluid);
          
-        /* if detailed output is required, write all fields to file */
-
-         if(detailed_output)
-         {
-                dump_redistribution_for_debugging(level_set_old, volume_of_fluid,        
-                                                    level_set, invalid_vof_cells, volume_of_fluid_correction,          
-                                                      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,                    
-                                                        mesh_width_x1, mesh_width_x2, mesh_width_x3 );
-         }
          
-        /* deallocate the memory for the 'artificial' advection velocities in the update equation */
+         /* deallocate the memory for the 'artificial' advection velocities in the update equation */
 
         redistribution_velocity_x1.destroy();
 	redistribution_velocity_x2.destroy();
 	redistribution_velocity_x3.destroy();
         time_derivative_volume_of_fluid_correction.destroy();
+        
+        
+        
+        /* compute the sum of the error and its sign */
+        /* evaluate total number of mixed cells with 'room' for change */
+        /* check if simple averaging of the error is feasible */
+        /* this means the set of all mixed cells with 'room' can accomodate the error */
+        
+        /* there is sufficient room */
+        /* distribute the average error over all mixed cells with 'room' */
+        /* break the process off  */
+        
+        
+        /* divide the total error over the available mixed cells */
+        /* there is not sufficient room */
+        /* divide the 'room'*number_of_mixed_cells over the mixed cells */
+        
+        
+        
+        
+        
      }

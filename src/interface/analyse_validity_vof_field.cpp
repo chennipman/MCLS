@@ -136,9 +136,6 @@ EXPORT void analyse_validity_vof_field(
                 }
             }
                 number_cells_invalid_volume_of_fluid=number_cells_numerical_vapor+number_cells_vof_out_of_bounds;
- /*               std::cerr<<" number_cells_invalid_volume_of_fluid in vof "<< number_cells_invalid_volume_of_fluid<<" \n";
-                std::cerr<<" number_cells_numerical_vapor in vof "<< number_cells_numerical_vapor<<" \n";
-                std::cerr<<" number_cells_vof_out_of_bounds in vof "<< number_cells_vof_out_of_bounds<<" \n";
- */       
+         
 }
         

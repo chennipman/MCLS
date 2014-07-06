@@ -100,11 +100,27 @@ EXPORT void initialize_all_variables(
 	/* and the start time is set to the time of the restart file */
 	
 	  read_restart_file(start_time_simulation, level_set_old, volume_of_fluid, 			
+			      u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,			
 			      u_1_velocity_new, u_2_velocity_new, u_3_velocity_new,			
 				pressure,				
 				  number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
 				    my_restart_parameters);
 	   
+       /* initialize the coupling between interface and flow field */
+
+
+         initialize_coupling( level_set_old, pressure, smoothed_curvature, curvature,
+                     surface_tension_body_force_x1, surface_tension_body_force_x2, surface_tension_body_force_x3,
+                       momentum_source_term_u_1, momentum_source_term_u_2, momentum_source_term_u_3,
+                        scaled_density_u1, scaled_density_u2, scaled_density_u3,
+                         number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+                           mesh_width_x1, mesh_width_x2, mesh_width_x3,
+                            rho_plus_over_rho_minus, actual_time_step_navier_stokes,
+                              gravity, sigma_over_rho_minus,
+                                  apply_curvature_smoothing, number_curvature_smoothing_steps,
+                                   apply_curvature_smoothing_filter,
+                                     smoothing_distance_factor, lower_bound_derivatives);
+
       }
       else
       {

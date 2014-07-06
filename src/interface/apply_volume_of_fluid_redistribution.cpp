@@ -111,12 +111,15 @@ EXPORT void apply_volume_of_fluid_redistribution(
         std::cerr<<"initial mass before redistribution "<< initial_mass<< " \n";
         
         
-        /* do a number of sweeps to move the error to the interface */
+        /* do a number of redistribution attempts to move the error to the interface      */
+        /* this is an iterative process, because the position of the interface is updated */
 
-        while(index_redistribution_attempt<10 &&
+        while(index_redistribution_attempt<5 &&
 	      number_cells_invalid_volume_of_fluid>0)
 	{
 	  
+		
+	
 
                 /* copy the original volume of fluid field to the star volume of fluid field */
 
@@ -124,16 +127,25 @@ EXPORT void apply_volume_of_fluid_redistribution(
 		      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k);
       
                 /* apply clipping to the tentative volume of fluid field */
+                /* in this way it can be safely converted to a level-set field */
       
                 if(index_redistribution_attempt<1)
                 {
 	  	        number_cells_vof_out_of_bounds=
-	      		    apply_volume_of_fluid_clipping(volume_of_fluid_star, 
-		    		number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-		                  volume_of_fluid_tolerance);
+	      		     apply_volume_of_fluid_clipping(volume_of_fluid_star, 
+		    	 	number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+		                   volume_of_fluid_tolerance);
+                //         make_vof_field_valid(level_set_star, volume_of_fluid_star, invalid_vof_cells,                               
+                //                 number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,                                    
+                //                    volume_of_fluid_tolerance, number_cells_vof_out_of_bounds,                           
+                //                      number_cells_numerical_vapor, number_cells_invalid_volume_of_fluid);
                 }
                 else
                 {
+                	/* this function changes the volume of fluid field in the same way */
+                	/* as apply_volume_of_fluid_clipping, but also reports on the      */
+                	/* different error cells: overfilled, underfilled and vapour cells */
+                	
                         make_vof_field_valid(level_set_new, volume_of_fluid_star, invalid_vof_cells,                               
                                 number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,                                    
                                    volume_of_fluid_tolerance, number_cells_vof_out_of_bounds,                           
@@ -151,23 +163,36 @@ EXPORT void apply_volume_of_fluid_redistribution(
                 if(index_redistribution_attempt<1)
                 {
 
-	  	match_level_set_to_volume_of_fluid(level_set_star, volume_of_fluid_star, level_set_new,
+	  	if(match_level_set_to_volume_of_fluid(level_set_star, volume_of_fluid_star, level_set_new,
 								number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,			
 				  					volume_of_fluid_tolerance, lower_bound_derivatives,		
 				    						number_vof_2_level_set_iterations, number_iterations_ridder,			
 				      							vof_2_level_set_tolerance,
-                		      	 						mesh_width_x1, mesh_width_x2, mesh_width_x3);	
+                		      	 						mesh_width_x1, mesh_width_x2, mesh_width_x3))	
+ 		  	{ 
+ 		  		std::cerr<<" match_level_set_to_volume_of_fluid was called from \n" ;
+ 		  		std::cerr<<" apply_volume_of_fluid_redistribution line 154 \n";
+ 		  		exit(1);
+		  	}
+		  
+
+                
                 }
                 else
                 {
                        
-                match_level_set_to_volume_of_fluid(level_set_new, volume_of_fluid_star, level_set_new,
+                if(match_level_set_to_volume_of_fluid(level_set_new, volume_of_fluid_star, level_set_new,
                                                                 number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,                 
                                                                         volume_of_fluid_tolerance, lower_bound_derivatives,             
                                                                                 number_vof_2_level_set_iterations, number_iterations_ridder,                    
                                                                                         vof_2_level_set_tolerance,
-                                                                                        mesh_width_x1, mesh_width_x2, mesh_width_x3);   
-                }
+                                                                                        mesh_width_x1, mesh_width_x2, mesh_width_x3))   
+  		  	{ 
+  		  		std::cerr<<" match_level_set_to_volume_of_fluid was called from \n" ;
+  		  		std::cerr<<" apply_volume_of_fluid_redistribution line 171 \n";
+  		  		exit(1);
+		  	}
+               }
                
                 /* extend the level-set field to the virtual cells */
     
@@ -191,7 +216,7 @@ EXPORT void apply_volume_of_fluid_redistribution(
                         dump_redistribution_for_debugging(level_set_star, volume_of_fluid,        
                                                     level_set_new, invalid_vof_cells, volume_of_fluid_correction,          
                                                       number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,                    
-                                                        mesh_width_x1, mesh_width_x2, mesh_width_x3 );  
+                                                        mesh_width_x1, mesh_width_x2, mesh_width_x3, index_redistribution_attempt );  
                 }
                 
                 /* if necessary redistribute the volume of fluid correction */
@@ -207,7 +232,8 @@ EXPORT void apply_volume_of_fluid_redistribution(
 								time_step_mass_redistribution, volume_of_fluid_tolerance,		
 	 								redistribution_vof_tolerance,	
 						 				maximum_number_mass_redistribution_iterations,
-                                                                                  mass_redistribution_diffusion_coefficient);
+                                                                                  mass_redistribution_diffusion_coefficient,
+                                                                                  index_redistribution_attempt);
      
       
 		}
@@ -235,6 +261,7 @@ EXPORT void apply_volume_of_fluid_redistribution(
                                           volume_of_fluid_tolerance, number_cells_vof_out_of_bounds, number_cells_numerical_vapor,                             
                                                 number_cells_invalid_volume_of_fluid);
         
+        std::cerr<<"The analysis shows there are "<< number_cells_invalid_volume_of_fluid<< "  invalid cells\n";
 
       	if(number_cells_invalid_volume_of_fluid>0)
 	{
@@ -244,12 +271,19 @@ EXPORT void apply_volume_of_fluid_redistribution(
 							number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,			  
 								volume_of_fluid_tolerance);
 
-	    	  match_level_set_to_volume_of_fluid(level_set_star, volume_of_fluid, level_set_new, 
+	    	  if(match_level_set_to_volume_of_fluid(level_set_star, volume_of_fluid, level_set_new, 
 							number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,			
 				  			   volume_of_fluid_tolerance, lower_bound_derivatives,		
 				    				number_vof_2_level_set_iterations, number_iterations_ridder,			
 				      					vof_2_level_set_tolerance,
-				      	 			mesh_width_x1, mesh_width_x2, mesh_width_x3);
+				      	 			mesh_width_x1, mesh_width_x2, mesh_width_x3))
+		  		  { 
+		  	std::cerr<<" match_level_set_to_volume_of_fluid was called from \n" ;
+		  	std::cerr<<" apply_volume_of_fluid_redistribution line 248 \n";  
+		  	exit(1);
+		  }
+		  
+
                   if(number_cells_invalid_volume_of_fluid>0)
                   {
 		  std::cerr<< "**************************************************** \n";

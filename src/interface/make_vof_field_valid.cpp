@@ -103,9 +103,7 @@ EXPORT void make_vof_field_valid(
                              /* modify the volume of fluid field accordingly */
                              
                              number_cells_numerical_vapor++;
-//                               std::cerr<<"vapor cell "<<i_index<<" "<<j_index<<" "<<k_index<<"\n";
-//                               std::cerr<<"vof "<<current_volume_of_fluid<<" level-set "<<level_set_value <<"\n";
-                              volume_of_fluid[i_index][j_index][k_index]=0.5+sign(0.5,level_set_value);
+                             volume_of_fluid[i_index][j_index][k_index]=0.5+sign(0.5,level_set_value);
                              if(level_set_value==0.0)
                              {
                             
@@ -114,7 +112,7 @@ EXPORT void make_vof_field_valid(
                                  volume_of_fluid[i_index][j_index][k_index]=0.5;
                              }
                              
-                             /* mark this cell as a vapor cell */
+                             /* mark this cell as a vapor cell with index 5 */
                              
                              invalid_vof_cells[i_index][j_index][k_index]=5;
 
@@ -129,14 +127,14 @@ EXPORT void make_vof_field_valid(
                               if(current_volume_of_fluid > 1.0+volume_of_fluid_tolerance)
                               {
                                      
-                                        /* mark this cell as an overfilled cell */
+                                        /* mark this cell as an overfilled cell with index 1   */
                                         
                                      invalid_vof_cells[i_index][j_index][k_index]=1; 
                                      volume_of_fluid[i_index][j_index][k_index]=1;
                               }
                               else
                               {
-                                        /* mark this cell as an underfilled cell */
+                                        /* mark this cell as an underfilled cell with index -1 */
                                         
                                     invalid_vof_cells[i_index][j_index][k_index]=-1; 
                                     volume_of_fluid[i_index][j_index][k_index]=1;
@@ -146,10 +144,10 @@ EXPORT void make_vof_field_valid(
                     }
                 }
             }
-                number_cells_invalid_volume_of_fluid=number_cells_numerical_vapor+number_cells_vof_out_of_bounds;
-//                  std::cerr<<" number_cells_invalid_volume_of_fluid in validation "<< number_cells_invalid_volume_of_fluid<<" \n";
-//                  std::cerr<<" number_cells_numerical_vapor in validation "<< number_cells_numerical_vapor<<" \n";
-//                  std::cerr<<" number_cells_vof_out_of_bounds in validation"<< number_cells_vof_out_of_bounds<<" \n";
+            number_cells_invalid_volume_of_fluid=number_cells_numerical_vapor+number_cells_vof_out_of_bounds;
+            std::cerr<<" number_cells_invalid_volume_of_fluid in validation "<< number_cells_invalid_volume_of_fluid<<" \n";
+            std::cerr<<" number_cells_numerical_vapor in validation "<< number_cells_numerical_vapor<<" \n";
+            std::cerr<<" number_cells_vof_out_of_bounds in validation"<< number_cells_vof_out_of_bounds<<" \n";
         
 }
         

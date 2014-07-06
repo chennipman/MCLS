@@ -183,7 +183,7 @@ EXPORT int modify_volume_of_fluid_values(
                 dump_redistribution_for_debugging(level_set, volume_of_fluid,        
                                                     level_set, invalid_vof_cells, volume_of_fluid_correction,          
                                                       number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,                    
-                                                        0.002, 0.002, 0.002 );
+                                                        mesh_width_x1, mesh_width_x2, mesh_width_x3, 1 );
                 for(i_index=1;i_index<number_primary_cells_i+1;i_index++)
                 {
                         for(j_index=1;j_index<number_primary_cells_j+1;j_index++)

@@ -134,5 +134,8 @@ EXPORT void analyse_validity_vof_correction(
                 }
             }
                 number_cells_invalid_volume_of_fluid=number_cells_numerical_vapor+number_cells_vof_out_of_bounds;
- }
+                std::cerr<<"After this sweep :"<<"\n";	
+                std::cerr<<"number_cells_numerical_vapor "<< number_cells_numerical_vapor<<"\n" ;
+  		std::cerr<<"number_cells_vof_out_of_bounds "<< number_cells_vof_out_of_bounds<<"\n" ;
+}
         

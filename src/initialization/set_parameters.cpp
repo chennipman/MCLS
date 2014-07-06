@@ -144,37 +144,37 @@ EXPORT void set_parameters(
       /* settings for time-stepping */
 
       cfl_number_navier_stokes			        = 1.0;
-      time_step_restriction_global			= 0.001;      
+      time_step_restriction_global			= 0.0005;      
       actual_time_step_navier_stokes    		= time_step_restriction_global;
-      time_interval_for_output			        = time_step_restriction_global*10;
-      time_interval_for_reinitialization                = time_step_restriction_global*2; //worked fine
+      time_interval_for_output			        = time_step_restriction_global*20;
+      time_interval_for_reinitialization                = time_step_restriction_global*10; //worked fine
       number_of_subcycles				= 1;
       actual_time_step_level_set			= actual_time_step_navier_stokes/number_of_subcycles;
       fixed_time_step					= 1;	
       start_time_simulation				= 0.0;
-      end_time_simulation				= 0.150;
+      end_time_simulation				= 0.0005;
       
       /* settings for restart from solution file and solution file writing */
       
       my_restart_parameters.start_from_restart_file		        = 0;		
       my_restart_parameters.write_solution_to_restart_file		= 0;
       my_restart_parameters.name_restart_file_to_write		        = "restart_file_mcls_out";
-      my_restart_parameters.name_restart_file_to_read		        = "restart_file_mcls_in";
+      my_restart_parameters.name_restart_file_to_read		        = "restart_file_mcls_out";
 						
 
       /* grid parameters */
-      number_primary_cells_i=50;		
-      number_primary_cells_j=50;	
-      number_primary_cells_k=70;	
+      number_primary_cells_i=100;		
+      number_primary_cells_j=100;	
+      number_primary_cells_k=140;	
       mesh_width_x1=domain_size_x1/number_primary_cells_i;		
       mesh_width_x2=domain_size_x2/number_primary_cells_j;			
       mesh_width_x3=domain_size_x3/number_primary_cells_k;		
 
-      /* interface handling parameters */
-      apply_mass_distribution_algorithm  				= 1;    
+      /* interface handling parameters */  
+      apply_mass_distribution_algorithm  				= 0;    
       apply_mass_conservation_correction 				= 1;    
       volume_of_fluid_tolerance		 			        = 0.000005;
-      volume_of_fluid_tolerance                                                = 0.000001;
+      volume_of_fluid_tolerance                                         = 0.0000001;
       lower_bound_derivatives		 				= 0.00000001;
       number_vof_2_level_set_iterations  				= 25;	
       number_iterations_ridder		 			        = 100;	
@@ -187,7 +187,7 @@ EXPORT void set_parameters(
       apply_curvature_smoothing_filter	 			        =  0;
       maximum_number_mass_redistribution_iterations		        = 1;
       time_step_mass_redistribution					= 0.01;	
-      redistribution_vof_tolerance 					= 0.0001;		
+      redistribution_vof_tolerance 					= 0.001;		
      
 	
       /* initial condition */
