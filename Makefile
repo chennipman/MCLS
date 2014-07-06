@@ -284,6 +284,7 @@ $(BUILD_DIR)/funcdefs.h:
 	@mkdir -p $(dir $@)
 	./gen_funcdefs.h --output $@ -- $(COMMON_SRCS) testcases/TV/initialize_flow_field.cpp testcases/TV/set_boundary_conditions.cpp testcases/TV/set_parameters.cpp 
 	#the TV case is used, because this is the only case with additional function definitions in the set_boundary_conditions 
+	#if other function definitions are used the 'TV', should be replace by the then used function definition 
 
 .PHONY: clean
 clean:
