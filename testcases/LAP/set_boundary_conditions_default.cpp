@@ -1,37 +1,3 @@
-enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure};
-enum boundary_conditions_type{dirichlet, neumann, periodic};
-enum boundary_conditions_rule{constant, function};
-enum cell_centerings{cell_centered, vertex_centered};
-
-class vector
-{
-public:
-  double u1,u2,u3;
-};
-
-
-class boundary_variable
-{
-public:
-  variable variable_name;
-  boundary_conditions_type boundary_condition_type;
-  boundary_conditions_rule boundary_condition_rule;
-  cell_centerings cell_centering;
-  double boundary_condition_value;
-  boundary_variable(variable varname, boundary_conditions_type bound_type,
-				     boundary_conditions_rule bound_rule,
-				     cell_centerings  cell_cent,
-					double bound_value );
-  boundary_variable(variable varname);
-};
-
-class boundary_face
-{
-public:
-    boundary_variable boundary_variables[5];
-    boundary_face(void);
-   
-};
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to set the boundary conditions                                     */
@@ -79,7 +45,7 @@ public:
 /*  											*/
 /*  											*/
 /********************************************************************************/
-    void set_boundary_conditions( 
+EXPORT void set_boundary_conditions( 
 	  boundary_face boundary_faces[6],			// array with all the information
 								// for the boundary conditions 
 	  vector initial_velocity
@@ -98,16 +64,16 @@ public:
 
 //      boundary_faces[0].boundary_variables[0].boundary_condition_type=dirichlet;
     // u1
-    boundary_faces[0].boundary_variables[0].boundary_condition_value=0.0;
+    boundary_faces[0].boundary_variables[0].boundary_condition_value=initial_velocity.u1;
     boundary_faces[0].boundary_variables[0].boundary_condition_type=dirichlet;
     // u2
-//     boundary_faces[0].boundary_variables[1].boundary_condition_value=0.0;
-//     boundary_faces[0].boundary_variables[1].boundary_condition_type=dirichlet;
-//     boundary_faces[0].boundary_variables[1].cell_centering=cell_centered;
+     boundary_faces[0].boundary_variables[1].boundary_condition_value=0.0;
+     boundary_faces[0].boundary_variables[1].boundary_condition_type=dirichlet;
+     boundary_faces[0].boundary_variables[1].cell_centering=cell_centered;
     // u3
-//     boundary_faces[0].boundary_variables[2].boundary_condition_value=0.0;
-//     boundary_faces[0].boundary_variables[2].boundary_condition_type=dirichlet;
-//     boundary_faces[0].boundary_variables[2].cell_centering=cell_centered;
+     boundary_faces[0].boundary_variables[2].boundary_condition_value=0.0;
+     boundary_faces[0].boundary_variables[2].boundary_condition_type=dirichlet;
+     boundary_faces[0].boundary_variables[2].cell_centering=cell_centered;
 
 // Face 1: n=( -1, 0, 0) */
 // Freeslip boundary condition:
@@ -119,16 +85,16 @@ public:
 // vertex-centered: u1
 // boundary condition type: homogeneous dirichlet
     // u1
-    boundary_faces[1].boundary_variables[0].boundary_condition_value=0.0;
+    boundary_faces[1].boundary_variables[0].boundary_condition_value=initial_velocity.u1;
     boundary_faces[1].boundary_variables[0].boundary_condition_type=dirichlet;
     // u2
-//     boundary_faces[1].boundary_variables[1].boundary_condition_value=0.0;
-//     boundary_faces[1].boundary_variables[1].boundary_condition_type=dirichlet;
-//    boundary_faces[1].boundary_variables[1].cell_centering=cell_centered;
+     boundary_faces[1].boundary_variables[1].boundary_condition_value=0.0;
+     boundary_faces[1].boundary_variables[1].boundary_condition_type=dirichlet;
+     boundary_faces[1].boundary_variables[1].cell_centering=cell_centered;
     // u3
-//     boundary_faces[1].boundary_variables[2].boundary_condition_value=0.0;
-//     boundary_faces[1].boundary_variables[2].boundary_condition_type=dirichlet;
-//     boundary_faces[1].boundary_variables[2].cell_centering=cell_centered;
+     boundary_faces[1].boundary_variables[2].boundary_condition_value=0.0;
+     boundary_faces[1].boundary_variables[2].boundary_condition_type=dirichlet;
+     boundary_faces[1].boundary_variables[2].cell_centering=cell_centered;
 
 
 // Face 2: n=( 0, 1, 0) */
@@ -145,10 +111,10 @@ public:
 //     boundary_faces[2].boundary_variables[0].boundary_condition_type=dirichlet;
 //     boundary_faces[2].boundary_variables[0].cell_centering=cell_centered;
     // u2
-    boundary_faces[2].boundary_variables[1].boundary_condition_value=0.0;
+    boundary_faces[2].boundary_variables[1].boundary_condition_value=initial_velocity.u2;
     boundary_faces[2].boundary_variables[1].boundary_condition_type=dirichlet;
     // u3
-//     boundary_faces[2].boundary_variables[2].boundary_condition_value=1.0;
+//     boundary_faces[2].boundary_variables[2].boundary_condition_value=0.0;
 //     boundary_faces[2].boundary_variables[2].boundary_condition_type=dirichlet;
 //     boundary_faces[2].boundary_variables[2].cell_centering=cell_centered;
 
@@ -167,10 +133,10 @@ public:
 //     boundary_faces[3].boundary_variables[0].boundary_condition_type=dirichlet;
 //     boundary_faces[3].boundary_variables[0].cell_centering=cell_centered;
     // u2
-    boundary_faces[3].boundary_variables[1].boundary_condition_value=0.0;
+    boundary_faces[3].boundary_variables[1].boundary_condition_value=initial_velocity.u2;
     boundary_faces[3].boundary_variables[1].boundary_condition_type=dirichlet;
     // u3
-//     boundary_faces[3].boundary_variables[2].boundary_condition_value=1.0;
+//     boundary_faces[3].boundary_variables[2].boundary_condition_value=0.0;
 //     boundary_faces[3].boundary_variables[2].boundary_condition_type=dirichlet;
 //     boundary_faces[3].boundary_variables[2].cell_centering=cell_centered;
 
@@ -185,7 +151,7 @@ public:
 // vertex-centered: u3
 // boundary condition type: homogeneous dirichlet
     // u1
-     boundary_faces[4].boundary_variables[0].boundary_condition_value=0.0;
+     boundary_faces[4].boundary_variables[0].boundary_condition_value=0.0; // the driven lid
      boundary_faces[4].boundary_variables[0].boundary_condition_type=dirichlet;
      boundary_faces[4].boundary_variables[0].cell_centering=cell_centered;
     // u2
@@ -193,7 +159,7 @@ public:
      boundary_faces[4].boundary_variables[1].boundary_condition_type=dirichlet;
      boundary_faces[4].boundary_variables[1].cell_centering=cell_centered;
     // u3
-    boundary_faces[4].boundary_variables[2].boundary_condition_value=0.0;
+    boundary_faces[4].boundary_variables[2].boundary_condition_value=initial_velocity.u3;
     boundary_faces[4].boundary_variables[2].boundary_condition_type=dirichlet;
  
 
@@ -216,7 +182,7 @@ public:
      boundary_faces[5].boundary_variables[1].boundary_condition_type=dirichlet;
      boundary_faces[5].boundary_variables[1].cell_centering=cell_centered;
     // u3
-    boundary_faces[5].boundary_variables[2].boundary_condition_value=0.0;
+    boundary_faces[5].boundary_variables[2].boundary_condition_value=initial_velocity.u3;
     boundary_faces[5].boundary_variables[2].boundary_condition_type=dirichlet;
    
 }
