@@ -45,9 +45,10 @@ EXPORT void initialize_interface(
 	    						// =0, do not apply curvature smoothing filter		
 	  double smoothing_distance_factor,		// the heaviside function is smoothed over
 							// an interval of width 2*smoothing_distance
-	  int debugging_mode				// =1, program is run in 
+	  int debugging_mode,				// =1, program is run in 
       							// debugging mode with additional output and checks
       							// =0, progam is run in production mode
+          double volume_of_fluid_tolerance              // tolerance for volume of fluid value
 						
 	  )
  {
@@ -63,7 +64,7 @@ EXPORT void initialize_interface(
      
        initialize_volume_of_fluid( level_set, volume_of_fluid, 
 				      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-					lower_bound_derivatives);
+					lower_bound_derivatives, volume_of_fluid_tolerance);
       
   	
  }

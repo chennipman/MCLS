@@ -3,7 +3,7 @@
 #include<iostream>
 /********************************************************************************/
 /********************************************************************************/
-/*  Function to compute the redistribution velocity field                       */
+/*  Function to analyse the validity of the volume of fluid field               */
 /*  method.                                                                     */
 /*                                                                              */
 /*  Programmer  : Duncan van der Heul                                           */
@@ -44,25 +44,23 @@ EXPORT void analyse_validity_vof_field(
 )
 {        
         double level_set_value;                                         // level set field in cell center
-        double level_set_minusi;                                        // level set field at minus i neighbouring cell
-        double level_set_minusj;                                        // level set field at minus j neighbouring cell
-        double level_set_minusk;                                        // level set field at minus k neighbouring cell
-        double level_set_plusi;                                         // level set field at plus i neighbouring cell
-        double level_set_plusj;                                         // level set field at plus j neighbouring cell
-        double level_set_plusk;                                         // level set field at plus k neighbouring cell
+        
+
         double current_volume_of_fluid;                                 // uncorrected, cell centered value of volume of fluid
-        bool pure_cell;                                                 // true: all vertices on one side of interface,
+        int pure_cell;                                                 // true: all vertices on one side of interface,
                                                                         // false: not all vertices on one side of interface
         int i_index, j_index, k_index;                                  // local variables for loop indexing
 
-           number_cells_invalid_volume_of_fluid=0;
-           number_cells_numerical_vapor=0;
-           number_cells_vof_out_of_bounds=0;
+        /* reset all numbers */
+        
+        number_cells_invalid_volume_of_fluid=0;
+        number_cells_numerical_vapor=0;
+        number_cells_vof_out_of_bounds=0;
            
             for( i_index=1;i_index<number_primary_cells_i+1;i_index++){
                 for(j_index=1;j_index<number_primary_cells_j+1;j_index++){
                     for(k_index=1;k_index<number_primary_cells_k+1;k_index++){
-
+ 
                      /* start with the assumption all cells have valid vof values */
                      
                         invalid_vof_cells[i_index][j_index][k_index]=0;
@@ -76,47 +74,46 @@ EXPORT void analyse_validity_vof_field(
                         level_set_value =level_set[i_index][j_index][k_index];
                         current_volume_of_fluid=volume_of_fluid[i_index][j_index][k_index];
 
-                     /* determine the level set value in all the neighbouring */
-                     /* cells to identify vapour cells: cells that have an    */
-                     /* intermediate volume of fluid value, but contain NO interface */
-                     
-                        level_set_plusi =level_set[i_index+1][j_index  ][k_index  ];
-                        level_set_minusi=level_set[i_index-1][j_index  ][k_index  ];
-                        level_set_plusj =level_set[i_index  ][j_index+1][k_index  ];
-                        level_set_minusj=level_set[i_index  ][j_index-1][k_index  ];
-                        level_set_plusk =level_set[i_index  ][j_index  ][k_index+1];
-                        level_set_minusk=level_set[i_index  ][j_index  ][k_index-1];
-                        
-                        
-                        
+                        	
                         /* two conditions are checked to verify if the volume of fluid value is valid :    */
                         /*1) if this is a NON-interface cell: the volume of fluid should also be either 0 or 1 */
                         /*                              with some tolerance                                */
                         /*2) if this is a mixed cell: the volume of fluid should be in the interval 0 to 1 */
                         /*                              with some tolerance                                */
                         
-                        pure_cell=((level_set_value*level_set_plusi>0)&&
-                                    (level_set_value*level_set_plusj>0)&&
-                                      (level_set_value*level_set_plusk>0)&&
-                                        (level_set_value*level_set_minusi>0)&&
-                                          (level_set_value*level_set_minusj>0)&&
-                                            (level_set_value*level_set_minusk>0));
-                        if(pure_cell && (current_volume_of_fluid<1.0-volume_of_fluid_tolerance &&
-                                            current_volume_of_fluid>volume_of_fluid_tolerance))
+                        /* first condition is checked */
+                        
+                        if(current_volume_of_fluid>=volume_of_fluid_tolerance && 
+                        	current_volume_of_fluid<=1.0-volume_of_fluid_tolerance)
                         {
-                             number_cells_numerical_vapor++;
-//                               std::cerr<<"vapor cell "<<i_index<<" "<<j_index<<" "<<k_index<<"\n";
-//                               std::cerr<<"value "<<current_volume_of_fluid<<"\n";
+                        	
+                        	/* is the cell a cell removed from the interface ? */
+                                 
+                        	pure_cell=determine_cell_is_pure(level_set, i_index, j_index, k_index,						
+                        					number_primary_cells_i,                             
+                        					  number_primary_cells_j,                             
+                        					  	number_primary_cells_k); 
+                        
+                        	if(pure_cell)
+                                {
+
+                             /*  this cell as a vapor cell */
                              
-                             /* mark this cell as a vapor cell */
-                             
-                             invalid_vof_cells[i_index][j_index][k_index]=5;
+                                 	number_cells_numerical_vapor++;
+                                        invalid_vof_cells[i_index][j_index][k_index]=5;
+                             	}
+                        
                         }
+                        
+                        /* second condition is checked */
+                        
                         if(current_volume_of_fluid > 1.0+volume_of_fluid_tolerance||
                                             current_volume_of_fluid<-1.0*volume_of_fluid_tolerance)
                         {
+                              /* this cell has an invalid volume of fluid value */
                         
                               number_cells_vof_out_of_bounds++;
+                              
                               if(current_volume_of_fluid > 1.0+volume_of_fluid_tolerance)
                               {
                                      
@@ -135,6 +132,9 @@ EXPORT void analyse_validity_vof_field(
                     }
                 }
             }
+            
+ 		/* count the total number of invalid cells */
+ 		
                 number_cells_invalid_volume_of_fluid=number_cells_numerical_vapor+number_cells_vof_out_of_bounds;
          
 }

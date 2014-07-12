@@ -87,8 +87,8 @@ EXPORT void initialize_bubbles(
 		      
 		      /* compare the principle axes of the bubble */
 		      
-		      if((principle_axis_x1-principle_axis_x2<0.000001)&&
-			(principle_axis_x2-principle_axis_x3<0.000001))
+		      if((fabs(principle_axis_x1-principle_axis_x2)<0.000001)&&
+			(fabs(principle_axis_x2-principle_axis_x3)<0.000001))
 		      {
 			  /* the three principal axes are equal => */
 			  /* the bubble is spherical with radius equal to one of the principal axes */
@@ -117,6 +117,7 @@ EXPORT void initialize_bubbles(
 		      }
 		      else
 		      {
+		      	      exit(1);
 			 /* the three principal axes are not equal => */
 			 /* the bubble is elliptical */
 			 /* loop over a fine mesh of points on the ellipsoid to determine */

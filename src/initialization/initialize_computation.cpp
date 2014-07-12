@@ -221,7 +221,8 @@ EXPORT void initialize_computation(
 				  	apply_curvature_smoothing, number_curvature_smoothing_steps,
 				  apply_curvature_smoothing_filter, smoothing_distance_factor, debugging_mode,
                               gravity, tolerance_pressure, actual_time_step_navier_stokes, rho_plus_over_rho_minus, sigma_over_rho_minus,
-                            continuous_surface_force_model, source_terms_in_momentum_predictor, maximum_iterations_allowed_pressure);
+                            continuous_surface_force_model, source_terms_in_momentum_predictor, maximum_iterations_allowed_pressure,
+                            volume_of_fluid_tolerance);
      
 /* write the initial conditions to file */
 

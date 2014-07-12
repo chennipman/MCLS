@@ -483,7 +483,7 @@ EXPORT void make_level_set_mass_conserving
 /* use the different fluxes for the volume of fluid field to  compute */
 /* the volume of fluid field at the new time level 		      */
 
-
+            
 	    switch (order_of_updates)
 	    {
 	    case 1:
@@ -589,6 +589,7 @@ EXPORT void make_level_set_mass_conserving
 		
 		  break;
 	    }  
+	    
 
 	    /* check if there are any nonvalid volume of fluid values in the cells */
  
@@ -601,7 +602,7 @@ EXPORT void make_level_set_mass_conserving
                 std::cerr<<" number_cells_numerical_vapor in vof "<< number_cells_numerical_vapor<<" \n";
                 std::cerr<<" number_cells_vof_out_of_bounds in vof "<< number_cells_vof_out_of_bounds<<" \n";
              
-             if(number_cells_invalid_volume_of_fluid>-1)
+             if(number_cells_invalid_volume_of_fluid>0)
              {
 	    
                             std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
@@ -653,8 +654,10 @@ EXPORT void make_level_set_mass_conserving
 	                     if(number_clipped_cells>0)
                             {
                                    
+                                  std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
 	    		          std::cerr<<"WARNING: clipping algorithm is applied \n";
-                                  std::cerr<<"to "<< number_clipped_cells<<"cells .\n";
+                                  std::cerr<<"to "<< number_clipped_cells<<" cells .\n";
+                                  std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
 			 
 		              }
 		              else

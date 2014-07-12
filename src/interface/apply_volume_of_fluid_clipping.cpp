@@ -35,11 +35,11 @@ EXPORT int apply_volume_of_fluid_clipping(
 						        // field in the interval [0,1]
      
        
-      for(i_index=0;i_index<number_primary_cells_i+2;i_index++)
+      for(i_index=1;i_index<number_primary_cells_i+1;i_index++)
       {
-	  for(j_index=0;j_index<number_primary_cells_j+2;j_index++)
+	  for(j_index=1;j_index<number_primary_cells_j+1;j_index++)
 	  {
-	      for(k_index=0;k_index<number_primary_cells_k+2;k_index++)
+	      for(k_index=1;k_index<number_primary_cells_k+1;k_index++)
 	      {
 		    if(volume_of_fluid[i_index][j_index][k_index]>
 			( 1.0+volume_of_fluid_tolerance )||
