@@ -1,7 +1,7 @@
 #include "../headers/array.h"
 
 #include<cstdlib>
-#include<iostream>
+#include<iostream> 
 /********************************************************************************/
 /********************************************************************************/
 /*  Function to make the level-set field mass conserving                        */
@@ -97,6 +97,12 @@ EXPORT void make_level_set_mass_conserving
       Array3<double> level_set_after_x3_update;		        // level-set field, converted from 
  							        // intermediate	volume of fluid field, 
 							        // after update in x3 direction
+      Array3<double> invalid_vof_cells;                         // indication field to show what is wrong
+                                                                // indicator field showing cells that are either
+                                                                // within bounds =0
+                                                                // underfilled   =-1
+                                                                // overfilled    =+1
+                                                                // vapour cells  = 5
      
       static int order_of_updates;			        // indicates the order of the updates
 							        // of volume of fluid field due to
@@ -115,6 +121,14 @@ EXPORT void make_level_set_mass_conserving
 							        // order = x3, x2, x1
       
       int i_index, j_index, k_index;  		                // local variables for loop indexing
+      int number_cells_vof_out_of_bounds;                       // number of control volumes where the volume of fluid
+                                                                // function is OUTSIDE the interval [0,1]
+      int number_cells_numerical_vapor;                         // number of control volumes where the volume of fluid
+                                                                // function is INSIDE the interval [0,1]
+                                                                // while the cell has 6 neighbours with the same sign:
+                                                                // the cell is NOT an interface cell
+      int number_cells_invalid_volume_of_fluid;                 // sum of number of vapour cells and number of cells
+                                                                // with the volume of fluid outside [0,1];
       int number_clipped_cells;                                 // number of cells that have been clipped
       double one_over_dx1	=    			        // 1/(grid spacing in x1 direction)
 	    1.0/(mesh_width_x1);
@@ -136,6 +150,8 @@ EXPORT void make_level_set_mass_conserving
 	d_level_set_d_x1.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+2);
 	d_level_set_d_x2.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+2);
 	d_level_set_d_x3.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+2);
+        
+	invalid_vof_cells.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+2);
 				    
     /* keep order_of_updates in its allowable range */
     
@@ -165,6 +181,8 @@ EXPORT void make_level_set_mass_conserving
 
 	if(apply_mass_conservation_correction)
 	{
+		
+            std::cerr<<"start mass conserving correction \n";
 	  
 	    /* the volume of fluid field is advected and used to provide a */
 	    /* mass conserving correction to the level set field           */
@@ -197,14 +215,19 @@ EXPORT void make_level_set_mass_conserving
 		  /* iterative process						  */
 
 		  
-		  match_level_set_to_volume_of_fluid(level_set_old, vof_after_x1_update,
+		  if( match_level_set_to_volume_of_fluid(level_set_old, vof_after_x1_update,
 						     level_set_after_x1_update,
 				number_primary_cells_i, number_primary_cells_j, 
 							    number_primary_cells_k,			
 				  volume_of_fluid_tolerance, lower_bound_derivatives,		
 				    number_vof_2_level_set_iterations, number_iterations_ridder,			
 				      vof_2_level_set_tolerance,
-				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3);
+				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3))
+		  {
+		  	std::cerr<<" match_level_set_to_volume_of_fluid was called from \n" ;
+		  	std::cerr<<" make_level_set_mass_conserving line 202 \n";
+		  	exit(1);
+		  }
 		  
 
 		  /* compute the gradient of the first intermediate level-set field */
@@ -233,14 +256,19 @@ EXPORT void make_level_set_mass_conserving
 		  /* the NEW level-set field is used as starting value for the     	*/
 		  /* iterative process						   	*/
 		  
-		  match_level_set_to_volume_of_fluid(level_set_after_x1_update, vof_after_x2_update,
+		  if( match_level_set_to_volume_of_fluid(level_set_after_x1_update, vof_after_x2_update,
 						     level_set_after_x2_update,
 				number_primary_cells_i, number_primary_cells_j, 
 							    number_primary_cells_k,			
 				  volume_of_fluid_tolerance, lower_bound_derivatives,		
 				    number_vof_2_level_set_iterations, number_iterations_ridder,			
 				      vof_2_level_set_tolerance,
-				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3);
+				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3))
+		  { 
+		  	std::cerr<<" match_level_set_to_volume_of_fluid was called from \n" ;
+		  	std::cerr<<" make_level_set_mass_conserving line 242 \n";
+		  	exit(1);
+		  }
 		  
 
 		  /* compute the gradient of the second intermediate level-set field */
@@ -280,14 +308,21 @@ EXPORT void make_level_set_mass_conserving
 		  /* the OLD level-set field is used as starting value for the    */
 		  /* iterative process						  */
 		  
-		  match_level_set_to_volume_of_fluid(level_set_old, vof_after_x2_update,
+		  if( match_level_set_to_volume_of_fluid(level_set_old, vof_after_x2_update,
 						     level_set_after_x2_update,
 				number_primary_cells_i, number_primary_cells_j, 
 							    number_primary_cells_k,			
 				  volume_of_fluid_tolerance, lower_bound_derivatives,		
 				    number_vof_2_level_set_iterations, number_iterations_ridder,			
 				      vof_2_level_set_tolerance,
-				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3);
+				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3))
+		  { 
+		  	std::cerr<<" match_level_set_to_volume_of_fluid was called from \n" ;
+		  	std::cerr<<" make_level_set_mass_conserving line 293 \n";
+		  	exit(1);
+		  }
+		  
+		  
 
 		  /* compute the gradient of the first intermediate level-set field */
 		  /* for evaluation of the flux in the x3 direction */
@@ -311,14 +346,19 @@ EXPORT void make_level_set_mass_conserving
 		  /* the NEW level-set field is used as starting value for the     */
 		  /* iterative process						   */
 		  
-		  match_level_set_to_volume_of_fluid(level_set_after_x2_update, vof_after_x3_update,
+		  if( match_level_set_to_volume_of_fluid(level_set_after_x2_update, vof_after_x3_update,
 						     level_set_after_x3_update,
 				number_primary_cells_i, number_primary_cells_j, 
 							    number_primary_cells_k,			
 				  volume_of_fluid_tolerance, lower_bound_derivatives,		
 				    number_vof_2_level_set_iterations, number_iterations_ridder,			
 				      vof_2_level_set_tolerance,
-				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3);
+				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3))
+		  { 
+		  	std::cerr<<" match_level_set_to_volume_of_fluid was called from \n" ;
+		  	std::cerr<<" make_level_set_mass_conserving line 330 \n";
+		  	exit(1);
+		  }
 
 		  /* compute the gradient of the second intermediate level-set field */
 		  /* for evaluation of the flux in the x1 direction */
@@ -354,13 +394,19 @@ EXPORT void make_level_set_mass_conserving
 		  /* the OLD level-set field is used as starting value for the    */
 		  /* iterative process						  */
 		  
-		  match_level_set_to_volume_of_fluid(level_set_old, vof_after_x3_update,
+		  if( match_level_set_to_volume_of_fluid(level_set_old, vof_after_x3_update,
 						     level_set_after_x3_update,
 							number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,			
 				  				volume_of_fluid_tolerance, lower_bound_derivatives,		
 				    					number_vof_2_level_set_iterations, number_iterations_ridder,			
 				      						vof_2_level_set_tolerance,
-				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3);
+				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3))
+		  { 
+		  	std::cerr<<" match_level_set_to_volume_of_fluid was called from \n" ;
+		  	std::cerr<<" make_level_set_mass_conserving line 377 \n";
+		  	exit(1);
+		  }
+		  
 
 		  /* compute the gradient of the first intermediate level-set field */
 		  /* for evaluation of the flux in the x1 direction */
@@ -383,14 +429,22 @@ EXPORT void make_level_set_mass_conserving
 		  /* vof_after_x1_update					   */
 		  /* the NEW level-set field is used as starting value for the     */
 		  
-		  match_level_set_to_volume_of_fluid(level_set_after_x3_update, vof_after_x1_update,
+		  if( match_level_set_to_volume_of_fluid(level_set_after_x3_update, vof_after_x1_update,
 						     level_set_after_x1_update,
 				number_primary_cells_i, number_primary_cells_j, 
 							    number_primary_cells_k,			
 				  volume_of_fluid_tolerance, lower_bound_derivatives,		
 				    number_vof_2_level_set_iterations, number_iterations_ridder,			
 				      vof_2_level_set_tolerance,
-				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3);
+				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3))
+		  
+		  { 
+		  	std::cerr<<" match_level_set_to_volume_of_fluid was called from \n" ;
+		  	std::cerr<<" make_level_set_mass_conserving line 411 \n";
+		  	exit(1);
+		  }
+		  
+		  
 
 		  /* compute the gradient of the second intermediate level-set field */
 		  /* for evaluation of the flux in the x2 direction */
@@ -429,7 +483,7 @@ EXPORT void make_level_set_mass_conserving
 /* use the different fluxes for the volume of fluid field to  compute */
 /* the volume of fluid field at the new time level 		      */
 
-
+            
 	    switch (order_of_updates)
 	    {
 	    case 1:
@@ -535,18 +589,24 @@ EXPORT void make_level_set_mass_conserving
 		
 		  break;
 	    }  
+	    
 
 	    /* check if there are any nonvalid volume of fluid values in the cells */
-              int cells_out_of_bounds=0;
-              cells_out_of_bounds=check_volume_of_fluid(volume_of_fluid, number_primary_cells_i,
-                                           number_primary_cells_j,
-                                            number_primary_cells_k,
-                                               volume_of_fluid_tolerance);
-             if(cells_out_of_bounds>-1)
+ 
+                analyse_validity_vof_field( level_set_star, volume_of_fluid, invalid_vof_cells ,                               
+                                        number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,                                    
+                                          volume_of_fluid_tolerance, number_cells_vof_out_of_bounds, number_cells_numerical_vapor,                             
+                                                number_cells_invalid_volume_of_fluid);
+              
+                std::cerr<<" number_cells_invalid_volume_of_fluid in vof "<< number_cells_invalid_volume_of_fluid<<" \n";
+                std::cerr<<" number_cells_numerical_vapor in vof "<< number_cells_numerical_vapor<<" \n";
+                std::cerr<<" number_cells_vof_out_of_bounds in vof "<< number_cells_vof_out_of_bounds<<" \n";
+             
+             if(number_cells_invalid_volume_of_fluid>0)
              {
 	    
                             std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
-                            std::cerr<<"cells out of bounds BEFORE redistribution: "<< cells_out_of_bounds <<" \n";
+                            std::cerr<<"invalid VOF cels BEFORE redistribution: "<< number_cells_invalid_volume_of_fluid <<" \n";
                             std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
 
 	              if(apply_mass_distribution_algorithm)
@@ -566,12 +626,18 @@ EXPORT void make_level_set_mass_conserving
 	   							redistribution_vof_tolerance, maximum_number_mass_redistribution_iterations, 
                                                                   mass_redistribution_diffusion_coefficient);
 	      
-                              cells_out_of_bounds=check_volume_of_fluid(volume_of_fluid, number_primary_cells_i,
-                                           number_primary_cells_j,
-                                            number_primary_cells_k,
-                                               volume_of_fluid_tolerance);
+                              // cells_out_of_bounds=check_volume_of_fluid(volume_of_fluid, number_primary_cells_i,
+                                           // number_primary_cells_j,
+                                            // number_primary_cells_k,
+                                               // volume_of_fluid_tolerance);
+                                               
+                              analyse_validity_vof_field( level_set_new, volume_of_fluid, invalid_vof_cells ,                               
+                                        number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,                                    
+                                          volume_of_fluid_tolerance, number_cells_vof_out_of_bounds, number_cells_numerical_vapor,                             
+                                                number_cells_invalid_volume_of_fluid);
+                              
                               std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
-                              std::cerr<<"cells out of bounds AFTER redistribution: "<< cells_out_of_bounds <<" \n";
+                              std::cerr<<"invalid VOF cells  AFTER redistribution: "<< number_cells_invalid_volume_of_fluid <<" \n";
                               std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
 	               }
 	               else
@@ -588,8 +654,10 @@ EXPORT void make_level_set_mass_conserving
 	                     if(number_clipped_cells>0)
                             {
                                    
+                                  std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
 	    		          std::cerr<<"WARNING: clipping algorithm is applied \n";
-                                  std::cerr<<"to "<< number_clipped_cells<<"cells .\n";
+                                  std::cerr<<"to "<< number_clipped_cells<<" cells .\n";
+                                  std::cerr<<"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n";
 			 
 		              }
 		              else
@@ -601,12 +669,19 @@ EXPORT void make_level_set_mass_conserving
               }
 		            /* compute the corresponding level-set field 			   */
 
-		              match_level_set_to_volume_of_fluid(level_set_star, volume_of_fluid, level_set_new,
+		              if( match_level_set_to_volume_of_fluid(level_set_star, volume_of_fluid, level_set_new,
 							number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,			
 				  			  volume_of_fluid_tolerance, lower_bound_derivatives,		
 				                          number_vof_2_level_set_iterations, number_iterations_ridder,			
 				      				vof_2_level_set_tolerance,
-				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3 );
+				      	 mesh_width_x1, mesh_width_x2, mesh_width_x3 ))
+			      { 
+			      	      std::cerr<<" match_level_set_to_volume_of_fluid was called from \n" ;
+			      	      std::cerr<<" make_level_set_mass_conserving line 636 \n";
+			      	      exit(1);
+			      }
+		  
+
 		
 		              /* compute the gradient of the old level-set field, necessary for the level-set/vof conversion */
 
@@ -623,7 +698,7 @@ EXPORT void make_level_set_mass_conserving
 		              {
 	  		              std::cerr<<" conversion from volume of fluid to level set unsuccesfull\n";
 			              std::cerr<<" in make_level_set_mass_conserving line 784 \n";
-			              exit(1);
+			              exit(1); 
 		              };
 		
 	                     std::cerr<<" mass after final conversion "<<
@@ -665,6 +740,7 @@ EXPORT void make_level_set_mass_conserving
 	d_level_set_d_x1.destroy();
 	d_level_set_d_x2.destroy();
 	d_level_set_d_x3.destroy();
+	invalid_vof_cells.destroy();
     }
 
  

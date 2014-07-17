@@ -19,7 +19,7 @@
 /* and update the interface position accordingly.                                  */
 /***********************************************************************************/
 
-EXPORT void redistribute_volume_of_fluid_error(						
+EXPORT void redistribute_volume_of_fluid_error_by_averaging(						
 	Array3<double> level_set_old, 				// level set field 
 								// before mass redistribution
         Array3<double> level_set,                               // level set field updated after
@@ -54,19 +54,6 @@ EXPORT void redistribute_volume_of_fluid_error(
 
  	)
      {
-	Array3<double> redistribution_velocity_x1;			// artificial redistribution velocity x1 direction
-	Array3<double> redistribution_velocity_x2;			// artificial redistribution velocity x2 direction
-	Array3<double> redistribution_velocity_x3;			// artificial redistribution velocity x3 direction
-	Array3<double> time_derivative_volume_of_fluid_correction;	// time derivative in the discretised
-									// volume of fluid redistribution equation
-	double time_step_vof_error_distribution;			// time step used in the volume of fluid
-									// error redistribution algorithm
-	
-       
-	double cfl_number_vof_error_distribution=0.25;       		// cfl number used in the volume of fluid
-									// error redistribution algorithm
-	double maximum_time_derivative_vof_error=100;			// largest value of time derivative in the volume of fluid
-									// error redistribution equation
         int number_cells_vof_out_of_bounds=0;			        // number of control volumes where the volume of fluid
 									// function is OUTSIDE the interval [0,1]
         int number_cells_numerical_vapor=0;                             // number of control volumes where the volume of fluid
@@ -76,11 +63,98 @@ EXPORT void redistribute_volume_of_fluid_error(
         int number_cells_invalid_volume_of_fluid=100;                   // sum of number of vapour cells and number of cells
                                                                         // with the volume of fluid outside [0,1];
 	int i_index, j_index, k_index;  				// local variables for loop indexing
-	int pseudo_time_step_index=0;					// index of the iteration/sweep in the 
-									// vof redistribution algorithm
         bool detailed_output=1;                                         // =1, provide detailed output
                                                                         // =0, provide non output 
-							
+        double total_volume_of_fluid_error;
+        double sign_of_total_volume_of_fluid_error;
+        int number_of_mixed_cells_with_room=0;
+
+                                                                                                                                            
+        double absolute_room_for_error=0.00001;				                                                                       
+        
+        
+        /* compute the sum of the error and its sign */
+                                 
+            for( i_index=1;i_index<number_primary_cells_i+1;i_index++){
+                for(j_index=1;j_index<number_primary_cells_j+1;j_index++){
+                    for(k_index=1;k_index<number_primary_cells_k+1;k_index++){
+                               
+                        total_volume_of_fluid_error+=volume_of_fluid_correction[i_index][j_index][k_index];
+                   }
+                }
+            }
+            
+        /* determine the sign of the total error */
+        
+        sign_of_total_volume_of_fluid_error=sign(1.0, total_volume_of_fluid_error);
+            
+        /* evaluate total number of mixed cells with 'room' for change */
+        
+        if(sign_of_total_volume_of_fluid_error>0)
+        {
+        	/* the error is positive, we need cells with vof<1-absolute_room_for_error */
+        	
+            for( i_index=1;i_index<number_primary_cells_i+1;i_index++){
+                for(j_index=1;j_index<number_primary_cells_j+1;j_index++){
+                    for(k_index=1;k_index<number_primary_cells_k+1;k_index++){
+                               
+                        if(volume_of_fluid[i_index][j_index][k_index]<
+                        		1.0-absolute_room_for_error)
+                        {
+                        	number_of_mixed_cells_with_room++;
+                        }
+                   }
+                }
+            }
+        }
+        else
+        {
+        	/* the error is negative, we need cells with vof>absolute_room_for_error */
+        	
+            for( i_index=1;i_index<number_primary_cells_i+1;i_index++){
+                for(j_index=1;j_index<number_primary_cells_j+1;j_index++){
+                    for(k_index=1;k_index<number_primary_cells_k+1;k_index++){
+                               
+                        if(volume_of_fluid[i_index][j_index][k_index]>
+                        		  absolute_room_for_error)
+                        {
+                        	number_of_mixed_cells_with_room++;
+                        }
+                   }
+                }
+            }
+        }
+        	
+        
+        
+        
+        
+        /* check if simple averaging of the error is feasible */
+        if(absolute_room_for_error*number_of_mixed_cells_with_room>= 
+        				total_volume_of_fluid_error)
+        
+        
+        
+        /* compute the average error */
+        
+        /* is the average error less than can be accomodated */
+        
+        /* this means the set of all mixed cells with 'room' can accomodate the error */
+        
+        /* there is sufficient room */
+        /* distribute the average error over all mixed cells with 'room' */
+        /* the volume of fluid field is updated */
+        /* break the process off  */
+        
+        
+        /* divide the total error over the available mixed cells */
+        /* there is not sufficient room */
+        /* distribute the 'room'*number_of_mixed_cells over the mixed cells */
+        /* the volume of fluid field is updated */
+        /* update the error */
+        
+ 
+                                                                        
 	/* compute the time step for the error redistribution algorithm */
 	
 	/* three-dimensional case */
@@ -214,24 +288,7 @@ EXPORT void redistribute_volume_of_fluid_error(
 	redistribution_velocity_x2.destroy();
 	redistribution_velocity_x3.destroy();
         time_derivative_volume_of_fluid_correction.destroy();
-        
-        
-        
-        /* compute the sum of the error and its sign */
-        /* evaluate total number of mixed cells with 'room' for change */
-        /* check if simple averaging of the error is feasible */
-        /* this means the set of all mixed cells with 'room' can accomodate the error */
-        
-        /* there is sufficient room */
-        /* distribute the average error over all mixed cells with 'room' */
-        /* break the process off  */
-        
-        
-        /* divide the total error over the available mixed cells */
-        /* there is not sufficient room */
-        /* divide the 'room'*number_of_mixed_cells over the mixed cells */
-        
-        
+       
         
         
         

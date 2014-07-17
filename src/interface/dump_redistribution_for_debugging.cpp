@@ -6,6 +6,12 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+EXPORT std::string convertInt(int number)
+{
+   std::stringstream ss;//create a stringstream
+   ss << number;//add number to the stream
+   return ss.str();//return a string with the contents of the stream
+}
 using namespace std;
 
 /********************************************************************************/
@@ -45,9 +51,12 @@ EXPORT void dump_redistribution_for_debugging(
 							// cells in x2 direction
 	int number_primary_cells_k,			// number of primary (pressure) 
 							// cells in x3 direction
-	  double mesh_width_x1,			        // grid spacing in x1 direction (uniform)
-	  double mesh_width_x2,			        // grid spacing in x2 direction (uniform)
-	  double mesh_width_x3			        // grid spacing in x3 direction (uniform)
+	double mesh_width_x1,			        // grid spacing in x1 direction (uniform)
+	double mesh_width_x2,			        // grid spacing in x2 direction (uniform)
+	double mesh_width_x3,			        // grid spacing in x3 direction (uniform)
+        int index_redistribution_attempt	        // number of attempts to achieve a
+						        // valid volume of fluid field
+						        // through the redistribution algorithm
 	
 	)
 	{
@@ -56,14 +65,19 @@ EXPORT void dump_redistribution_for_debugging(
 	    number_primary_cells_j*
 	      number_primary_cells_k;
 	
-       	string scalar_name;				// name of the scalar field to be written 
-      	string look_up_table_name;			// name of the look-up table to be used
+       	string scalar_name;						// name of the scalar field to be written 
+      	string look_up_table_name;					// name of the look-up table to be used
+        string basic_filename="debug_interface_redistribution.";	// the common part of the names of all output files
+        string filename_vtk;						// the filename of the current output file for vtk format
 	
       
-      
+ 	    string solution_file_index=convertInt(index_redistribution_attempt); 
+    
+	    filename_vtk     = basic_filename + solution_file_index + ".vtk";
+     
       /* dump the solution to a vtk file for visualisation */
       
-		  ofstream output_vtk ( "debug_interface_redistribution.vtk");
+		  ofstream output_vtk ( filename_vtk.c_str());
 		  if(!output_vtk)
 		  {
 		      /* the contructor returned a 0-pointer :-( */
@@ -113,7 +127,7 @@ EXPORT void dump_redistribution_for_debugging(
 		  look_up_table_name="lvst_tbl";
 		  
 		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, level_set_original, 		
-						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
+			 			number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
 
 		  /* write the level-set field obtained after the first update to the volume of fluid field */
 		  
@@ -121,7 +135,7 @@ EXPORT void dump_redistribution_for_debugging(
 		  look_up_table_name="lvst_tbl";
 		  
 		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, level_set_updated, 		
-						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
+						 number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
 
 
 		  /* write the field that shows the cells with an invalid volume of fluid value */
@@ -130,6 +144,6 @@ EXPORT void dump_redistribution_for_debugging(
 		  look_up_table_name="lvst_tbl";
 		  
 		  write_cell_centered_field_vtk( output_vtk, scalar_name, look_up_table_name, invalid_vof_cells, 		
-						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
+			 			number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
 
 		}

@@ -1,7 +1,9 @@
-CFLAGS=-O3 -Wall
-CXXFLAGS=-O3 -Wall
-# CFLAGS=-g -Wall
-# CXXFLAGS=-g -Wall
+ CFLAGS=-O3 -Wall
+ CXXFLAGS=-O3 -Wall
+# CC=gcc
+# CXX=g++
+# CFLAGS=-g -static -Wall
+# CXXFLAGS=-g -static -Wall
 
 BUILD_DIR=objects
 
@@ -58,6 +60,7 @@ COMMON_SRCS= \
 		compute_vof_flux_x3.cpp \
 		compute_volume_of_fluid.cpp \
 		copy_cell_centered_field.cpp \
+		determine_cell_is_pure.cpp \
 		dump_adapted_vof_for_debugging.cpp \
 		dump_reinitialization_for_debugging.cpp \
 		dump_solution_for_debugging.cpp \

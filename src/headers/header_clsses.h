@@ -131,7 +131,7 @@ public:
     {
           start_from_restart_file=0;
           write_solution_to_restart_file=1;
-          name_restart_file_to_read="restart_file_mcls";
-          name_restart_file_to_write="restart_file_mcls";
+          name_restart_file_to_read="restart_file_mcls_out";
+          name_restart_file_to_write="restart_file_mcls_out";
     }
 };
