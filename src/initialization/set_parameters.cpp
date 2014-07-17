@@ -144,15 +144,15 @@ EXPORT void set_parameters(
       /* settings for time-stepping */
 
       cfl_number_navier_stokes			        = 1.0;
-      time_step_restriction_global			= 0.001;      
+      time_step_restriction_global			= 0.0005;      
       actual_time_step_navier_stokes    		= time_step_restriction_global;
-      time_interval_for_output			        = time_step_restriction_global*200;
+      time_interval_for_output			        = time_step_restriction_global*100;
       time_interval_for_reinitialization                = time_step_restriction_global*1; //worked fine
       number_of_subcycles				= 1;
       actual_time_step_level_set			= actual_time_step_navier_stokes/number_of_subcycles;
       fixed_time_step					= 1;	
       start_time_simulation				= 0.0;
-      end_time_simulation				= 0.15;
+      end_time_simulation				= 0.25;
       
       /* settings for restart from solution file and solution file writing */
       
@@ -163,9 +163,9 @@ EXPORT void set_parameters(
 						
 
       /* grid parameters */
-      number_primary_cells_i=50;		
-      number_primary_cells_j=50;	
-      number_primary_cells_k=70;	
+      number_primary_cells_i=100;		
+      number_primary_cells_j=100;	
+      number_primary_cells_k=140;	
       mesh_width_x1=domain_size_x1/number_primary_cells_i;		
       mesh_width_x2=domain_size_x2/number_primary_cells_j;			
       mesh_width_x3=domain_size_x3/number_primary_cells_k;		
