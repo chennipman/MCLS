@@ -24,7 +24,7 @@
 /* For debugging purposes all variables involved in the corrective process are  */
 /* written to file for visual inspection.					*/
 /********************************************************************************/
-EXPORT void match_level_set_to_volume_of_fluid(				
+EXPORT int match_level_set_to_volume_of_fluid(				
 		 Array3<double> level_set_star,			// non mass conserving level-set field
 		 Array3<double> volume_of_fluid,		// volume of fluid field
 		 Array3<double> level_set_mass_conserving,	// corrected, mass conserving level-set field
@@ -102,7 +102,7 @@ EXPORT void match_level_set_to_volume_of_fluid(
 					number_primary_cells_k,	
 					  volume_of_fluid_tolerance);
 	
-	if(number_of_error_cells)
+	if(number_of_error_cells)  
 	{
 	  /* there are cells with their volume of fluid outside the interval [0,1] */
 	  
@@ -110,9 +110,9 @@ EXPORT void match_level_set_to_volume_of_fluid(
 	  std::cerr<<"ERROR \n";
 	  std::cerr<<"A number of cells have a VOF value outside the interval [0,1] \n";
 	  std::cerr<<"the number of invalid VOF cells is "<< number_of_error_cells << "\n";
-	  std::cerr<<"in function match_level_set_to_volume_of_fluid line 152 \n";
+	  std::cerr<<"in function match_level_set_to_volume_of_fluid line 105 \n";
 	  std::cerr << "***************************************************** \n";
-	  exit(1);
+	  return 1;
 	}
 	  
        /* start with copying the star level-set field to the mass conservative */
@@ -265,7 +265,10 @@ EXPORT void match_level_set_to_volume_of_fluid(
 	      
 	      
 	    }
-	    exit(1);
+	    
+	    /* the conversion is not succesfull so return 1 */
+	    
+	    return 1;
       }
 
 	/* deallocate the temporary storage used in this function */
@@ -276,4 +279,5 @@ EXPORT void match_level_set_to_volume_of_fluid(
 	d_level_set_d_x3.destroy();
 	level_set_correction.destroy();
        volume_of_fluid_deviation.destroy();
+       return 0;
    }

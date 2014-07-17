@@ -49,7 +49,27 @@ EXPORT void  write_cell_centered_field_vtk(
 	      for(i_index=1;i_index<number_primary_cells_i+1;i_index++)
 	      {
 		   full_row--;
-		   output_stream << cell_centered_field[i_index][j_index][k_index] << " ";
+		   double value=0.0;
+		   if(fabs(cell_centered_field[i_index][j_index][k_index])>1e-18)
+		   {
+		      value=	  cell_centered_field[i_index][j_index][k_index];
+		   }
+		   // if(cell_centered_field[i_index][j_index][k_index]<0)
+		   // {
+		   // 	   output_stream << cell_centered_field[i_index][j_index][k_index] << "     ";
+		   // }
+		   // else
+		   // {
+		   // 	   output_stream << " "<< cell_centered_field[i_index][j_index][k_index] << "     ";
+		   // }
+		   if(value<0)
+		   {
+		   	   output_stream << value << "     ";
+		   }
+		   else
+		   {
+		   	   output_stream << " "<< value << "     ";
+		   }
 		   if(!full_row)
 		   {
 			output_stream<<"\n";

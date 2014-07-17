@@ -31,9 +31,12 @@ EXPORT void read_restart_file(
 	  Array3<double> level_set, 			// level set field at new time level
 							// mass conserving
 	  Array3<double> volume_of_fluid, 		// volume of fluid field
-	  Array3<double> u_1_velocity, 			// velocity field x1 direction
-	  Array3<double> u_2_velocity, 			// velocity field x2 direction
-	  Array3<double> u_3_velocity,			// velocity field x3 direction
+	  Array3<double> u_1_velocity_old, 		// velocity field x1 direction at old time level
+	  Array3<double> u_2_velocity_old, 		// velocity field x2 direction at old time level
+	  Array3<double> u_3_velocity_old,		// velocity field x3 direction at old time level
+	  Array3<double> u_1_velocity_new, 		// velocity field x1 direction at new time level
+	  Array3<double> u_2_velocity_new, 		// velocity field x2 direction at new time level
+	  Array3<double> u_3_velocity_new,		// velocity field x3 direction at new time level
 	  Array3<double> pressure,			// pressure field
 	  int number_primary_cells_i,			// number of primary (pressure) cells in x1 direction
 	  int number_primary_cells_j,			// number of primary (pressure) cells in x2 direction
@@ -69,10 +72,25 @@ EXPORT void read_restart_file(
 
           level_set.read( InputFile );
           volume_of_fluid.read( InputFile );
-          u_1_velocity.read( InputFile );
-          u_2_velocity.read( InputFile );
-          u_3_velocity.read( InputFile );
+          u_1_velocity_new.read( InputFile );
+          u_2_velocity_new.read( InputFile );
+          u_3_velocity_new.read( InputFile );
           pressure.read( InputFile );
 
           InputFile.close();
+          
+          copy_general_field(u_1_velocity_new, u_1_velocity_old,
+                       0, number_primary_cells_i,
+                         0, number_primary_cells_j+1,
+                           0, number_primary_cells_k+1);
+
+          copy_general_field(u_2_velocity_new, u_2_velocity_old,
+                       0, number_primary_cells_i+1,
+                         0, number_primary_cells_j,
+                           0, number_primary_cells_k+1);
+          
+          copy_general_field(u_3_velocity_new, u_3_velocity_old,
+                       0, number_primary_cells_i+1,
+                         0, number_primary_cells_j+1,
+                           0, number_primary_cells_k);
 }

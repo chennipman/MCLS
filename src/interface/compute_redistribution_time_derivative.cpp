@@ -53,8 +53,15 @@ EXPORT double compute_redistribution_time_derivative(
         double maximum_time_derivative_vof_error=0;                     // largest value of time derivative in the volume of fluid
                                                                         // error redistribution equation
         int i_index, j_index, k_index;                                  // local variables for loop indexing
+        int max_index_i;						// i_index of cell with largest
+        								// time derivative of the vof error
+        int max_index_j;						// j_index of cell with largest
+        								// time derivative of the vof error
+        int max_index_k;						// k_index of cell with largest
+        								// time derivative of the vof error
 //         double diffusion_coefficient=0.00001;
-        double diffusion_coefficient=0.0000002;
+//        double diffusion_coefficient=0.0000002;
+        double diffusion_coefficient=0.0000004;
         mass_redistribution_diffusion_coefficient=diffusion_coefficient;
         
         /* compute time derivative of the redistribution equation */
@@ -119,13 +126,88 @@ EXPORT double compute_redistribution_time_derivative(
                                         one_over_dx2*(flux_pluss_x2-flux_minus_x2)+
                                         one_over_dx3*(flux_pluss_x3-flux_minus_x3)
                                                    );
-                        maximum_time_derivative_vof_error=std::max(maximum_time_derivative_vof_error,
-                            fabs(time_derivative_volume_of_fluid_correction[i_index][j_index][k_index]));
+                        // maximum_time_derivative_vof_error=std::max(maximum_time_derivative_vof_error,
+                        //     fabs(time_derivative_volume_of_fluid_correction[i_index][j_index][k_index]));
+                        
+                        if(fabs(time_derivative_volume_of_fluid_correction[i_index][j_index][k_index])>=
+                        	maximum_time_derivative_vof_error)
+                        {
+                        	maximum_time_derivative_vof_error=
+                        		fabs(time_derivative_volume_of_fluid_correction[i_index][j_index][k_index]);
+                        	max_index_i=i_index;
+                        	max_index_j=j_index;
+                        	max_index_k=k_index;
+                        }
             
                     }
                 }
             }
-        
-//           std::cerr<<" max time derivative = "<< maximum_time_derivative_vof_error<<"\n";
+            std::cerr<<" maximum_time_derivative_vof_error : "<<maximum_time_derivative_vof_error<<"\n";
+            std::cerr<<" at indices "<< max_index_i<<" "<< max_index_j<<" "<< max_index_k<<"\n";
+            i_index=max_index_i;
+            j_index=max_index_j;
+            k_index=max_index_k;
+            flux_pluss_x1=
+                    upwind_flux_mass_redistribution(
+                        redistribution_velocity_x1[i_index  ][j_index][k_index],
+                            volume_of_fluid_correction[i_index  ][j_index][k_index],
+                                volume_of_fluid_correction[i_index+1][j_index][k_index])
+                        -mass_redistribution_diffusion_coefficient*one_over_dx1*
+                         (volume_of_fluid_correction[i_index+1][j_index][k_index]-
+                           volume_of_fluid_correction[i_index  ][j_index][k_index]);
+                    
+            flux_minus_x1=
+                    upwind_flux_mass_redistribution(
+                        redistribution_velocity_x1[i_index-1][j_index][k_index],
+                            volume_of_fluid_correction[i_index-1][j_index][k_index],
+                                volume_of_fluid_correction[i_index  ][j_index][k_index])
+                       -mass_redistribution_diffusion_coefficient*one_over_dx1*
+                         (volume_of_fluid_correction[i_index][j_index][k_index]-
+                           volume_of_fluid_correction[i_index-1][j_index][k_index]);
+            flux_pluss_x2=
+                    upwind_flux_mass_redistribution(
+                        redistribution_velocity_x2[i_index][j_index  ][k_index],
+                            volume_of_fluid_correction[i_index][j_index  ][k_index],
+                                volume_of_fluid_correction[i_index][j_index+1][k_index])
+                        -mass_redistribution_diffusion_coefficient*one_over_dx2*
+                         (volume_of_fluid_correction[i_index][j_index+1][k_index]-
+                           volume_of_fluid_correction[i_index][j_index][k_index]);
+            flux_minus_x2=
+                    upwind_flux_mass_redistribution(
+                        redistribution_velocity_x2[i_index][j_index-1][k_index],
+                            volume_of_fluid_correction[i_index][j_index-1][k_index],
+                                volume_of_fluid_correction[i_index][j_index][k_index])
+                        -mass_redistribution_diffusion_coefficient*one_over_dx2*
+                         (volume_of_fluid_correction[i_index][j_index][k_index]-
+                           volume_of_fluid_correction[i_index][j_index-1][k_index]);
+            flux_pluss_x3=
+                    upwind_flux_mass_redistribution(
+                        redistribution_velocity_x3[i_index][j_index][k_index  ],
+                            volume_of_fluid_correction[i_index][j_index][k_index  ],
+                                volume_of_fluid_correction[i_index][j_index][k_index+1])
+                        -mass_redistribution_diffusion_coefficient*one_over_dx3*
+                         (volume_of_fluid_correction[i_index][j_index][k_index+1]-
+                           volume_of_fluid_correction[i_index][j_index][k_index]);
+            flux_minus_x3=
+                    upwind_flux_mass_redistribution(
+                        redistribution_velocity_x3[i_index][j_index][k_index-1],
+                            volume_of_fluid_correction[i_index][j_index][k_index-1],
+                                volume_of_fluid_correction[i_index][j_index][k_index])
+                        -mass_redistribution_diffusion_coefficient*one_over_dx3*
+                         (volume_of_fluid_correction[i_index][j_index][k_index]-
+                           volume_of_fluid_correction[i_index][j_index][k_index-1]);
+            
+             std::cerr<<" flux_minus_x1 : "<<    flux_minus_x1 <<"\n";   
+             std::cerr<<" flux_minus_x2 : "<<    flux_minus_x2 <<"\n";
+             std::cerr<<" flux_minus_x3 : "<<    flux_minus_x3 <<"\n";
+             std::cerr<<" flux_pluss_x1 : "<<    flux_pluss_x1 <<"\n";
+             std::cerr<<" flux_pluss_x2 : "<<    flux_pluss_x2 <<"\n";
+             std::cerr<<" flux_pluss_x3 : "<<    flux_pluss_x3 <<"\n";
+             std::cerr<<" check on max  : "<<     -1.0*(
+                                        one_over_dx1*(flux_pluss_x1-flux_minus_x1)+
+                                        one_over_dx2*(flux_pluss_x2-flux_minus_x2)+
+                                        one_over_dx3*(flux_pluss_x3-flux_minus_x3)
+                                                   )<< "\n";
+                           
           return maximum_time_derivative_vof_error;
 }

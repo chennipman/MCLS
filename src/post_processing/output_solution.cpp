@@ -7,12 +7,12 @@
 #include <sstream>
 #include <fstream>
 using namespace std;
-string convertInt(int number)
-{
-   stringstream ss;//create a stringstream
-   ss << number;//add number to the stream
-   return ss.str();//return a string with the contents of the stream
-}
+// EXPORT string convertInt(int number)
+// {
+//    stringstream ss;//create a stringstream
+//    ss << number;//add number to the stream
+//    return ss.str();//return a string with the contents of the stream
+// }
 
 EXPORT void output_solution(
 	  Array3<double> level_set_new, 	// level set field at new time level

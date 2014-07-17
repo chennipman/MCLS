@@ -19,7 +19,7 @@
 /* and update the interface position accordingly.                                  */
 /***********************************************************************************/
 
-EXPORT void redistribute_volume_of_fluid_error(						
+EXPORT void redistribute_volume_of_fluid_error_by_advection(						
 	Array3<double> level_set_old, 				// level set field 
 								// before mass redistribution
         Array3<double> level_set,                               // level set field updated after
@@ -214,24 +214,7 @@ EXPORT void redistribute_volume_of_fluid_error(
 	redistribution_velocity_x2.destroy();
 	redistribution_velocity_x3.destroy();
         time_derivative_volume_of_fluid_correction.destroy();
-        
-        
-        
-        /* compute the sum of the error and its sign */
-        /* evaluate total number of mixed cells with 'room' for change */
-        /* check if simple averaging of the error is feasible */
-        /* this means the set of all mixed cells with 'room' can accomodate the error */
-        
-        /* there is sufficient room */
-        /* distribute the average error over all mixed cells with 'room' */
-        /* break the process off  */
-        
-        
-        /* divide the total error over the available mixed cells */
-        /* there is not sufficient room */
-        /* divide the 'room'*number_of_mixed_cells over the mixed cells */
-        
-        
+       
         
         
         

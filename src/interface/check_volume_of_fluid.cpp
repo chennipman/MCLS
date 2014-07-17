@@ -61,7 +61,7 @@ EXPORT int check_volume_of_fluid(
       {
       /* cells have been detected that have incorrect values for the volume of fluid */
 	    std::cerr<<"ERROR:some of the volume of fluid values are out of bounds \n";
-	    std::cerr<<"minimum value "<<minimum_value_vof ;
+	    std::cerr<<" minimum value "<<minimum_value_vof ;
 	    std::cerr<<" maximum value "<<maximum_value_vof <<"\n";
 	    std::cerr<<" in function check_volume_of_fluid line 59 \n";
       

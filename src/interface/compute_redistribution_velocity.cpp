@@ -24,9 +24,9 @@ EXPORT double compute_redistribution_velocity(
       {
 	double mean_value_level_set;			// average of left and right hand side value
 							// of the level-set field
-	double redistribution_velocity_threshold=0.05;	// threshold value for the redistribution
+	double redistribution_velocity_threshold=0.01;	// threshold value for the redistribution
 							// velocity
-//         double redistribution_velocity_threshold=0.01;   // threshold value for the redistribution
+//         double redistribution_velocity_threshold=0.05;   // threshold value for the redistribution
 //                                                         // velocity
 	double redistribution_velocity;			// velocity for the mass redistribution
 							// algorithm
