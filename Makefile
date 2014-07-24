@@ -176,6 +176,7 @@ COMMON_SRCS= \
 		write_coordinates_vtk.cpp \
 		write_vertex_centered_field_vtk.cpp \
 		write_vertex_centered_vector_field_vtk.cpp \
+		write_face_field_pure.cpp \
 	) \
 	$(addprefix src/pressure_correction_equation/, \
 		apply_boundary_conditions_pressure.cpp \
