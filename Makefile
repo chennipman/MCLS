@@ -217,15 +217,18 @@ CASE_DEFAULT=undefined_case
 MCLS_OBJS=$(BUILD_DIR)/src/main_program/dns.o
 ALL_TARGETS:=$(ALL_TARGETS) $(MCLS_OBJS) $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)/MCLS
 
-$(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)/MCLS:  $(BUILD_DIR)/testcases/$(CASE_DEFAULT)/set_boundary_conditions.o $(BUILD_DIR)/testcases/$(CASE_DEFAULT)/set_parameters.o $(BUILD_DIR)/testcases/$(CASE_DEFAULT)/initialize_flow_field.o $(COMMON_OBJS) $(MCLS_OBJS) 
+.PHONY: make
+
+make: copy_case_$(CASE_DEFAULT) $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)/MCLS
+
+$(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)/MCLS: $(BUILD_DIR)/testcases/$(CASE_DEFAULT)/set_boundary_conditions.o $(BUILD_DIR)/testcases/$(CASE_DEFAULT)/set_parameters.o $(BUILD_DIR)/testcases/$(CASE_DEFAULT)/initialize_flow_field.o $(COMMON_OBJS) $(MCLS_OBJS) 
 	@mkdir -p $(dir $@)
-	$(CXX) $(LDFLAGS) $^ -o $@
-	cp -n testcases/$(CASE_DEFAULT)/set_boundary_conditions_default.cpp  testcases/$(CASE_DEFAULT)/set_boundary_conditions.cpp
-	cp -n testcases/$(CASE_DEFAULT)/set_parameters_default.cpp           testcases/$(CASE_DEFAULT)/set_parameters.cpp 
-	cp -n testcases/$(CASE_DEFAULT)/initialize_flow_field_default.cpp    testcases/$(CASE_DEFAULT)/initialize_flow_field.cpp 
+	$(CXX) $(LDFLAGS) $^ -o $@  
+	
 	cp testcases/$(CASE_DEFAULT)/set_boundary_conditions.cpp          $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)
 	cp testcases/$(CASE_DEFAULT)/set_parameters.cpp                   $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)
 	cp testcases/$(CASE_DEFAULT)/initialize_flow_field.cpp            $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)
+	
 	@test -z "`git status --porcelain`" || echo WARNING: there are uncommited changes
 
 .PHONY: MCLS
@@ -253,7 +256,7 @@ $(UNIT_TESTS): $(addprefix $(EXECUTABLE_DIR)/,$(UNIT_TESTS))
 	$(EXECUTABLE_DIR)/$@
 
 
-# TEST CASES
+# MAKE TEST CASES
 
 define CASE_RULES
 
@@ -262,21 +265,21 @@ ALL_TARGETS:= \
 	$(BUILD_DIR)/testcases/$(1)/set_boundary_conditions.o \
 	$(BUILD_DIR)/testcases/$(1)/set_parameters.o \
 	$(BUILD_DIR)/testcases/$(1)/initialize_flow_field.o
+	
+
 
 $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/MCLS: $$(BUILD_DIR)/testcases/$(1)/set_boundary_conditions.o $$(BUILD_DIR)/testcases/$(1)/set_parameters.o $$(BUILD_DIR)/testcases/$(1)/initialize_flow_field.o $$(COMMON_OBJS) $$(BUILD_DIR)/src/main_program/dns.o
 	@mkdir -p $$(dir $$@)
 	$$(CXX) $$(LDFLAGS) $$^ -o $$@
-	cp -n testcases/$(1)/set_boundary_conditions_default.cpp  testcases/$(1)/set_boundary_conditions.cpp
-	cp -n testcases/$(1)/set_parameters_default.cpp           testcases/$(1)/set_parameters.cpp 
-	cp -n testcases/$(1)/initialize_flow_field_default.cpp    testcases/$(1)/initialize_flow_field.cpp 
-	cp testcases/$(1)/set_boundary_conditions.cpp             $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
-	cp testcases/$(1)/set_parameters.cpp                      $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
-	cp testcases/$(1)/initialize_flow_field.cpp               $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
+	cp testcases/$(1)/set_boundary_conditions.cpp $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
+	cp testcases/$(1)/set_parameters.cpp          $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
+	cp testcases/$(1)/initialize_flow_field.cpp   $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
+	
 	@test -z "`git status --porcelain`" || echo WARNING: there are uncommited changes
 
 .PHONY: case_$(1)
 
-case_$(1): $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/MCLS
+case_$(1): copy_case_$(1) $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/MCLS 
 #	$$^  #can be used to directly run the executable
 
 endef
@@ -285,7 +288,26 @@ TEST_CASES=$(notdir $(wildcard testcases/*))
 $(foreach case,$(TEST_CASES),$(eval $(call CASE_RULES,$(case))))
 
 
-# common rules
+# COPY TEST CASES FROM DEFAULT TO NORMAL
+
+define COPY_RULES
+
+.PHONY: copy_case_$(1)
+
+copy_case_$(1): 
+	cp -n testcases/$(1)/set_boundary_conditions_default.cpp testcases/$(1)/set_boundary_conditions.cpp
+	cp -n testcases/$(1)/set_parameters_default.cpp          testcases/$(1)/set_parameters.cpp 
+	cp -n testcases/$(1)/initialize_flow_field_default.cpp   testcases/$(1)/initialize_flow_field.cpp 
+
+
+#copy_case_$(1): case_$(1)_copy
+#	$$^  #can be used to directly run the executable
+
+endef
+$(foreach case,$(TEST_CASES),$(eval $(call COPY_RULES,$(case))))
+
+
+# COMMON RULES
 
 ALL_TARGETS:=$(ALL_TARGETS) $(BUILD_DIR)/funcdefs.h
 
