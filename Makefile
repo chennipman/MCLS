@@ -220,9 +220,12 @@ ALL_TARGETS:=$(ALL_TARGETS) $(MCLS_OBJS) $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN
 $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)/MCLS:  $(BUILD_DIR)/testcases/$(CASE_DEFAULT)/set_boundary_conditions.o $(BUILD_DIR)/testcases/$(CASE_DEFAULT)/set_parameters.o $(BUILD_DIR)/testcases/$(CASE_DEFAULT)/initialize_flow_field.o $(COMMON_OBJS) $(MCLS_OBJS) 
 	@mkdir -p $(dir $@)
 	$(CXX) $(LDFLAGS) $^ -o $@
-	cp testcases/$(CASE_DEFAULT)/set_boundary_conditions.cpp $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)
-	cp testcases/$(CASE_DEFAULT)/set_parameters.cpp          $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)
-	cp testcases/$(CASE_DEFAULT)/initialize_flow_field.cpp   $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)
+	cp -n testcases/$(CASE_DEFAULT)/set_boundary_conditions_default.cpp  testcases/$(CASE_DEFAULT)/set_boundary_conditions.cpp
+	cp -n testcases/$(CASE_DEFAULT)/set_parameters_default.cpp           testcases/$(CASE_DEFAULT)/set_parameters.cpp 
+	cp -n testcases/$(CASE_DEFAULT)/initialize_flow_field_default.cpp    testcases/$(CASE_DEFAULT)/initialize_flow_field.cpp 
+	cp testcases/$(CASE_DEFAULT)/set_boundary_conditions.cpp          $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)
+	cp testcases/$(CASE_DEFAULT)/set_parameters.cpp                   $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)
+	cp testcases/$(CASE_DEFAULT)/initialize_flow_field.cpp            $(EXECUTABLE_DIR)/$(CASE_DEFAULT)/$(RUN_DIR)
 	@test -z "`git status --porcelain`" || echo WARNING: there are uncommited changes
 
 .PHONY: MCLS
@@ -263,9 +266,12 @@ ALL_TARGETS:= \
 $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/MCLS: $$(BUILD_DIR)/testcases/$(1)/set_boundary_conditions.o $$(BUILD_DIR)/testcases/$(1)/set_parameters.o $$(BUILD_DIR)/testcases/$(1)/initialize_flow_field.o $$(COMMON_OBJS) $$(BUILD_DIR)/src/main_program/dns.o
 	@mkdir -p $$(dir $$@)
 	$$(CXX) $$(LDFLAGS) $$^ -o $$@
-	cp testcases/$(1)/set_boundary_conditions.cpp $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
-	cp testcases/$(1)/set_parameters.cpp          $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
-	cp testcases/$(1)/initialize_flow_field.cpp   $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
+	cp -n testcases/$(1)/set_boundary_conditions_default.cpp  testcases/$(1)/set_boundary_conditions.cpp
+	cp -n testcases/$(1)/set_parameters_default.cpp           testcases/$(1)/set_parameters.cpp 
+	cp -n testcases/$(1)/initialize_flow_field_default.cpp    testcases/$(1)/initialize_flow_field.cpp 
+	cp testcases/$(1)/set_boundary_conditions.cpp             $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
+	cp testcases/$(1)/set_parameters.cpp                      $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
+	cp testcases/$(1)/initialize_flow_field.cpp               $(EXECUTABLE_DIR)/case_$(1)/$$(RUN_DIR)/
 	@test -z "`git status --porcelain`" || echo WARNING: there are uncommited changes
 
 .PHONY: case_$(1)
