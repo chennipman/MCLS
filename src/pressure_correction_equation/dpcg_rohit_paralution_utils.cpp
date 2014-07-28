@@ -314,7 +314,7 @@ void get_memory_status()
   unsigned long uCurAvailMemoryInBytes;
   unsigned long uTotalMemoryInBytes;
    result = cuMemGetInfo( &uCurAvailMemoryInBytes, &uTotalMemoryInBytes );
-    if( result == CUDASUCCESS )
+    if( result == CUDA_SUCCESS )
     {
         printf( "Device: \nTotal Memory: %ld MB, Free Memory: %ld MB\n",
                 uTotalMemoryInBytes / ( 1024 * 1024 ),

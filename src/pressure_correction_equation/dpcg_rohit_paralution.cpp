@@ -19,6 +19,9 @@ int call_to_cg_wrapper(Array2<double> A,Array1<double> x,Array1<double> b, int m
   bin = (double*)calloc(dim,sizeof(double));
 
   bref=b.get_pointer();  xref=x.get_pointer();
+  printf("\n GPU memory status on entry is\n");
+  get_memory_status();
+  
 // #pragma omp parallel
 //     {  
 // #pragma omp for private(i)     
