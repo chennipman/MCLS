@@ -210,7 +210,7 @@ COMMON_OBJS=$(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(COMMON_SRCS)
 
 ALL_TARGETS:=$(COMMON_OBJS)
 
-LDFLAGS+= -fopenmp -L../../paralution-0.7.0/build/lib -L$(CUDA_INSTALL_PATH)/lib64 -lparalution -lcublas -lcudart -lcusparse
+LDFLAGS+= -fopenmp -L../../paralution-0.7.0/build/lib -L$(CUDA_INSTALL_PATH)/lib64 -lparalution -lcuda -lcublas -lcudart -lcusparse
 
 # MCLS
 

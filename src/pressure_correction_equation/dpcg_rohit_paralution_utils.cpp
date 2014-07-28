@@ -1,6 +1,6 @@
 #include "dpcg_rohit_paralution.hpp"
 using namespace std;
-
+#include "cuda.h"
 
 // void  wrap_A_intoDIA(Array2<double>, double *, int, int, int, int *);
 // void  cnvrtDIA_to_CSR(double *, double **, int **, int **, int, int, int, int);
@@ -126,7 +126,7 @@ void  cnvrtDIA_to_CSR(double *Aptr, double **acsrvals, int **acsrcols, int **acs
   (*acsrrows)[0]=0;
   omp_set_num_threads(8);
   lclctr=0; csridx=0;
-#pragma omp for   
+// #pragma omp for   
   for(i=0;i<dim;i++)
   {
     if((i-nsqr)>=0)// diagonal with offset -n*n avlbl
@@ -308,4 +308,16 @@ std::cout << "Cleanup:" << (tack-tick)/1000000 << " sec" << std::endl;
   return status;
 }
 
-
+void get_memory_status()
+{
+  CUresult result;
+  unsigned long uCurAvailMemoryInBytes;
+  unsigned long uTotalMemoryInBytes;
+   result = cuMemGetInfo( &uCurAvailMemoryInBytes, &uTotalMemoryInBytes );
+    if( result == CUDASUCCESS )
+    {
+        printf( "Device: \nTotal Memory: %ld MB, Free Memory: %ld MB\n",
+                uTotalMemoryInBytes / ( 1024 * 1024 ),
+                uCurAvailMemoryInBytes / ( 1024 * 1024 ));
+    }
+}

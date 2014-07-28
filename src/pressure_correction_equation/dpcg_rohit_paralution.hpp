@@ -14,9 +14,10 @@
 #include "mmio.h"
 #include "omp.h"
 #include "paralution.hpp"
+#include "driver_types.h"
 using namespace std;
 using namespace paralution;
-// #define GPURUN	10000
+#define GPURUN	10000
 #define BUBFLO	20000
 extern void  wrap_A_intoDIA(Array2<double>, double *, int, int, int, int *);
 extern void  cnvrtDIA_to_CSR(double *, double **, int **, int **, int, int, int, int);
@@ -30,4 +31,4 @@ extern int  call_paralution_dpcg(double *, int *, int *, double*, double *, int,
 extern int call_to_cg_wrapper(Array2<double> A,Array1<double> x,Array1<double> b, int max_iter, double tolerance,
 			int xdim, int ydim, int zdim, int *iter_cnt, double *l2nrm_residual, Array3<double>);
 
-
+extern void get_memory_status();
