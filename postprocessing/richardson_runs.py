@@ -32,16 +32,19 @@ namelogfile.append("-logfile.txt")
 namelogfile = ''.join(namelogfile)
 namelogfile = 'logfiles_for_richardson/' + namelogfile
 
-#time_stepping_methods = [5,4,3,1]
-time_stepping_methods = [5]
-#time_steps = [1e-1, 5e-2, 2e-2, 1e-2, 5e-3, 2e-3, 1e-3, 1e-4]
-time_steps = [1e-1, 5e-2 ]
-#	time_steps = [1e-1, 1e-2, 1e-3, 1e-4]
+time_stepping_methods = [5,4,3,1]
+#time_stepping_methods = [5,4,3]
+time_steps = [1e-1, 5e-2, 2e-2, 1e-2, 5e-3, 2e-3, 1e-3, 5e-4, 2e-4, 1e-4, 1e-5]
+#time_steps = [1e-1, 5e-2, 1e-4]
+#time_steps = [1e-1, 5e-2, 1e-2, 1e-3]
 
 with open(namelogfile, 'w') as file:
-    first_text = 'logfile for richardson extrapolation. The testcase is: ' + testcase +  '. Time of run: ' + tsstr #+ ' \n'
-    first_text = first_text + ' time_stepping_methods: ' + str(time_stepping_methods) + 'time_steps: ' + str(time_steps) + '\n'
-    file.write(first_text)
+    file.write('logfile for richardson extrapolation. The testcase is: ' + testcase +  '. Time of run: ' + tsstr + ' \n')
+    file.write('time_stepping_methods: \n')
+    file.write(str(time_stepping_methods))
+    file.write('\n' + 'time_steps: \n')
+    file.write(str(time_steps))
+    file.write('\n')
     file.close()
 
 
@@ -58,10 +61,9 @@ for time_stepping_method in time_stepping_methods:
 
 		#now change the set_parameter file
 		string_time = '      time_step_restriction_global			= ' + str(time_step_restriction_global) + ';   \n'
-		data[147] = string_time
-	#	time_stepping_method = 1
+		data[144] = string_time
 		string_step_method = '      time_stepping_method 				= ' + str(time_stepping_method) + '; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta   \n'
-		data[156] = string_step_method
+		data[153] = string_step_method
 
 		# and write everything back
 		with open(name_parameter_file, 'w') as file:
@@ -86,9 +88,9 @@ for time_stepping_method in time_stepping_methods:
 
 		# back to the orignal directory
 		os.chdir(cwd)
-#		print 'start tail \n'
-#		os.system('tail ' + namelogfile)
-#		print '\n end tail \n' 
+		print 'start tail \n'
+		os.system('tail ' + namelogfile)
+		print '\n end tail \n' 
 
 		with open(namelogfile, 'a') as file:
 		    case_direc = case_direc.rstrip('/')
