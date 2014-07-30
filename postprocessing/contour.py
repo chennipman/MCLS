@@ -9,8 +9,6 @@ Creates contour plots of the results
 
 import sys
 sys.path.append('general_functions')
-
-#import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 from matplotlib.colors import BoundaryNorm
