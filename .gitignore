@@ -10,5 +10,8 @@
 /testcases/*/MCLS
 /testcases/*/interface_details.csv
 /testcases/TV/*logfile.txt
+/figures
+/tables
+*.pyc
 *.pvsm
 *.png
