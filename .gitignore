@@ -12,7 +12,7 @@
 /testcases/TV/*logfile.txt
 /figures
 /tables
-/logfiles_for_richardson/*
+/logfiles/
 *.pyc
 *.pvsm
 *.png

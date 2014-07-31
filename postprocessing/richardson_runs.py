@@ -30,7 +30,7 @@ namelogfile = []
 namelogfile.append(tsstr)
 namelogfile.append("-logfile.txt")
 namelogfile = ''.join(namelogfile)
-namelogfile = 'logfiles_for_richardson/' + namelogfile
+namelogfile = 'logfiles/' + namelogfile
 
 time_stepping_methods = [5,4,3,1]
 #time_stepping_methods = [5,4,3]

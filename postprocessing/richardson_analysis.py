@@ -39,11 +39,11 @@ time_steps = []
 
 
 # choose files based on logfiles
-folder = 'logfiles_for_richardson/'
+folder = 'logfiles/'
 logfile = '07-30-23-42-logfile'
 namelogfile = folder + logfile + '.txt'
 f = open(namelogfile, 'r')
-lines = f.readlines() #first_text = 'logfile for richardson extrapolation. The testcase is: ' + testcase +  '. Time of run: ' + tsstr + '\n'
+lines = f.readlines() 
 
 line = lines[2]
 line = line[1:-2]
