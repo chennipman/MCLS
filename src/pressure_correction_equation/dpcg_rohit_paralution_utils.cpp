@@ -118,13 +118,19 @@ void  cnvrtDIA_to_CSR(double *Aptr, double **acsrvals, int **acsrcols, int **acs
 {
   int dim=xdim*ydim*zdim, i, nsqr, lclctr, csridx;
   nsqr=xdim*ydim;
-  *acsrvals=(double*)calloc(nnzA,sizeof(double));
-  *acsrcols=(int*)calloc(nnzA,sizeof(int));
-  *acsrrows=(int*)calloc(dim+1,sizeof(int));
+  //*acsrvals=(double*)malloc(nnzA*sizeof(double));
+//   *acsrvals = new double [nnzA];
+  allocate_host(nnzA,&(*acsrvals));
+  //*acsrcols=(int*)malloc(nnzA*sizeof(int));
+//   *acsrcols = new int [nnzA];
+  allocate_host(nnzA,&(*acsrcols));
+  //*acsrrows=(int*)malloc((dim+1)*sizeof(int));
+//   *acsrrows = new int [dim+1];
+  allocate_host(dim+1,&(*acsrrows));
   
   //convert DIA to CSR now
   (*acsrrows)[0]=0;
-  omp_set_num_threads(8);
+//   omp_set_num_threads(8);
   lclctr=0; csridx=0;
 // #pragma omp for   
   for(i=0;i<dim;i++)
@@ -204,6 +210,7 @@ int  call_paralution_dpcg(double *acsrvals, int *acsrrows, int *acsrcols, double
   double tick, tack;
   int status, i;
   int *bubmap_ptr=NULL, maxbmap;
+  int *dum_int_ptr1, *dum_int_ptr2, *dum_int_ptr3, *dum_int_ptr4;
   //wrap A into paralution CSR object
   
   LocalVector<double> x;
@@ -216,7 +223,7 @@ int  call_paralution_dpcg(double *acsrvals, int *acsrrows, int *acsrcols, double
   //setup DPCG solver
   // Linear Solver
   DPCG<LocalMatrix<double>, LocalVector<double>, double > ls;
-
+  ls.Init(0.0, tolerance, 1e8, max_iter);
     
 #ifdef GPURUN  
   mat.MoveToAccelerator();
@@ -234,6 +241,7 @@ gettimeofday(&now, NULL);
 tick = now.tv_sec*1000000.0+(now.tv_usec);
   
 #ifdef BUBFLO
+  LocalVector<int> bubmap;
   ls.SetNVectors_eachdirec(defvex_perdirec_in, defvex_perdirec_in, defvex_perdirec_in);
   ls.Set_alldims(xdim, ydim, zdim);
   //ls.Setxdim(xdim);
@@ -241,7 +249,7 @@ tick = now.tv_sec*1000000.0+(now.tv_usec);
   ls.SetNVectors(defvex_perdirec_in);
   ls.SetZlssd(setlssd_in);
   if(setlssd_in){
-      LocalVector<int> bubmap;
+      
       bubmap.Allocate("bubmap",mat.get_nrow());
       bubmap.LeaveDataPtr(&bubmap_ptr);
       bubmap_create(level_set, bubmap_ptr, xdim, ydim, zdim, mat.get_nrow(), &maxbmap, lvst_offst_in);
@@ -249,7 +257,7 @@ tick = now.tv_sec*1000000.0+(now.tv_usec);
 #endif  
 
   ls.SetOperator(mat);
-  ls.Init(0.0, tolerance, 1e8, max_iter);
+  
 
 #ifdef BUBFLO
   ls.MakeZ_CSR(); // requires xdim_ and novecni_ and zlssd_ to be set
@@ -263,8 +271,6 @@ tick = now.tv_sec*1000000.0+(now.tv_usec);
 gettimeofday(&now, NULL);
 tack = now.tv_sec*1000000.0+(now.tv_usec);
 std::cout << "Building:" << (tack-tick)/1000000 << " sec" << std::endl;
-  
-//   ls.Verbose(2);
 
   mat.info();
 
@@ -290,14 +296,26 @@ tick = now.tv_sec*1000000.0+(now.tv_usec);
   mat.MoveToHost();
   rhs.MoveToHost();
   mat.ConvertToCSR();
-  free(acsrcols);	free(acsrrows);	free(acsrvals);
+
   acsrcols=NULL;	acsrrows=NULL;	acsrvals=NULL;
   mat.LeaveDataPtrCSR(&acsrrows, &acsrcols, &acsrvals);
-
-  free(xin);	free(bin);	xin=NULL;	bin=NULL;
+  free_host(&acsrcols);	free_host(&acsrrows);	free_host(&acsrvals);
+  
+  xin=NULL;	bin=NULL;
   rhs.LeaveDataPtr(&bin);
   x.LeaveDataPtr(&xin);
+  
   memcpy(xout, xin,sizeof(double)*dim);
+  free_host(&xin);	free_host(&bin);
+  
+  mat.Clear(); /// Could be the reason of the leaks
+  rhs.Clear(); /// Could be the reason of the leaks
+  x.Clear();   /// Could be the reason of the leaks
+  if(setlssd_in)
+  {
+    free_host(&bubmap_ptr);
+    bubmap.Clear();
+  }
   ls.Clear();
   
 gettimeofday(&now, NULL);

@@ -17,7 +17,7 @@
 #include "driver_types.h"
 using namespace std;
 using namespace paralution;
-#define GPURUN	10000
+// #define GPURUN	10000
 #define BUBFLO	20000
 extern void  wrap_A_intoDIA(Array2<double>, double *, int, int, int, int *);
 extern void  cnvrtDIA_to_CSR(double *, double **, int **, int **, int, int, int, int);
