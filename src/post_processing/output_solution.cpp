@@ -282,6 +282,7 @@ EXPORT void output_solution(
 
 	
       
+     }
       
 	    u_1_velocity_center.destroy();
 	    u_2_velocity_center.destroy();
@@ -291,6 +292,5 @@ EXPORT void output_solution(
 	    u_3_velocity_vertex.destroy();
 	    
 	    
-     }
 
   }
