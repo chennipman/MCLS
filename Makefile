@@ -1,11 +1,3 @@
-<<<<<<< HEAD
- CFLAGS=-O3 -Wall
- CXXFLAGS=-O3 -Wall
-# CC=gcc
-# CXX=g++
-# CFLAGS=-g -static -Wall
-# CXXFLAGS=-g -static -Wall
-=======
 # CFLAGS=-O3 -Wall -fopenmp -I../../paralution-0.7.0/build/inc -I$(CUDA_INSTALL_PATH)/include 
 # CXXFLAGS=-O3 -Wall -fopenmp -I../../paralution-0.7.0/build/inc -I$(CUDA_INSTALL_PATH)/include
 # NVCCFLAGS=-gencode arch=compute_20,code=sm_20 -gencode arch=compute_35,code=sm_35
@@ -15,7 +7,6 @@ CXXFLAGS=-pg -O3 -Wall -fopenmp -I../../paralution-0.7.0/build/inc -I$(CUDA_INST
 NVCCFLAGS=-pg -Xcompiler -gencode arch=compute_20,code=sm_20 -gencode arch=compute_35,code=sm_35
 # CFLAGS=-g -Wall
 # CXXFLAGS=-g -Wall
->>>>>>> 17271c2706fdfe0918418fad885417ff66875767
 
 BUILD_DIR=objects
 
@@ -211,13 +202,10 @@ COMMON_SRCS= \
 		shift_pressure_solution.cpp \
 		solve_momentum_corrector.cpp \
 		solve_pressure_correction_system.cpp \
-<<<<<<< HEAD
 		solve_final_pressure_corrector.cpp \
-=======
 		mmio.cpp	\
 		dpcg_rohit_paralution.cpp	\
 		dpcg_rohit_paralution_utils.cpp	\
->>>>>>> 17271c2706fdfe0918418fad885417ff66875767
 	) \
 	$(addprefix src/restart/, \
 		read_restart_file.cpp \
@@ -230,11 +218,8 @@ COMMON_OBJS=$(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(COMMON_SRCS)
 ALL_TARGETS:=$(COMMON_OBJS)
 EXECUTABLE_DIR=executable
 
-<<<<<<< HEAD
 # MCLS(default)
-=======
 LDFLAGS+= -fopenmp -L../../paralution-0.7.0/build/lib -L$(CUDA_INSTALL_PATH)/lib64 -lparalution -lcuda -lcublas -lcudart -lcusparse
->>>>>>> 17271c2706fdfe0918418fad885417ff66875767
 
 CASE_DEFAULT=undefined_case
 MCLS_OBJS=$(BUILD_DIR)/src/main_program/dns.o
