@@ -55,17 +55,20 @@ EXPORT void output_solution(
       string basic_filename="solution_file.";	// the common part of the names of all output files
       string filename_tecplot;			// the filename of the current output file for tecplot format
       string filename_vtk;			// the filename of the current output file for vtk format
+      string filename_pure;			// the filename of the current output file for pure format
       string scalar_name;			// name of the scalar field to be written 
       string vector_name;			// name of the vector field to be written 
       string look_up_table_name;		// name of the look-up table to be used
-      
+      double pure_output = 1;
       
 
 	    string solution_file_index=convertInt(index_of_output_file); 
     
 	    filename_tecplot = basic_filename + solution_file_index + ".dat";
 	    filename_vtk     = basic_filename + solution_file_index + ".vtk";
-      
+ 	    filename_pure    = basic_filename + solution_file_index + ".pure";
+
+     
 	    /* allocate memory for the velocity at the cell centers */
       
 	    u_1_velocity_center.create(number_primary_cells_i+2, number_primary_cells_j+2, 
@@ -294,4 +297,120 @@ EXPORT void output_solution(
  	    std::cout<< "Finished vtk_plot output \n";
      }
 
+ 	    if(pure_output)
+	    {
+		  /* generate an output file in pure format */
+
+	
+	    /* open the output file */
+      
+		  ofstream output_pure ( filename_pure.c_str());
+		  if(!output_pure)
+		  {
+		      /* the contructor returned a 0-pointer :-( */
+		      cout << "Cannot open file.\n";
+		      exit(1);
+		  }
+	    
+		  /* write the header for the tecplot file */
+		  /* write the header for the tecplot file */
+	    
+
+		  if(!output_pure)
+		  {
+		      /* the contructor returned a 0-pointer :-( */
+		      cout << "Cannot open file.\n";
+		      exit(1);
+		  }
+	    
+		  /* write the header for the tecplot file */
+		  /* write the header for the tecplot file */
+	    
+		  output_pure << "# Unaveraged Datafile \n";
+		  output_pure << "Solution file MCLS \n";
+		  output_pure << "ASCII \n";
+		  output_pure << "DATASET RECTILINEAR_GRID\n";
+		  output_pure << "DIMENSIONS " << "\n" << number_primary_cells_i+1;
+		  output_pure  << " "<< number_primary_cells_j+1 << " "<< number_primary_cells_k+1 << "\n";
+		  output_pure.setf(ios::scientific);
+		  output_pure.precision(16);
+		  
+		  write_coordinates_vtk( output_pure, 		
+					number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		
+					  mesh_width_x1, mesh_width_x2, mesh_width_x3); // the same function as for the vtk_output is used
+		  
+		  
+		  /* write all face data to file */
+		  /* the ghost velocity cell are also written */
+		  
+		  
+		  output_pure << "FACE_DATA " "\n";
+		  output_pure << "VELOCITY X " << (number_primary_cells_i+1)*(number_primary_cells_j+2)*(number_primary_cells_k+2)<<"\n";
+		  write_face_field_pure( output_pure,u_1_velocity_new,
+					 number_primary_cells_i+1, number_primary_cells_j+2,number_primary_cells_k+2);
+		  output_pure << "END VELOCITY X " << (number_primary_cells_i+1)*(number_primary_cells_j+2)*(number_primary_cells_k+2)<<"\n";
+		  
+		  output_pure << "VELOCITY Y " << (number_primary_cells_i+2)*(number_primary_cells_j+1)*(number_primary_cells_k+2)<<"\n";
+		  write_face_field_pure( output_pure,u_2_velocity_new,
+					 number_primary_cells_i+2, number_primary_cells_j+1,number_primary_cells_k+2);
+		  output_pure << "END VELOCITY Y " << (number_primary_cells_i+1)*(number_primary_cells_j+2)*(number_primary_cells_k+2)<<"\n";
+
+		  output_pure << "VELOCITY Z " << (number_primary_cells_i+2)*(number_primary_cells_j+2)*(number_primary_cells_k+1)<<"\n";
+		  write_face_field_pure( output_pure,u_3_velocity_new,
+					 number_primary_cells_i+2, number_primary_cells_j+2,number_primary_cells_k+1);
+		  output_pure << "END VELOCITY Z " << (number_primary_cells_i+1)*(number_primary_cells_j+2)*(number_primary_cells_k+2)<<"\n";
+
+		  /* write all cell centered data to file */
+
+		  output_pure << "CELL_DATA " << total_number_primary_cells << "\n";
+		  
+		  
+		  /* write the volume of fluid */
+		  
+		  scalar_name="volume_of_fluid";
+		  look_up_table_name="vof_tbl";
+		  
+		  write_cell_centered_field_vtk( output_pure, scalar_name, look_up_table_name, volume_of_fluid, 		
+						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
+		  output_pure << "END " << scalar_name << "\n";
+
+		  /* write the level-set field */
+		  
+		  scalar_name="level_set";
+		  look_up_table_name="lvst_tbl";
+		  
+		  write_cell_centered_field_vtk( output_pure, scalar_name, look_up_table_name, level_set_new, 		
+						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
+		  output_pure << "END " << scalar_name << "\n";
+
+
+		  /* write the curvature field */
+		  
+		  scalar_name="curvature";
+		  look_up_table_name="curv_tbl";
+		  
+		  write_cell_centered_field_vtk( output_pure, scalar_name, look_up_table_name, curvature, 		
+						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
+		  output_pure << "END " << scalar_name << "\n";
+
+		  /* write the smoothed curvature field */
+		  
+		  scalar_name="unsmoothed_curvature";
+		  look_up_table_name="smcurv_tbl";
+		  
+		  write_cell_centered_field_vtk( output_pure, scalar_name, look_up_table_name, unsmoothed_curvature, 		
+						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
+		  output_pure << "END " << scalar_name << "\n";
+
+		  /* write the pressure field */
+  
+		  scalar_name="pressure";
+		  look_up_table_name="pres_tbl";
+		  
+		  write_cell_centered_field_vtk( output_pure, scalar_name, look_up_table_name, pressure, 		
+						number_primary_cells_i, number_primary_cells_j,number_primary_cells_k);
+		  output_pure << "END " << scalar_name << "\n";
+
+
+     }
   }

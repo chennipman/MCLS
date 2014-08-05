@@ -71,6 +71,10 @@
       u_2_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
       u_3_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
 
+      set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2, u_1_old_con_diff,  0.0);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2, u_2_old_con_diff,  0.0);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1, u_3_old_con_diff,  0.0);
+      
        Array3<double> u_1_new_con_diff; 	// contains the convection and diffusion terms of a RK-stage in the x1 direction
        Array3<double> u_2_new_con_diff; 	// contains the convection and diffusion terms of a RK-stage in the x2 direction	
        Array3<double> u_3_new_con_diff;		// contains the convection and diffusion terms of a RK-stage in the x3 direction	
@@ -79,6 +83,9 @@
       u_2_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
       u_3_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
 
+      set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2, u_1_new_con_diff,  0.0);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2, u_2_new_con_diff,  0.0);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1, u_3_new_con_diff,  0.0);
 
 	// first step Runge-Kutta
 	sigma = 8.0/15.0; // parameter for new stage

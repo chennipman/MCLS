@@ -66,8 +66,11 @@
 
       u_1_old_con_diff.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
       u_2_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
-      u_3_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
-
+      u_3_old_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);
+      
+      set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2, u_1_old_con_diff,  0.0);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2, u_2_old_con_diff,  0.0);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1, u_3_old_con_diff,  0.0);
 	// these arrays are created here and used in forward_euler 
        Array3<double> u_1_new_con_diff; 	
        Array3<double> u_2_new_con_diff; 		
@@ -76,6 +79,10 @@
       u_1_new_con_diff.create(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2);
       u_2_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2);
       u_3_new_con_diff.create(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1);	
+	
+      set_constant_matrix2(number_primary_cells_i+1, number_primary_cells_j+2, number_primary_cells_k+2, u_1_new_con_diff,  0.0);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+1, number_primary_cells_k+2, u_2_new_con_diff,  0.0);
+      set_constant_matrix2(number_primary_cells_i+2, number_primary_cells_j+2, number_primary_cells_k+1, u_3_new_con_diff,  0.0);
 	
       forward_euler(
 	u_1_velocity_star,u_2_velocity_star,u_3_velocity_star,			
