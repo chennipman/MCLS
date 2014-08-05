@@ -100,7 +100,7 @@ EXPORT void initialize_pressure(
 
       solve_pressure_correction_system(pressure_matrix, pressure_rhside, pressure,			  
 					number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		  
-					  tolerance, maximum_iterations_allowed);
+					  tolerance, maximum_iterations_allowed, level_set);
    
      field_extrapolate_boundary(pressure, number_primary_cells_i,
                         number_primary_cells_j,number_primary_cells_k);

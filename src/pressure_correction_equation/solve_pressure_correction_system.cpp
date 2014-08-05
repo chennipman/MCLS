@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include "dpcg_rohit_paralution.hpp"
 using namespace std;
 /********************************************************************************/
 /********************************************************************************/
@@ -30,8 +31,9 @@ EXPORT void solve_pressure_correction_system(
       int number_primary_cells_j,	  	          // number of primary (pressure) cells in x2 direction
       int number_primary_cells_k,		          // number of primary (pressure) cells in x3 direction
       double   tolerance_pressure,	  	          // the tolerance with which the system is solved	
-      int maximum_iterations_allowed_pressure             // maximum number of iterations allowed for the
+      int maximum_iterations_allowed_pressure,             // maximum number of iterations allowed for the
 						          //conjugate gradient method
+      Array3<double> level_set				// levelset for the entire domain with 1 extra point on all sides					          
       )
    {
       int  iteration_number;  		  	          // the number of iterations where the iterative
@@ -44,6 +46,9 @@ EXPORT void solve_pressure_correction_system(
       Array1<double> preconditioner_matrix_M;		  // preconditioner matrix (only main diagonal)
       Array1<double> compressed_pressure;		  // 1-D array with pressure , with virtual points excluded
       int total_number_pressure_points;		          // total number of points with pressure
+      struct timeval now;
+      double tick, tack;
+      
       
       /* allocate memory for the main diagonal of preconditioner matrix M */
       /* and for the compressed solution vector */
@@ -74,10 +79,16 @@ EXPORT void solve_pressure_correction_system(
      
       /* solve the linear system for the new pressure */
 
-      if(conjugate_gradient_method( number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-				  pressure_matrix, preconditioner_matrix_M, pressure_rhside, compressed_pressure,
-				    tolerance_pressure, iteration_number, relative_L2_norm_residual,
-				      relative_Linfinity_norm_residual, maximum_iterations_allowed_pressure))
+	gettimeofday(&now, NULL);
+      tick = now.tv_sec*1000000.0+(now.tv_usec);
+//       if(conjugate_gradient_method( number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+// 				  pressure_matrix, preconditioner_matrix_M, pressure_rhside, compressed_pressure,
+// 				    tolerance_pressure, iteration_number, relative_L2_norm_residual,
+// 				      relative_Linfinity_norm_residual, maximum_iterations_allowed_pressure))
+      	
+	if(call_to_cg_wrapper(pressure_matrix, compressed_pressure, pressure_rhside, maximum_iterations_allowed_pressure,
+				tolerance_pressure, number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+				&iteration_number, &relative_L2_norm_residual, level_set))
       {
 	std::cout << " No convergence in linear solver for pressure equation.\n";
 	exit(1);
@@ -86,7 +97,9 @@ EXPORT void solve_pressure_correction_system(
       {
 	std::cout << " The pressure equation converged in " << iteration_number <<" iterations,\n";
 	std::cout << " with relative L2 norm of residual " << relative_L2_norm_residual <<" \n";
-	
+	gettimeofday(&now, NULL);
+	tack = now.tv_sec*1000000.0+(now.tv_usec);
+	std::cout << "Call to DPCG took in total:" << (tack-tick)/1000000 << " sec" << std::endl;
        /* shift the pressure solution */
 
       shift_pressure_solution(total_number_pressure_points, compressed_pressure);
