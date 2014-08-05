@@ -116,7 +116,7 @@ EXPORT void solve_momentum_corrector(
 
       solve_pressure_correction_system(pressure_matrix, pressure_rhside, pressure,			  
 					number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		  
-					  tolerance, maximum_iterations_allowed);
+					  tolerance, maximum_iterations_allowed,level_set);
 
      /* apply boundary conditions to pressure field */
    

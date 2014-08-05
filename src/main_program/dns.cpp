@@ -11,13 +11,21 @@
 /********************************************************************************/
 #include "../headers/header_main.h" 
 /********************************************************************************/
+#include "paralution.hpp"
+
+using namespace paralution;
+
+extern void initialize_paralution_library(void);
+extern void stop_paralution_library(void);
 
 int main ()
 {
  
 
 /* initialization */
-   
+    initialize_paralution_library();	
+   set_omp_threads_paralution(8);
+   info_paralution();
       initialize_computation( u_1_velocity_new, u_2_velocity_new, u_3_velocity_new,		
 				  u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,		
 				   pressure, level_set_old, level_set_new, volume_of_fluid,		
@@ -83,6 +91,7 @@ int main ()
 								debugging_mode, time_interval_for_reinitialization, mass_redistribution_diffusion_coefficient
 				);
 
+    stop_paralution_library();    
     std::cout << "Time stepping completed \n";
 
     return 0;
