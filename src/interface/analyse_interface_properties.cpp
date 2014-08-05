@@ -61,7 +61,11 @@ EXPORT void analyse_interface_properties(
 							// of the momentum equation in x1 direction
 	Array3<double> volume_of_fluid_u3;			// volume of fluid value for the controlvolumes
 							// of the momentum equation in x1 direction
-	
+	double LS_BBi0, LS_BBi1;			// the LS-value of the two compared cells 
+	double LS_RTk0, LS_RTk1;			// the LS-value of the two compared cells 
+	int i_indexBB0, i_indexBB1;			// index of the cell in which the sign of the LS changes
+	int k_indexRT0, k_indexRT1;			// index of the cell in which the sign of the LS changes
+
        static ofstream interface_details; 	/* output stream for details of the interface */
       	int i_index, j_index, k_index;  		// local variables for loop indexing
 	
@@ -243,8 +247,57 @@ EXPORT void analyse_interface_properties(
 	velocity_centroid_vof.u2=velocity_centroid_vof.u2/enclosed_volume;
 	velocity_centroid_vof.u3=velocity_centroid_vof.u3/enclosed_volume;
 
-		
 	enclosed_volume=enclosed_volume*mesh_width_x1*mesh_width_x2*mesh_width_x3;
+	
+	// interface position details for the Benjamin Bubble(BB)
+	// x1 is the longest dimension
+	// x2 is the flat dimension
+	// x3 is in the direction of the gravity 
+	// the interface is moving in the x1 direction, so the loop is in this direction
+	// x2 is flat, therefore the only real cell is chosen: j_index = 1;
+	// k_index = number_primary_cells_k, becuase the interface is on the top of the simulation
+	// output quantities are the two level_set values around the interface
+	// together with the i_index 
+	LS_BBi1 = level_set[number_primary_cells_i][1][number_primary_cells_k];
+	i_indexBB0 = -1;
+	i_indexBB1 = -1;
+	for(i_index=number_primary_cells_i;i_index>0;i_index--)
+  	{		
+		LS_BBi0 = LS_BBi1;
+		LS_BBi1 = level_set[i_index][1][number_primary_cells_k];
+		if (LS_BBi0*LS_BBi1<0)
+		{
+		  i_indexBB0 = i_index+1;
+		  i_indexBB1 = i_index;
+		  break;
+		}
+  	}	
+	
+	// interface position details for the Rayleigh Taylor(RT)
+	// x1 is the longest dimension
+	// x2 is the flat dimension
+	// x3 is in the direction of the gravity 
+	// the interface is moving in the x3 direction, so the loop is in this direction
+	// x2 is flat, therefore the only real cell is chosen: j_index = 1;
+	// i_index = is the middle of the simulation
+	// output quantities are the two level_set values around the interface
+	// together with the k_index 
+	int j_index_RT = int(ceil(number_primary_cells_i/2));
+	LS_RTk1 = level_set[j_index_RT][1][1];
+	k_indexRT0 = -1;
+	k_indexRT1 = -1;	
+	for(k_index=1;k_index<number_primary_cells_k;k_index++)
+  	{		
+		LS_RTk0 = LS_RTk1;
+		LS_RTk1 = level_set[j_index_RT][1][k_index];
+		if (LS_RTk0*LS_RTk1<0)
+		{
+		  k_indexRT0 = k_index-1;
+		  k_indexRT1 = k_index;
+		  break;
+		}
+  	}	
+	
 	
 	/* handle the file to which the data have to be written */
 	
@@ -267,16 +320,18 @@ EXPORT void analyse_interface_properties(
 		/* write the header for the file if it is opened for the first time */
 		interface_details<<"time,enclosed_volume,centroid_x1,centroid_x2,centroid_x3,";
 		interface_details<<"centroid_u1,centroid_u2,centroid_u3,";
-		interface_details<<"centroid_vof_u1,centroid_vof_u2,centroid_vof_u3\n";
+		interface_details<<"centroid_vof_u1,centroid_vof_u2,centroid_vof_u3,";
+		interface_details<<"i_indexBB0,LS_BBi0,i_indexBB1,LS_BBi1,";
+		interface_details<<"k_indexRT0,LS_RTk0,k_indexRT1,LS_RTk1\n";
 	}
 	
 	/* write interface details for this time step */
 	
-	
-	
-	interface_details<<actual_time<<","<<enclosed_volume<<","<<volume_centroid.x1<<","<<volume_centroid.x2<<","<<volume_centroid.x3<<",";
+interface_details<<actual_time<<","<<enclosed_volume<<","<<volume_centroid.x1<<","<<volume_centroid.x2<<","<<volume_centroid.x3<<",";
 	interface_details<<velocity_centroid.u1<<","<<velocity_centroid.u2<<","<<velocity_centroid.u3<<",";
-	interface_details<<velocity_centroid_vof.u1<<","<<velocity_centroid_vof.u2<<","<<velocity_centroid_vof.u3<<"\n"<<flush;
+	interface_details<<velocity_centroid_vof.u1<<","<<velocity_centroid_vof.u2<<","<<velocity_centroid_vof.u3<<",";
+	interface_details<<i_indexBB0<<","<<LS_BBi0<<","<<i_indexBB1<<","<<LS_BBi1<<",";
+	interface_details<<k_indexRT0<<","<<LS_RTk0<<","<<k_indexRT1<<","<<LS_RTk1<<"\n"<<flush;
 	
 	/* deallocate memory for the derivatives of the level-set field and auxiliary vof fields*/
 
