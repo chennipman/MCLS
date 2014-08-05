@@ -3,7 +3,6 @@
 *.directory
 /executable/
 /objects/
-<<<<<<< HEAD
 /testcases/*/*/
 /testcases/*/set_parameters.cpp
 /testcases/*/set_boundary_conditions.cpp
@@ -14,9 +13,9 @@
 /figures
 /tables
 /logfiles/
+/postprocessing
 *.pyc
 *.pvsm
 *.png
-=======
 /test/
->>>>>>> fixing-mass-redistribution
+

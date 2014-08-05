@@ -3,11 +3,11 @@
 #include<iostream>
 #include<algorithm>
 #include<math.h>
-
+#include <sys/time.h>  
 #include <string>
 #include <sstream>
 #include <fstream>
-#include "dpcg_rohit_paralution.hpp"
+//#include "dpcg_rohit_paralution.hpp"
 using namespace std;
 /********************************************************************************/
 /********************************************************************************/
@@ -81,14 +81,14 @@ EXPORT void solve_pressure_correction_system(
 
 	gettimeofday(&now, NULL);
       tick = now.tv_sec*1000000.0+(now.tv_usec);
-//       if(conjugate_gradient_method( number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-// 				  pressure_matrix, preconditioner_matrix_M, pressure_rhside, compressed_pressure,
-// 				    tolerance_pressure, iteration_number, relative_L2_norm_residual,
-// 				      relative_Linfinity_norm_residual, maximum_iterations_allowed_pressure))
+       if(conjugate_gradient_method( number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+ 				  pressure_matrix, preconditioner_matrix_M, pressure_rhside, compressed_pressure,
+ 				    tolerance_pressure, iteration_number, relative_L2_norm_residual,
+ 				      relative_Linfinity_norm_residual, maximum_iterations_allowed_pressure))
       	
-	if(call_to_cg_wrapper(pressure_matrix, compressed_pressure, pressure_rhside, maximum_iterations_allowed_pressure,
-				tolerance_pressure, number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
-				&iteration_number, &relative_L2_norm_residual, level_set))
+//	if(call_to_cg_wrapper(pressure_matrix, compressed_pressure, pressure_rhside, maximum_iterations_allowed_pressure,
+//				tolerance_pressure, number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,
+//				&iteration_number, &relative_L2_norm_residual, level_set))
       {
 	std::cout << " No convergence in linear solver for pressure equation.\n";
 	exit(1);
