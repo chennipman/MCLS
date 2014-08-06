@@ -12,7 +12,6 @@ using namespace std;
 /*  										*/
 /*  Programmer	: Duncan van der Heul       					*/
 /*  Date	: 10-03-2013       						*/
-/*  Update	:        							*/
 /********************************************************************************/
 /* Notes									*/
 /* This function should be replaced by a function that reads all parameters     */
@@ -105,7 +104,7 @@ EXPORT void set_parameters(
       int &number_of_free_surfaces, 				// number of bubbles in the domain (<10)
       double &start_time_simulation,				// starting time for the simulation
       double &end_time_simulation,				// end time for the simulation
-      int &time_stepping_method, 				// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
+      time_stepping_methods &time_stepping_method, 		// time scheme {none, explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};   
       vector &initial_velocity,				        // initial velocity at t=0
       restart_parameters &my_restart_parameters,		// all parameters for reading/writing restart files
       int &maximum_number_mass_redistribution_iterations,       // number of iterations allowed to make
@@ -126,6 +125,7 @@ EXPORT void set_parameters(
 					
       )
       {
+
 /*-------------------------------------------------------------------------------------------------*/
 
       /* general settings */
@@ -151,7 +151,7 @@ EXPORT void set_parameters(
       fixed_time_step					= 1;	
       start_time_simulation				= 0.00;
       end_time_simulation				= 5.00;
-      time_stepping_method 				= explict_euler; 	//{none, explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};   
+      time_stepping_method 				= explicit_euler; 	//{none, explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};   
       
       /* settings for restart from solution file and solution file writing */
       my_restart_parameters.start_from_restart_file		        = 0;		
