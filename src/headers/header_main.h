@@ -14,7 +14,7 @@ using namespace std;
 /*********************************************/
 /* include the necessary class  definitions  */
 /*********************************************/
-#include "header_clsses.h"
+#include "../headers/header_clsses.h"
 
 
 /*++++++++++++++++++++++++++++++++++++*/ 
@@ -123,8 +123,6 @@ double start_time_simulation;			// starting time for the simulation
 double end_time_simulation;			// end time for the simulation
 double time_interval_for_reinitialization; 	// time interval between reinitialization
 						// of level-set field
-int time_stepping_method;			// select time schmeme 1:explicit euler
-						// 2: imex, 3: runge-kutta
 double actual_time;				// actual time 
 					
 					

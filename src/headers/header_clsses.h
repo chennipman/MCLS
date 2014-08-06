@@ -47,12 +47,13 @@ public:
     {}
 };
 
-enum variable{velocity_u1, velocity_u2, velocity_u3, level_set, pressure_field};
-enum boundary_conditions_type{dirichlet, neumann, periodic};
-enum boundary_conditions_rule{constant, function};
-enum cell_centerings{cell_centered, vertex_centered};
-enum geometry{bubbly_flow, wavy_flow, rayleigh_taylor};
-enum time_stepping_method{explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};
+enum variable {velocity_u1, velocity_u2, velocity_u3, level_set, pressure_field};
+enum boundary_conditions_type {dirichlet, neumann, periodic};
+enum boundary_conditions_rule {constant, function};
+enum cell_centerings {cell_centered, vertex_centered};
+enum geometry {bubbly_flow, wavy_flow, rayleigh_taylor};
+enum time_stepping_methods {explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};
+
 
 class surface
 {

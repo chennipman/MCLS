@@ -136,7 +136,7 @@ EXPORT void initialize_computation(
       int &number_of_free_surfaces, 				// number of bubbles in the domain (<10)
       double &start_time_simulation,				// starting time for the simulation
       double &end_time_simulation,				// end time for the simulation
-      int &time_stepping_method, 				// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
+      time_stepping_methods &time_stepping_method, 		// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
       vector &initial_velocity,				        // initial velocity field at t=0
       restart_parameters &my_restart_parameters, 		// all parameters for reading/writing restart files
       int &maximum_number_mass_redistribution_iterations,       // number of iterations allowed to make
@@ -176,7 +176,7 @@ EXPORT void initialize_computation(
 						  time_interval_for_output, domain_size_x1, domain_size_x2, domain_size_x3,
 						    flow_type, the_bubbles, number_of_bubbles, the_free_surfaces,		
 						    number_of_free_surfaces, 
-						  start_time_simulation, end_time_simulation, time_stepping_method, initial_velocity,
+						  start_time_simulation, end_time_simulation, initial_velocity,
 						  my_restart_parameters, maximum_number_mass_redistribution_iterations, 
           					time_step_mass_redistribution, redistribution_vof_tolerance, number_of_phases,
 					       debugging_mode, time_interval_for_reinitialization
@@ -232,5 +232,7 @@ EXPORT void initialize_computation(
 			    vtk_output, tecplot_output,			
 			      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		
 				mesh_width_x1, mesh_width_x2, mesh_width_x3, 0);
+
+time_stepping_method 				=two_pres_solve; 	// explicit_euler, imex, runge-kutta, two_pres_solve, two_pres_solve_output  
 
 }    
