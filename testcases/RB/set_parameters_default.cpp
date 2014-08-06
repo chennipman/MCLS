@@ -137,7 +137,6 @@ EXPORT void set_parameters(
       domain_size_x2=1/27.0;
       domain_size_x3=2.0;
       
-      
       /* settings for modelling */
       number_of_phases				= 2;
 
@@ -151,8 +150,8 @@ EXPORT void set_parameters(
       actual_time_step_level_set			= actual_time_step_navier_stokes/number_of_subcycles;
       fixed_time_step					= 1;	
       start_time_simulation				= 0.0;
+      end_time_simulation				= 3.0;
       time_stepping_method 				= explicit_euler; 	//{none, explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};   
-      time_stepping_method 				= 3; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta   
 
       /* settings for restart from solution file and solution file writing */
       my_restart_parameters.start_from_restart_file		= 0;		
