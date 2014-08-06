@@ -15,8 +15,10 @@
 int main ()
 {
  
+ time_stepping_methods time_stepping_method = none;
 
 /* initialization */
+   
    
       initialize_computation( u_1_velocity_new, u_2_velocity_new, u_3_velocity_new,		
 				  u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,		
