@@ -94,7 +94,7 @@ EXPORT void advance_flow_field(
     /* solve momentum predictor equation */
     /* compute a new velocity field u star, that is not divergence free */
     
-    if (time_stepping_method == 1) // Explicit Euler
+    if (time_stepping_method == explicit_euler) // Explicit Euler
     {
       printf("explicit euler \n"); 
       
@@ -112,7 +112,7 @@ EXPORT void advance_flow_field(
        boundary_faces, source_terms_in_momentum_predictor, actual_time);      
     }
     
-    else if (time_stepping_method == 2)
+    else if (time_stepping_method == imex)
     {
       printf("imex \n");
       solve_momentum_predictor_imex(	level_set, u_1_velocity_old, u_2_velocity_old, u_3_velocity_old,			
@@ -127,7 +127,7 @@ EXPORT void advance_flow_field(
 					      tolerance_velocity, maximum_iterations_allowed_velocity,actual_time); 
     }
 
-    else if ( (time_stepping_method == 3) || (time_stepping_method == 4) || (time_stepping_method == 5) )
+    else if ( (time_stepping_method == runge_kutta) || (time_stepping_method == two_pres_solve) || (time_stepping_method == two_pres_solve_output) )
     {
       printf("runge kutta \n"); 
       solve_momentum_predictor_rk(
@@ -165,7 +165,7 @@ EXPORT void advance_flow_field(
 						boundary_faces, actual_time);
 
 
-    if (time_stepping_method == 4) // extra pressure correction step 
+    if (time_stepping_method == two_pres_solve) // extra pressure correction step every time step
     {
        printf("second pressure correction step \n"); 
      /* the fuction below gives a pressure field of the same order as the velocity field 	*/

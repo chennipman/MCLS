@@ -306,7 +306,7 @@ EXPORT void time_stepping_sequence(
 	   /* should occur							*/
 
 
-    if (time_stepping_method == 5) // extra pressure correction step before the output of the solution
+    if (time_stepping_method == two_pres_solve_output) // extra pressure correction step before the output of the solution
     {
        printf("second pressure correction applied before output solution \n"); 
      /* the fuction below gives a pressure field of the same order as the velocity field 	*/

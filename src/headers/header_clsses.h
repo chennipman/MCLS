@@ -52,6 +52,7 @@ enum boundary_conditions_type{dirichlet, neumann, periodic};
 enum boundary_conditions_rule{constant, function};
 enum cell_centerings{cell_centered, vertex_centered};
 enum geometry{bubbly_flow, wavy_flow, rayleigh_taylor};
+enum time_stepping_method{explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};
 
 class surface
 {
