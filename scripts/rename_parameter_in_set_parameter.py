@@ -18,7 +18,7 @@ for testcase in testcases:
 	name_parameter_file = 'testcases/' + testcase + '/set_parameters_default.cpp'           
 	with open(name_parameter_file, 'r') as file:
 	    data = file.readlines()
-	string_step_method = '      time_stepping_method 				= explict_euler; 	//{none, explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};   \n'
+	string_step_method = '      time_stepping_method 				= explicit_euler; 	//{none, explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};   \n'
 	data[153] = string_step_method
 		# and write everything back
 	with open(name_parameter_file, 'w') as file:
