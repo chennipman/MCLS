@@ -35,8 +35,6 @@ EXPORT void apply_boundary_conditions_velocity(
      )
   {
   
-      printf("actual time in apply_boundary_conditions_velocity = %f ", actual_time );
-      printf("\n");
      apply_boundary_conditions_velocity_u1(boundary_faces,		
 					      u_1_velocity, 			
 						  mesh_width_x1, mesh_width_x2, mesh_width_x3, 
