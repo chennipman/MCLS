@@ -314,9 +314,10 @@ ALL_TARGETS:=$(ALL_TARGETS) $(BUILD_DIR)/funcdefs.h
 
 $(BUILD_DIR)/funcdefs.h:
 	@mkdir -p $(dir $@)
-	./gen_funcdefs.h --output $@ -- $(COMMON_SRCS) testcases/TV/initialize_flow_field.cpp testcases/TV/set_boundary_conditions.cpp testcases/TV/set_parameters.cpp 
+	./gen_funcdefs.h --output $@ -- $(COMMON_SRCS) testcases/TV/initialize_flow_field_default.cpp testcases/TV/set_boundary_conditions_default.cpp testcases/TV/set_parameters_default.cpp 
 	#the TV case is used, because this is the only case with additional function definitions in the set_boundary_conditions 
-	#if other function definitions are used the 'TV', should be replace by the then used function definition 
+	#if other function definitions are used the 'TV', should be replace by the then used function definition
+	#the default case set is used because then this part is directly working after pulling the repository 
 
 .PHONY: clean
 clean:
