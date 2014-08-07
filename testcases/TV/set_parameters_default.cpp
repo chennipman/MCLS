@@ -133,90 +133,57 @@ EXPORT void set_parameters(
 
       /* computational domain geometry information */
       /* the origin is always chosen in the lower, left corner */
-      
       domain_size_x1                                            = 2.0;
       domain_size_x2                                            = 2.0;
       domain_size_x3                                            = 1.0/20;
       
       /* settings for modelling */
-      number_of_phases				= 2;
-  
+      number_of_phases				= 1;
 
       /* settings for time-stepping */
-
       cfl_number_navier_stokes			        = 1.0;
-<<<<<<< HEAD:testcases/TV/set_parameters_default.cpp
-      time_step_restriction_global			= 0.01;      
+      time_step_restriction_global			= 1e-5;   
       actual_time_step_navier_stokes    		= time_step_restriction_global;
-      time_interval_for_output			        = time_step_restriction_global*1;
+      time_interval_for_output			        = 1-1e-10;
       time_interval_for_reinitialization                = time_step_restriction_global*1e10; 
-=======
-      time_stepping_method 				= explicit_euler; 	//{none, explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};   
-      actual_time_step_navier_stokes    		= time_step_restriction_global;
-      time_interval_for_output			        = time_step_restriction_global*100;
-      time_interval_for_reinitialization                = time_step_restriction_global*1; //worked fine
->>>>>>> fixing-mass-redistribution:src/initialization/set_parameters.cpp
       number_of_subcycles				= 1;
       actual_time_step_level_set			= actual_time_step_navier_stokes/number_of_subcycles;
       fixed_time_step					= 1;	
       start_time_simulation				= 0.0;
-<<<<<<< HEAD:testcases/TV/set_parameters_default.cpp
-      end_time_simulation				= 50.0;
-      time_stepping_method 				= 3; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta 
-=======
-      end_time_simulation				= 0.25;
->>>>>>> fixing-mass-redistribution:src/initialization/set_parameters.cpp
-      
+      end_time_simulation				= 1;
+      time_stepping_method 				= explicit_euler; 	// time scheme 1:explicit euler 2: imex, 3: runge-kutta   
+
       /* settings for restart from solution file and solution file writing */
-      
       my_restart_parameters.start_from_restart_file		        = 0;		
       my_restart_parameters.write_solution_to_restart_file		= 0;
       my_restart_parameters.name_restart_file_to_write		        = "restart_file_mcls_out";
-      my_restart_parameters.name_restart_file_to_read		        = "restart_file_mcls_out";
-						
+      my_restart_parameters.name_restart_file_to_read		        = "restart_file_mcls_in";
 
       /* grid parameters */
-<<<<<<< HEAD:testcases/TV/set_parameters_default.cpp
       number_primary_cells_i                                    = 20;
       number_primary_cells_j                                    = 20;
       number_primary_cells_k                                    = 1;	
-=======
-      number_primary_cells_i=100;		
-      number_primary_cells_j=100;	
-      number_primary_cells_k=140;	
->>>>>>> fixing-mass-redistribution:src/initialization/set_parameters.cpp
       mesh_width_x1=domain_size_x1/number_primary_cells_i;		
       mesh_width_x2=domain_size_x2/number_primary_cells_j;			
       mesh_width_x3=domain_size_x3/number_primary_cells_k;		
 
-      /* interface handling parameters */  
-      apply_mass_distribution_algorithm  				= 0;    
+      /* interface handling parameters */
+      apply_mass_distribution_algorithm  				= 1;    
       apply_mass_conservation_correction 				= 1;    
-<<<<<<< HEAD:testcases/TV/set_parameters_default.cpp
       volume_of_fluid_tolerance		 			        = 1e-6;
-=======
-      volume_of_fluid_tolerance		 			        = 0.000005;
-      volume_of_fluid_tolerance                                         = 0.0000001;
-      volume_of_fluid_tolerance                                         = 0.000001;
->>>>>>> fixing-mass-redistribution:src/initialization/set_parameters.cpp
       lower_bound_derivatives		 				= 0.00000001;
-      // lower_bound_derivatives		 				= 0.00001;
       number_vof_2_level_set_iterations  				= 25;	
       number_iterations_ridder		 			        = 100;	
-<<<<<<< HEAD:testcases/TV/set_parameters_default.cpp
       vof_2_level_set_tolerance		 			        = 1e-6;	
-=======
-      vof_2_level_set_tolerance		 			        = 0.000000001;	
->>>>>>> fixing-mass-redistribution:src/initialization/set_parameters.cpp
       cfl_number_reinitialization	 				= 0.5;
-      maximum_reinitialization_steps	 				= 10;
+      maximum_reinitialization_steps	 				= 400;
       tolerance_reinitialization	 				= 0.0001;
       apply_curvature_smoothing	        			        =  0;
       number_curvature_smoothing_steps   				= 4;
       apply_curvature_smoothing_filter	 			        =  0;
       maximum_number_mass_redistribution_iterations		        = 1;
       time_step_mass_redistribution					= 0.01;	
-      redistribution_vof_tolerance 					= 0.001;		
+      redistribution_vof_tolerance 					= 0.0001;		
      
 	
       /* initial condition */
@@ -235,10 +202,8 @@ EXPORT void set_parameters(
       initial_velocity.u1		 				= 0.0;
       initial_velocity.u2		 				= 0.0;
       initial_velocity.u3		 				= 0.0;
-     
 
       /* material properties */
-
       rho_minus_over_mu_minus		 	=    100.0;
       mu_plus_over_mu_minus		 	=    1.0;
       rho_plus_over_rho_minus		 	=    1.0;
@@ -246,31 +211,22 @@ EXPORT void set_parameters(
       smoothing_distance_factor		        =1.5;	
       
       /* physics */
-      
       gravity.u1			 =0.0;				
       gravity.u2			 =0.0;				
       gravity.u3			 =0.0;				
       
       /* linear solvers and matrices*/
-
-<<<<<<< HEAD:testcases/TV/set_parameters_default.cpp
       tolerance_pressure		 		= 1e-6;	 
       tolerance_velocity		 		= 1e-5;
-=======
-      tolerance_pressure		 		=0.000001;	 
-      tolerance_velocity		 		=0.000001;
->>>>>>> fixing-mass-redistribution:src/initialization/set_parameters.cpp
       maximum_iterations_allowed_pressure		=      400;	
       maximum_iterations_allowed_velocity		=      100;
       number_matrix_connections		 	        =        7;		       
 
       /* coupling between interface and flow model */
-
       continuous_surface_force_model	 	 = 1;      
       source_terms_in_momentum_predictor	 = 1;
 
       /* output */
-      
       vtk_output			 = 1;				
       tecplot_output			 = 0;			
       }
