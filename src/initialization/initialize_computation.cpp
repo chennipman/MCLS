@@ -233,6 +233,4 @@ EXPORT void initialize_computation(
 			      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		
 				mesh_width_x1, mesh_width_x2, mesh_width_x3, 0);
 
-time_stepping_method 				=two_pres_solve; 	// explicit_euler, imex, runge-kutta, two_pres_solve, two_pres_solve_output  
-
 }    
