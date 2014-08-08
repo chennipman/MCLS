@@ -1,5 +1,5 @@
- CFLAGS=-O3 -Wall
- CXXFLAGS=-O3 -Wall
+ CFLAGS=-O3 -Wall 
+ CXXFLAGS=-O3 -Wall 
 # CC=gcc
 # CXX=g++
 # CFLAGS=-g -static -Wall

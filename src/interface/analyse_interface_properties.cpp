@@ -61,11 +61,13 @@ EXPORT void analyse_interface_properties(
 							// of the momentum equation in x1 direction
 	Array3<double> volume_of_fluid_u3;			// volume of fluid value for the controlvolumes
 							// of the momentum equation in x1 direction
-	double LS_BBi0, LS_BBi1;			// the LS-value of the two compared cells 
-	double LS_RTk0, LS_RTk1;			// the LS-value of the two compared cells 
-	int i_indexBB0, i_indexBB1;			// index of the cell in which the sign of the LS changes
-	int k_indexRT0, k_indexRT1;			// index of the cell in which the sign of the LS changes
 
+	double x_coordinate_interface_top =-1;		// the x_coordinate of the interface on the top 
+
+	int i_index_middle;				// the i_index of the middle of the simulation
+	double LS_first, LS_second;			// the Level-Set values before and behind the interface
+	double z_coordinate_interface_middle =-1;	// the z_coordinate of the interface in the middle 
+	
        static ofstream interface_details; 	/* output stream for details of the interface */
       	int i_index, j_index, k_index;  		// local variables for loop indexing
 	
@@ -73,7 +75,7 @@ EXPORT void analyse_interface_properties(
 	/* and compute the velocity of the enclosed volume */
 	/* by weighting the coordinates of the cell center and the velocity at the  */
 	/* cell center by the volume of fluid 					   */
-	
+	printf("error here 1");
 	
 	for(i_index=1;i_index<number_primary_cells_i+1;i_index++)
   	{
@@ -249,26 +251,27 @@ EXPORT void analyse_interface_properties(
 
 	enclosed_volume=enclosed_volume*mesh_width_x1*mesh_width_x2*mesh_width_x3;
 	
+	// These two options below for BB and RT could be easily extended to other directions
+	
 	// interface position details for the Benjamin Bubble(BB)
 	// x1 is the longest dimension
 	// x2 is the flat dimension
 	// x3 is in the direction of the gravity 
 	// the interface is moving in the x1 direction, so the loop is in this direction
-	// x2 is flat, therefore the only real cell is chosen: j_index = 1;
+	// x2 is flat, therefore the only primary cell is chosen: j_index = 1;
 	// k_index = number_primary_cells_k, becuase the interface is on the top of the simulation
 	// output quantities are the two level_set values around the interface
 	// together with the i_index 
-	LS_BBi1 = level_set[number_primary_cells_i][1][number_primary_cells_k];
-	i_indexBB0 = -1;
-	i_indexBB1 = -1;
-	for(i_index=number_primary_cells_i;i_index>0;i_index--)
+	// initialize the comparison
+	LS_first = level_set[1][1][number_primary_cells_k];
+	LS_second = level_set[1][1][number_primary_cells_k];
+	for(i_index=1;i_index<number_primary_cells_i;i_index++)
   	{		
-		LS_BBi0 = LS_BBi1;
-		LS_BBi1 = level_set[i_index][1][number_primary_cells_k];
-		if (LS_BBi0*LS_BBi1<0)
+		LS_first = LS_second;
+		LS_second = level_set[i_index][1][number_primary_cells_k];
+		if (LS_first*LS_second < 0)
 		{
-		  i_indexBB0 = i_index+1;
-		  i_indexBB1 = i_index;
+		  x_coordinate_interface_top = mesh_width_x1*(i_index-1+fabs(LS_first)/(fabs(LS_first)+fabs(LS_second)));
 		  break;
 		}
   	}	
@@ -278,26 +281,24 @@ EXPORT void analyse_interface_properties(
 	// x2 is the flat dimension
 	// x3 is in the direction of the gravity 
 	// the interface is moving in the x3 direction, so the loop is in this direction
-	// x2 is flat, therefore the only real cell is chosen: j_index = 1;
+	// x2 is flat, therefore the only primary cell is chosen: j_index = 1;
 	// i_index = is the middle of the simulation
 	// output quantities are the two level_set values around the interface
 	// together with the k_index 
-	int j_index_RT = int(ceil(number_primary_cells_i/2));
-	LS_RTk1 = level_set[j_index_RT][1][1];
-	k_indexRT0 = -1;
-	k_indexRT1 = -1;	
+	i_index_middle = ceil(number_primary_cells_i/2);
+	// initialize the comparison
+	LS_first  = level_set[i_index_middle][1][1];
+	LS_second = level_set[i_index_middle][1][1];
 	for(k_index=1;k_index<number_primary_cells_k;k_index++)
   	{		
-		LS_RTk0 = LS_RTk1;
-		LS_RTk1 = level_set[j_index_RT][1][k_index];
-		if (LS_RTk0*LS_RTk1<0)
-		{
-		  k_indexRT0 = k_index-1;
-		  k_indexRT1 = k_index;
+		LS_first = LS_second;
+		LS_second = level_set[i_index_middle][1][k_index];
+		if (LS_first*LS_second < 0) // an interface is found when the sign of the Level-Set value is the opposite of the previous Level-Set value
+		  {
+		  z_coordinate_interface_middle = mesh_width_x3*(k_index-1+fabs(LS_first)/(fabs(LS_first)+fabs(LS_second)));
 		  break;
-		}
+		  }
   	}	
-	
 	
 	/* handle the file to which the data have to be written */
 	
@@ -321,8 +322,8 @@ EXPORT void analyse_interface_properties(
 		interface_details<<"time,enclosed_volume,centroid_x1,centroid_x2,centroid_x3,";
 		interface_details<<"centroid_u1,centroid_u2,centroid_u3,";
 		interface_details<<"centroid_vof_u1,centroid_vof_u2,centroid_vof_u3,";
-		interface_details<<"i_indexBB0,LS_BBi0,i_indexBB1,LS_BBi1,";
-		interface_details<<"k_indexRT0,LS_RTk0,k_indexRT1,LS_RTk1\n";
+		interface_details<<"x_coordinate_top,";
+		interface_details<<"z_coordinate_middle\n";
 	}
 	
 	/* write interface details for this time step */
@@ -330,8 +331,8 @@ EXPORT void analyse_interface_properties(
 interface_details<<actual_time<<","<<enclosed_volume<<","<<volume_centroid.x1<<","<<volume_centroid.x2<<","<<volume_centroid.x3<<",";
 	interface_details<<velocity_centroid.u1<<","<<velocity_centroid.u2<<","<<velocity_centroid.u3<<",";
 	interface_details<<velocity_centroid_vof.u1<<","<<velocity_centroid_vof.u2<<","<<velocity_centroid_vof.u3<<",";
-	interface_details<<i_indexBB0<<","<<LS_BBi0<<","<<i_indexBB1<<","<<LS_BBi1<<",";
-	interface_details<<k_indexRT0<<","<<LS_RTk0<<","<<k_indexRT1<<","<<LS_RTk1<<"\n"<<flush;
+	interface_details<<x_coordinate_interface_top<<",";
+	interface_details<<z_coordinate_interface_middle<<"\n"<<flush;
 	
 	/* deallocate memory for the derivatives of the level-set field and auxiliary vof fields*/
 
