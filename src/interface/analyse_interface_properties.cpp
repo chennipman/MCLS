@@ -75,7 +75,6 @@ EXPORT void analyse_interface_properties(
 	/* and compute the velocity of the enclosed volume */
 	/* by weighting the coordinates of the cell center and the velocity at the  */
 	/* cell center by the volume of fluid 					   */
-	printf("error here 1");
 	
 	for(i_index=1;i_index<number_primary_cells_i+1;i_index++)
   	{
