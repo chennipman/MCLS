@@ -209,10 +209,12 @@ double sigma_over_rho_minus;			// sigma / rho_minus (scaled sigma)
 /* Primary variables for output handling        	    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/  
 					
-int vtk_output;				// =1, write output in vtk format
+int vtk_output;					// =1, write output in vtk format
 						// =0, skip output in vtk format
 int tecplot_output;				// =1, write output in tecplot format
 						// =0, skip output in tecplot format
+int pure_output;				// =1, write output in pure format
+						// =0, skip output in pure format
 double time_interval_for_output;		// interval in time for which the solution is written to file
 
 

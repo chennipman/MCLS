@@ -123,6 +123,8 @@ EXPORT void initialize_computation(
 								// =0, skip output in vtk format
       int &tecplot_output,					// =1, write output in tecplot format
 								// =0, skip output in tecplot format
+      int &pure_output,						// =1, write output in pure format
+								// =0, skip output in pure format
       double &time_interval_for_output,			        // interval in time for which the solution is written to file
 						
   
@@ -172,7 +174,7 @@ EXPORT void initialize_computation(
 					  source_terms_in_momentum_predictor, sigma_over_rho_minus,		
 					    time_step_restriction_global,      
 					      fixed_time_step, apply_curvature_smoothing, number_curvature_smoothing_steps,	
-						apply_curvature_smoothing_filter,	number_of_subcycles, vtk_output, tecplot_output,			
+						apply_curvature_smoothing_filter,	number_of_subcycles, vtk_output, tecplot_output, pure_output,			
 						  time_interval_for_output, domain_size_x1, domain_size_x2, domain_size_x3,
 						    flow_type, the_bubbles, number_of_bubbles, the_free_surfaces,		
 						    number_of_free_surfaces, 
@@ -229,7 +231,7 @@ EXPORT void initialize_computation(
 
     output_solution( level_set_old, volume_of_fluid, curvature, unsmoothed_curvature,		
 			  u_1_velocity_new, u_2_velocity_new, u_3_velocity_new, pressure,			
-			    vtk_output, tecplot_output,			
+			    vtk_output, tecplot_output, pure_output,		
 			      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		
 				mesh_width_x1, mesh_width_x2, mesh_width_x3, 0);
 

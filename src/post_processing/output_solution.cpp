@@ -28,6 +28,8 @@ EXPORT void output_solution(
 						// =0, skip output in vtk format
 	  int tecplot_output,			// =1, write output in tecplot format
 						// =0, skip output in tecplot format
+	  int pure_output,			// =1, write output in pure format
+						// =0, skip output in pure format
 	  int number_primary_cells_i,		// number of primary (pressure) cells in x1 direction
 	  int number_primary_cells_j,		// number of primary (pressure) cells in x2 direction
 	  int number_primary_cells_k,		// number of primary (pressure) cells in x3 direction
@@ -59,8 +61,7 @@ EXPORT void output_solution(
       string scalar_name;			// name of the scalar field to be written 
       string vector_name;			// name of the vector field to be written 
       string look_up_table_name;		// name of the look-up table to be used
-      double pure_output = 1;
-      
+     
 
 	    string solution_file_index=convertInt(index_of_output_file); 
     

@@ -126,6 +126,8 @@ EXPORT void time_stepping_sequence(
 								// =0, skip output in vtk format
       int tecplot_output,					// =1, write output in tecplot format
 								// =0, skip output in tecplot format
+      int pure_output,						// =1, write output in pure format
+								// =0, skip output in pure format
       double time_interval_for_output,			        // interval in time for which the solution is written to file
       double start_time_simulation,				// starting time for the simulation
       double end_time_simulation,				// end time for the simulation
@@ -331,7 +333,7 @@ EXPORT void time_stepping_sequence(
 	 
 	      output_solution( level_set_new, volume_of_fluid, curvature, unsmoothed_curvature,		
 			  u_1_velocity_new, u_2_velocity_new, u_3_velocity_new, pressure,			
-			    vtk_output, tecplot_output,			
+			    vtk_output, tecplot_output, pure_output,			
 			      number_primary_cells_i, number_primary_cells_j, number_primary_cells_k,		
 				mesh_width_x1, mesh_width_x2, mesh_width_x3, index_of_output_file);
 	      index_of_output_file++;
