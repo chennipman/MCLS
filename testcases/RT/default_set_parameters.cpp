@@ -6,6 +6,7 @@
 #include <sstream>
 #include <fstream>
 using namespace std;
+
 /********************************************************************************/
 /*  Function to set the computation parameters                                  */
 /*  										*/
@@ -93,6 +94,8 @@ EXPORT void set_parameters(
 								// =0, skip output in vtk format
       int &tecplot_output,					// =1, write output in tecplot format
 								// =0, skip output in tecplot format
+      int &pure_output,						// =1, write output in pure format
+								// =0, skip output in pure format
       double &time_interval_for_output,			        // interval in time for which the solution is written to file
       double &domain_size_x1,					// length of edges of domain in x1 direction 
       double &domain_size_x2,					// length of edges of domain in x1 direction 
@@ -128,104 +131,119 @@ EXPORT void set_parameters(
       
 /*-------------------------------------------------------------------------------------------------*/
 
+
       /* general settings */
       debugging_mode					= 0;
 
+
       /* computational domain geometry information */
       /* the origin is always chosen in the lower, left corner */
-      domain_size_x1=1.5;
-      domain_size_x2=0.01;
-      domain_size_x3=0.1;
-      
+      domain_size_x1=1.0;
+      domain_size_x2=1/20.0;
+      domain_size_x3=4.0;
+
+
       /* settings for modelling */
       number_of_phases				= 2;
 
+
       /* settings for time-stepping */
-      cfl_number_navier_stokes			        = 1.0;
-      time_step_restriction_global			= 1e-3;   
+      cfl_number_navier_stokes				= 1.0; 
+      time_step_restriction_global			= 0.001;      
       actual_time_step_navier_stokes    		= time_step_restriction_global;
-      time_interval_for_output			        = time_step_restriction_global*10;
-      time_interval_for_reinitialization                = time_step_restriction_global*10; 
+      time_interval_for_output				= time_step_restriction_global*10;
+      time_interval_for_reinitialization		= time_step_restriction_global*10;
       number_of_subcycles				= 1;
       actual_time_step_level_set			= actual_time_step_navier_stokes/number_of_subcycles;
       fixed_time_step					= 1;	
       start_time_simulation				= 0.0;
-      end_time_simulation				= 50;
-      time_stepping_method 				= explicit_euler; 	//{none, explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};   
+      end_time_simulation				= 1.0;
+      time_stepping_method 				= runge_kutta; 	//{none, explicit_euler, imex, runge_kutta, two_pres_solve, two_pres_solve_output};   
+
 
       /* settings for restart from solution file and solution file writing */
-      my_restart_parameters.start_from_restart_file		        = 0;		
-      my_restart_parameters.write_solution_to_restart_file		= 0;
-      my_restart_parameters.name_restart_file_to_write		        = "restart_file_mcls_out";
-      my_restart_parameters.name_restart_file_to_read		        = "restart_file_mcls_in";
+      my_restart_parameters.start_from_restart_file		= 0;		
+      my_restart_parameters.write_solution_to_restart_file	= 0;
+      my_restart_parameters.name_restart_file_to_write		= "restart_file_mcls_out";
+      my_restart_parameters.name_restart_file_to_read		= "restart_file_mcls_in";
+
 
       /* grid parameters */
-      number_primary_cells_i=300;		
+      number_primary_cells_i=20;		
       number_primary_cells_j=1;	
-      number_primary_cells_k=20;	
+      number_primary_cells_k=80;	
       mesh_width_x1=domain_size_x1/number_primary_cells_i;		
       mesh_width_x2=domain_size_x2/number_primary_cells_j;			
       mesh_width_x3=domain_size_x3/number_primary_cells_k;		
 
+
       /* interface handling parameters */
-      apply_mass_distribution_algorithm  				= 0;    
-      apply_mass_conservation_correction 				= 1;    
-      volume_of_fluid_tolerance		 			        = 1e-3;
-      lower_bound_derivatives		 				= 1e-7;
-      number_vof_2_level_set_iterations  				= 1000;	
-      number_iterations_ridder		 			        = 100;	
-      vof_2_level_set_tolerance		 			        = 1e-4;	
-      cfl_number_reinitialization	 				= 0.5;
-      maximum_reinitialization_steps	 				= 400;
-      tolerance_reinitialization	 				= 0.0001;
-      apply_curvature_smoothing	        			        =  0;
-      number_curvature_smoothing_steps   				= 4;
-      apply_curvature_smoothing_filter	 			        =  0;
-      maximum_number_mass_redistribution_iterations		        = 1000;
-      time_step_mass_redistribution					= 0.01;	
-      redistribution_vof_tolerance 					= 0.00001;		
-     
+      apply_mass_distribution_algorithm  			= 0;    
+      apply_mass_conservation_correction 			= 1;    
+      volume_of_fluid_tolerance		 			= 1e-6;
+      lower_bound_derivatives		 			= 0.000000001;
+      number_vof_2_level_set_iterations  			= 30;	
+      number_iterations_ridder		 			= 120;	
+      vof_2_level_set_tolerance		 			= 1e-8;	
+      cfl_number_reinitialization	 			= 0.5;
+      maximum_reinitialization_steps	 			= 400;
+      tolerance_reinitialization	 			= 0.0001;
+      apply_curvature_smoothing	        			=  1;
+      number_curvature_smoothing_steps   			= 20;
+      apply_curvature_smoothing_filter	 			=  0;
+      maximum_number_mass_redistribution_iterations		= 3000;
+      time_step_mass_redistribution				= 0.01;	
+      redistribution_vof_tolerance 				= 0.1;		
+
+
       /* initial condition */
-      flow_type				 			= bubbly_flow;
-      the_bubbles[0].principle_axis_x1	 			= 10.0;
-      the_bubbles[0].principle_axis_x2	 			= 10.0; //2D-flow 
-      the_bubbles[0].principle_axis_x3	 			= 10.0;
-      the_bubbles[0].center_location.x1  				= 13.0;
+      flow_type				 			= rayleigh_taylor;
+      the_bubbles[0].principle_axis_x1	 			= 1.0;
+      the_bubbles[0].principle_axis_x2	 			= 1.0;
+      the_bubbles[0].principle_axis_x3	 			= 1.0;
+      the_bubbles[0].center_location.x1  				= 0.5*domain_size_x1;
       the_bubbles[0].center_location.x2  				= 0.5*domain_size_x2;
-      the_bubbles[0].center_location.x3  				= 0.5*domain_size_x3;
-      number_of_bubbles			 				= 0;
+      the_bubbles[0].center_location.x3  				= 3.5;
+      number_of_bubbles 			 			= 0;
       number_of_free_surfaces		 				= 1;	
       the_free_surfaces[0].active	 				= 1;
-      the_free_surfaces[0].orientation   				= -1;
-      the_free_surfaces[0].height	 				= 0.75;
+      the_free_surfaces[0].orientation   				= -3;
+      the_free_surfaces[0].height	 				= 2.0;
       initial_velocity.u1		 				= 0.0;
       initial_velocity.u2		 				= 0.0;
       initial_velocity.u3		 				= 0.0;
-     
+
+
       /* material properties */
-      rho_minus_over_mu_minus		 	=1e3;
+      rho_minus_over_mu_minus		 	=391.37;
       mu_plus_over_mu_minus		 	=1.0;
-      rho_plus_over_rho_minus		 	=1e10;	
-      sigma_over_rho_minus		 	=0/100.0;
+      rho_plus_over_rho_minus		 	=0.138286; /* 1.225/0.1694 */	
+      sigma_over_rho_minus		 	=0.0;
       smoothing_distance_factor			=1.5;	
-      
+
+
       /* physics */
       gravity.u1			 =0.0;				
       gravity.u2			 =0.0;				
-      gravity.u3			 =-10.0;	
-      
+      gravity.u3			 =-9.81;
+
+
       /* linear solvers and matrices*/
-      tolerance_pressure		 		= 1e-7;	 
-      tolerance_velocity		 		= 1e-7;
+      tolerance_pressure		 		=1e-7;	 
+      tolerance_velocity		 		=1e-6;
       maximum_iterations_allowed_pressure		=      1000;	
       maximum_iterations_allowed_velocity		=      400;
-      number_matrix_connections		 	        =        7;		       
+      number_matrix_connections		 		=        7;		       
+
 
       /* coupling between interface and flow model */
       continuous_surface_force_model	 	 = 1;      
       source_terms_in_momentum_predictor	 = 1;
 
+
       /* output */
       vtk_output			 = 1;				
       tecplot_output			 = 0;			
+      pure_output			 = 1;
+
       }

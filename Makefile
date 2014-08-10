@@ -296,9 +296,9 @@ define COPY_RULES
 .PHONY: copy_case_$(1)
 
 copy_case_$(1): 
-	cp -n testcases/$(1)/set_boundary_conditions_default.cpp testcases/$(1)/set_boundary_conditions.cpp
-	cp -n testcases/$(1)/set_parameters_default.cpp          testcases/$(1)/set_parameters.cpp 
-	cp -n testcases/$(1)/initialize_flow_field_default.cpp   testcases/$(1)/initialize_flow_field.cpp 
+	cp -n testcases/$(1)/default_set_boundary_conditions.cpp testcases/$(1)/set_boundary_conditions.cpp
+	cp -n testcases/$(1)/default_set_parameters.cpp          testcases/$(1)/set_parameters.cpp 
+	cp -n testcases/$(1)/default_initialize_flow_field.cpp   testcases/$(1)/initialize_flow_field.cpp 
 
 
 #copy_case_$(1): case_$(1)_copy
@@ -315,7 +315,7 @@ ALL_TARGETS:=$(ALL_TARGETS) $(BUILD_DIR)/funcdefs.h
 $(BUILD_DIR)/funcdefs.h:
 	@mkdir -p $(dir $@)
 	./gen_funcdefs.h --output $@ -- $(COMMON_SRCS) testcases/TV/initialize_flow_field.cpp testcases/TV/set_boundary_conditions.cpp testcases/TV/set_parameters.cpp 
-#	./gen_funcdefs.h --output $@ -- $(COMMON_SRCS) testcases/TV/initialize_flow_field_default.cpp testcases/TV/set_boundary_conditions_default.cpp testcases/TV/set_parameters_default.cpp 
+#	./gen_funcdefs.h --output $@ -- $(COMMON_SRCS) testcases/TV/default_initialize_flow_field.cpp testcases/TV/default_set_boundary_conditions.cpp testcases/TV/default_set_parameters.cpp 
 	#the TV case is used, because this is the only case with additional function definitions in the set_boundary_conditions 
 	#if other function definitions are used the 'TV', should be replace by the then used function definition
 	#the default case set is used because then this part is directly working after pulling the repository 
