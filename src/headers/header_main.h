@@ -124,6 +124,8 @@ double end_time_simulation;			// end time for the simulation
 double time_interval_for_reinitialization; 	// time interval between reinitialization
 						// of level-set field
 double actual_time;				// actual time 
+time_stepping_methods time_stepping_method;
+
 					
 					
 /*++++++++++++++++++++++++++++++++++++++++++++++++++*/  

@@ -15,7 +15,7 @@
 int main ()
 {
  
- time_stepping_methods time_stepping_method = none;
+// time_stepping_methods time_stepping_method = none;
 
 /* initialization */
    
