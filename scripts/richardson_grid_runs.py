@@ -29,8 +29,8 @@ elif case == 'RT':
     domain_size_x1 = 1.0
     domain_size_x3 = 4.0
 elif case == 'BB':
-    domain_size_x1 = 0.1
-    domain_size_x3 = 6.0
+    domain_size_x1 = 6.0
+    domain_size_x3 = 0.1
 elif case == 'KH':
     domain_size_x1 = 0.1
     domain_size_x3 = 6.0
