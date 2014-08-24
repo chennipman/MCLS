@@ -32,8 +32,8 @@ elif case == 'BB':
     domain_size_x1 = 6.0
     domain_size_x3 = 0.1
 elif case == 'KH':
-    domain_size_x1 = 0.1
-    domain_size_x3 = 6.0
+    domain_size_x1 = 1.0
+    domain_size_x3 = 0.1
 else:
     print 'undefined testcase'
     exit
@@ -62,7 +62,7 @@ namelogfile = 'logfiles/' + namelogfile
 number_primary_cells_i_all = [10] #,100]
 
 if case == 'BB':
-	number_primary_cells_i_all = [10, 20, 40] #,100]
+	number_primary_cells_i_all = [600, 1200, 2400] #,100]
 
 
 # write the log file
