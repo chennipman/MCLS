@@ -71,15 +71,15 @@ for(i=1;i<number_primary_cells_i+1;i++)
 		// Moment prediction for u direction        
 	      	// calculation of the viscosities, the level_set-value on the faces is the average of the surrounding cells 
 	      	// first perpendicular direction is x2 and second perpendicular direction is x3      
-		viscosity_right = compute_scaled_viscosity(level_set[i+1][j][k],mesh_width_x1,mesh_width_x2,mesh_width_x3, smoothing_distance_factor, rho_minus_over_mu_minus,mu_plus_over_mu_minus);	// +1 in tangential
+		viscosity_right = compute_scaled_viscosity(level_set[i+1][j][k],mesh_width_x1,mesh_width_x2,mesh_width_x3, smoothing_distance_factor, rho_minus_over_mu_minus,mu_plus_over_mu_minus);	// +1 in normal 
      		viscosity_left 	= compute_scaled_viscosity(level_set[i][j][k],mesh_width_x1,mesh_width_x2,mesh_width_x3, smoothing_distance_factor, rho_minus_over_mu_minus,mu_plus_over_mu_minus);	// same for every flow 
-     		viscosity_back 	= compute_scaled_viscosity((level_set[i][j+1][k]+level_set[i+1][j+1][k]+level_set[i][j][k]+level_set[i+1][j][k])/4, 			// 0,+1 in tangential; 0,+1 in first perpendicular direction
+     		viscosity_back 	= compute_scaled_viscosity((level_set[i][j+1][k]+level_set[i+1][j+1][k]+level_set[i][j][k]+level_set[i+1][j][k])/4, 			// 0,+1 in normal       ; 0,+1 in first perpendicular direction
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus);			
-     		viscosity_front = compute_scaled_viscosity((level_set[i][j-1][k]+level_set[i+1][j-1][k]+level_set[i][j][k]+level_set[i+1][j][k])/4,			// 0,+1 in tangential; 0,-1 in first perpendicular direction 
+     		viscosity_front = compute_scaled_viscosity((level_set[i][j-1][k]+level_set[i+1][j-1][k]+level_set[i][j][k]+level_set[i+1][j][k])/4,			// 0,+1 in normal; 0,-1 in first perpendicular direction 
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus); 
-     		viscosity_top 	= compute_scaled_viscosity((level_set[i][j][k+1]+level_set[i+1][j][k+1]+level_set[i][j][k]+level_set[i+1][j][k])/4,			// 0,+1 in tangential; 0,+1 in second perpendicular direction
+     		viscosity_top 	= compute_scaled_viscosity((level_set[i][j][k+1]+level_set[i+1][j][k+1]+level_set[i][j][k]+level_set[i+1][j][k])/4,			// 0,+1 in normal; 0,+1 in second perpendicular direction
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus);
-     		viscosity_bottom= compute_scaled_viscosity((level_set[i][j][k-1]+level_set[i+1][j][k-1]+level_set[i][j][k]+level_set[i+1][j][k])/4,			// 0,+1 in tangential; 0,-1 in second perpendicular direction 
+     		viscosity_bottom= compute_scaled_viscosity((level_set[i][j][k-1]+level_set[i+1][j][k-1]+level_set[i][j][k]+level_set[i+1][j][k])/4,			// 0,+1 in normal; 0,-1 in second perpendicular direction 
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus); 
 	      
 		// momentum_predictor_cell_face( 
@@ -91,12 +91,12 @@ for(i=1;i<number_primary_cells_i+1;i++)
 		// viscosity_left,viscosity_right,viscosity_back,viscosity_front,viscosity_top,viscosity_bottom) 
 		u_1_momentum[i][j][k] = momentum_predictor_cell_face( 
 		u_1_velocity_old[i][j][k],u_1_velocity_old[i-1][j][k],u_1_velocity_old[i+1][j][k],u_1_velocity_old[i][j+1][k],u_1_velocity_old[i][j-1][k],u_1_velocity_old[i][j][k+1],u_1_velocity_old[i][j][k-1], 
-		// [i][j][k]             , -1 in tangential          ,+1 in tangential           , +1 in first perpendicular , -1 in first perpendicular , +1 in second perpendicular, -1 in second perpendicular; tangential velocity
+		// [i][j][k]             , -1 in normal              ,+1 in normal               , +1 in first perpendicular , -1 in first perpendicular , +1 in second perpendicular, -1 in second perpendicular; normal velocity
 		u_2_velocity_old[i][j][k],u_2_velocity_old[i+1][j][k],u_2_velocity_old[i][j-1][k],u_2_velocity_old[i+1][j-1][k], 
-		// [i][j][k]             , +1 in tangential          , -1 in first perpendicular , +1 tang -1 first perpendicular; first perpendicular velocity
+		// [i][j][k]             , +1 in normal              , -1 in first perpendicular , +1 tang -1 first perpendicular; first perpendicular velocity
 		u_3_velocity_old[i][j][k],u_3_velocity_old[i+1][j][k],u_3_velocity_old[i][j][k-1],u_3_velocity_old[i+1][j][k-1], 
-		// [i][j][k]             , +1 in tangential          , -1 in second perpendicular, +1 tang -1 second perpendicular; second perpendicular velocity
-		mesh_width_x1,mesh_width_x2,mesh_width_x3, // tangential, first perpendicular, second perpendicular
+		// [i][j][k]             , +1 in normal              , -1 in second perpendicular, +1 tang -1 second perpendicular; second perpendicular velocity
+		mesh_width_x1,mesh_width_x2,mesh_width_x3, // normal, first perpendicular, second perpendicular
 		scaled_density_u1[i][j][k], momentum_source_term_u_1[i][j][k],
 		viscosity_left,viscosity_right,viscosity_back,viscosity_front,viscosity_top,viscosity_bottom,
 		source_terms_in_momentum_predictor);
@@ -107,15 +107,15 @@ for(i=1;i<number_primary_cells_i+1;i++)
 		// Moment prediction for v direction        
 	      	// calculation of the viscosities, the level_set-value on the faces is the average of the surrounding cells      
 	      	// first perpendicular direction is x1 and second perpendicular direction is x3      
-		viscosity_right = compute_scaled_viscosity(level_set[i][j+1][k],mesh_width_x1,mesh_width_x2,mesh_width_x3, smoothing_distance_factor, rho_minus_over_mu_minus,mu_plus_over_mu_minus); 	// +1 in tangential
+		viscosity_right = compute_scaled_viscosity(level_set[i][j+1][k],mesh_width_x1,mesh_width_x2,mesh_width_x3, smoothing_distance_factor, rho_minus_over_mu_minus,mu_plus_over_mu_minus); 	// +1 in normal
      		viscosity_left 	= compute_scaled_viscosity(level_set[i][j][k],mesh_width_x1,mesh_width_x2,mesh_width_x3, smoothing_distance_factor, rho_minus_over_mu_minus,mu_plus_over_mu_minus);	// same for every flow
-     		viscosity_back 	= compute_scaled_viscosity((level_set[i+1][j][k]+level_set[i+1][j+1][k]+level_set[i][j][k]+level_set[i][j+1][k])/4,			// 0,+1 in tangential; 0,+1 in first perpendicular direction
+     		viscosity_back 	= compute_scaled_viscosity((level_set[i+1][j][k]+level_set[i+1][j+1][k]+level_set[i][j][k]+level_set[i][j+1][k])/4,			// 0,+1 in normal; 0,+1 in first perpendicular direction
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus);			
-     		viscosity_front = compute_scaled_viscosity((level_set[i-1][j][k]+level_set[i-1][j+1][k]+level_set[i][j][k]+level_set[i][j+1][k])/4,			// 0,+1 in tangential; 0,-1 in first perpendicular direction 
+     		viscosity_front = compute_scaled_viscosity((level_set[i-1][j][k]+level_set[i-1][j+1][k]+level_set[i][j][k]+level_set[i][j+1][k])/4,			// 0,+1 in normal; 0,-1 in first perpendicular direction 
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus); 		
-     		viscosity_top 	= compute_scaled_viscosity((level_set[i][j][k+1]+level_set[i][j+1][k+1]+level_set[i][j][k]+level_set[i][j+1][k])/4,			// 0,+1 in tangential; 0,+1 in second perpendicular direction
+     		viscosity_top 	= compute_scaled_viscosity((level_set[i][j][k+1]+level_set[i][j+1][k+1]+level_set[i][j][k]+level_set[i][j+1][k])/4,			// 0,+1 in normal; 0,+1 in second perpendicular direction
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus);
-     		viscosity_bottom= compute_scaled_viscosity((level_set[i][j][k-1]+level_set[i][j+1][k-1]+level_set[i][j][k]+level_set[i][j+1][k])/4,			// 0,+1 in tangential; 0,-1 in second perpendicular direction 
+     		viscosity_bottom= compute_scaled_viscosity((level_set[i][j][k-1]+level_set[i][j+1][k-1]+level_set[i][j][k]+level_set[i][j+1][k])/4,			// 0,+1 in normal; 0,-1 in second perpendicular direction 
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus); 
 	      
 		// momentum_predictor_cell_face( 
@@ -127,12 +127,12 @@ for(i=1;i<number_primary_cells_i+1;i++)
 		// viscosity_left,viscosity_right,viscosity_back,viscosity_front,viscosity_top,viscosity_bottom) 
 		u_2_momentum[i][j][k] = momentum_predictor_cell_face( 
 		u_2_velocity_old[i][j][k],u_2_velocity_old[i][j-1][k],u_2_velocity_old[i][j+1][k],u_2_velocity_old[i+1][j][k],u_2_velocity_old[i-1][j][k],u_2_velocity_old[i][j][k+1],u_2_velocity_old[i][j][k-1], 
-		// [i][j][k]             , -1 in tangential          ,+1 in tangential           , +1 in first perpendicular , -1 in first perpendicular , +1 in second perpendicular, -1 in second perpendicular; tangential velocity 
+		// [i][j][k]             , -1 in normal              ,+1 in normal               , +1 in first perpendicular , -1 in first perpendicular , +1 in second perpendicular, -1 in second perpendicular; normal velocity 
 		u_1_velocity_old[i][j][k],u_1_velocity_old[i][j+1][k],u_1_velocity_old[i-1][j][k],u_1_velocity_old[i-1][j+1][k], 
-		// [i][j][k]             , +1 in tangential          , -1 in first perpendicular , +1 tang -1 first perpendicular; first perpendicular velocity
+		// [i][j][k]             , +1 in normal              , -1 in first perpendicular , +1 tang -1 first perpendicular; first perpendicular velocity
 		u_3_velocity_old[i][j][k],u_3_velocity_old[i][j+1][k],u_3_velocity_old[i][j][k-1],u_3_velocity_old[i][j+1][k-1], 
-		// [i][j][k]             , +1 in tangential          , -1 in second perpendicular, +1 tang -1 second perpendicular; second perpendicular velocity
-		mesh_width_x2,mesh_width_x1,mesh_width_x3, // tangential, first perpendicular, second perpendicular
+		// [i][j][k]             , +1 in normal              , -1 in second perpendicular, +1 tang -1 second perpendicular; second perpendicular velocity
+		mesh_width_x2,mesh_width_x1,mesh_width_x3, // normal    , first perpendicular, second perpendicular
 		scaled_density_u2[i][j][k], momentum_source_term_u_2[i][j][k],
 		viscosity_left,viscosity_right,viscosity_back,viscosity_front,viscosity_top,viscosity_bottom,
 		source_terms_in_momentum_predictor);
@@ -143,15 +143,15 @@ for(i=1;i<number_primary_cells_i+1;i++)
 		// Moment prediction for w direction        
 	      	// calculation of the viscosities, the level_set-value on the faces is the average of the surrounding cells      
 	      	// first perpendicular direction is x1 and second perpendicular direction is x2      
-		viscosity_right = compute_scaled_viscosity(level_set[i][j][k+1],mesh_width_x1,mesh_width_x2,mesh_width_x3, smoothing_distance_factor, rho_minus_over_mu_minus,mu_plus_over_mu_minus); 	// +1 in tangential
+		viscosity_right = compute_scaled_viscosity(level_set[i][j][k+1],mesh_width_x1,mesh_width_x2,mesh_width_x3, smoothing_distance_factor, rho_minus_over_mu_minus,mu_plus_over_mu_minus); 	// +1 in normal 
      		viscosity_left 	= compute_scaled_viscosity(level_set[i][j][k],mesh_width_x1,mesh_width_x2,mesh_width_x3, smoothing_distance_factor, rho_minus_over_mu_minus,mu_plus_over_mu_minus);	// same for every flow
-     		viscosity_back 	= compute_scaled_viscosity((level_set[i+1][j][k]+level_set[i+1][j][k+1]+level_set[i][j][k]+level_set[i][j][k+1])/4,			// 0,+1 in tangential; 0,+1 in first perpendicular direction
+     		viscosity_back 	= compute_scaled_viscosity((level_set[i+1][j][k]+level_set[i+1][j][k+1]+level_set[i][j][k]+level_set[i][j][k+1])/4,			// 0,+1 in normal; 0,+1 in first perpendicular direction
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus);			
-     		viscosity_front = compute_scaled_viscosity((level_set[i-1][j][k]+level_set[i-1][j][k+1]+level_set[i][j][k]+level_set[i][j][k+1])/4,			// 0,+1 in tangential; 0,-1 in first perpendicular direction 
+     		viscosity_front = compute_scaled_viscosity((level_set[i-1][j][k]+level_set[i-1][j][k+1]+level_set[i][j][k]+level_set[i][j][k+1])/4,			// 0,+1 in normal; 0,-1 in first perpendicular direction 
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus); 
-     		viscosity_top 	= compute_scaled_viscosity((level_set[i][j+1][k]+level_set[i][j+1][k+1]+level_set[i][j][k]+level_set[i][j][k+1])/4,			// 0,+1 in tangential; 0,+1 in second perpendicular direction
+     		viscosity_top 	= compute_scaled_viscosity((level_set[i][j+1][k]+level_set[i][j+1][k+1]+level_set[i][j][k]+level_set[i][j][k+1])/4,			// 0,+1 in normal; 0,+1 in second perpendicular direction
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus);
-     		viscosity_bottom= compute_scaled_viscosity((level_set[i][j-1][k]+level_set[i][j-1][k+1]+level_set[i][j][k]+level_set[i][j][k+1])/4,			// 0,+1 in tangential; 0,-1 in second perpendicular direction 
+     		viscosity_bottom= compute_scaled_viscosity((level_set[i][j-1][k]+level_set[i][j-1][k+1]+level_set[i][j][k]+level_set[i][j][k+1])/4,			// 0,+1 in normal; 0,-1 in second perpendicular direction 
      								mesh_width_x1,mesh_width_x2,mesh_width_x3,smoothing_distance_factor,rho_minus_over_mu_minus,mu_plus_over_mu_minus); 
 	      
 		// momentum_predictor_cell_face( 
@@ -163,12 +163,12 @@ for(i=1;i<number_primary_cells_i+1;i++)
 		// viscosity_left,viscosity_right,viscosity_back,viscosity_front,viscosity_top,viscosity_bottom) 
 		u_3_momentum[i][j][k] = momentum_predictor_cell_face( 
 		u_3_velocity_old[i][j][k],u_3_velocity_old[i][j][k-1],u_3_velocity_old[i][j][k+1],u_3_velocity_old[i+1][j][k],u_3_velocity_old[i-1][j][k],u_3_velocity_old[i][j+1][k],u_3_velocity_old[i][j-1][k], 
-		// [i][j][k]             , -1 in tangential          ,+1 in tangential           , +1 in first perpendicular , -1 in first perpendicular , +1 in second perpendicular, -1 in second perpendicular; tangential velocity 
+		// [i][j][k]             , -1 in normal              ,+1 in normal               , +1 in first perpendicular , -1 in first perpendicular , +1 in second perpendicular, -1 in second perpendicular; normal velocity 
 		u_1_velocity_old[i][j][k],u_1_velocity_old[i][j][k+1],u_1_velocity_old[i-1][j][k],u_1_velocity_old[i-1][j][k+1], 
-		// [i][j][k]             , +1 in tangential          , -1 in first perpendicular , +1 tang -1 first perpendicular; first perpendicular velocity
+		// [i][j][k]             , +1 in normal              , -1 in first perpendicular , +1 tang -1 first perpendicular; first perpendicular velocity
 		u_2_velocity_old[i][j][k],u_2_velocity_old[i][j][k+1],u_2_velocity_old[i][j-1][k],u_2_velocity_old[i][j-1][k+1], 
-		// [i][j][k]             , +1 in tangential          , -1 in second perpendicular, +1 tang -1 second perpendicular; second perpendicular velocity
-		mesh_width_x3,mesh_width_x1,mesh_width_x2, // tangential, first perpendicular, second perpendicular
+		// [i][j][k]             , +1 in normal              , -1 in second perpendicular, +1 tang -1 second perpendicular; second perpendicular velocity
+		mesh_width_x3,mesh_width_x1,mesh_width_x2, // normal, first perpendicular, second perpendicular
 		scaled_density_u3[i][j][k], momentum_source_term_u_3[i][j][k], 
 		viscosity_left,viscosity_right,viscosity_back,viscosity_front,viscosity_top,viscosity_bottom,
 		source_terms_in_momentum_predictor);
