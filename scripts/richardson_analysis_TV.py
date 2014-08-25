@@ -139,7 +139,7 @@ rc('font', **font)  # pass in the font dict as kwargs
 time_stepping_methods =[w.replace('_', '-') for w in time_stepping_methods]
 time_stepping_methods =[w.replace('\'', '') for w in time_stepping_methods]
 
-
+#L_2 norm
 figure(1, figsize=(10,4))
 figuretitle = extracomment.replace('_without_pressure', ', without pressure in the predictor').replace('_', ' ') 
 
@@ -177,6 +177,47 @@ title('pressure')
 
 filefolder = 'figures/' + testcase
 filename = filefolder + logfile +  extracomment + '_L2.pdf'
+savefig(filename, bbox_inches='tight')
+
+
+# L_inf norm         
+figure(2, figsize=(10,4))
+figuretitle = extracomment.replace('_without_pressure', ', without pressure in the predictor').replace('_', ' ') 
+
+suptitle(figuretitle)
+subplot(121)
+minf5 = plot(time_steps[:-1], mLinf[0,:].T, ls='-',  marker ='v', color=lavender, label='minf5')
+minf4 = plot(time_steps[:-1], mLinf[1,:].T, ls='-.', marker ='^', color=fuchsia,  label='minf4')
+minf3 = plot(time_steps[:-1], mLinf[2,:].T, ls='--', marker ='<', color=orange,   label='minf3')
+minf1 = plot(time_steps[:-1], mLinf[3,:].T, ls=':',  marker ='>', color=yelgreen, label='minf1')
+yscale('log')        
+xscale('log')
+ylim( (2e-6, 2e-1))
+slope_marker((2e-3, 5e-6), (2), size_frac=0.2)
+slope_marker((3e-2, 2e-4), (1), size_frac=0.2)
+xlabel('timestep $\Delta t$')
+ylabel('error $L_\infty$-norm')
+#legend( (time_stepping_methods[0], time_stepping_methods[1], time_stepping_methods[2], time_stepping_methods[3]), loc='best')
+title('velocity')
+
+
+subplot(122)
+pinf5 = plot(time_steps[:-1], pLinf[0,:].T, ls='-',  marker ='v', color=lavender, label='pinf5')
+pinf4 = plot(time_steps[:-1], pLinf[1,:].T, ls='-.', marker ='^', color=fuchsia,  label='pinf4')
+pinf3 = plot(time_steps[:-1], pLinf[2,:].T, ls='--', marker ='<', color=orange,   label='pinf3')
+pinf1 = plot(time_steps[:-1], pLinf[3,:].T, ls=':',  marker ='>', color=yelgreen, label='pinf1')
+yscale('log')        
+xscale('log')
+ylim( (5e-6, 5e-1))
+slope_marker((2e-3, 1e-5), (2), size_frac=0.2)
+slope_marker((3e-2, 5e-4), (1), size_frac=0.2)
+xlabel('timestep $\Delta t$')
+ylabel('error $L_\infty$-norm')
+legend( (time_stepping_methods[0], time_stepping_methods[1], time_stepping_methods[2], time_stepping_methods[3]), loc='best')
+title('pressure')
+
+filefolder = 'figures/' + testcase
+filename = filefolder + logfile +  extracomment + '_Linf.pdf'
 savefig(filename, bbox_inches='tight')
 show()         
          
