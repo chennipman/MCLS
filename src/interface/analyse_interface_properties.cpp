@@ -270,7 +270,7 @@ EXPORT void analyse_interface_properties(
 		LS_second = level_set[i_index][1][number_primary_cells_k];
 		if (LS_first*LS_second < 0)
 		{
-		  x_coordinate_interface_top = mesh_width_x1*(i_index-1+fabs(LS_first)/(fabs(LS_first)+fabs(LS_second)));
+		  x_coordinate_interface_top = mesh_width_x1*(i_index-1.5+fabs(LS_first)/(fabs(LS_first)+fabs(LS_second)));
 		  break;
 		}
   	}	
@@ -294,7 +294,7 @@ EXPORT void analyse_interface_properties(
 		LS_second = level_set[i_index_middle][1][k_index];
 		if (LS_first*LS_second < 0) // an interface is found when the sign of the Level-Set value is the opposite of the previous Level-Set value
 		  {
-		  z_coordinate_interface_middle = mesh_width_x3*(k_index-1+fabs(LS_first)/(fabs(LS_first)+fabs(LS_second)));
+		  z_coordinate_interface_middle = mesh_width_x3*(k_index-1.5+fabs(LS_first)/(fabs(LS_first)+fabs(LS_second)));
 		  break;
 		  }
   	}	
