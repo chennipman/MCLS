@@ -59,8 +59,6 @@ C-------------------------------------------------------------------------------
       double d_level_set_d_zeta;		// first partial derivative with respect to logical
 						// space coordinate zeta of level set field 
       
-      double a;				// size of the left side of the triangle/quadrilateral
-      double b;				// size of the bottom of the triangle or right side quadrilateral
 
       if(level_set>0.0)
       {
@@ -98,9 +96,11 @@ C-------------------------------------------------------------------------------
 	    
       /* limit cases where one or more of the derivatives in the linearisation vanish have to be taken into account */
 
-      if( d_level_set_d_xi > lower_bound_derivatives ) // not 0-dimensional case
+      if( d_level_set_d_xi > lower_bound_derivatives )
       {
-		  if( d_level_set_d_zeta > lower_bound_derivatives ) // 3 dimensional case 
+	    if( d_level_set_d_eta > lower_bound_derivatives )
+	    {
+		  if( d_level_set_d_zeta > lower_bound_derivatives )
 		  { 
 		    /* this is the standard case, where all derivatives are nonzero */
 		    volume_of_fluid= ( level_set_value_vertex_A*level_set_value_vertex_A*level_set_value_vertex_A-
@@ -110,24 +110,33 @@ C-------------------------------------------------------------------------------
 					       level_set_value_vertex_E*level_set_value_vertex_E*level_set_value_vertex_E)/
 					       (6.0*d_level_set_d_xi*d_level_set_d_eta*d_level_set_d_zeta);
 		  }
-		  else // 2 or 1 dimensional case  limiting case of vanishing d_level_set_d_zeta
+		  else
 		  {
-			a = level_set_value_vertex_A/d_level_set_d_xi;
-			
-			if(level_set_value_vertex_C<=0) // triangle 
-			{ 
-			  b = level_set_value_vertex_A/d_level_set_d_eta;  
-			  volume_of_fluid = a*b/2.0; 
-			}
-			else // quadrilateral
-			{
-			  b = level_set_value_vertex_C/d_level_set_d_xi;
-				volume_of_fluid = (a+b)/2.0;	    
-			}		    
+		  /* limiting case of vanishing d_level_set_d_zeta */
+//                      if( level_set_value_vertex_A>0 && level_set_value_vertex_C>0)
+//                      {
+//                      volume_of_fluid=level_set/d_level_set_d_xi+0.5;
+//                      }
+//                      else
+//                      {
+		      volume_of_fluid= ( level_set_value_vertex_A*level_set_value_vertex_A-
+					    level_set_value_vertex_C*level_set_value_vertex_C)/
+					    (2.0*d_level_set_d_xi*d_level_set_d_eta);
+//                      }
 		  }  
+		  
+	    }
+	    else
+	    {
+	         /* limiting case of vanishing d_level_set_d_zeta AND d_level_set_d_eta */
+		  
+		  volume_of_fluid= level_set_value_vertex_A/d_level_set_d_xi;
+		      
+	    }
       }
-      else // 0 dimensional case
+      else
       {
+
 		/* limiting case of ALL partial derivatives vanishing */
 		if(level_set <-1E-07)
 		{
